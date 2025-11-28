@@ -1,0 +1,497 @@
+"use client";
+
+import type { Match, MatchDetail, ParticipantData } from "@/types/api";
+import { getChampionImageUrl } from "@/utils/champion";
+import { extractItemIds, getItemImageUrl } from "@/utils/game";
+import Image from "next/image";
+
+interface MatchDetailInfoProps {
+  detail: MatchDetail;
+  match: Match;
+  isArena: boolean;
+  blueTeam: ParticipantData[];
+  redTeam: ParticipantData[];
+  puuid: string | null;
+}
+
+export default function MatchDetailInfo({
+  detail,
+  match,
+  isArena,
+  blueTeam,
+  redTeam,
+  puuid,
+}: MatchDetailInfoProps) {
+  if (isArena) {
+    const placementGroups = (detail.participantData || []).reduce((acc, p) => {
+      const placement = p.placement || 999;
+      if (!acc[placement]) acc[placement] = [];
+      acc[placement].push(p);
+      return acc;
+    }, {} as Record<number, typeof detail.participantData>);
+
+    const displayTeams = [];
+    for (let i = 1; i <= 8; i++) {
+      const team = placementGroups[i];
+      if (team && team.length > 0) {
+        displayTeams.push({
+          team,
+          placement: i,
+        });
+      }
+    }
+
+    // 아레나 모드 전체 참가자의 최대 피해량 계산
+    const allParticipants = detail.participantData || [];
+    const maxDamageArena = Math.max(
+      ...allParticipants.map((p) => p.totalDamageDealtToChampions || 0)
+    );
+
+    return (
+      <div className="border-t border-gray-700/50 bg-gray-900/80 p-2">
+        <div className="space-y-1.5">
+          {displayTeams.map(({ team, placement }) => {
+            const isMyTeam = team.some((p) => p.puuid === puuid);
+            return (
+              <div
+                key={placement}
+                className={`p-1.5 rounded ${
+                  isMyTeam
+                    ? "bg-red-900/20 border border-red-500/50"
+                    : "bg-gray-800/30 border border-gray-700/50"
+                }`}
+              >
+                <div className="text-gray-300 text-[11px] font-semibold mb-1">
+                  {placement}위
+                </div>
+                <div className="grid grid-cols-2 gap-1">
+                  {team.map((participant) => {
+                    const participantItems = extractItemIds(
+                      participant.item || participant.itemSeq
+                    );
+                    const participantKDA =
+                      participant.deaths > 0
+                        ? (
+                            (participant.kills + participant.assists) /
+                            participant.deaths
+                          ).toFixed(2)
+                        : (participant.kills + participant.assists).toFixed(2);
+                    const isMe = participant.puuid === puuid;
+                    const damage = participant.totalDamageDealtToChampions || 0;
+                    const damagePercentage =
+                      maxDamageArena > 0 ? (damage / maxDamageArena) * 100 : 0;
+
+                    return (
+                      <div
+                        key={participant.participantId}
+                        className={`flex flex-col gap-0.5 p-1 rounded ${
+                          isMe
+                            ? "bg-red-900/50 border border-red-500/60"
+                            : "bg-gray-800/20"
+                        }`}
+                      >
+                        {/* 상단: 기본 정보 */}
+                        <div className="flex items-center gap-1.5">
+                          <div className="w-7 h-7 bg-gray-700 rounded overflow-hidden relative shrink-0">
+                            <Image
+                              src={getChampionImageUrl(
+                                participant.championName || ""
+                              )}
+                              alt={participant.championName || "Unknown"}
+                              fill
+                              sizes="28px"
+                              className="object-cover"
+                              unoptimized
+                            />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="text-white text-[11px] font-medium truncate">
+                              {participant.riotIdGameName ||
+                                participant.summonerName}
+                            </div>
+                            <div className="text-gray-400 text-[9px]">
+                              {participant.championName}
+                            </div>
+                          </div>
+                          <div className="flex flex-col items-end gap-0.5 text-[11px]">
+                            <div className="text-white font-semibold">
+                              {participant.kills} /{" "}
+                              <span className="text-red-400">
+                                {participant.deaths}
+                              </span>{" "}
+                              / {participant.assists}
+                            </div>
+                            <div className="text-gray-400 text-[9px]">
+                              {participantKDA}:1 평점
+                            </div>
+                          </div>
+                          <div className="grid grid-cols-3 gap-0.5">
+                            {participantItems.slice(0, 6).map((itemId, idx) => (
+                              <div
+                                key={idx}
+                                className="w-5 h-5 bg-gray-800 rounded border border-gray-700/50 overflow-hidden relative"
+                              >
+                                {itemId > 0 ? (
+                                  <Image
+                                    src={getItemImageUrl(itemId)}
+                                    alt={`Item ${itemId}`}
+                                    fill
+                                    sizes="20px"
+                                    className="object-cover"
+                                    unoptimized
+                                  />
+                                ) : (
+                                  <div className="w-full h-full bg-gray-800/50"></div>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                        {/* 하단: 피해량 막대바 */}
+                        <div className="flex items-center gap-2">
+                          <div className="text-gray-400 text-[9px] w-8 shrink-0">
+                            피해
+                          </div>
+                          <div className="flex-1 h-1.5 bg-gray-700/50 rounded-full overflow-hidden">
+                            <div
+                              className="h-full bg-orange-500 rounded-full transition-all"
+                              style={{ width: `${damagePercentage}%` }}
+                            />
+                          </div>
+                          <div className="text-orange-400 text-[9px] w-12 text-right shrink-0">
+                            {(damage / 1000).toFixed(1)}k
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+
+  // 팀별 오브젝트 처치 수 계산
+  const blueTeamStats = {
+    baron: blueTeam.reduce(
+      (sum, p) =>
+        sum +
+        ((p as ParticipantData & { baronKills?: number }).baronKills || 0),
+      0
+    ),
+    dragon: blueTeam.reduce(
+      (sum, p) =>
+        sum +
+        ((p as ParticipantData & { dragonKills?: number }).dragonKills || 0),
+      0
+    ),
+    turret: blueTeam.reduce(
+      (sum, p) =>
+        sum +
+        ((p as ParticipantData & { turretKills?: number }).turretKills || 0),
+      0
+    ),
+    inhibitor: blueTeam.reduce(
+      (sum, p) =>
+        sum +
+        ((p as ParticipantData & { inhibitorKills?: number }).inhibitorKills ||
+          0),
+      0
+    ),
+  };
+
+  const redTeamStats = {
+    baron: redTeam.reduce(
+      (sum, p) =>
+        sum +
+        ((p as ParticipantData & { baronKills?: number }).baronKills || 0),
+      0
+    ),
+    dragon: redTeam.reduce(
+      (sum, p) =>
+        sum +
+        ((p as ParticipantData & { dragonKills?: number }).dragonKills || 0),
+      0
+    ),
+    turret: redTeam.reduce(
+      (sum, p) =>
+        sum +
+        ((p as ParticipantData & { turretKills?: number }).turretKills || 0),
+      0
+    ),
+    inhibitor: redTeam.reduce(
+      (sum, p) =>
+        sum +
+        ((p as ParticipantData & { inhibitorKills?: number }).inhibitorKills ||
+          0),
+      0
+    ),
+  };
+
+  return (
+    <div className="border-t border-gray-700/50 bg-gray-900/80 p-3">
+      <div className="grid grid-cols-2 gap-3">
+        {/* 블루팀 */}
+        <div className="space-y-1.5">
+          <div className="flex items-center justify-between mb-1.5">
+            <div className="text-blue-400 text-xs font-semibold">
+              블루팀 {blueTeam.some((p) => p.win) ? "승리" : "패배"}
+            </div>
+            <div className="flex items-center gap-2 text-[10px] text-gray-400">
+              <span>바론 {blueTeamStats.baron}</span>
+              <span>드래곤 {blueTeamStats.dragon}</span>
+              <span>타워 {blueTeamStats.turret}</span>
+              <span>억제기 {blueTeamStats.inhibitor}</span>
+            </div>
+          </div>
+          {blueTeam.map((participant) => {
+            const participantItems = extractItemIds(
+              participant.item || participant.itemSeq
+            );
+            const participantTotalCS =
+              (participant.totalMinionsKilled || 0) +
+              (participant.neutralMinionsKilled || 0);
+            const participantCsPerMin =
+              match.gameDuration > 0
+                ? (participantTotalCS / (match.gameDuration / 60)).toFixed(1)
+                : "0.0";
+            const participantKDA =
+              participant.deaths > 0
+                ? (
+                    (participant.kills + participant.assists) /
+                    participant.deaths
+                  ).toFixed(2)
+                : (participant.kills + participant.assists).toFixed(2);
+            const isMe = participant.puuid === puuid;
+            const damage = participant.totalDamageDealtToChampions || 0;
+            const maxDamage = Math.max(
+              ...blueTeam.map((p) => p.totalDamageDealtToChampions || 0),
+              ...redTeam.map((p) => p.totalDamageDealtToChampions || 0)
+            );
+            const damagePercentage =
+              maxDamage > 0 ? (damage / maxDamage) * 100 : 0;
+
+            return (
+              <div
+                key={participant.participantId}
+                className={`flex flex-col gap-1 p-1 rounded ${
+                  isMe
+                    ? "bg-blue-900/40 border border-blue-500/50"
+                    : "bg-gray-800/30"
+                }`}
+              >
+                {/* 상단: 기본 정보 */}
+                <div className="flex items-center gap-1.5">
+                  <div className="w-7 h-7 bg-gray-700 rounded overflow-hidden relative shrink-0">
+                    <Image
+                      src={getChampionImageUrl(participant.championName || "")}
+                      alt={participant.championName || "Unknown"}
+                      fill
+                      sizes="28px"
+                      className="object-cover"
+                      unoptimized
+                    />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="text-white text-[11px] font-medium truncate">
+                      {participant.riotIdGameName || participant.summonerName}
+                    </div>
+                    <div className="text-gray-400 text-[9px]">
+                      {participant.championName}
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-end gap-0.5 text-[11px]">
+                    <div className="text-white font-semibold">
+                      {participant.kills} /{" "}
+                      <span className="text-red-400">{participant.deaths}</span>{" "}
+                      / {participant.assists}
+                    </div>
+                    <div className="text-gray-400 text-[9px]">
+                      {participantKDA}:1 평점
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-end gap-0.5 text-[11px]">
+                    <div className="text-gray-400 text-[9px]">
+                      {participantTotalCS}({participantCsPerMin})
+                    </div>
+                    <div className="text-yellow-400 text-[9px]">
+                      {((participant.goldEarned || 0) / 1000).toFixed(1)}k
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-3 gap-0.5">
+                    {participantItems.slice(0, 6).map((itemId, idx) => (
+                      <div
+                        key={idx}
+                        className="w-5 h-5 bg-gray-800 rounded border border-gray-700/50 overflow-hidden relative"
+                      >
+                        {itemId > 0 ? (
+                          <Image
+                            src={getItemImageUrl(itemId)}
+                            alt={`Item ${itemId}`}
+                            fill
+                            sizes="20px"
+                            className="object-cover"
+                            unoptimized
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-gray-800/50"></div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                {/* 하단: 피해량 막대바 */}
+                <div className="flex items-center gap-2">
+                  <div className="text-gray-400 text-[9px] w-8 shrink-0">
+                    피해
+                  </div>
+                  <div className="flex-1 h-1.5 bg-gray-700/50 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-orange-500 rounded-full transition-all"
+                      style={{ width: `${damagePercentage}%` }}
+                    />
+                  </div>
+                  <div className="text-orange-400 text-[9px] w-12 text-right shrink-0">
+                    {(damage / 1000).toFixed(1)}k
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* 레드팀 */}
+        <div className="space-y-1.5">
+          <div className="flex items-center justify-between mb-1.5">
+            <div className="text-red-400 text-xs font-semibold">
+              레드팀 {redTeam.some((p) => p.win) ? "승리" : "패배"}
+            </div>
+            <div className="flex items-center gap-2 text-[10px] text-gray-400">
+              <span>바론 {redTeamStats.baron}</span>
+              <span>드래곤 {redTeamStats.dragon}</span>
+              <span>타워 {redTeamStats.turret}</span>
+              <span>억제기 {redTeamStats.inhibitor}</span>
+            </div>
+          </div>
+          {redTeam.map((participant) => {
+            const participantItems = extractItemIds(
+              participant.item || participant.itemSeq
+            );
+            const participantTotalCS =
+              (participant.totalMinionsKilled || 0) +
+              (participant.neutralMinionsKilled || 0);
+            const participantCsPerMin =
+              match.gameDuration > 0
+                ? (participantTotalCS / (match.gameDuration / 60)).toFixed(1)
+                : "0.0";
+            const participantKDA =
+              participant.deaths > 0
+                ? (
+                    (participant.kills + participant.assists) /
+                    participant.deaths
+                  ).toFixed(2)
+                : (participant.kills + participant.assists).toFixed(2);
+            const isMe = participant.puuid === puuid;
+            const damage = participant.totalDamageDealtToChampions || 0;
+            const maxDamage = Math.max(
+              ...blueTeam.map((p) => p.totalDamageDealtToChampions || 0),
+              ...redTeam.map((p) => p.totalDamageDealtToChampions || 0)
+            );
+            const damagePercentage =
+              maxDamage > 0 ? (damage / maxDamage) * 100 : 0;
+
+            return (
+              <div
+                key={participant.participantId}
+                className={`flex flex-col gap-1 p-1 rounded ${
+                  isMe
+                    ? "bg-red-900/40 border border-red-500/50"
+                    : "bg-gray-800/30"
+                }`}
+              >
+                {/* 상단: 기본 정보 */}
+                <div className="flex items-center gap-1.5">
+                  <div className="w-7 h-7 bg-gray-700 rounded overflow-hidden relative shrink-0">
+                    <Image
+                      src={getChampionImageUrl(participant.championName || "")}
+                      alt={participant.championName || "Unknown"}
+                      fill
+                      sizes="28px"
+                      className="object-cover"
+                      unoptimized
+                    />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="text-white text-[11px] font-medium truncate">
+                      {participant.riotIdGameName || participant.summonerName}
+                    </div>
+                    <div className="text-gray-400 text-[9px]">
+                      {participant.championName}
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-end gap-0.5 text-[11px]">
+                    <div className="text-white font-semibold">
+                      {participant.kills} /{" "}
+                      <span className="text-red-400">{participant.deaths}</span>{" "}
+                      / {participant.assists}
+                    </div>
+                    <div className="text-gray-400 text-[9px]">
+                      {participantKDA}:1 평점
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-end gap-0.5 text-[11px]">
+                    <div className="text-gray-400 text-[9px]">
+                      {participantTotalCS}({participantCsPerMin})
+                    </div>
+                    <div className="text-yellow-400 text-[9px]">
+                      {((participant.goldEarned || 0) / 1000).toFixed(1)}k
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-3 gap-0.5">
+                    {participantItems.slice(0, 6).map((itemId, idx) => (
+                      <div
+                        key={idx}
+                        className="w-5 h-5 bg-gray-800 rounded border border-gray-700/50 overflow-hidden relative"
+                      >
+                        {itemId > 0 ? (
+                          <Image
+                            src={getItemImageUrl(itemId)}
+                            alt={`Item ${itemId}`}
+                            fill
+                            sizes="20px"
+                            className="object-cover"
+                            unoptimized
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-gray-800/50"></div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                {/* 하단: 피해량 막대바 */}
+                <div className="flex items-center gap-2">
+                  <div className="text-gray-400 text-[9px] w-8 shrink-0">
+                    피해
+                  </div>
+                  <div className="flex-1 h-1.5 bg-gray-700/50 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-orange-500 rounded-full transition-all"
+                      style={{ width: `${damagePercentage}%` }}
+                    />
+                  </div>
+                  <div className="text-orange-400 text-[9px] w-12 text-right shrink-0">
+                    {(damage / 1000).toFixed(1)}k
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
