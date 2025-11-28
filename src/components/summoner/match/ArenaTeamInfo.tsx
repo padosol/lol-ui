@@ -51,7 +51,13 @@ export default function ArenaTeamInfo({
               }`}
             >
               <div className="flex items-center gap-1 w-full min-w-0">
-                <div className="text-gray-400 text-[10px] w-6 shrink-0">
+                <div
+                  className={`text-[10px] w-6 shrink-0 text-center ${
+                    placement === 1
+                      ? "text-yellow-400 font-semibold"
+                      : "text-gray-400"
+                  }`}
+                >
                   {placement}위
                 </div>
                 {team.slice(0, 2).map((participant) => (

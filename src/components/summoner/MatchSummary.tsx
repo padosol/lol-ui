@@ -115,9 +115,15 @@ export default function MatchSummary({ matches }: MatchSummaryProps) {
       winRate: ((champ.wins / champ.games) * 100).toFixed(1),
     }));
 
-  // 포지션별 통계
+  // 포지션별 통계 (Invalid 제외)
   const positionStats = matches.reduce((acc, match) => {
-    acc[match.position] = (acc[match.position] || 0) + 1;
+    if (
+      match.position &&
+      match.position.toUpperCase() !== "INVALID" &&
+      match.position.toUpperCase() !== "UNKNOWN"
+    ) {
+      acc[match.position] = (acc[match.position] || 0) + 1;
+    }
     return acc;
   }, {} as Record<string, number>);
 
@@ -125,15 +131,9 @@ export default function MatchSummary({ matches }: MatchSummaryProps) {
     .sort((a, b) => b[1] - a[1])
     .map(([position, count]) => ({ position, count }));
 
-  // 포지션 이름을 앞 글자로 축약
-  const getPositionAbbreviation = (position: string): string => {
-    if (!position || position === "UNKNOWN") return "?";
-    return position.charAt(0).toUpperCase();
-  };
-
   // 포지션 막대차트 데이터
   const positionChartData = {
-    labels: positions.map((pos) => getPositionAbbreviation(pos.position)),
+    labels: positions.map(() => ""), // 축약 문구 제거
     datasets: [
       {
         label: "게임 수",
@@ -176,7 +176,7 @@ export default function MatchSummary({ matches }: MatchSummaryProps) {
       },
       x: {
         ticks: {
-          color: "#9ca3af",
+          display: false,
         },
         grid: {
           display: false,
@@ -186,74 +186,74 @@ export default function MatchSummary({ matches }: MatchSummaryProps) {
   };
 
   return (
-    <div className="bg-gray-900 rounded-lg p-3 mb-4 border border-gray-700">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+    <div className="bg-gray-900 rounded-lg p-2 mb-3 border border-gray-700">
+      <div className="grid grid-cols-1 md:grid-cols-7 gap-2">
         {/* 전적 요약 - 원차트 */}
-        <div className="space-y-1.5">
-          <div className="text-gray-400 text-xs mb-1">전적 요약</div>
-          <div className="flex flex-col items-center gap-2">
-            <div className="relative w-24 h-24">
+        <div className="md:col-span-2 space-y-1">
+          <div className="text-gray-400 text-xs mb-0.5">전적 요약</div>
+          <div className="flex flex-col items-center gap-1.5">
+            <div className="relative w-20 h-20">
               <Doughnut data={winLossChartData} options={winLossChartOptions} />
               <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <div className="text-white font-bold text-sm">{winRate}%</div>
-                <div className="text-gray-400 text-[10px]">승률</div>
+                <div className="text-white font-bold text-xs">{winRate}%</div>
+                <div className="text-gray-400 text-[9px]">승률</div>
               </div>
             </div>
-            <div className="flex items-center gap-3 text-xs">
-              <div className="flex items-center gap-1.5">
-                <div className="w-2 h-2 bg-green-500 rounded"></div>
+            <div className="flex items-center gap-2.5 text-[11px]">
+              <div className="flex items-center gap-1">
+                <div className="w-1.5 h-1.5 bg-green-500 rounded"></div>
                 <span className="text-gray-300">
                   승리{" "}
                   <span className="text-green-400 font-semibold">{wins}</span>
                 </span>
               </div>
-              <div className="flex items-center gap-1.5">
-                <div className="w-2 h-2 bg-red-500 rounded"></div>
+              <div className="flex items-center gap-1">
+                <div className="w-1.5 h-1.5 bg-red-500 rounded"></div>
                 <span className="text-gray-300">
                   패배{" "}
                   <span className="text-red-400 font-semibold">{losses}</span>
                 </span>
               </div>
             </div>
-            <div className="text-gray-400 text-[10px]">
+            <div className="text-gray-400 text-[9px]">
               총 {matches.length}게임
             </div>
           </div>
         </div>
 
         {/* 주요 챔피언 - Row 형태 */}
-        <div className="space-y-1.5">
-          <div className="text-gray-400 text-xs mb-1">주요 챔피언</div>
-          <div className="space-y-1.5">
+        <div className="md:col-span-3 space-y-1">
+          <div className="text-gray-400 text-xs mb-0.5">주요 챔피언</div>
+          <div className="space-y-1">
             {topChampions.map((champ, index) => (
               <div
                 key={index}
-                className="flex items-center gap-2 p-1.5 bg-gray-800 rounded-lg hover:bg-gray-750 transition-colors"
+                className="flex items-center gap-1.5 p-1 bg-gray-800 rounded-lg hover:bg-gray-750 transition-colors"
               >
-                <div className="w-8 h-8 bg-gray-700 rounded-lg flex items-center justify-center overflow-hidden shrink-0 relative">
+                <div className="w-7 h-7 bg-gray-700 rounded-lg flex items-center justify-center overflow-hidden shrink-0 relative">
                   {champ.icon && champ.icon.startsWith("http") ? (
                     <Image
                       src={champ.icon}
                       alt={champ.name}
                       fill
-                      sizes="32px"
+                      sizes="28px"
                       className="object-cover"
                       unoptimized
                     />
                   ) : (
-                    <span className="text-base">{champ.icon || "🎮"}</span>
+                    <span className="text-sm">{champ.icon || "🎮"}</span>
                   )}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="text-white text-xs font-medium truncate">
+                  <div className="text-white text-[11px] font-medium truncate">
                     {champ.name}
                   </div>
-                  <div className="text-gray-400 text-[10px]">
+                  <div className="text-gray-400 text-[9px]">
                     {champ.games}게임 · 승률 {champ.winRate}%
                   </div>
                 </div>
                 <div className="text-right">
-                  <div className="text-white text-xs font-semibold">
+                  <div className="text-white text-[11px] font-semibold">
                     {champ.wins}승 {champ.games - champ.wins}패
                   </div>
                 </div>
@@ -263,10 +263,35 @@ export default function MatchSummary({ matches }: MatchSummaryProps) {
         </div>
 
         {/* 포지션 - 막대차트 */}
-        <div className="space-y-1.5">
-          <div className="text-gray-400 text-xs mb-1">포지션</div>
-          <div className="h-32">
-            <Bar data={positionChartData} options={positionChartOptions} />
+        <div className="md:col-span-2 space-y-1">
+          <div className="text-gray-400 text-xs mb-0.5">포지션</div>
+          <div className="relative">
+            <div className="h-24">
+              <Bar data={positionChartData} options={positionChartOptions} />
+            </div>
+            <div className="flex items-center justify-around mt-1 px-2">
+              {positions.map((pos, index) => {
+                const positionUpper = pos.position?.toUpperCase() || "";
+                const positionImageUrl =
+                  pos.position &&
+                  positionUpper !== "UNKNOWN" &&
+                  positionUpper !== "INVALID"
+                    ? `https://static.mmrtr.shop/position/Position-${positionUpper}.png`
+                    : "";
+                return positionImageUrl ? (
+                  <div key={index} className="relative w-5 h-5 shrink-0">
+                    <Image
+                      src={positionImageUrl}
+                      alt={pos.position}
+                      fill
+                      sizes="20px"
+                      className="object-contain"
+                      unoptimized
+                    />
+                  </div>
+                ) : null;
+              })}
+            </div>
           </div>
         </div>
       </div>
