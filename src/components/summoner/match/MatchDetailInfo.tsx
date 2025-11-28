@@ -2,7 +2,11 @@
 
 import type { Match, MatchDetail, ParticipantData } from "@/types/api";
 import { getChampionImageUrl } from "@/utils/champion";
-import { extractItemIds, getItemImageUrl, getKDAColorClass } from "@/utils/game";
+import {
+  extractItemIds,
+  getItemImageUrl,
+  getKDAColorClass,
+} from "@/utils/game";
 import Image from "next/image";
 
 interface MatchDetailInfoProps {
@@ -122,7 +126,9 @@ export default function MatchDetailInfo({
                               / {participant.assists}
                             </div>
                             <div className="text-[9px]">
-                              <span className={getKDAColorClass(participantKDA)}>
+                              <span
+                                className={getKDAColorClass(participantKDA)}
+                              >
                                 {participantKDA}:1 평점
                               </span>
                             </div>
@@ -156,11 +162,11 @@ export default function MatchDetailInfo({
                           </div>
                           <div className="flex-1 h-1.5 bg-gray-700/50 rounded-full overflow-hidden">
                             <div
-                              className="h-full bg-orange-500 rounded-full transition-all"
+                              className="h-full bg-orange-400/70 rounded-full transition-all"
                               style={{ width: `${damagePercentage}%` }}
                             />
                           </div>
-                          <div className="text-orange-400 text-[9px] w-12 text-right shrink-0">
+                          <div className="text-orange-300 text-[9px] w-12 text-right shrink-0">
                             {(damage / 1000).toFixed(1)}k
                           </div>
                         </div>
@@ -352,7 +358,7 @@ export default function MatchDetailInfo({
                   </div>
                   <div className="flex-1 h-1.5 bg-gray-700/50 rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-orange-500 rounded-full transition-all"
+                      className="h-full bg-orange-400/70 rounded-full transition-all"
                       style={{ width: `${damagePercentage}%` }}
                     />
                   </div>
@@ -481,7 +487,7 @@ export default function MatchDetailInfo({
                   </div>
                   <div className="flex-1 h-1.5 bg-gray-700/50 rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-orange-500 rounded-full transition-all"
+                      className="h-full bg-orange-400/70 rounded-full transition-all"
                       style={{ width: `${damagePercentage}%` }}
                     />
                   </div>
