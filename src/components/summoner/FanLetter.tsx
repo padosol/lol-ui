@@ -129,7 +129,7 @@ export default function FanLetter({ summonerName }: FanLetterProps) {
           />
           <button
             type="submit"
-            className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg flex items-center justify-center transition-colors"
+            className="px-4 py-2 bg-gray-700 hover:bg-gray-600 cursor-pointer text-white rounded-lg flex items-center justify-center transition-colors"
           >
             <Send className="w-5 h-5" />
           </button>

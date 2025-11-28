@@ -1,9 +1,6 @@
 "use client";
 
-import type { ParticipantData } from "@/types/api";
-import { getChampionImageUrl } from "@/utils/champion";
 import {
-  extractItemIds,
   getItemImageUrl,
   getKDAColorClass,
   getSpellImageUrl,
@@ -70,7 +67,9 @@ export default function PlayerInfo({
       {!isArena && (
         <div className="text-center">
           <div className="text-white font-semibold text-sm">{champion}</div>
-          <div className="text-gray-400 text-xs">{getPositionName(position)}</div>
+          <div className="text-gray-400 text-xs">
+            {getPositionName(position)}
+          </div>
         </div>
       )}
 
@@ -160,4 +159,3 @@ export default function PlayerInfo({
     </div>
   );
 }
-

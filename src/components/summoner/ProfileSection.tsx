@@ -9,7 +9,7 @@ import { getProfileIconImageUrl } from "@/utils/profile";
 import { parseSummonerName } from "@/utils/summoner";
 import { RefreshCw } from "lucide-react";
 import Image from "next/image";
-import { useState, useRef, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface ProfileSectionProps {
   summonerName: string; // gameName 형식: "name-tagLine"
@@ -142,7 +142,7 @@ export default function ProfileSection({
                   </span>
                 )}
               </div>
-              <div className="absolute -bottom-1 -right-1 bg-blue-600 text-white text-[10px] md:text-xs font-bold px-1.5 md:px-2 py-0.5 md:py-1 rounded">
+              <div className="absolute bottom-0 right-0 bg-black text-white text-[9px] md:text-[10px] font-bold px-1 md:px-1.5 py-0.5 rounded border border-gray-900">
                 {profileData.summonerLevel}
               </div>
             </div>
@@ -166,7 +166,7 @@ export default function ProfileSection({
                 <button
                   onClick={handleRefresh}
                   disabled={isRefreshing || isPolling}
-                  className="flex items-center gap-2 px-3 py-1.5 md:py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-700 disabled:cursor-not-allowed text-white rounded-lg text-xs md:text-sm font-medium transition-colors"
+                  className="flex items-center gap-2 px-3 py-1.5 md:py-2 bg-gray-700 hover:bg-gray-600 disabled:bg-gray-700 disabled:cursor-not-allowed cursor-pointer text-white rounded-lg text-xs md:text-sm font-medium transition-colors"
                 >
                   <RefreshCw
                     className={`w-3 h-3 md:w-4 md:h-4 ${

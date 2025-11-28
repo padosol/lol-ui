@@ -32,9 +32,9 @@ export default function ProfileTabs({ summonerName, puuid }: ProfileTabsProps) {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`px-6 py-3 font-medium text-sm transition-colors border-b-2 ${
+              className={`px-6 py-3 font-medium text-sm transition-colors border-b-2 cursor-pointer ${
                 activeTab === tab.id
-                  ? "text-blue-500 border-blue-500 bg-gray-900"
+                  ? "text-gray-200 border-gray-500 bg-gray-900"
                   : "text-gray-400 border-transparent hover:text-gray-300"
               }`}
             >

@@ -299,9 +299,9 @@ export default function MatchHistory({
       <div className="flex gap-1 mb-4 bg-gray-800/50 rounded-lg p-1 border border-gray-700/50 overflow-x-auto">
         <button
           onClick={() => setGameModeFilter("ALL")}
-          className={`px-4 py-2 text-sm font-medium transition-all whitespace-nowrap rounded-md ${
+          className={`px-4 py-2 text-sm font-medium transition-all whitespace-nowrap rounded-md cursor-pointer ${
             gameModeFilter === "ALL"
-              ? "text-white bg-blue-600 shadow-lg shadow-blue-600/20"
+              ? "text-white bg-gray-700 shadow-lg shadow-gray-700/20"
               : "text-gray-400 hover:text-gray-200 hover:bg-gray-700/50"
           }`}
         >
@@ -309,9 +309,9 @@ export default function MatchHistory({
         </button>
         <button
           onClick={() => setGameModeFilter("RANKED")}
-          className={`px-4 py-2 text-sm font-medium transition-all whitespace-nowrap rounded-md ${
+          className={`px-4 py-2 text-sm font-medium transition-all whitespace-nowrap rounded-md cursor-pointer ${
             gameModeFilter === "RANKED"
-              ? "text-white bg-blue-600 shadow-lg shadow-blue-600/20"
+              ? "text-white bg-gray-700 shadow-lg shadow-gray-700/20"
               : "text-gray-400 hover:text-gray-200 hover:bg-gray-700/50"
           }`}
         >
@@ -319,9 +319,9 @@ export default function MatchHistory({
         </button>
         <button
           onClick={() => setGameModeFilter("FLEX")}
-          className={`px-4 py-2 text-sm font-medium transition-all whitespace-nowrap rounded-md ${
+          className={`px-4 py-2 text-sm font-medium transition-all whitespace-nowrap rounded-md cursor-pointer ${
             gameModeFilter === "FLEX"
-              ? "text-white bg-blue-600 shadow-lg shadow-blue-600/20"
+              ? "text-white bg-gray-700 shadow-lg shadow-gray-700/20"
               : "text-gray-400 hover:text-gray-200 hover:bg-gray-700/50"
           }`}
         >
@@ -329,9 +329,9 @@ export default function MatchHistory({
         </button>
         <button
           onClick={() => setGameModeFilter("NORMAL")}
-          className={`px-4 py-2 text-sm font-medium transition-all whitespace-nowrap rounded-md ${
+          className={`px-4 py-2 text-sm font-medium transition-all whitespace-nowrap rounded-md cursor-pointer ${
             gameModeFilter === "NORMAL"
-              ? "text-white bg-blue-600 shadow-lg shadow-blue-600/20"
+              ? "text-white bg-gray-700 shadow-lg shadow-gray-700/20"
               : "text-gray-400 hover:text-gray-200 hover:bg-gray-700/50"
           }`}
         >
@@ -339,9 +339,9 @@ export default function MatchHistory({
         </button>
         <button
           onClick={() => setGameModeFilter("ARENA")}
-          className={`px-4 py-2 text-sm font-medium transition-all whitespace-nowrap rounded-md ${
+          className={`px-4 py-2 text-sm font-medium transition-all whitespace-nowrap rounded-md cursor-pointer ${
             gameModeFilter === "ARENA"
-              ? "text-white bg-blue-600 shadow-lg shadow-blue-600/20"
+              ? "text-white bg-gray-700 shadow-lg shadow-gray-700/20"
               : "text-gray-400 hover:text-gray-200 hover:bg-gray-700/50"
           }`}
         >
@@ -712,7 +712,7 @@ export default function MatchHistory({
           <button
             onClick={loadMoreMatches}
             disabled={isLoading}
-            className="px-8 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-700 disabled:cursor-not-allowed text-white rounded-lg font-semibold transition-all shadow-lg shadow-blue-600/20 hover:shadow-blue-600/30 disabled:shadow-none"
+            className="px-8 py-3 bg-gray-700 hover:bg-gray-600 disabled:bg-gray-700 disabled:cursor-not-allowed cursor-pointer text-white rounded-lg font-semibold transition-all shadow-lg shadow-gray-700/20 hover:shadow-gray-600/30 disabled:shadow-none"
           >
             {isLoading ? (
               <span className="flex items-center gap-2">
