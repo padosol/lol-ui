@@ -2,7 +2,12 @@
 
 import type { ParticipantData } from "@/types/api";
 import { getChampionImageUrl } from "@/utils/champion";
-import { extractItemIds, getItemImageUrl, getSpellImageUrl } from "@/utils/game";
+import {
+  extractItemIds,
+  getItemImageUrl,
+  getKDAColorClass,
+  getSpellImageUrl,
+} from "@/utils/game";
 import { getPositionName } from "@/utils/position";
 import Image from "next/image";
 
@@ -107,7 +112,11 @@ export default function PlayerInfo({
             {kda.kills} / <span className="text-red-400">{kda.deaths}</span> /{" "}
             {kda.assists}
           </div>
-          <div className="text-gray-400 text-xs">{kdaRating} 평점</div>
+          <div className="text-xs">
+            <span className={getKDAColorClass(kdaRating)}>
+              {kdaRating} 평점
+            </span>
+          </div>
         </div>
       )}
 

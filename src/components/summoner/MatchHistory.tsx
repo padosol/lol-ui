@@ -4,7 +4,7 @@ import { useMatchIds } from "@/hooks/useSummoner";
 import { getMatchDetail } from "@/lib/api/match";
 import type { Match, MatchDetail } from "@/types/api";
 import { getChampionImageUrl } from "@/utils/champion";
-import { extractItemIds, getItemImageUrl } from "@/utils/game";
+import { extractItemIds, getItemImageUrl, getKDAColorClass } from "@/utils/game";
 import { getStyleImageUrl } from "@/utils/styles";
 import { useQueries } from "@tanstack/react-query";
 import { ChevronDown } from "lucide-react";
@@ -608,8 +608,10 @@ export default function MatchHistory({
                             {match.kda.assists}
                           </span>
                         </div>
-                        <div className="text-gray-400 text-xs font-medium">
-                          <span>{calculateKDA(match.kda)}:1 평점</span>
+                        <div className="text-xs font-medium">
+                          <span className={getKDAColorClass(calculateKDA(match.kda))}>
+                            {calculateKDA(match.kda)}:1 평점
+                          </span>
                         </div>
                         <div className="text-gray-400 text-xs font-medium">
                           <span>

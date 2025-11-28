@@ -2,6 +2,7 @@
 
 import { useChampionRanking } from "@/hooks/useSummoner";
 import { getChampionImageUrl } from "@/utils/champion";
+import { getKDAColorClass } from "@/utils/game";
 import Image from "next/image";
 
 interface ChampionStatsProps {
@@ -128,7 +129,7 @@ export default function ChampionStats({
                 </div>
                 <div className="text-gray-500 text-xs mt-1">
                   {champion.win}승 {champion.playCount - champion.win}패 · KDA{" "}
-                  {kda}
+                  <span className={getKDAColorClass(kda)}>{kda}</span>
                 </div>
               </div>
             </div>

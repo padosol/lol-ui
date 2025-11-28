@@ -74,3 +74,25 @@ export function extractItemIds(item: any): number[] {
   return [0, 0, 0, 0, 0, 0, 0];
 }
 
+/**
+ * KDA 값에 따라 색상 클래스를 반환합니다.
+ * @param kdaValue KDA 값 (문자열 또는 숫자)
+ * @returns Tailwind CSS 색상 클래스
+ */
+export function getKDAColorClass(kdaValue: string | number): string {
+  const kda = typeof kdaValue === "string" ? parseFloat(kdaValue) : kdaValue;
+  const integerPart = Math.floor(kda);
+
+  if (integerPart >= 5) {
+    return "text-orange-300"; // 5.x 이상: 오렌지 계열
+  } else if (integerPart >= 4) {
+    return "text-red-400"; // 4.x: 빨간색 계열
+  } else if (integerPart >= 3) {
+    return "text-blue-400"; // 3.x: 파란색 계열
+  } else if (integerPart >= 2) {
+    return "text-teal-500"; // 2.x: 청록색 계열 (차분한 톤)
+  } else {
+    return "text-gray-400"; // 1.x: 회색 계열
+  }
+}
+

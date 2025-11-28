@@ -2,7 +2,7 @@
 
 import type { Match, MatchDetail, ParticipantData } from "@/types/api";
 import { getChampionImageUrl } from "@/utils/champion";
-import { extractItemIds, getItemImageUrl } from "@/utils/game";
+import { extractItemIds, getItemImageUrl, getKDAColorClass } from "@/utils/game";
 import Image from "next/image";
 
 interface MatchDetailInfoProps {
@@ -121,8 +121,10 @@ export default function MatchDetailInfo({
                               </span>{" "}
                               / {participant.assists}
                             </div>
-                            <div className="text-gray-400 text-[9px]">
-                              {participantKDA}:1 평점
+                            <div className="text-[9px]">
+                              <span className={getKDAColorClass(participantKDA)}>
+                                {participantKDA}:1 평점
+                              </span>
                             </div>
                           </div>
                           <div className="grid grid-cols-3 gap-0.5">
