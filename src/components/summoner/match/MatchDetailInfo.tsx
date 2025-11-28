@@ -8,6 +8,7 @@ import {
   getKDAColorClass,
 } from "@/utils/game";
 import Image from "next/image";
+import DamageBar from "./DamageBar";
 
 interface MatchDetailInfoProps {
   detail: MatchDetail;
@@ -45,10 +46,13 @@ export default function MatchDetailInfo({
       }
     }
 
-    // 아레나 모드 전체 참가자의 최대 피해량 계산
+    // 아레나 모드 전체 참가자의 최대 피해량 및 받은 피해량 계산
     const allParticipants = detail.participantData || [];
     const maxDamageArena = Math.max(
       ...allParticipants.map((p) => p.totalDamageDealtToChampions || 0)
+    );
+    const maxDamageTakenArena = Math.max(
+      ...allParticipants.map((p) => p.totalDamageDealtToChampions || 0) // 일단 피해량 데이터 사용
     );
 
     return (
@@ -82,8 +86,14 @@ export default function MatchDetailInfo({
                         : (participant.kills + participant.assists).toFixed(2);
                     const isMe = participant.puuid === puuid;
                     const damage = participant.totalDamageDealtToChampions || 0;
+                    const damageTaken =
+                      participant.totalDamageDealtToChampions || 0; // 일단 피해량 데이터 사용
                     const damagePercentage =
                       maxDamageArena > 0 ? (damage / maxDamageArena) * 100 : 0;
+                    const damageTakenPercentage =
+                      maxDamageTakenArena > 0
+                        ? (damageTaken / maxDamageTakenArena) * 100
+                        : 0;
 
                     return (
                       <div
@@ -95,7 +105,7 @@ export default function MatchDetailInfo({
                         }`}
                       >
                         {/* 상단: 기본 정보 */}
-                        <div className="flex items-center gap-1.5">
+                        <div className="flex items-start gap-1.5">
                           <div className="w-7 h-7 bg-gray-700 rounded overflow-hidden relative shrink-0">
                             <Image
                               src={getChampionImageUrl(
@@ -117,7 +127,7 @@ export default function MatchDetailInfo({
                               {participant.championName}
                             </div>
                           </div>
-                          <div className="flex flex-col items-end gap-0.5 text-[11px]">
+                          <div className="flex flex-col items-start gap-0.5 text-[11px]">
                             <div className="text-white font-semibold">
                               {participant.kills} /{" "}
                               <span className="text-red-400">
@@ -156,18 +166,36 @@ export default function MatchDetailInfo({
                           </div>
                         </div>
                         {/* 하단: 피해량 막대바 */}
-                        <div className="flex items-center gap-2">
-                          <div className="text-gray-400 text-[9px] w-8 shrink-0">
-                            피해
+                        <div className="flex gap-1.5">
+                          {/* 피해량 막대 */}
+                          <div className="flex items-center gap-1.5 flex-1">
+                            <div className="text-gray-400 text-[9px] w-6 shrink-0">
+                              피해
+                            </div>
+                            <div className="flex-1 h-2.5 bg-gray-700/50 rounded-full overflow-hidden">
+                              <div
+                                className="h-full bg-orange-400/70 rounded-full transition-all"
+                                style={{ width: `${damagePercentage}%` }}
+                              />
+                            </div>
+                            <div className="text-orange-300 text-[9px] w-10 text-right shrink-0">
+                              {(damage / 1000).toFixed(1)}k
+                            </div>
                           </div>
-                          <div className="flex-1 h-1.5 bg-gray-700/50 rounded-full overflow-hidden">
-                            <div
-                              className="h-full bg-orange-400/70 rounded-full transition-all"
-                              style={{ width: `${damagePercentage}%` }}
-                            />
-                          </div>
-                          <div className="text-orange-300 text-[9px] w-12 text-right shrink-0">
-                            {(damage / 1000).toFixed(1)}k
+                          {/* 받은 피해량 막대 */}
+                          <div className="flex items-center gap-1.5 flex-1">
+                            <div className="text-gray-400 text-[9px] w-6 shrink-0">
+                              피해
+                            </div>
+                            <div className="flex-1 h-2.5 bg-gray-700/50 rounded-full overflow-hidden">
+                              <div
+                                className="h-full bg-blue-400/70 rounded-full transition-all"
+                                style={{ width: `${damageTakenPercentage}%` }}
+                              />
+                            </div>
+                            <div className="text-blue-300 text-[9px] w-10 text-right shrink-0">
+                              {(damageTaken / 1000).toFixed(1)}k
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -275,24 +303,31 @@ export default function MatchDetailInfo({
                 : (participant.kills + participant.assists).toFixed(2);
             const isMe = participant.puuid === puuid;
             const damage = participant.totalDamageDealtToChampions || 0;
+            const damageTaken = participant.totalDamageDealtToChampions || 0; // 일단 피해량 데이터 사용
             const maxDamage = Math.max(
+              ...blueTeam.map((p) => p.totalDamageDealtToChampions || 0),
+              ...redTeam.map((p) => p.totalDamageDealtToChampions || 0)
+            );
+            const maxDamageTaken = Math.max(
               ...blueTeam.map((p) => p.totalDamageDealtToChampions || 0),
               ...redTeam.map((p) => p.totalDamageDealtToChampions || 0)
             );
             const damagePercentage =
               maxDamage > 0 ? (damage / maxDamage) * 100 : 0;
+            const damageTakenPercentage =
+              maxDamageTaken > 0 ? (damageTaken / maxDamageTaken) * 100 : 0;
 
             return (
               <div
                 key={participant.participantId}
-                className={`flex flex-col gap-1 p-1 rounded ${
+                className={`flex flex-col p-1 rounded ${
                   isMe
                     ? "bg-blue-900/40 border border-blue-500/50"
                     : "bg-gray-800/30"
                 }`}
               >
                 {/* 상단: 기본 정보 */}
-                <div className="flex items-center gap-1.5">
+                <div className="flex items-start gap-1.5">
                   <div className="w-7 h-7 bg-gray-700 rounded overflow-hidden relative shrink-0">
                     <Image
                       src={getChampionImageUrl(participant.championName || "")}
@@ -311,7 +346,7 @@ export default function MatchDetailInfo({
                       {participant.championName}
                     </div>
                   </div>
-                  <div className="flex flex-col items-end gap-0.5 text-[11px]">
+                  <div className="flex flex-col items-start gap-0.5 text-[11px]">
                     <div className="text-white font-semibold">
                       {participant.kills} /{" "}
                       <span className="text-red-400">{participant.deaths}</span>{" "}
@@ -321,7 +356,7 @@ export default function MatchDetailInfo({
                       {participantKDA}:1 평점
                     </div>
                   </div>
-                  <div className="flex flex-col items-end gap-0.5 text-[11px]">
+                  <div className="flex flex-col items-start gap-0.5 text-[11px]">
                     <div className="text-gray-400 text-[9px]">
                       {participantTotalCS}({participantCsPerMin})
                     </div>
@@ -352,19 +387,19 @@ export default function MatchDetailInfo({
                   </div>
                 </div>
                 {/* 하단: 피해량 막대바 */}
-                <div className="flex items-center gap-2">
-                  <div className="text-gray-400 text-[9px] w-8 shrink-0">
-                    피해
-                  </div>
-                  <div className="flex-1 h-1.5 bg-gray-700/50 rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-orange-400/70 rounded-full transition-all"
-                      style={{ width: `${damagePercentage}%` }}
-                    />
-                  </div>
-                  <div className="text-orange-400 text-[9px] w-12 text-right shrink-0">
-                    {(damage / 1000).toFixed(1)}k
-                  </div>
+                <div className="flex gap-1.5">
+                  <DamageBar
+                    label="피해"
+                    percentage={damagePercentage}
+                    value={`${(damage / 1000).toFixed(1)}k`}
+                    color="orange"
+                  />
+                  <DamageBar
+                    label="받은 피해"
+                    percentage={damageTakenPercentage}
+                    value={`${(damageTaken / 1000).toFixed(1)}k`}
+                    color="blue"
+                  />
                 </div>
               </div>
             );
@@ -404,24 +439,31 @@ export default function MatchDetailInfo({
                 : (participant.kills + participant.assists).toFixed(2);
             const isMe = participant.puuid === puuid;
             const damage = participant.totalDamageDealtToChampions || 0;
+            const damageTaken = participant.totalDamageDealtToChampions || 0; // 일단 피해량 데이터 사용
             const maxDamage = Math.max(
+              ...blueTeam.map((p) => p.totalDamageDealtToChampions || 0),
+              ...redTeam.map((p) => p.totalDamageDealtToChampions || 0)
+            );
+            const maxDamageTaken = Math.max(
               ...blueTeam.map((p) => p.totalDamageDealtToChampions || 0),
               ...redTeam.map((p) => p.totalDamageDealtToChampions || 0)
             );
             const damagePercentage =
               maxDamage > 0 ? (damage / maxDamage) * 100 : 0;
+            const damageTakenPercentage =
+              maxDamageTaken > 0 ? (damageTaken / maxDamageTaken) * 100 : 0;
 
             return (
               <div
                 key={participant.participantId}
-                className={`flex flex-col gap-1 p-1 rounded ${
+                className={`flex flex-col p-1 rounded ${
                   isMe
                     ? "bg-red-900/40 border border-red-500/50"
                     : "bg-gray-800/30"
                 }`}
               >
                 {/* 상단: 기본 정보 */}
-                <div className="flex items-center gap-1.5">
+                <div className="flex items-start gap-1.5">
                   <div className="w-7 h-7 bg-gray-700 rounded overflow-hidden relative shrink-0">
                     <Image
                       src={getChampionImageUrl(participant.championName || "")}
@@ -440,7 +482,7 @@ export default function MatchDetailInfo({
                       {participant.championName}
                     </div>
                   </div>
-                  <div className="flex flex-col items-end gap-0.5 text-[11px]">
+                  <div className="flex flex-col items-start gap-0.5 text-[11px]">
                     <div className="text-white font-semibold">
                       {participant.kills} /{" "}
                       <span className="text-red-400">{participant.deaths}</span>{" "}
@@ -450,7 +492,7 @@ export default function MatchDetailInfo({
                       {participantKDA}:1 평점
                     </div>
                   </div>
-                  <div className="flex flex-col items-end gap-0.5 text-[11px]">
+                  <div className="flex flex-col items-start gap-0.5 text-[11px]">
                     <div className="text-gray-400 text-[9px]">
                       {participantTotalCS}({participantCsPerMin})
                     </div>
@@ -481,19 +523,19 @@ export default function MatchDetailInfo({
                   </div>
                 </div>
                 {/* 하단: 피해량 막대바 */}
-                <div className="flex items-center gap-2">
-                  <div className="text-gray-400 text-[9px] w-8 shrink-0">
-                    피해
-                  </div>
-                  <div className="flex-1 h-1.5 bg-gray-700/50 rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-orange-400/70 rounded-full transition-all"
-                      style={{ width: `${damagePercentage}%` }}
-                    />
-                  </div>
-                  <div className="text-orange-400 text-[9px] w-12 text-right shrink-0">
-                    {(damage / 1000).toFixed(1)}k
-                  </div>
+                <div className="flex gap-1.5">
+                  <DamageBar
+                    label="피해"
+                    percentage={damagePercentage}
+                    value={`${(damage / 1000).toFixed(1)}k`}
+                    color="red"
+                  />
+                  <DamageBar
+                    label="받은 피해"
+                    percentage={damageTakenPercentage}
+                    value={`${(damageTaken / 1000).toFixed(1)}k`}
+                    color="lime"
+                  />
                 </div>
               </div>
             );
