@@ -112,11 +112,12 @@ export default function ProfileSection({
             }
           };
 
-          // 즉시 한 번 확인
-          await pollStatus();
-
-          // 1초마다 폴링 (최대 10초)
-          pollingIntervalRef.current = setInterval(pollStatus, 1000);
+          // 0.2초 후 첫 번째 폴링 시작
+          setTimeout(async () => {
+            await pollStatus();
+            // 이후 1초마다 폴링 (최대 10초)
+            pollingIntervalRef.current = setInterval(pollStatus, 1000);
+          }, 200);
         },
       }
     );
