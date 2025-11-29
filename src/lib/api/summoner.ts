@@ -62,3 +62,18 @@ export async function renewSummoner(
   );
   return response.data.data;
 }
+
+/**
+ * 유저 갱신 상태 확인
+ * GET /api/v1/summoners/{puuid}/renewal-status
+ * @param puuid 소환사 고유 PUUID
+ * @returns 갱신 상태
+ */
+export async function getSummonerRenewalStatus(
+  puuid: string
+): Promise<SummonerRenewalResponse> {
+  const response = await apiClient.get<ApiResponse<SummonerRenewalResponse>>(
+    `/v1/summoners/${puuid}/renewal-status`
+  );
+  return response.data.data;
+}

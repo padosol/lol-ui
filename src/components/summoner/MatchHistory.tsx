@@ -213,6 +213,9 @@ export default function MatchHistory({
     deaths: number;
     assists: number;
   }) => {
+    if (kda.deaths === 0) {
+      return "perfect";
+    }
     const total = kda.kills + kda.assists;
     const deaths = kda.deaths || 1;
     return (total / deaths).toFixed(2);
@@ -610,7 +613,9 @@ export default function MatchHistory({
                         </div>
                         <div className="text-xs font-medium">
                           <span className={getKDAColorClass(calculateKDA(match.kda))}>
-                            {calculateKDA(match.kda)}:1 평점
+                            {calculateKDA(match.kda) === "perfect" 
+                              ? "perfect" 
+                              : `${calculateKDA(match.kda)}:1 평점`}
                           </span>
                         </div>
                         <div className="text-gray-400 text-xs font-medium">

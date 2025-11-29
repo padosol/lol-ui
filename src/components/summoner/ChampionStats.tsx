@@ -73,7 +73,7 @@ export default function ChampionStats({
 
   // KDA 계산
   const calculateKDA = (kills: number, deaths: number, assists: number) => {
-    if (deaths === 0) return (kills + assists).toFixed(2);
+    if (deaths === 0) return "perfect";
     return ((kills + assists) / deaths).toFixed(2);
   };
 
@@ -85,9 +85,8 @@ export default function ChampionStats({
       <div className="space-y-3">
         {displayedStats.map((champion, index) => {
           const winRate = calculateWinRate(champion.win, champion.playCount);
-          const kda = parseFloat(
-            calculateKDA(champion.kills, champion.deaths, champion.assists)
-          );
+          const kdaValue = calculateKDA(champion.kills, champion.deaths, champion.assists);
+          const kda = kdaValue === "perfect" ? "perfect" : parseFloat(kdaValue);
 
           return (
             <div

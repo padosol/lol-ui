@@ -4,7 +4,7 @@ import {
   useRefreshSummonerData,
   useSummonerProfile,
 } from "@/hooks/useSummoner";
-import { renewSummoner } from "@/lib/api/summoner";
+import { getSummonerRenewalStatus } from "@/lib/api/summoner";
 import { getProfileIconImageUrl } from "@/utils/profile";
 import { parseSummonerName } from "@/utils/summoner";
 import { RefreshCw } from "lucide-react";
@@ -57,7 +57,13 @@ export default function ProfileSection({
         puuid: profileData.puuid,
       },
       {
-        onSuccess: async () => {
+        onSuccess: async (response) => {
+          // status가 PROGRESS일 경우에만 폴링 시작
+          if (response.status !== "PROGRESS") {
+            // FAILED나 SUCCESS면 폴링하지 않음
+            return;
+          }
+
           // 폴링 시작
           setIsPolling(true);
           pollingStartTimeRef.current = Date.now();
@@ -72,23 +78,32 @@ export default function ProfileSection({
           };
 
           const pollStatus = async () => {
-            // 최대 5초 경과 확인
+            // 최대 10초 경과 확인
             const elapsed = Date.now() - (pollingStartTimeRef.current || 0);
-            if (elapsed >= 5000) {
+            if (elapsed >= 10000) {
               stopPolling();
               return;
             }
 
             try {
-              const response = await renewSummoner(
-                profileData.platform,
+              const response = await getSummonerRenewalStatus(
                 profileData.puuid
               );
 
-              if (response.status === "SUCCESS") {
+              console.log(response);
+              // SUCCESS나 FAILED면 폴링 중지
+              if (
+                response.status === "SUCCESS" ||
+                response.status === "FAILED"
+              ) {
                 stopPolling();
                 // 페이지 새로고침
-                window.location.reload();
+                // window.location.reload();
+                return;
+              }
+              // PROGRESS가 아니면 폴링 중지
+              if (response.status !== "PROGRESS") {
+                stopPolling();
                 return;
               }
             } catch (error) {
@@ -100,7 +115,7 @@ export default function ProfileSection({
           // 즉시 한 번 확인
           await pollStatus();
 
-          // 1초마다 폴링 (최대 5초)
+          // 1초마다 폴링 (최대 10초)
           pollingIntervalRef.current = setInterval(pollStatus, 1000);
         },
       }

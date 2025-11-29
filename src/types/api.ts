@@ -36,7 +36,7 @@ export interface SummonerAutocompleteItem {
 // 소환사 갱신 응답 타입
 export interface SummonerRenewalResponse {
   puuid: string;
-  status: "SUCCESS" | "REQUEST" | "ALREADY_IN_PROGRESS";
+  status: "SUCCESS" | "REQUEST" | "PROGRESS" | "FAILED";
 }
 
 // 매치 타입

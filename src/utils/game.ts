@@ -80,6 +80,11 @@ export function extractItemIds(item: any): number[] {
  * @returns Tailwind CSS 색상 클래스
  */
 export function getKDAColorClass(kdaValue: string | number): string {
+  // "perfect" 문자열인 경우 특별한 색상 반환
+  if (kdaValue === "perfect" || (typeof kdaValue === "string" && kdaValue.toLowerCase() === "perfect")) {
+    return "text-yellow-400"; // perfect: 금색 계열
+  }
+  
   const kda = typeof kdaValue === "string" ? parseFloat(kdaValue) : kdaValue;
   const integerPart = Math.floor(kda);
 

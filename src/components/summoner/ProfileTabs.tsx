@@ -55,14 +55,7 @@ export default function ProfileTabs({ summonerName, puuid }: ProfileTabsProps) {
               <div className="lg:col-span-1 space-y-6">
                 <LeagueInfo puuid={puuid} showTitle={false} />
                 <div>
-                  <h3 className="text-lg font-bold text-white mb-4">
-                    주요 챔피언
-                  </h3>
-                  <ChampionStats
-                    puuid={puuid}
-                    showTitle={false}
-                    limit={5}
-                  />
+                  <ChampionStats puuid={puuid} showTitle={false} limit={5} />
                 </div>
               </div>
             </div>

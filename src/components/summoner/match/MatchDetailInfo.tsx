@@ -78,7 +78,9 @@ export default function MatchDetailInfo({
                       participant.item || participant.itemSeq
                     );
                     const participantKDA =
-                      participant.deaths > 0
+                      participant.deaths === 0
+                        ? "perfect"
+                        : participant.deaths > 0
                         ? (
                             (participant.kills + participant.assists) /
                             participant.deaths
@@ -139,7 +141,9 @@ export default function MatchDetailInfo({
                               <span
                                 className={getKDAColorClass(participantKDA)}
                               >
-                                {participantKDA}:1 평점
+                                {participantKDA === "perfect"
+                                  ? "perfect"
+                                  : `${participantKDA}:1 평점`}
                               </span>
                             </div>
                           </div>
@@ -295,7 +299,9 @@ export default function MatchDetailInfo({
                 ? (participantTotalCS / (match.gameDuration / 60)).toFixed(1)
                 : "0.0";
             const participantKDA =
-              participant.deaths > 0
+              participant.deaths === 0
+                ? "perfect"
+                : participant.deaths > 0
                 ? (
                     (participant.kills + participant.assists) /
                     participant.deaths
@@ -353,7 +359,9 @@ export default function MatchDetailInfo({
                       / {participant.assists}
                     </div>
                     <div className="text-gray-400 text-[9px]">
-                      {participantKDA}:1 평점
+                      {participantKDA === "perfect"
+                        ? "perfect"
+                        : `${participantKDA}:1 평점`}
                     </div>
                   </div>
                   <div className="flex flex-col items-start gap-0.5 text-[11px]">
@@ -431,7 +439,9 @@ export default function MatchDetailInfo({
                 ? (participantTotalCS / (match.gameDuration / 60)).toFixed(1)
                 : "0.0";
             const participantKDA =
-              participant.deaths > 0
+              participant.deaths === 0
+                ? "perfect"
+                : participant.deaths > 0
                 ? (
                     (participant.kills + participant.assists) /
                     participant.deaths
@@ -489,7 +499,9 @@ export default function MatchDetailInfo({
                       / {participant.assists}
                     </div>
                     <div className="text-gray-400 text-[9px]">
-                      {participantKDA}:1 평점
+                      {participantKDA === "perfect"
+                        ? "perfect"
+                        : `${participantKDA}:1 평점`}
                     </div>
                   </div>
                   <div className="flex flex-col items-start gap-0.5 text-[11px]">

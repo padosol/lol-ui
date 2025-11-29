@@ -152,7 +152,7 @@ export default function LeagueInfo({
                   <div>
                     <span className="text-gray-400">승률 </span>
                     <span className="text-white font-semibold">
-                      {league.oow}%
+                      {league.oow}
                     </span>
                   </div>
                   <div>
