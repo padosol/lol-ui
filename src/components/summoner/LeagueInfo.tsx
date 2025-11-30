@@ -53,7 +53,7 @@ export default function LeagueInfo({
         {showTitle && (
           <h2 className="text-xl font-bold text-white mb-4">리그 정보</h2>
         )}
-        <div className="text-center py-12 text-gray-400">
+        <div className="text-center text-gray-400 border border-gray-600 rounded-lg">
           리그 정보가 없습니다.
         </div>
       </div>

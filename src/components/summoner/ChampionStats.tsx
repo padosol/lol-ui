@@ -58,7 +58,7 @@ export default function ChampionStats({
         {showTitle && (
           <h2 className="text-xl font-bold text-white mb-4">챔피언 통계</h2>
         )}
-        <div className="text-center py-12 text-gray-400">
+        <div className="text-center text-gray-400 border border-gray-600 rounded-lg">
           챔피언 통계 데이터가 없습니다.
         </div>
       </div>

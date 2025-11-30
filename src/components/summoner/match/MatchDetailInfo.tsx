@@ -56,7 +56,10 @@ export default function MatchDetailInfo({
     );
 
     return (
-      <div className="border-t border-gray-700/50 bg-gray-900/80 p-2">
+      <div
+        className="border-t border-gray-700/50 bg-gray-900/80 p-2 cursor-default"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="space-y-1.5">
           {displayTeams.map(({ team, placement }) => {
             const isMyTeam = team.some((p) => p.puuid === puuid);
@@ -272,7 +275,10 @@ export default function MatchDetailInfo({
   };
 
   return (
-    <div className="border-t border-gray-700/50 bg-gray-900/80 p-3">
+    <div
+      className="border-t border-gray-700/50 bg-gray-900/80 p-3 cursor-default"
+      onClick={(e) => e.stopPropagation()}
+    >
       <div className="grid grid-cols-2 gap-3">
         {/* 블루팀 */}
         <div className="space-y-1.5">
