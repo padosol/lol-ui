@@ -4,7 +4,11 @@ import { useMatchIds } from "@/hooks/useSummoner";
 import { getMatchDetail } from "@/lib/api/match";
 import type { Match, MatchDetail } from "@/types/api";
 import { getChampionImageUrl } from "@/utils/champion";
-import { extractItemIds, getItemImageUrl, getKDAColorClass } from "@/utils/game";
+import {
+  extractItemIds,
+  getItemImageUrl,
+  getKDAColorClass,
+} from "@/utils/game";
 import { getStyleImageUrl } from "@/utils/styles";
 import { useQueries } from "@tanstack/react-query";
 import { ChevronDown } from "lucide-react";
@@ -288,6 +292,7 @@ export default function MatchHistory({
       ARAM: "무작위 총력전",
       URF: "U.R.F.",
       TFT: "전략적 팀 전투",
+      SWIFTPLAY: "신속",
     };
     return modeMap[gameMode] || gameMode;
   };
@@ -612,9 +617,13 @@ export default function MatchHistory({
                           </span>
                         </div>
                         <div className="text-xs font-medium">
-                          <span className={getKDAColorClass(calculateKDA(match.kda))}>
-                            {calculateKDA(match.kda) === "perfect" 
-                              ? "perfect" 
+                          <span
+                            className={getKDAColorClass(
+                              calculateKDA(match.kda)
+                            )}
+                          >
+                            {calculateKDA(match.kda) === "perfect"
+                              ? "perfect"
                               : `${calculateKDA(match.kda)}:1 평점`}
                           </span>
                         </div>
@@ -636,18 +645,14 @@ export default function MatchHistory({
                             key={idx}
                             className="w-7 h-7 bg-gray-800 rounded border border-gray-700/50 overflow-hidden relative shadow-sm"
                           >
-                            {itemId > 0 ? (
-                              <Image
-                                src={getItemImageUrl(itemId)}
-                                alt={`Item ${itemId}`}
-                                fill
-                                sizes="26px"
-                                className="object-cover"
-                                unoptimized
-                              />
-                            ) : (
-                              <div className="w-full h-full bg-gray-800/50"></div>
-                            )}
+                            <Image
+                              src={getItemImageUrl(itemId)}
+                              alt={`Item ${itemId}`}
+                              fill
+                              sizes="26px"
+                              className="object-cover"
+                              unoptimized
+                            />
                           </div>
                         ))}
                         {/* 와드 슬롯 */}

@@ -8,9 +8,6 @@
  * @returns 아이템 이미지 URL
  */
 export function getItemImageUrl(itemId: number): string {
-  if (!itemId || itemId === 0) {
-    return "";
-  }
   return `https://static.mmrtr.shop/items/${itemId}.png`;
 }
 
@@ -55,12 +52,12 @@ export function getRuneImageUrl(runeId: number): string {
  */
 export function extractItemIds(item: any): number[] {
   if (!item) return [0, 0, 0, 0, 0, 0, 0];
-  
+
   // item이 배열인 경우
   if (Array.isArray(item)) {
     return item.slice(0, 7).map((id) => id || 0);
   }
-  
+
   // item이 객체인 경우 (item0, item1, ... 형식)
   if (typeof item === "object") {
     const items: number[] = [];
@@ -70,7 +67,7 @@ export function extractItemIds(item: any): number[] {
     }
     return items;
   }
-  
+
   return [0, 0, 0, 0, 0, 0, 0];
 }
 
@@ -81,10 +78,13 @@ export function extractItemIds(item: any): number[] {
  */
 export function getKDAColorClass(kdaValue: string | number): string {
   // "perfect" 문자열인 경우 특별한 색상 반환
-  if (kdaValue === "perfect" || (typeof kdaValue === "string" && kdaValue.toLowerCase() === "perfect")) {
+  if (
+    kdaValue === "perfect" ||
+    (typeof kdaValue === "string" && kdaValue.toLowerCase() === "perfect")
+  ) {
     return "text-yellow-400"; // perfect: 금색 계열
   }
-  
+
   const kda = typeof kdaValue === "string" ? parseFloat(kdaValue) : kdaValue;
   const integerPart = Math.floor(kda);
 
@@ -100,4 +100,3 @@ export function getKDAColorClass(kdaValue: string | number): string {
     return "text-gray-400"; // 1.x: 회색 계열
   }
 }
-
