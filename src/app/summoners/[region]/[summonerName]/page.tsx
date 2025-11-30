@@ -39,9 +39,13 @@ export default function SummonerPage({ params }: PageProps) {
   // 프로필 조회를 통해 소환사 존재 여부 확인
   const { data, isLoading, error } = useSummonerProfile(gameName, region);
 
-  // 404 에러 처리
+  // 4xx 에러 처리 (존재하지 않는 유저)
   const isNotFound =
-    error && axios.isAxiosError(error) && error.response?.status === 404;
+    error &&
+    axios.isAxiosError(error) &&
+    error.response?.status &&
+    error.response.status >= 400 &&
+    error.response.status < 500;
 
   // 로딩 중
   if (isLoading) {
@@ -68,7 +72,7 @@ export default function SummonerPage({ params }: PageProps) {
       <div className="min-h-screen bg-gray-900">
         <Header />
         <Navigation />
-        <SummonerNotFound summonerName={summonerName} />
+        <SummonerNotFound summonerName={summonerName} tagline={tagline} />
         <Footer />
       </div>
     );
