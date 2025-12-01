@@ -58,13 +58,13 @@ export default function TeamInfo({
                       unoptimized
                     />
                   </div>
-                  <div className="flex-1 min-w-0">
+                  <div className="flex-1 min-w-0 overflow-hidden">
                     <Link
                       href={getSummonerUrl(participant)}
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={(e) => e.stopPropagation()}
-                      className="text-white text-[10px] font-medium truncate leading-tight hover:text-blue-400 hover:underline transition-colors"
+                      className="block text-white text-[10px] font-medium truncate leading-tight hover:text-blue-400 hover:underline transition-colors"
                     >
                       {participant.riotIdGameName || participant.summonerName}
                     </Link>
@@ -102,13 +102,13 @@ export default function TeamInfo({
                       unoptimized
                     />
                   </div>
-                  <div className="flex-1 min-w-0">
+                  <div className="flex-1 min-w-0 overflow-hidden">
                     <Link
                       href={getSummonerUrl(participant)}
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={(e) => e.stopPropagation()}
-                      className="text-white text-[10px] font-medium truncate leading-tight hover:text-red-400 hover:underline transition-colors"
+                      className="block text-white text-[10px] font-medium truncate leading-tight hover:text-red-400 hover:underline transition-colors"
                     >
                       {participant.riotIdGameName || participant.summonerName}
                     </Link>

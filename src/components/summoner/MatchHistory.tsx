@@ -90,11 +90,15 @@ export default function MatchHistory({
           ? new Date(gameInfo.gameStartTimestamp).toLocaleDateString("ko-KR")
           : "";
 
+        const gameDuration = gameInfo.gameDuration || 0;
+        // 5분 미만이면 다시하기로 간주 (5분 = 300초)
+        const isRemake = gameDuration < 300;
+
         return {
           id: matchId,
           champion: myData.championName || "Unknown",
           championIcon: getChampionImageUrl(myData.championName || ""),
-          result: myData.win ? "WIN" : "LOSS",
+          result: isRemake ? "REMAKE" : myData.win ? "WIN" : "LOSS",
           gameMode: gameInfo.gameMode || "CLASSIC",
           position:
             myData.teamPosition || myData.individualPosition || "UNKNOWN",
@@ -103,7 +107,7 @@ export default function MatchHistory({
             deaths: myData.deaths || 0,
             assists: myData.assists || 0,
           },
-          gameDuration: gameInfo.gameDuration || 0,
+          gameDuration,
           gameDate,
           items: extractItemIds(myData.item || myData.itemSeq),
         } as Match;
@@ -443,17 +447,28 @@ export default function MatchHistory({
             }
           }
 
-          // 승리/패배에 따른 색상 변수
-          const borderColor =
-            match.result === "WIN" ? "border-blue-500" : "border-red-500";
-          const bgColor =
-            match.result === "WIN" ? "bg-blue-500/10" : "bg-red-500/10";
-          const textColor =
-            match.result === "WIN" ? "text-blue-400" : "text-red-400";
-          const shadowColor =
-            match.result === "WIN"
-              ? "hover:shadow-blue-500/10"
-              : "hover:shadow-red-500/10";
+          // 승리/패배/다시하기에 따른 색상 변수
+          const isRemake = match.result === "REMAKE";
+          const borderColor = isRemake
+            ? "border-gray-500"
+            : match.result === "WIN"
+            ? "border-blue-500"
+            : "border-red-500";
+          const bgColor = isRemake
+            ? "bg-gray-500/10"
+            : match.result === "WIN"
+            ? "bg-blue-500/10"
+            : "bg-red-500/10";
+          const textColor = isRemake
+            ? "text-gray-400"
+            : match.result === "WIN"
+            ? "text-blue-400"
+            : "text-red-400";
+          const shadowColor = isRemake
+            ? "hover:shadow-gray-500/10"
+            : match.result === "WIN"
+            ? "hover:shadow-blue-500/10"
+            : "hover:shadow-red-500/10";
 
           const isExpanded = expandedMatchId === match.id;
 
@@ -479,6 +494,8 @@ export default function MatchHistory({
                       <strong className={`text-base font-bold ${textColor}`}>
                         {isArena
                           ? `${myData.placement || 999}위`
+                          : match.result === "REMAKE"
+                          ? "다시하기"
                           : match.result === "WIN"
                           ? "승리"
                           : "패배"}

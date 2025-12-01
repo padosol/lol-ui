@@ -41,7 +41,7 @@ export interface Match {
   id: string;
   champion: string;
   championIcon: string;
-  result: "WIN" | "LOSS";
+  result: "WIN" | "LOSS" | "REMAKE";
   gameMode: string;
   position: string;
   kda: {
