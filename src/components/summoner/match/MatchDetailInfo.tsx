@@ -315,14 +315,14 @@ export default function MatchDetailInfo({
                 : (participant.kills + participant.assists).toFixed(2);
             const isMe = participant.puuid === puuid;
             const damage = participant.totalDamageDealtToChampions || 0;
-            const damageTaken = participant.totalDamageDealtToChampions || 0; // 일단 피해량 데이터 사용
+            const damageTaken = participant.totalDamageTaken || 0; // 일단 피해량 데이터 사용
             const maxDamage = Math.max(
               ...blueTeam.map((p) => p.totalDamageDealtToChampions || 0),
               ...redTeam.map((p) => p.totalDamageDealtToChampions || 0)
             );
             const maxDamageTaken = Math.max(
-              ...blueTeam.map((p) => p.totalDamageDealtToChampions || 0),
-              ...redTeam.map((p) => p.totalDamageDealtToChampions || 0)
+              ...blueTeam.map((p) => p.totalDamageTaken || 0),
+              ...redTeam.map((p) => p.totalDamageTaken || 0)
             );
             const damagePercentage =
               maxDamage > 0 ? (damage / maxDamage) * 100 : 0;
@@ -455,14 +455,14 @@ export default function MatchDetailInfo({
                 : (participant.kills + participant.assists).toFixed(2);
             const isMe = participant.puuid === puuid;
             const damage = participant.totalDamageDealtToChampions || 0;
-            const damageTaken = participant.totalDamageDealtToChampions || 0; // 일단 피해량 데이터 사용
+            const damageTaken = participant.totalDamageTaken || 0; // 일단 피해량 데이터 사용
             const maxDamage = Math.max(
               ...blueTeam.map((p) => p.totalDamageDealtToChampions || 0),
               ...redTeam.map((p) => p.totalDamageDealtToChampions || 0)
             );
             const maxDamageTaken = Math.max(
-              ...blueTeam.map((p) => p.totalDamageDealtToChampions || 0),
-              ...redTeam.map((p) => p.totalDamageDealtToChampions || 0)
+              ...blueTeam.map((p) => p.totalDamageTaken || 0),
+              ...redTeam.map((p) => p.totalDamageTaken || 0)
             );
             const damagePercentage =
               maxDamage > 0 ? (damage / maxDamage) * 100 : 0;

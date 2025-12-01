@@ -21,16 +21,13 @@ export interface SummonerProfile {
 
 // 소환사 자동완성 응답 타입
 export interface SummonerAutocompleteItem {
-  profileIconId: number;
-  puuid: string;
-  summonerLevel: number;
   gameName: string;
   tagLine: string;
-  platform: string | null;
-  lastRevisionDateTime: string | null;
-  point: number | null;
+  profileIconId: number;
+  summonerLevel: number;
   tier: string | null;
   rank: string | null;
+  leaguePoints: number | null;
 }
 
 // 소환사 갱신 응답 타입
@@ -96,6 +93,7 @@ export interface ParticipantData {
   totalMinionsKilled: number;
   neutralMinionsKilled: number;
   totalDamageDealtToChampions: number;
+  totalDamageTaken: number;
   visionWardsBoughtInGame: number;
   wardsKilled: number;
   wardsPlaced: number;

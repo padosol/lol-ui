@@ -2132,32 +2132,26 @@ Host: localhost:8080</code></pre>
                     class="highlightjs highlight nowrap"
                   ><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 596
+Content-Length: 443
 
 {
   "result" : "SUCCESS",
   "data" : [ {
-    "profileIconId" : 0,
-    "puuid" : "puuid-1",
-    "summonerLevel" : 100,
     "gameName" : "testUser1",
     "tagLine" : "KR1",
-    "platform" : null,
-    "lastRevisionDateTime" : null,
-    "point" : null,
-    "tier" : null,
-    "rank" : null
+    "profileIconId" : 123,
+    "summonerLevel" : 100,
+    "tier" : "GOLD",
+    "rank" : "I",
+    "leaguePoints" : 50
   }, {
-    "profileIconId" : 0,
-    "puuid" : "puuid-2",
-    "summonerLevel" : 120,
     "gameName" : "testUser2",
     "tagLine" : "KR1",
-    "platform" : null,
-    "lastRevisionDateTime" : null,
-    "point" : null,
-    "tier" : null,
-    "rank" : null
+    "profileIconId" : 456,
+    "summonerLevel" : 120,
+    "tier" : "SILVER",
+    "rank" : "II",
+    "leaguePoints" : 25
   } ],
   "errorMessage" : null
 }</code></pre>
@@ -2192,43 +2186,6 @@ Content-Length: 596
                   </tr>
                   <tr>
                     <td class="tableblock halign-left valign-top">
-                      <p class="tableblock">
-                        <code>data[].profileIconId</code>
-                      </p>
-                    </td>
-                    <td class="tableblock halign-left valign-top">
-                      <p class="tableblock"><code>Number</code></p>
-                    </td>
-                    <td class="tableblock halign-left valign-top">
-                      <p class="tableblock">프로필 아이콘 ID</p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="tableblock halign-left valign-top">
-                      <p class="tableblock"><code>data[].puuid</code></p>
-                    </td>
-                    <td class="tableblock halign-left valign-top">
-                      <p class="tableblock"><code>String</code></p>
-                    </td>
-                    <td class="tableblock halign-left valign-top">
-                      <p class="tableblock">소환사 고유 PUUID</p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="tableblock halign-left valign-top">
-                      <p class="tableblock">
-                        <code>data[].summonerLevel</code>
-                      </p>
-                    </td>
-                    <td class="tableblock halign-left valign-top">
-                      <p class="tableblock"><code>Number</code></p>
-                    </td>
-                    <td class="tableblock halign-left valign-top">
-                      <p class="tableblock">소환사 레벨</p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="tableblock halign-left valign-top">
                       <p class="tableblock"><code>data[].gameName</code></p>
                     </td>
                     <td class="tableblock halign-left valign-top">
@@ -2251,37 +2208,28 @@ Content-Length: 596
                   </tr>
                   <tr>
                     <td class="tableblock halign-left valign-top">
-                      <p class="tableblock"><code>data[].platform</code></p>
-                    </td>
-                    <td class="tableblock halign-left valign-top">
-                      <p class="tableblock"><code>String</code></p>
-                    </td>
-                    <td class="tableblock halign-left valign-top">
-                      <p class="tableblock">플랫폼(지역)</p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="tableblock halign-left valign-top">
                       <p class="tableblock">
-                        <code>data[].lastRevisionDateTime</code>
+                        <code>data[].profileIconId</code>
                       </p>
-                    </td>
-                    <td class="tableblock halign-left valign-top">
-                      <p class="tableblock"><code>String</code></p>
-                    </td>
-                    <td class="tableblock halign-left valign-top">
-                      <p class="tableblock">마지막 갱신일</p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="tableblock halign-left valign-top">
-                      <p class="tableblock"><code>data[].point</code></p>
                     </td>
                     <td class="tableblock halign-left valign-top">
                       <p class="tableblock"><code>Number</code></p>
                     </td>
                     <td class="tableblock halign-left valign-top">
-                      <p class="tableblock">LP</p>
+                      <p class="tableblock">프로필 아이콘 ID</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="tableblock halign-left valign-top">
+                      <p class="tableblock">
+                        <code>data[].summonerLevel</code>
+                      </p>
+                    </td>
+                    <td class="tableblock halign-left valign-top">
+                      <p class="tableblock"><code>Number</code></p>
+                    </td>
+                    <td class="tableblock halign-left valign-top">
+                      <p class="tableblock">소환사 레벨</p>
                     </td>
                   </tr>
                   <tr>
@@ -2304,6 +2252,17 @@ Content-Length: 596
                     </td>
                     <td class="tableblock halign-left valign-top">
                       <p class="tableblock">랭크</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="tableblock halign-left valign-top">
+                      <p class="tableblock"><code>data[].leaguePoints</code></p>
+                    </td>
+                    <td class="tableblock halign-left valign-top">
+                      <p class="tableblock"><code>Number</code></p>
+                    </td>
+                    <td class="tableblock halign-left valign-top">
+                      <p class="tableblock">LP</p>
                     </td>
                   </tr>
                   <tr>
@@ -3158,17 +3117,17 @@ Content-Length: 3826
       "skillSeq" : null
     } ],
     "teamInfoData" : {
-      "200" : {
-        "teamId" : 200,
-        "win" : false,
-        "championKills" : 15,
-        "championId" : [ ],
-        "pickTurn" : [ ]
-      },
       "100" : {
         "teamId" : 100,
         "win" : true,
         "championKills" : 25,
+        "championId" : [ ],
+        "pickTurn" : [ ]
+      },
+      "200" : {
+        "teamId" : 200,
+        "win" : false,
+        "championKills" : 15,
         "championId" : [ ],
         "pickTurn" : [ ]
       }
@@ -3322,20 +3281,25 @@ Host: localhost:8080</code></pre>
                     class="highlightjs highlight nowrap"
                   ><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 279
+Content-Length: 445
 
 {
   "result" : "SUCCESS",
   "data" : [ {
+    "assists" : 7.5,
+    "deaths" : 3.2,
+    "kills" : 8.1,
     "championId" : 266,
     "championName" : "Aatrox",
-    "kills" : 7.5,
-    "deaths" : 3.2,
-    "assists" : 8.1,
-    "cs" : null,
-    "duration" : null,
-    "win" : 10,
-    "playCount" : 15
+    "win" : 100,
+    "losses" : 30,
+    "winRate" : 500.0,
+    "damagePerMinute" : 10.5,
+    "kda" : 15.5,
+    "laneMinionsFirst10Minutes" : 15.5,
+    "damageTakenOnTeamPercentage" : 15.5,
+    "goldPerMinute" : 15.5,
+    "playCount" : 20
   } ],
   "errorMessage" : null
 }</code></pre>

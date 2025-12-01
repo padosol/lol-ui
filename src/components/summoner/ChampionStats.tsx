@@ -14,7 +14,7 @@ interface ChampionStatsProps {
 
 export default function ChampionStats({
   puuid,
-  season = "2024",
+  season = "25",
   showTitle = true,
   limit,
 }: ChampionStatsProps) {
@@ -82,35 +82,39 @@ export default function ChampionStats({
       {showTitle && (
         <h2 className="text-xl font-bold text-white mb-4">챔피언 통계</h2>
       )}
-      <div className="space-y-3">
+      <div className="space-y-2">
         {displayedStats.map((champion, index) => {
           const winRate = calculateWinRate(champion.win, champion.playCount);
-          const kdaValue = calculateKDA(champion.kills, champion.deaths, champion.assists);
+          const kdaValue = calculateKDA(
+            champion.kills,
+            champion.deaths,
+            champion.assists
+          );
           const kda = kdaValue === "perfect" ? "perfect" : parseFloat(kdaValue);
 
           return (
             <div
               key={champion.championId || index}
-              className="flex items-center gap-3 p-3 bg-gray-700/50 rounded-lg hover:bg-gray-700 transition-colors"
+              className="flex items-center gap-2 p-2 bg-gray-700/50 rounded-lg hover:bg-gray-700 transition-colors"
             >
               {/* 챔피언 아이콘 */}
-              <div className="w-12 h-12 bg-gray-600 rounded-lg flex items-center justify-center overflow-hidden relative">
+              <div className="w-10 h-10 bg-gray-600 rounded-lg flex items-center justify-center overflow-hidden relative">
                 <Image
                   src={getChampionImageUrl(champion.championName)}
                   alt={champion.championName}
                   fill
-                  sizes="48px"
+                  sizes="40px"
                   className="object-cover"
                   unoptimized
                 />
               </div>
 
               {/* 통계 정보 */}
-              <div className="flex-1">
-                <div className="text-white font-semibold mb-1">
+              <div className="flex-1 h-10 flex flex-col justify-center">
+                <div className="text-white font-semibold mb-0.5 text-sm leading-tight">
                   {champion.championName}
                 </div>
-                <div className="flex items-center gap-4 text-sm">
+                <div className="flex items-center gap-3 text-xs leading-tight">
                   <span className="text-gray-400">
                     {champion.playCount}게임
                   </span>
@@ -126,7 +130,7 @@ export default function ChampionStats({
                     {winRate}% 승률
                   </span>
                 </div>
-                <div className="text-gray-500 text-xs mt-1">
+                <div className="text-gray-500 text-[10px] mt-0.5 leading-tight">
                   {champion.win}승 {champion.playCount - champion.win}패 · KDA{" "}
                   <span className={getKDAColorClass(kda)}>{kda}</span>
                 </div>

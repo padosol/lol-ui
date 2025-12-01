@@ -98,7 +98,7 @@ export default function ProfileSection({
               ) {
                 stopPolling();
                 // 페이지 새로고침
-                // window.location.reload();
+                window.location.reload();
                 return;
               }
               // PROGRESS가 아니면 폴링 중지
