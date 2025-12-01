@@ -680,12 +680,14 @@ export default function MatchHistory({
                       participants={detail.participantData || []}
                       myPuuid={puuid}
                       myPlacement={myData.placement || 999}
+                      region={region}
                     />
                   ) : (
                     <TeamInfo
                       blueTeam={blueTeam}
                       redTeam={redTeam}
                       myPuuid={puuid}
+                      region={region}
                     />
                   )}
                 </div>

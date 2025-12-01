@@ -2,19 +2,34 @@
 
 import type { ParticipantData } from "@/types/api";
 import { getChampionImageUrl } from "@/utils/champion";
+import { normalizeRegion } from "@/utils/summoner";
 import Image from "next/image";
+import Link from "next/link";
 
 interface ArenaTeamInfoProps {
   participants: ParticipantData[];
   myPuuid: string | null;
   myPlacement: number;
+  region?: string;
 }
 
 export default function ArenaTeamInfo({
   participants,
   myPuuid,
   myPlacement,
+  region = "kr",
 }: ArenaTeamInfoProps) {
+  const getSummonerUrl = (participant: ParticipantData) => {
+    const normalizedRegion = normalizeRegion(region);
+    // riotIdGameName과 riotIdTagline이 있으면 사용, 없으면 summonerName 사용
+    const gameName = participant.riotIdGameName
+      ? participant.riotIdTagline
+        ? `${participant.riotIdGameName}-${participant.riotIdTagline}`
+        : participant.riotIdGameName
+      : participant.summonerName;
+    const encodedName = encodeURIComponent(gameName);
+    return `/summoners/${normalizedRegion}/${encodedName}`;
+  };
   // placement별로 그룹화 (아레나에서는 같은 placement가 같은 팀)
   const placementGroups = participants.reduce((acc, p) => {
     const placement = p.placement || 999;
@@ -77,9 +92,15 @@ export default function ArenaTeamInfo({
                         unoptimized
                       />
                     </div>
-                    <div className="text-white text-[10px] truncate min-w-0 flex-1">
+                    <Link
+                      href={getSummonerUrl(participant)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="text-white text-[10px] truncate min-w-0 flex-1 hover:text-blue-400 hover:underline transition-colors"
+                    >
                       {participant.riotIdGameName || participant.summonerName}
-                    </div>
+                    </Link>
                   </div>
                 ))}
               </div>
