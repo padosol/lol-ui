@@ -19,9 +19,9 @@ export default function DesktopAppSection() {
   ];
 
   return (
-    <section className="bg-gradient-to-br from-gray-900 to-gray-800 py-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
+    <section className="bg-gradient-to-br from-gray-900 to-gray-800 py-16 h-[300px]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+        {/* <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-white mb-4">
             Stay overpowered with OP.GG for Desktop - your partner in-game!
           </h2>
@@ -36,7 +36,7 @@ export default function DesktopAppSection() {
               <p className="text-gray-200 font-medium">{feature.title}</p>
             </div>
           ))}
-        </div>
+        </div> */}
       </div>
     </section>
   );

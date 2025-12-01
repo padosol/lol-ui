@@ -36,6 +36,8 @@ export default function ProfileSection({
   const [isPolling, setIsPolling] = useState(false);
   const pollingIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const pollingStartTimeRef = useRef<number | null>(null);
+  const [lastClickTime, setLastClickTime] = useState<number | null>(null);
+  const [remainingTime, setRemainingTime] = useState<number | null>(null);
 
   // 컴포넌트 언마운트 시 폴링 정리
   useEffect(() => {
@@ -47,8 +49,67 @@ export default function ProfileSection({
     };
   }, []);
 
+  // 남은 시간 계산 및 업데이트
+  useEffect(() => {
+    const updateRemainingTime = () => {
+      if (!profileData) {
+        setRemainingTime(null);
+        return;
+      }
+
+      const now = Date.now();
+      let minRemaining = Infinity;
+
+      // 클릭 후 10초 제한 확인
+      if (lastClickTime) {
+        const elapsedSinceClick = now - lastClickTime;
+        const remainingFromClick = 10000 - elapsedSinceClick;
+        if (remainingFromClick > 0) {
+          minRemaining = Math.min(minRemaining, remainingFromClick);
+        }
+      }
+
+      // 갱신 완료 후 3분 제한 확인
+      if (profileData.lastRevisionDateTime) {
+        const lastRevisionTime = new Date(
+          profileData.lastRevisionDateTime
+        ).getTime();
+        const elapsedSinceRevision = now - lastRevisionTime;
+        const remainingFromRevision = 180000 - elapsedSinceRevision; // 3분 = 180000ms
+        if (remainingFromRevision > 0) {
+          minRemaining = Math.min(minRemaining, remainingFromRevision);
+        }
+      }
+
+      if (minRemaining !== Infinity && minRemaining > 0) {
+        setRemainingTime(Math.ceil(minRemaining / 1000)); // 초 단위로 변환
+      } else {
+        setRemainingTime(null);
+      }
+    };
+
+    // 초기 업데이트
+    updateRemainingTime();
+
+    // 1초마다 업데이트
+    const interval = setInterval(updateRemainingTime, 1000);
+
+    return () => clearInterval(interval);
+  }, [profileData, lastClickTime]);
+
+  // 갱신 버튼 비활성화 여부 확인
+  const isRefreshDisabled = () => {
+    if (isRefreshing || isPolling) return true;
+    if (remainingTime !== null && remainingTime > 0) return true;
+    return false;
+  };
+
   const handleRefresh = async () => {
     if (!profileData?.puuid || !profileData?.platform) return;
+    if (isRefreshDisabled()) return;
+
+    // 클릭 시간 기록
+    setLastClickTime(Date.now());
 
     // 갱신 요청
     refresh(
@@ -60,7 +121,7 @@ export default function ProfileSection({
         onSuccess: async (response) => {
           // status가 PROGRESS일 경우에만 폴링 시작
           if (response.status !== "PROGRESS") {
-            // FAILED나 SUCCESS면 폴링하지 않음
+            // PROGRESS가 아니면 폴링하지 않음
             return;
           }
 
@@ -178,19 +239,25 @@ export default function ProfileSection({
               </div>
 
               {/* 갱신 버튼 */}
-              <div>
+              <div className="flex items-center gap-2">
                 <button
                   onClick={handleRefresh}
-                  disabled={isRefreshing || isPolling}
-                  className="flex items-center gap-2 px-3 py-1.5 md:py-2 bg-gray-700 hover:bg-gray-600 disabled:bg-gray-700 disabled:cursor-not-allowed cursor-pointer text-white rounded-lg text-xs md:text-sm font-medium transition-colors"
+                  disabled={isRefreshDisabled()}
+                  className="flex items-center justify-center gap-1.5 px-2 py-1 bg-gray-700 hover:bg-gray-600 disabled:bg-gray-700 disabled:cursor-not-allowed cursor-pointer text-white rounded-lg text-xs font-medium transition-colors w-fit"
                 >
                   <RefreshCw
-                    className={`w-3 h-3 md:w-4 md:h-4 ${
+                    className={`w-3 h-3 ${
                       isRefreshing || isPolling ? "animate-spin" : ""
                     }`}
                   />
                   갱신
                 </button>
+                {remainingTime !== null && remainingTime > 0 && (
+                  <span className="text-[10px] text-gray-400 whitespace-nowrap">
+                    {Math.floor(remainingTime / 60)}:
+                    {String(remainingTime % 60).padStart(2, "0")} 후 가능
+                  </span>
+                )}
               </div>
             </div>
           </div>

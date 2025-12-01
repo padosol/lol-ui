@@ -1,7 +1,7 @@
+import { QueryProvider } from "@/providers/QueryProvider";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { QueryProvider } from "@/providers/QueryProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "OP.GG - The Best LoL Builds and Tier List",
+  title: "MMRTR - The Best LoL Builds and Tier List",
   description: "Search Riot ID and Tagline for Stats",
 };
 

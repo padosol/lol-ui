@@ -12,7 +12,6 @@ export default function Navigation() {
     { label: "홈", href: "/" },
     { label: "챔피언 분석", href: "/champion-analysis" },
     { label: "랭킹", href: "/leaderboards" },
-    { label: "통계", href: "/stats" },
   ];
 
   return (
