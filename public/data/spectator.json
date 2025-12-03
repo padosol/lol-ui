@@ -1,0 +1,237 @@
+{
+  "gameId": 7942801892,
+  "mapId": 11,
+  "gameMode": "CLASSIC",
+  "gameType": "MATCHED",
+  "gameQueueConfigId": 420,
+  "participants": [
+    {
+      "puuid": null,
+      "teamId": 100,
+      "spell1Id": 11,
+      "spell2Id": 4,
+      "championId": 799,
+      "lastSelectedSkinIndex": 0,
+      "profileIconId": 1446,
+      "riotId": "Ambessa",
+      "bot": false,
+      "gameCustomizationObjects": [],
+      "perks": {
+        "perkIds": [8010],
+        "perkStyle": 8000,
+        "perkSubStyle": 8300
+      }
+    },
+    {
+      "puuid": null,
+      "teamId": 100,
+      "spell1Id": 21,
+      "spell2Id": 4,
+      "championId": 21,
+      "lastSelectedSkinIndex": 41,
+      "profileIconId": 7033,
+      "riotId": "MissFortune",
+      "bot": false,
+      "gameCustomizationObjects": [],
+      "perks": {
+        "perkIds": [8005],
+        "perkStyle": 8000,
+        "perkSubStyle": 8300
+      }
+    },
+    {
+      "puuid": null,
+      "teamId": 100,
+      "spell1Id": 7,
+      "spell2Id": 4,
+      "championId": 12,
+      "lastSelectedSkinIndex": 27,
+      "profileIconId": 6400,
+      "riotId": "Alistar",
+      "bot": false,
+      "gameCustomizationObjects": [],
+      "perks": {
+        "perkIds": [8360],
+        "perkStyle": 8300,
+        "perkSubStyle": 8200
+      }
+    },
+    {
+      "puuid": "oZ9W3d_I1AN8-8x6vZchWDXAAXOJZDPzGjpL865UhKGhcdVs53P6F17jshQL7uzGqbYGOiT2yokbqg",
+      "teamId": 100,
+      "spell1Id": 12,
+      "spell2Id": 4,
+      "championId": 893,
+      "lastSelectedSkinIndex": 0,
+      "profileIconId": 5313,
+      "riotId": "Witt#123",
+      "bot": false,
+      "gameCustomizationObjects": [],
+      "perks": {
+        "perkIds": [8112],
+        "perkStyle": 8100,
+        "perkSubStyle": 8200
+      }
+    },
+    {
+      "puuid": "HrdD6Lt_lEB8vu1KCHTaaTjNwwnNDwyKEauP-721oAOQufw1sUSLgFMv_IvsqCZYhMaspfuypZuVew",
+      "teamId": 100,
+      "spell1Id": 4,
+      "spell2Id": 12,
+      "championId": 904,
+      "lastSelectedSkinIndex": 0,
+      "profileIconId": 6091,
+      "riotId": "Bae Suzy#KR1",
+      "bot": false,
+      "gameCustomizationObjects": [],
+      "perks": {
+        "perkIds": [8010],
+        "perkStyle": 8000,
+        "perkSubStyle": 8400
+      }
+    },
+    {
+      "puuid": "etDMTN4j8mu4a7J1SevCiAly6sAfE36p9MoO5MlUmtv7ciEzudpIHhI7dT6KHJ1GVMXRwJD0AlM8bw",
+      "teamId": 200,
+      "spell1Id": 11,
+      "spell2Id": 4,
+      "championId": 266,
+      "lastSelectedSkinIndex": 0,
+      "profileIconId": 3837,
+      "riotId": "套马滴汉子你威武雄壮#像疾风一样",
+      "bot": false,
+      "gameCustomizationObjects": [],
+      "perks": {
+        "perkIds": [8010],
+        "perkStyle": 8000,
+        "perkSubStyle": 8300
+      }
+    },
+    {
+      "puuid": null,
+      "teamId": 200,
+      "spell1Id": 4,
+      "spell2Id": 12,
+      "championId": 887,
+      "lastSelectedSkinIndex": 0,
+      "profileIconId": 5871,
+      "riotId": "Gwen",
+      "bot": false,
+      "gameCustomizationObjects": [],
+      "perks": {
+        "perkIds": [8010],
+        "perkStyle": 8000,
+        "perkSubStyle": 8400
+      }
+    },
+    {
+      "puuid": null,
+      "teamId": 200,
+      "spell1Id": 12,
+      "spell2Id": 4,
+      "championId": 13,
+      "lastSelectedSkinIndex": 8,
+      "profileIconId": 7033,
+      "riotId": "Ryze",
+      "bot": false,
+      "gameCustomizationObjects": [],
+      "perks": {
+        "perkIds": [8230],
+        "perkStyle": 8200,
+        "perkSubStyle": 8400
+      }
+    },
+    {
+      "puuid": "w4wtwp75PD3hkAPB80aJxhMDyKmE9ynwn54NOfFcDzVVbh14s8Bh__rAGVy2l4zVAgLkDUY5RxVqrQ",
+      "teamId": 200,
+      "spell1Id": 4,
+      "spell2Id": 21,
+      "championId": 221,
+      "lastSelectedSkinIndex": 0,
+      "profileIconId": 978,
+      "riotId": "츄파춥스#8873",
+      "bot": false,
+      "gameCustomizationObjects": [],
+      "perks": {
+        "perkIds": [8008],
+        "perkStyle": 8000,
+        "perkSubStyle": 8300
+      }
+    },
+    {
+      "puuid": "s_4IqM1saCGKAJC-myOpgrqmVeYqTcMp1_hn_5uLkFem2rCWwCqifwGP8v7ACAO0v5IndYM5HJDB2Q",
+      "teamId": 200,
+      "spell1Id": 4,
+      "spell2Id": 14,
+      "championId": 497,
+      "lastSelectedSkinIndex": 18,
+      "profileIconId": 5922,
+      "riotId": "QQQ ESO#KR1",
+      "bot": false,
+      "gameCustomizationObjects": [],
+      "perks": {
+        "perkIds": [8360],
+        "perkStyle": 8300,
+        "perkSubStyle": 8400
+      }
+    }
+  ],
+  "observers": {
+    "encryptionKey": "5Lx2lYM5h69bBA+NZZmrdLzIXKNMmIWq"
+  },
+  "platformId": "KR",
+  "bannedChampions": [
+    {
+      "championId": 68,
+      "teamId": 100,
+      "pickTurn": 1
+    },
+    {
+      "championId": -1,
+      "teamId": 100,
+      "pickTurn": 2
+    },
+    {
+      "championId": 60,
+      "teamId": 100,
+      "pickTurn": 3
+    },
+    {
+      "championId": 517,
+      "teamId": 100,
+      "pickTurn": 4
+    },
+    {
+      "championId": 61,
+      "teamId": 100,
+      "pickTurn": 5
+    },
+    {
+      "championId": 246,
+      "teamId": 200,
+      "pickTurn": 6
+    },
+    {
+      "championId": 76,
+      "teamId": 200,
+      "pickTurn": 7
+    },
+    {
+      "championId": -1,
+      "teamId": 200,
+      "pickTurn": 8
+    },
+    {
+      "championId": 7,
+      "teamId": 200,
+      "pickTurn": 9
+    },
+    {
+      "championId": 142,
+      "teamId": 200,
+      "pickTurn": 10
+    }
+  ],
+  "gameStartTime": 1764760559056,
+  "gameLength": 123
+}

@@ -2,6 +2,36 @@
  * 게임 아이템, 스펠, 룬 이미지 URL 생성 유틸리티
  */
 
+interface SummonerSpellData {
+  id: string;
+  key: string;
+  name: string;
+  [key: string]: any;
+}
+
+interface SummonerJson {
+  type: string;
+  version: string;
+  data: {
+    [key: string]: SummonerSpellData;
+  };
+}
+
+let summonerDataCache: SummonerJson | null = null;
+
+/**
+ * 소환사 주문 JSON 데이터를 로드합니다 (캐싱됨)
+ */
+async function loadSummonerData(): Promise<SummonerJson> {
+  if (summonerDataCache) {
+    return summonerDataCache;
+  }
+
+  const response = await fetch("/data/summoner.json");
+  summonerDataCache = await response.json();
+  return summonerDataCache;
+}
+
 /**
  * 아이템 ID로 이미지 URL을 생성합니다.
  * @param itemId 아이템 ID (0이면 빈 슬롯)
@@ -13,6 +43,34 @@ export function getItemImageUrl(itemId: number): string {
 
 /**
  * 소환사 주문(스펠) ID로 이미지 URL을 생성합니다.
+ * @param spellId 소환사 주문 ID (숫자)
+ * @returns 소환사 주문 이미지 URL
+ */
+export async function getSpellImageUrlAsync(spellId: number): Promise<string> {
+  if (!spellId || spellId === 0) {
+    return "";
+  }
+
+  try {
+    const data = await loadSummonerData();
+    const key = String(spellId);
+    const spell = data.data[key];
+    
+    if (spell && spell.id) {
+      return `https://static.mmrtr.shop/spells/${spell.id}.png`;
+    }
+    
+    // fallback: 원래 방식
+    return `https://static.mmrtr.shop/spells/${spellId}.png`;
+  } catch (error) {
+    console.error("Failed to load summoner data:", error);
+    // fallback: 원래 방식
+    return `https://static.mmrtr.shop/spells/${spellId}.png`;
+  }
+}
+
+/**
+ * 소환사 주문(스펠) ID로 이미지 URL을 생성합니다 (동기 버전, 캐시된 데이터 사용).
  * @param spellId 소환사 주문 ID
  * @returns 소환사 주문 이미지 URL
  */
@@ -20,6 +78,17 @@ export function getSpellImageUrl(spellId: number): string {
   if (!spellId || spellId === 0) {
     return "";
   }
+  
+  // 캐시된 데이터가 있으면 사용
+  if (summonerDataCache) {
+    const key = String(spellId);
+    const spell = summonerDataCache.data[key];
+    if (spell && spell.id) {
+      return `https://static.mmrtr.shop/spells/${spell.id}.png`;
+    }
+  }
+  
+  // fallback: 원래 방식
   return `https://static.mmrtr.shop/spells/${spellId}.png`;
 }
 

@@ -2,9 +2,11 @@
 
 import { useState } from "react";
 import ChampionStats from "./ChampionStats";
+import ChampionStatsOverview from "./ChampionStatsOverview";
 import FanLetter from "./FanLetter";
 import LeagueInfo from "./LeagueInfo";
 import MatchHistory from "./MatchHistory";
+import IngameTab from "./IngameTab";
 
 interface ProfileTabsProps {
   summonerName: string;
@@ -55,7 +57,11 @@ export default function ProfileTabs({ summonerName, puuid }: ProfileTabsProps) {
               <div className="lg:col-span-1 space-y-6">
                 <LeagueInfo puuid={puuid} showTitle={false} />
                 <div>
-                  <ChampionStats puuid={puuid} showTitle={false} limit={5} />
+                  <ChampionStatsOverview
+                    puuid={puuid}
+                    showTitle={false}
+                    limit={5}
+                  />
                 </div>
               </div>
             </div>
@@ -70,9 +76,7 @@ export default function ProfileTabs({ summonerName, puuid }: ProfileTabsProps) {
 
         {activeTab === "ingame" && (
           <div className="p-6">
-            <div className="text-center py-12">
-              <p className="text-gray-400">인게임 정보가 여기에 표시됩니다.</p>
-            </div>
+            <IngameTab />
           </div>
         )}
 

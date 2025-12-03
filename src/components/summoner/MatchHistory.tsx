@@ -8,6 +8,7 @@ import {
   extractItemIds,
   getItemImageUrl,
   getKDAColorClass,
+  getSpellImageUrl,
 } from "@/utils/game";
 import { getStyleImageUrl } from "@/utils/styles";
 import { useQueries } from "@tanstack/react-query";
@@ -63,6 +64,14 @@ export default function MatchHistory({
 
   const isLoadingDetails = matchDetailsQueries.some((q) => q.isLoading);
   const isLoading = isLoadingIds || isLoadingDetails;
+
+  // 모든 매치가 로딩되었는지 확인
+  const allMatchesLoaded = useMemo(() => {
+    if (matchDetailsQueries.length === 0) return false;
+    return matchDetailsQueries.every(
+      (q) => !q.isLoading && q.data !== undefined
+    );
+  }, [matchDetailsQueries]);
 
   // MatchDetail을 Match 타입으로 변환 (요약용)
   const allMatches = useMemo<Match[]>(() => {
@@ -362,7 +371,7 @@ export default function MatchHistory({
       </div>
 
       {/* 매치 요약 */}
-      <MatchSummary matches={filteredMatches} />
+      <MatchSummary matches={allMatchesLoaded ? filteredMatches : []} />
 
       <div className="space-y-3">
         {filteredMatchDetails.map(({ detail, match }) => {
@@ -540,8 +549,45 @@ export default function MatchHistory({
                             </div>
                           </div>
 
-                          {/* 스펠 + 룬 */}
-                          <div className="flex flex-col justify-between">
+                          {/* 소환사 주문 + 스펠 + 룬 */}
+                          <div className="flex flex-row gap-1 items-start">
+                            {/* 소환사 주문 */}
+                            <div className="flex flex-col gap-1">
+                              {myData.summoner1Id > 0 && (
+                                <div className="w-7 h-7 bg-gray-800 rounded border border-gray-700/50 overflow-hidden relative shadow-sm flex items-center justify-center">
+                                  <Image
+                                    src={getSpellImageUrl(myData.summoner1Id)}
+                                    alt="Summoner 1"
+                                    width={28}
+                                    height={28}
+                                    className="object-cover"
+                                    unoptimized
+                                    onError={(e) => {
+                                      const target =
+                                        e.target as HTMLImageElement;
+                                      target.style.display = "none";
+                                    }}
+                                  />
+                                </div>
+                              )}
+                              {myData.summoner2Id > 0 && (
+                                <div className="w-7 h-7 bg-gray-800 rounded border border-gray-700/50 overflow-hidden relative shadow-sm flex items-center justify-center">
+                                  <Image
+                                    src={getSpellImageUrl(myData.summoner2Id)}
+                                    alt="Summoner 2"
+                                    width={28}
+                                    height={28}
+                                    className="object-cover"
+                                    unoptimized
+                                    onError={(e) => {
+                                      const target =
+                                        e.target as HTMLImageElement;
+                                      target.style.display = "none";
+                                    }}
+                                  />
+                                </div>
+                              )}
+                            </div>
                             {/* 스펠 */}
                             <div className="flex flex-col gap-1">
                               {primaryRuneId > 0 &&

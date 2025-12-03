@@ -1,5 +1,6 @@
 "use client";
 
+import type { Match } from "@/types/api";
 import {
   ArcElement,
   BarElement,
@@ -23,23 +24,6 @@ ChartJS.register(
   Tooltip,
   Legend
 );
-
-interface Match {
-  id: string;
-  champion: string;
-  championIcon: string;
-  result: "WIN" | "LOSS";
-  gameMode: string;
-  position: string;
-  kda: {
-    kills: number;
-    deaths: number;
-    assists: number;
-  };
-  gameDuration: number;
-  gameDate: string;
-  items: number[];
-}
 
 interface MatchSummaryProps {
   matches: Match[];
@@ -115,6 +99,9 @@ export default function MatchSummary({ matches }: MatchSummaryProps) {
       winRate: ((champ.wins / champ.games) * 100).toFixed(1),
     }));
 
+  // 모든 포지션 정의
+  const allPositions = ["TOP", "JUNGLE", "MIDDLE", "BOTTOM", "UTILITY"];
+
   // 포지션별 통계 (Invalid 제외)
   const positionStats = matches.reduce((acc, match) => {
     if (
@@ -122,14 +109,19 @@ export default function MatchSummary({ matches }: MatchSummaryProps) {
       match.position.toUpperCase() !== "INVALID" &&
       match.position.toUpperCase() !== "UNKNOWN"
     ) {
-      acc[match.position] = (acc[match.position] || 0) + 1;
+      const position = match.position.toUpperCase();
+      // ADC를 BOTTOM으로 통일
+      const normalizedPosition = position === "ADC" ? "BOTTOM" : position;
+      acc[normalizedPosition] = (acc[normalizedPosition] || 0) + 1;
     }
     return acc;
   }, {} as Record<string, number>);
 
-  const positions = Object.entries(positionStats)
-    .sort((a, b) => b[1] - a[1])
-    .map(([position, count]) => ({ position, count }));
+  // 모든 포지션을 포함하되, 플레이하지 않은 포지션은 0으로 설정
+  const positions = allPositions.map((position) => ({
+    position,
+    count: positionStats[position] || 0,
+  }));
 
   // 포지션 막대차트 데이터
   const positionChartData = {
@@ -272,13 +264,8 @@ export default function MatchSummary({ matches }: MatchSummaryProps) {
             <div className="flex items-center justify-around mt-1 px-2">
               {positions.map((pos, index) => {
                 const positionUpper = pos.position?.toUpperCase() || "";
-                const positionImageUrl =
-                  pos.position &&
-                  positionUpper !== "UNKNOWN" &&
-                  positionUpper !== "INVALID"
-                    ? `https://static.mmrtr.shop/position/Position-${positionUpper}.png`
-                    : "";
-                return positionImageUrl ? (
+                const positionImageUrl = `https://static.mmrtr.shop/position/Position-${positionUpper}.png`;
+                return (
                   <div key={index} className="relative w-5 h-5 shrink-0">
                     <Image
                       src={positionImageUrl}
@@ -289,7 +276,7 @@ export default function MatchSummary({ matches }: MatchSummaryProps) {
                       unoptimized
                     />
                   </div>
-                ) : null;
+                );
               })}
             </div>
           </div>

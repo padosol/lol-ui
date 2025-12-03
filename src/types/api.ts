@@ -183,3 +183,10 @@ export interface ApiError {
   status?: number;
   code?: string;
 }
+
+// 챔피언 로테이션 응답 타입
+export interface ChampionRotationResponse {
+  maxNewPlayerLevel: number;
+  freeChampionIdsForNewPlayers: number[];
+  freeChampionIds: number[];
+}
