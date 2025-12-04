@@ -4,9 +4,9 @@ import { useState } from "react";
 import ChampionStats from "./ChampionStats";
 import ChampionStatsOverview from "./ChampionStatsOverview";
 import FanLetter from "./FanLetter";
+import IngameTab from "./IngameTab";
 import LeagueInfo from "./LeagueInfo";
 import MatchHistory from "./MatchHistory";
-import IngameTab from "./IngameTab";
 
 interface ProfileTabsProps {
   summonerName: string;
@@ -22,7 +22,7 @@ export default function ProfileTabs({ summonerName, puuid }: ProfileTabsProps) {
     { id: "overview" as TabType, label: "종합" },
     { id: "champions" as TabType, label: "챔피언 통계" },
     { id: "ingame" as TabType, label: "인게임" },
-    { id: "fanletter" as TabType, label: "팬 래터" },
+    // { id: "fanletter" as TabType, label: "팬 래터" },
   ];
 
   return (

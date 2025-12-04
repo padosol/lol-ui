@@ -8,19 +8,51 @@ import {
   extractItemIds,
   getItemImageUrl,
   getKDAColorClass,
-  getSpellImageUrl,
+  getSpellImageUrlAsync,
 } from "@/utils/game";
 import { getStyleImageUrl } from "@/utils/styles";
 import { useQueries } from "@tanstack/react-query";
 import { ChevronDown } from "lucide-react";
 import Image from "next/image";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import ArenaTeamInfo from "./match/ArenaTeamInfo";
 import MatchDetailInfo from "./match/MatchDetailInfo";
 import TeamInfo from "./match/TeamInfo";
 import MatchSummary from "./MatchSummary";
 
 type GameModeFilter = "ALL" | "RANKED" | "FLEX" | "NORMAL" | "ARENA";
+
+// 소환사 주문 이미지 컴포넌트 (비동기 로드)
+function SummonerSpellImage({ spellId }: { spellId: number }) {
+  const [imageUrl, setImageUrl] = useState<string>("");
+
+  useEffect(() => {
+    if (spellId > 0) {
+      getSpellImageUrlAsync(spellId).then(setImageUrl);
+    }
+  }, [spellId]);
+
+  if (!imageUrl) {
+    return null;
+  }
+
+  return (
+    <div className="w-7 h-7 bg-gray-800 rounded border border-gray-700/50 overflow-hidden relative shadow-sm flex items-center justify-center">
+      <Image
+        src={imageUrl}
+        alt={`Summoner ${spellId}`}
+        width={28}
+        height={28}
+        className="object-cover"
+        unoptimized
+        onError={(e) => {
+          const target = e.target as HTMLImageElement;
+          target.style.display = "none";
+        }}
+      />
+    </div>
+  );
+}
 
 interface MatchHistoryProps {
   puuid?: string | null;
@@ -554,38 +586,10 @@ export default function MatchHistory({
                             {/* 소환사 주문 */}
                             <div className="flex flex-col gap-1">
                               {myData.summoner1Id > 0 && (
-                                <div className="w-7 h-7 bg-gray-800 rounded border border-gray-700/50 overflow-hidden relative shadow-sm flex items-center justify-center">
-                                  <Image
-                                    src={getSpellImageUrl(myData.summoner1Id)}
-                                    alt="Summoner 1"
-                                    width={28}
-                                    height={28}
-                                    className="object-cover"
-                                    unoptimized
-                                    onError={(e) => {
-                                      const target =
-                                        e.target as HTMLImageElement;
-                                      target.style.display = "none";
-                                    }}
-                                  />
-                                </div>
+                                <SummonerSpellImage spellId={myData.summoner1Id} />
                               )}
                               {myData.summoner2Id > 0 && (
-                                <div className="w-7 h-7 bg-gray-800 rounded border border-gray-700/50 overflow-hidden relative shadow-sm flex items-center justify-center">
-                                  <Image
-                                    src={getSpellImageUrl(myData.summoner2Id)}
-                                    alt="Summoner 2"
-                                    width={28}
-                                    height={28}
-                                    className="object-cover"
-                                    unoptimized
-                                    onError={(e) => {
-                                      const target =
-                                        e.target as HTMLImageElement;
-                                      target.style.display = "none";
-                                    }}
-                                  />
-                                </div>
+                                <SummonerSpellImage spellId={myData.summoner2Id} />
                               )}
                             </div>
                             {/* 스펠 */}

@@ -2,35 +2,24 @@
  * 챔피언 이미지 URL 생성 유틸리티
  */
 
-interface ChampionData {
-  id: string;
-  key: string;
-  name: string;
-  title: string;
-  image: {
-    full: string;
-  };
-}
-
-interface ChampionJson {
-  data: {
-    [key: string]: ChampionData;
-  };
-}
-
-let championDataCache: ChampionJson | null = null;
+import { useGameDataStore, type ChampionData, type ChampionJson } from "@/stores/useGameDataStore";
 
 /**
- * 챔피언 JSON 데이터를 로드합니다 (캐싱됨)
+ * 챔피언 JSON 데이터를 로드합니다 (zustand store 사용)
  */
-async function loadChampionData(): Promise<ChampionJson> {
-  if (championDataCache) {
-    return championDataCache;
+async function loadChampionData(): Promise<ChampionJson | null> {
+  const store = useGameDataStore.getState();
+  
+  // 이미 로드되었으면 반환
+  if (store.championData) {
+    return store.championData;
   }
 
-  const response = await fetch("/data/champion.json");
-  championDataCache = await response.json();
-  return championDataCache;
+  // 로드 시작
+  await store.loadChampionData();
+  
+  // 로드 완료 후 반환
+  return useGameDataStore.getState().championData;
 }
 
 /**
@@ -43,6 +32,9 @@ export async function getChampionById(
 ): Promise<ChampionData | null> {
   try {
     const data = await loadChampionData();
+    if (!data) {
+      return null;
+    }
     const key = String(championId);
     return data.data[key] || null;
   } catch (error) {
@@ -61,6 +53,9 @@ export async function getChampionsByIds(
 ): Promise<ChampionData[]> {
   try {
     const data = await loadChampionData();
+    if (!data) {
+      return [];
+    }
     return championIds
       .map((id) => {
         const key = String(id);
@@ -84,4 +79,3 @@ export function getChampionImageUrl(championName: string): string {
   }
   return `https://static.mmrtr.shop/champion/${championName}.png`;
 }
-

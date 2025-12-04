@@ -2,34 +2,24 @@
  * 게임 아이템, 스펠, 룬 이미지 URL 생성 유틸리티
  */
 
-interface SummonerSpellData {
-  id: string;
-  key: string;
-  name: string;
-  [key: string]: any;
-}
-
-interface SummonerJson {
-  type: string;
-  version: string;
-  data: {
-    [key: string]: SummonerSpellData;
-  };
-}
-
-let summonerDataCache: SummonerJson | null = null;
+import { useGameDataStore, type SummonerJson } from "@/stores/useGameDataStore";
 
 /**
- * 소환사 주문 JSON 데이터를 로드합니다 (캐싱됨)
+ * 소환사 주문 JSON 데이터를 로드합니다 (zustand store 사용)
  */
-async function loadSummonerData(): Promise<SummonerJson> {
-  if (summonerDataCache) {
-    return summonerDataCache;
+async function loadSummonerData(): Promise<SummonerJson | null> {
+  const store = useGameDataStore.getState();
+  
+  // 이미 로드되었으면 반환
+  if (store.summonerData) {
+    return store.summonerData;
   }
 
-  const response = await fetch("/data/summoner.json");
-  summonerDataCache = await response.json();
-  return summonerDataCache;
+  // 로드 시작
+  await store.loadSummonerData();
+  
+  // 로드 완료 후 반환
+  return useGameDataStore.getState().summonerData;
 }
 
 /**
@@ -53,6 +43,9 @@ export async function getSpellImageUrlAsync(spellId: number): Promise<string> {
 
   try {
     const data = await loadSummonerData();
+    if (!data) {
+      return `https://static.mmrtr.shop/spells/${spellId}.png`;
+    }
     const key = String(spellId);
     const spell = data.data[key];
     
@@ -79,10 +72,11 @@ export function getSpellImageUrl(spellId: number): string {
     return "";
   }
   
-  // 캐시된 데이터가 있으면 사용
-  if (summonerDataCache) {
+  // zustand store에서 데이터 가져오기
+  const store = useGameDataStore.getState();
+  if (store.summonerData) {
     const key = String(spellId);
-    const spell = summonerDataCache.data[key];
+    const spell = store.summonerData.data[key];
     if (spell && spell.id) {
       return `https://static.mmrtr.shop/spells/${spell.id}.png`;
     }
