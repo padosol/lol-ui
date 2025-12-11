@@ -1,10 +1,11 @@
 "use client";
 
 import { useChampionRanking } from "@/hooks/useSummoner";
-import { getChampionImageUrl } from "@/utils/champion";
+import { getChampionImageUrl, getChampionNameByEnglishName } from "@/utils/champion";
 import { getKDAColorClass } from "@/utils/game";
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
+import { useGameDataStore } from "@/stores/useGameDataStore";
 
 interface ChampionStatsProps {
   puuid?: string | null;
@@ -35,6 +36,12 @@ export default function ChampionStats({
 
   const [sortField, setSortField] = useState<SortField>("playCount");
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
+  
+  // champion.json 데이터 로드
+  const loadChampionData = useGameDataStore((state) => state.loadChampionData);
+  useEffect(() => {
+    loadChampionData();
+  }, [loadChampionData]);
 
   // limit이 있으면 제한
   const displayedStats = limit ? championStats.slice(0, limit) : championStats;
@@ -167,7 +174,7 @@ export default function ChampionStats({
         {showTitle && (
           <h2 className="text-xl font-bold text-white mb-4">챔피언 통계</h2>
         )}
-        <div className="text-center py-12 text-gray-400">
+        <div className="text-center py-12 text-white">
           소환사 정보가 필요합니다.
         </div>
       </div>
@@ -180,7 +187,7 @@ export default function ChampionStats({
         {showTitle && (
           <h2 className="text-xl font-bold text-white mb-4">챔피언 통계</h2>
         )}
-        <div className="text-center text-gray-400 border border-gray-600 rounded-lg py-12">
+        <div className="text-center text-white border border-gray-600 rounded-lg py-12">
           챔피언 통계 데이터가 없습니다.
         </div>
       </div>
@@ -197,11 +204,11 @@ export default function ChampionStats({
           <table className="w-full">
             <thead className="bg-gray-900/50 border-b border-gray-700">
               <tr>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-400">
+                <th className="px-4 py-3 text-left text-xs font-semibold text-white">
                   챔피언
                 </th>
                 <th
-                  className="px-4 py-3 text-right text-xs font-semibold text-gray-400 cursor-pointer hover:text-gray-300 transition-colors"
+                  className="px-4 py-3 text-right text-xs font-semibold text-white cursor-pointer hover:text-gray-300 transition-colors"
                   onClick={() => handleSort("playCount")}
                 >
                   게임
@@ -212,7 +219,7 @@ export default function ChampionStats({
                   )}
                 </th>
                 <th
-                  className="px-4 py-3 text-right text-xs font-semibold text-gray-400 cursor-pointer hover:text-gray-300 transition-colors"
+                  className="px-4 py-3 text-right text-xs font-semibold text-white cursor-pointer hover:text-gray-300 transition-colors"
                   onClick={() => handleSort("winRate")}
                 >
                   승률
@@ -223,7 +230,7 @@ export default function ChampionStats({
                   )}
                 </th>
                 <th
-                  className="px-4 py-3 text-right text-xs font-semibold text-gray-400 cursor-pointer hover:text-gray-300 transition-colors"
+                  className="px-4 py-3 text-right text-xs font-semibold text-white cursor-pointer hover:text-gray-300 transition-colors"
                   onClick={() => handleSort("kda")}
                 >
                   KDA
@@ -234,7 +241,7 @@ export default function ChampionStats({
                   )}
                 </th>
                 <th
-                  className="px-4 py-3 text-right text-xs font-semibold text-gray-400 cursor-pointer hover:text-gray-300 transition-colors"
+                  className="px-4 py-3 text-right text-xs font-semibold text-white cursor-pointer hover:text-gray-300 transition-colors"
                   onClick={() => handleSort("kills")}
                 >
                   K
@@ -245,7 +252,7 @@ export default function ChampionStats({
                   )}
                 </th>
                 <th
-                  className="px-4 py-3 text-right text-xs font-semibold text-gray-400 cursor-pointer hover:text-gray-300 transition-colors"
+                  className="px-4 py-3 text-right text-xs font-semibold text-white cursor-pointer hover:text-gray-300 transition-colors"
                   onClick={() => handleSort("deaths")}
                 >
                   D
@@ -256,7 +263,7 @@ export default function ChampionStats({
                   )}
                 </th>
                 <th
-                  className="px-4 py-3 text-right text-xs font-semibold text-gray-400 cursor-pointer hover:text-gray-300 transition-colors"
+                  className="px-4 py-3 text-right text-xs font-semibold text-white cursor-pointer hover:text-gray-300 transition-colors"
                   onClick={() => handleSort("assists")}
                 >
                   A
@@ -266,10 +273,10 @@ export default function ChampionStats({
                     </span>
                   )}
                 </th>
-                <th className="px-4 py-3 text-right text-xs font-semibold text-gray-400">
+                <th className="px-4 py-3 text-right text-xs font-semibold text-white">
                   CS
                 </th>
-                <th className="px-4 py-3 text-right text-xs font-semibold text-gray-400">
+                <th className="px-4 py-3 text-right text-xs font-semibold text-white">
                   시간
                 </th>
               </tr>
@@ -297,52 +304,40 @@ export default function ChampionStats({
                           />
                         </div>
                         <span className="text-white font-medium text-sm">
-                          {champion.championName}
+                          {getChampionNameByEnglishName(champion.championName)}
                         </span>
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-right text-gray-300 text-sm">
+                    <td className="px-4 py-3 text-right text-white text-sm">
                       {champion.playCount}
                     </td>
                     <td className="px-4 py-3 text-right">
-                      <span
-                        className={
-                          champion.winRate >= 60
-                            ? "text-green-400 font-semibold"
-                            : champion.winRate >= 50
-                            ? "text-yellow-400 font-semibold"
-                            : "text-red-400 font-semibold"
-                        }
-                      >
+                      <span className="text-white font-semibold">
                         {champion.winRate}%
                       </span>
-                      <span className="text-gray-500 text-xs ml-1">
+                      <span className="text-white text-xs ml-1">
                         ({champion.win}승 {champion.playCount - champion.win}
                         패)
                       </span>
                     </td>
                     <td className="px-4 py-3 text-right">
-                      <span
-                        className={`text-sm font-semibold ${getKDAColorClass(
-                          kdaDisplay
-                        )}`}
-                      >
+                      <span className="text-sm font-semibold text-white">
                         {kdaDisplay}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-right text-gray-300 text-sm">
+                    <td className="px-4 py-3 text-right text-white text-sm">
                       {champion.avgKills}
                     </td>
-                    <td className="px-4 py-3 text-right text-red-400 text-sm">
+                    <td className="px-4 py-3 text-right text-white text-sm">
                       {champion.avgDeaths}
                     </td>
-                    <td className="px-4 py-3 text-right text-gray-300 text-sm">
+                    <td className="px-4 py-3 text-right text-white text-sm">
                       {champion.avgAssists}
                     </td>
-                    <td className="px-4 py-3 text-right text-gray-400 text-sm">
+                    <td className="px-4 py-3 text-right text-white text-sm">
                       {champion.avgCS !== null ? champion.avgCS : "-"}
                     </td>
-                    <td className="px-4 py-3 text-right text-gray-400 text-sm">
+                    <td className="px-4 py-3 text-right text-white text-sm">
                       {formatDuration(champion.avgDuration)}
                     </td>
                   </tr>
