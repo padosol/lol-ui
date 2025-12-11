@@ -79,3 +79,33 @@ export function getChampionImageUrl(championName: string): string {
   }
   return `https://static.mmrtr.shop/champion/${championName}.png`;
 }
+
+/**
+ * 영문 챔피언명으로 한글 챔피언명을 가져옵니다.
+ * @param englishName 영문 챔피언명 (예: "Annie", "Aatrox")
+ * @returns 한글 챔피언명 또는 영문명 (찾지 못한 경우)
+ */
+export function getChampionNameByEnglishName(englishName: string): string {
+  if (!englishName) {
+    return "";
+  }
+  
+  const store = useGameDataStore.getState();
+  const championData = store.championData;
+  
+  if (!championData) {
+    // 데이터가 로드되지 않았으면 영문명 반환
+    return englishName;
+  }
+  
+  // data 객체를 순회하면서 id가 일치하는 챔피언 찾기
+  for (const key in championData.data) {
+    const champion = championData.data[key];
+    if (champion.id === englishName) {
+      return champion.name;
+    }
+  }
+  
+  // 찾지 못한 경우 영문명 반환
+  return englishName;
+}
