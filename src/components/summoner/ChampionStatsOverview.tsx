@@ -1,9 +1,13 @@
 "use client";
 
 import { useChampionRanking } from "@/hooks/useSummoner";
+import { useGameDataStore } from "@/stores/useGameDataStore";
 import { getChampionImageUrl } from "@/utils/champion";
+import { getChampionNameByEnglishName } from "@/utils/champion";
+import { calcWinRateCeil2, getWinRateTextClass } from "@/utils/championStats";
 import { getKDAColorClass } from "@/utils/game";
 import Image from "next/image";
+import { useEffect } from "react";
 
 interface ChampionStatsOverviewProps {
   puuid?: string | null;
@@ -22,6 +26,12 @@ export default function ChampionStatsOverview({
     puuid || "",
     season
   );
+
+  // champion.json 데이터 로드 (zustand store 사용)
+  const loadChampionData = useGameDataStore((state) => state.loadChampionData);
+  useEffect(() => {
+    loadChampionData();
+  }, [loadChampionData]);
 
   // limit이 있으면 제한
   const displayedStats = limit ? championStats.slice(0, limit) : championStats;
@@ -65,12 +75,6 @@ export default function ChampionStatsOverview({
     );
   }
 
-  // 승률 계산
-  const calculateWinRate = (wins: number, playCount: number): number => {
-    if (playCount === 0) return 0;
-    return parseFloat(((wins / playCount) * 100).toFixed(1));
-  };
-
   // KDA 계산
   const calculateKDA = (kills: number, deaths: number, assists: number) => {
     if (deaths === 0) return "perfect";
@@ -84,13 +88,16 @@ export default function ChampionStatsOverview({
       )}
       <div className="space-y-2">
         {displayedStats.map((champion, index) => {
-          const winRate = calculateWinRate(champion.win, champion.playCount);
+          const winRate = calcWinRateCeil2(champion.win, champion.playCount);
           const kdaValue = calculateKDA(
             champion.kills,
             champion.deaths,
             champion.assists
           );
           const kda = kdaValue === "perfect" ? "perfect" : parseFloat(kdaValue);
+          const championNameKo = getChampionNameByEnglishName(
+            champion.championName
+          );
 
           return (
             <div
@@ -110,29 +117,32 @@ export default function ChampionStatsOverview({
               </div>
 
               {/* 통계 정보 */}
-              <div className="flex-1 h-10 flex flex-col justify-center">
-                <div className="text-white font-semibold mb-0.5 text-sm leading-tight">
-                  {champion.championName}
-                </div>
-                <div className="flex items-center gap-3 text-xs leading-tight">
-                  <span className="text-gray-400">
-                    {champion.playCount}게임
-                  </span>
-                  <span
-                    className={
-                      winRate >= 60
-                        ? "text-green-400"
-                        : winRate >= 50
-                        ? "text-yellow-400"
-                        : "text-red-400"
-                    }
+              <div className="flex-1 min-w-0">
+                {/* 1줄: 좌(챔피언명) / 우(승률) */}
+                <div className="flex items-center justify-between gap-3">
+                  <div className="text-white font-semibold text-xs leading-tight truncate">
+                    {championNameKo}
+                  </div>
+                  <div
+                    className={`shrink-0 text-xs font-semibold leading-tight ${getWinRateTextClass(
+                      winRate
+                    )}`}
                   >
-                    {winRate}% 승률
-                  </span>
+                    {winRate.toFixed(2)}%
+                  </div>
                 </div>
-                <div className="text-gray-500 text-[10px] mt-0.5 leading-tight">
-                  {champion.win}승 {champion.playCount - champion.win}패 · KDA{" "}
-                  <span className={getKDAColorClass(kda)}>{kda}</span>
+
+                {/* 2줄: 좌(KDA) / 우(게임 수) */}
+                <div className="flex items-center justify-between gap-3 mt-1.5 leading-tight">
+                  <div className="text-gray-500 text-[11px]">
+                    KDA{" "}
+                    <span className={getKDAColorClass(kda)}>
+                      {kda === "perfect" ? "perfect" : kda.toFixed(2)}
+                    </span>
+                  </div>
+                  <div className="shrink-0 text-gray-400 text-xs">
+                    {champion.playCount}게임
+                  </div>
                 </div>
               </div>
             </div>
