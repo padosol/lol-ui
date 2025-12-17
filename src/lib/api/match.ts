@@ -1,4 +1,9 @@
-import type { ApiResponse, MatchDetail, ChampionStat } from "@/types/api";
+import type {
+  ApiResponse,
+  MatchDetail,
+  ChampionStat,
+  MatchIdsResponse,
+} from "@/types/api";
 import { apiClient } from "./client";
 
 /**
@@ -6,17 +11,17 @@ import { apiClient } from "./client";
  * GET /api/v1/matches/matchIds?puuid={puuid}&queueId={queueId}&pageNo={pageNo}&region={region}
  * @param puuid 조회할 유저의 PUUID
  * @param queueId 큐 ID (e.g., 420:솔로랭크, 430:일반, 450:칼바람)
- * @param pageNo 페이지 번호 (0부터 시작)
+ * @param pageNo 페이지 번호 (1부터 시작)
  * @param region 지역
- * @returns 매치 ID 목록
+ * @returns 매치 ID 목록과 다음 페이지 존재 여부
  */
 export async function getMatchIds(
   puuid: string,
   queueId?: number,
-  pageNo: number = 0,
+  pageNo: number = 1,
   region: string = "kr"
-): Promise<string[]> {
-  const response = await apiClient.get<ApiResponse<string[]>>(
+): Promise<MatchIdsResponse> {
+  const response = await apiClient.get<ApiResponse<MatchIdsResponse>>(
     `/v1/matches/matchIds`,
     {
       params: {

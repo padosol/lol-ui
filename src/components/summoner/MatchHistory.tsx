@@ -12,9 +12,9 @@ import {
 } from "@/utils/game";
 import { getStyleImageUrl } from "@/utils/styles";
 import { useQueries } from "@tanstack/react-query";
-import { ChevronDown } from "lucide-react";
+import { ArrowUp, ChevronDown } from "lucide-react";
 import Image from "next/image";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import ArenaTeamInfo from "./match/ArenaTeamInfo";
 import MatchDetailInfo from "./match/MatchDetailInfo";
 import TeamInfo from "./match/TeamInfo";
@@ -65,23 +65,118 @@ export default function MatchHistory({
   region = "kr",
   showTitle = true,
 }: MatchHistoryProps) {
-  const [page, setPage] = useState(0);
+  const rootRef = useRef<HTMLDivElement | null>(null);
+  const scrollTargetRef = useRef<Window | HTMLElement | null>(null);
+  const [page, setPage] = useState(1);
+  const [accMatchIds, setAccMatchIds] = useState<string[]>([]);
   const [gameModeFilter, setGameModeFilter] = useState<GameModeFilter>("ALL");
   const [expandedMatchId, setExpandedMatchId] = useState<string | null>(null);
+  const [showTopButton, setShowTopButton] = useState(false);
   const limit = 20;
 
   // 매치 ID 리스트 가져오기
-  const { data: matchIds = [], isLoading: isLoadingIds } = useMatchIds(
+  const { data: matchIdsData, isLoading: isLoadingIds } = useMatchIds(
     puuid || "",
     undefined,
     page,
     region
   );
 
+  // puuid/region 변경 시 누적 데이터 초기화
+  useEffect(() => {
+    setPage(1);
+    setAccMatchIds([]);
+    setExpandedMatchId(null);
+  }, [puuid, region]);
+
+  // 페이지별 응답을 누적(append)해서 유지
+  useEffect(() => {
+    const newIds = matchIdsData?.content;
+    if (!newIds || newIds.length === 0) return;
+
+    setAccMatchIds((prev) => {
+      // 중복 방지 (안전장치)
+      const next = [...prev];
+      const existing = new Set(prev);
+      for (const id of newIds) {
+        if (!existing.has(id)) {
+          existing.add(id);
+          next.push(id);
+        }
+      }
+      return next;
+    });
+  }, [matchIdsData]);
+
+  // 스크롤 위치에 따라 Top 버튼 표시/숨김
+  useEffect(() => {
+    const isScrollableEl = (el: HTMLElement) => {
+      const style = window.getComputedStyle(el);
+      const overflowY = style.overflowY;
+      const canScroll =
+        overflowY === "auto" || overflowY === "scroll" || overflowY === "overlay";
+      return canScroll && el.scrollHeight > el.clientHeight + 1;
+    };
+
+    const getScrollParent = (el: HTMLElement | null): Window | HTMLElement => {
+      if (!el) return window;
+
+      // 루트 자신이 스크롤 컨테이너인 경우도 고려
+      if (isScrollableEl(el)) return el;
+
+      let parent: HTMLElement | null = el.parentElement;
+      while (parent) {
+        if (isScrollableEl(parent)) return parent;
+        parent = parent.parentElement;
+      }
+
+      return window;
+    };
+
+    const scrollTarget = getScrollParent(rootRef.current);
+    scrollTargetRef.current = scrollTarget;
+
+    const getScrollTop = () =>
+      scrollTarget === window
+        ? window.scrollY || document.documentElement.scrollTop || 0
+        : (scrollTarget as HTMLElement).scrollTop;
+
+    const onScroll = () => {
+      // 너무 민감하지 않게 약간 내려갔을 때부터 표시
+      setShowTopButton(getScrollTop() > 200);
+    };
+
+    onScroll();
+
+    if (scrollTarget === window) {
+      window.addEventListener("scroll", onScroll, { passive: true });
+      return () => window.removeEventListener("scroll", onScroll);
+    }
+
+    (scrollTarget as HTMLElement).addEventListener("scroll", onScroll, {
+      passive: true,
+    });
+    return () =>
+      (scrollTarget as HTMLElement).removeEventListener("scroll", onScroll);
+  }, [accMatchIds.length]);
+
+  const scrollToTop = useCallback(() => {
+    const target = scrollTargetRef.current;
+
+    if (!target || target === window) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+
+    target.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
+  const matchIds = accMatchIds;
+
   // 각 매치 ID에 대한 상세 정보를 가져오기 (useQueries 사용)
   const matchDetailsQueriesConfig = useMemo(
     () =>
-      matchIds.slice(0, limit).map((matchId) => ({
+      matchIds.map((matchId) => ({
         queryKey: ["match", "detail", matchId] as const,
         queryFn: () => getMatchDetail(matchId),
         enabled: !!matchId && !!puuid,
@@ -243,13 +338,13 @@ export default function MatchHistory({
   }, [matchDetails, allMatches, filteredMatches]);
 
   const loadMoreMatches = useCallback(() => {
-    if (!isLoading) {
+    if (!isLoading && (matchIdsData?.hasNext || false)) {
       setPage((prev) => prev + 1);
     }
-  }, [isLoading]);
+  }, [isLoading, matchIdsData?.hasNext]);
 
-  // 다음 페이지가 있는지 확인 (현재 페이지의 데이터가 limit와 같으면 다음 페이지가 있을 가능성)
-  const hasMore = matchIds.length === limit;
+  // 다음 페이지가 있는지 확인
+  const hasMore = matchIdsData?.hasNext || false;
 
   const formatDuration = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -343,7 +438,7 @@ export default function MatchHistory({
   };
 
   return (
-    <div className="space-y-4">
+    <div ref={rootRef} className="space-y-4">
       {showTitle && (
         <h2 className="text-2xl font-bold text-white mb-2">최근 전적</h2>
       )}
@@ -803,6 +898,18 @@ export default function MatchHistory({
             )}
           </button>
         </div>
+      )}
+
+      {/* Top 버튼 */}
+      {showTopButton && (
+        <button
+          type="button"
+          onClick={scrollToTop}
+          aria-label="맨 위로"
+          className="fixed bottom-6 right-10 z-50 w-11 h-11 rounded-full bg-gray-800/90 hover:bg-gray-700 text-white border border-gray-700/60 shadow-lg backdrop-blur flex items-center justify-center transition-all cursor-pointer"
+        >
+          <ArrowUp className="w-5 h-5" />
+        </button>
       )}
     </div>
   );

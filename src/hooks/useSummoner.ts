@@ -9,6 +9,7 @@ import type {
   ChampionStat,
   LeagueInfoResponse,
   MatchDetail,
+  MatchIdsResponse,
   SummonerProfile,
 } from "@/types/api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -31,16 +32,16 @@ export function useSummonerProfile(gameName: string, region: string = "kr") {
  * 매치 ID 리스트 조회 훅
  * @param puuid 조회할 유저의 PUUID
  * @param queueId 큐 ID (선택)
- * @param pageNo 페이지 번호 (기본값: 0, 0부터 시작)
+ * @param pageNo 페이지 번호 (기본값: 1, 1부터 시작)
  * @param region 지역 (기본값: "kr")
  */
 export function useMatchIds(
   puuid: string,
   queueId?: number,
-  pageNo: number = 0,
+  pageNo: number = 1,
   region: string = "kr"
 ) {
-  return useQuery<string[], Error>({
+  return useQuery<MatchIdsResponse, Error>({
     queryKey: ["match", "ids", puuid, queueId, pageNo, region],
     queryFn: () => getMatchIds(puuid, queueId, pageNo, region),
     enabled: !!puuid,
