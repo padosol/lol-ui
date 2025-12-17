@@ -53,7 +53,9 @@ export default function ChampionStats({
   // 승률 계산
   const calculateWinRate = (wins: number, playCount: number): number => {
     if (playCount === 0) return 0;
-    return parseFloat(((wins / playCount) * 100).toFixed(1));
+    // 소수점 2자리에서 올림 처리
+    const raw = (wins / playCount) * 100;
+    return Math.ceil(raw * 100) / 100;
   };
 
   // KDA 계산
@@ -67,23 +69,47 @@ export default function ChampionStats({
     if (displayedStats.length === 0) return [];
 
     const statsWithCalculated = displayedStats.map((champion) => {
-      const winRate = calculateWinRate(champion.win, champion.playCount);
+      const winRateRaw =
+        typeof champion.winRate === "number"
+          ? champion.winRate
+          : calculateWinRate(champion.win, champion.playCount);
+      const winRate = Math.ceil(winRateRaw * 100) / 100;
 
       // 이미 평균값이므로 그대로 사용
-      const kdaValue = calculateKDA(
-        champion.kills,
-        champion.deaths,
-        champion.assists
-      );
-      const kda = kdaValue === "perfect" ? 999 : parseFloat(kdaValue);
+      const kda =
+        typeof champion.kda === "number"
+          ? champion.kda
+          : (() => {
+              const kdaValue = calculateKDA(
+                champion.kills,
+                champion.deaths,
+                champion.assists
+              );
+              return kdaValue === "perfect" ? 999 : parseFloat(kdaValue);
+            })();
 
-      const losses = champion.playCount - champion.win;
+      const losses =
+        typeof champion.losses === "number"
+          ? champion.losses
+          : champion.playCount - champion.win;
+
+      // 문서 필드(laneMinionsFirst10Minutes)를 기존 UI의 cs에 매핑 (없으면 null)
+      const cs =
+        typeof champion.cs === "number"
+          ? champion.cs
+          : typeof champion.laneMinionsFirst10Minutes === "number"
+          ? champion.laneMinionsFirst10Minutes
+          : null;
+
+      const duration = champion.duration ?? null;
 
       return {
         ...champion,
         winRate,
         losses,
         kda,
+        cs,
+        duration,
       };
     });
 
@@ -143,13 +169,6 @@ export default function ChampionStats({
       setSortField(field);
       setSortDirection("desc");
     }
-  };
-
-  const formatDuration = (seconds: number | null): string => {
-    if (!seconds) return "-";
-    const mins = Math.floor(seconds / 60);
-    const secs = Math.floor(seconds % 60);
-    return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
   if (isLoading) {
@@ -295,9 +314,6 @@ export default function ChampionStats({
                 <th className="px-4 py-3 text-right text-xs font-semibold text-white">
                   CS
                 </th>
-                <th className="px-4 py-3 text-right text-xs font-semibold text-white">
-                  시간
-                </th>
               </tr>
             </thead>
             <tbody>
@@ -338,7 +354,7 @@ export default function ChampionStats({
                     </td>
                     <td className="px-4 py-3 text-right">
                       <span className="text-white font-semibold">
-                        {champion.winRate}%
+                        {champion.winRate.toFixed(2)}%
                       </span>
                     </td>
                     <td className="px-4 py-3 text-right">
@@ -357,11 +373,6 @@ export default function ChampionStats({
                     </td>
                     <td className="px-4 py-3 text-right text-white text-sm">
                       {champion.cs !== null ? champion.cs.toFixed(1) : "-"}
-                    </td>
-                    <td className="px-4 py-3 text-right text-white text-sm">
-                      {champion.duration !== null
-                        ? formatDuration(champion.duration)
-                        : "-"}
                     </td>
                   </tr>
                 );

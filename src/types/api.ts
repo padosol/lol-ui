@@ -149,13 +149,27 @@ export interface TeamInfo {
 export interface ChampionStat {
   championId: number;
   championName: string;
+  playCount: number;
+  // averages
   kills: number;
   deaths: number;
   assists: number;
-  cs: number | null;
-  duration: number | null;
+
+  // results
   win: number;
-  playCount: number;
+  losses?: number;
+  winRate?: number;
+
+  // advanced stats (docs)
+  damagePerMinute?: number;
+  kda?: number;
+  laneMinionsFirst10Minutes?: number;
+  damageTakenOnTeamPercentage?: number;
+  goldPerMinute?: number;
+
+  // UI legacy fields (some screens still render these)
+  cs?: number | null;
+  duration?: number | null;
 }
 
 // 리그 정보 타입 (문서 기준)
