@@ -15,4 +15,3 @@ export async function getChampionRotate(
   );
   return response.data.data;
 }
-

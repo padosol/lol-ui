@@ -65,23 +65,52 @@ export default function MatchHistory({
   region = "kr",
   showTitle = true,
 }: MatchHistoryProps) {
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
+  const [accMatchIds, setAccMatchIds] = useState<string[]>([]);
   const [gameModeFilter, setGameModeFilter] = useState<GameModeFilter>("ALL");
   const [expandedMatchId, setExpandedMatchId] = useState<string | null>(null);
   const limit = 20;
 
   // 매치 ID 리스트 가져오기
-  const { data: matchIds = [], isLoading: isLoadingIds } = useMatchIds(
+  const { data: matchIdsData, isLoading: isLoadingIds } = useMatchIds(
     puuid || "",
     undefined,
     page,
     region
   );
 
+  // puuid/region 변경 시 누적 데이터 초기화
+  useEffect(() => {
+    setPage(1);
+    setAccMatchIds([]);
+    setExpandedMatchId(null);
+  }, [puuid, region]);
+
+  // 페이지별 응답을 누적(append)해서 유지
+  useEffect(() => {
+    const newIds = matchIdsData?.content;
+    if (!newIds || newIds.length === 0) return;
+
+    setAccMatchIds((prev) => {
+      // 중복 방지 (안전장치)
+      const next = [...prev];
+      const existing = new Set(prev);
+      for (const id of newIds) {
+        if (!existing.has(id)) {
+          existing.add(id);
+          next.push(id);
+        }
+      }
+      return next;
+    });
+  }, [matchIdsData]);
+
+  const matchIds = accMatchIds;
+
   // 각 매치 ID에 대한 상세 정보를 가져오기 (useQueries 사용)
   const matchDetailsQueriesConfig = useMemo(
     () =>
-      matchIds.slice(0, limit).map((matchId) => ({
+      matchIds.map((matchId) => ({
         queryKey: ["match", "detail", matchId] as const,
         queryFn: () => getMatchDetail(matchId),
         enabled: !!matchId && !!puuid,
@@ -243,13 +272,13 @@ export default function MatchHistory({
   }, [matchDetails, allMatches, filteredMatches]);
 
   const loadMoreMatches = useCallback(() => {
-    if (!isLoading) {
+    if (!isLoading && (matchIdsData?.hasNext || false)) {
       setPage((prev) => prev + 1);
     }
-  }, [isLoading]);
+  }, [isLoading, matchIdsData?.hasNext]);
 
-  // 다음 페이지가 있는지 확인 (현재 페이지의 데이터가 limit와 같으면 다음 페이지가 있을 가능성)
-  const hasMore = matchIds.length === limit;
+  // 다음 페이지가 있는지 확인
+  const hasMore = matchIdsData?.hasNext || false;
 
   const formatDuration = (seconds: number) => {
     const mins = Math.floor(seconds / 60);

@@ -2,14 +2,18 @@
  * 챔피언 이미지 URL 생성 유틸리티
  */
 
-import { useGameDataStore, type ChampionData, type ChampionJson } from "@/stores/useGameDataStore";
+import {
+  useGameDataStore,
+  type ChampionData,
+  type ChampionJson,
+} from "@/stores/useGameDataStore";
 
 /**
  * 챔피언 JSON 데이터를 로드합니다 (zustand store 사용)
  */
 async function loadChampionData(): Promise<ChampionJson | null> {
   const store = useGameDataStore.getState();
-  
+
   // 이미 로드되었으면 반환
   if (store.championData) {
     return store.championData;
@@ -17,7 +21,7 @@ async function loadChampionData(): Promise<ChampionJson | null> {
 
   // 로드 시작
   await store.loadChampionData();
-  
+
   // 로드 완료 후 반환
   return useGameDataStore.getState().championData;
 }
@@ -81,31 +85,30 @@ export function getChampionImageUrl(championName: string): string {
 }
 
 /**
- * 영문 챔피언명으로 한글 챔피언명을 가져옵니다.
- * @param englishName 영문 챔피언명 (예: "Annie", "Aatrox")
- * @returns 한글 챔피언명 또는 영문명 (찾지 못한 경우)
+ * 영문 챔피언 이름으로 한글 이름을 가져옵니다.
+ * @param englishName 영문 챔피언 이름 (예: "Annie", "Aatrox")
+ * @returns 한글 챔피언 이름 또는 영문 이름 (데이터가 없을 경우)
  */
 export function getChampionNameByEnglishName(englishName: string): string {
   if (!englishName) {
     return "";
   }
-  
+
   const store = useGameDataStore.getState();
   const championData = store.championData;
-  
-  if (!championData) {
-    // 데이터가 로드되지 않았으면 영문명 반환
+
+  if (!championData || !championData.data) {
     return englishName;
   }
-  
-  // data 객체를 순회하면서 id가 일치하는 챔피언 찾기
+
+  // championData.data의 모든 챔피언을 순회하여 id가 일치하는 것을 찾습니다
   for (const key in championData.data) {
     const champion = championData.data[key];
     if (champion.id === englishName) {
       return champion.name;
     }
   }
-  
-  // 찾지 못한 경우 영문명 반환
+
+  // 찾지 못한 경우 영문 이름 반환
   return englishName;
 }

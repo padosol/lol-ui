@@ -1,11 +1,13 @@
 "use client";
 
 import { useChampionRanking } from "@/hooks/useSummoner";
-import { getChampionImageUrl, getChampionNameByEnglishName } from "@/utils/champion";
-import { getKDAColorClass } from "@/utils/game";
-import Image from "next/image";
-import { useMemo, useState, useEffect } from "react";
 import { useGameDataStore } from "@/stores/useGameDataStore";
+import {
+  getChampionImageUrl,
+  getChampionNameByEnglishName,
+} from "@/utils/champion";
+import Image from "next/image";
+import { useEffect, useMemo, useState } from "react";
 
 interface ChampionStatsProps {
   puuid?: string | null;
@@ -17,6 +19,8 @@ interface ChampionStatsProps {
 type SortField =
   | "playCount"
   | "winRate"
+  | "wins"
+  | "losses"
   | "kda"
   | "kills"
   | "deaths"
@@ -36,7 +40,7 @@ export default function ChampionStats({
 
   const [sortField, setSortField] = useState<SortField>("playCount");
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
-  
+
   // champion.json 데이터 로드
   const loadChampionData = useGameDataStore((state) => state.loadChampionData);
   useEffect(() => {
@@ -58,43 +62,28 @@ export default function ChampionStats({
     return ((kills + assists) / deaths).toFixed(2);
   };
 
-  // 평균 계산
-  const calculateAverage = (total: number, count: number): number => {
-    if (count === 0) return 0;
-    return parseFloat((total / count).toFixed(1));
-  };
-
   // 정렬된 통계 계산 (항상 호출)
   const sortedStats = useMemo(() => {
     if (displayedStats.length === 0) return [];
 
     const statsWithCalculated = displayedStats.map((champion) => {
       const winRate = calculateWinRate(champion.win, champion.playCount);
+
+      // 이미 평균값이므로 그대로 사용
       const kdaValue = calculateKDA(
         champion.kills,
         champion.deaths,
         champion.assists
       );
       const kda = kdaValue === "perfect" ? 999 : parseFloat(kdaValue);
-      const avgKills = calculateAverage(champion.kills, champion.playCount);
-      const avgDeaths = calculateAverage(champion.deaths, champion.playCount);
-      const avgAssists = calculateAverage(champion.assists, champion.playCount);
-      const avgCS = champion.cs
-        ? calculateAverage(champion.cs, champion.playCount)
-        : null;
-      const avgDuration = champion.duration
-        ? calculateAverage(champion.duration, champion.playCount)
-        : null;
+
+      const losses = champion.playCount - champion.win;
 
       return {
         ...champion,
         winRate,
+        losses,
         kda,
-        avgKills,
-        avgDeaths,
-        avgAssists,
-        avgCS,
-        avgDuration,
       };
     });
 
@@ -111,21 +100,29 @@ export default function ChampionStats({
           aValue = a.winRate;
           bValue = b.winRate;
           break;
+        case "wins":
+          aValue = a.win;
+          bValue = b.win;
+          break;
+        case "losses":
+          aValue = a.losses;
+          bValue = b.losses;
+          break;
         case "kda":
           aValue = a.kda;
           bValue = b.kda;
           break;
         case "kills":
-          aValue = a.avgKills;
-          bValue = b.avgKills;
+          aValue = a.kills;
+          bValue = b.kills;
           break;
         case "deaths":
-          aValue = a.avgDeaths;
-          bValue = b.avgDeaths;
+          aValue = a.deaths;
+          bValue = b.deaths;
           break;
         case "assists":
-          aValue = a.avgAssists;
-          bValue = b.avgAssists;
+          aValue = a.assists;
+          bValue = b.assists;
           break;
         default:
           return 0;
@@ -213,6 +210,28 @@ export default function ChampionStats({
                 >
                   게임
                   {sortField === "playCount" && (
+                    <span className="ml-1">
+                      {sortDirection === "asc" ? "↑" : "↓"}
+                    </span>
+                  )}
+                </th>
+                <th
+                  className="px-4 py-3 text-right text-xs font-semibold text-white cursor-pointer hover:text-gray-300 transition-colors"
+                  onClick={() => handleSort("wins")}
+                >
+                  승리
+                  {sortField === "wins" && (
+                    <span className="ml-1">
+                      {sortDirection === "asc" ? "↑" : "↓"}
+                    </span>
+                  )}
+                </th>
+                <th
+                  className="px-4 py-3 text-right text-xs font-semibold text-white cursor-pointer hover:text-gray-300 transition-colors"
+                  onClick={() => handleSort("losses")}
+                >
+                  패배
+                  {sortField === "losses" && (
                     <span className="ml-1">
                       {sortDirection === "asc" ? "↑" : "↓"}
                     </span>
@@ -311,13 +330,15 @@ export default function ChampionStats({
                     <td className="px-4 py-3 text-right text-white text-sm">
                       {champion.playCount}
                     </td>
+                    <td className="px-4 py-3 text-right text-white text-sm">
+                      {champion.win}
+                    </td>
+                    <td className="px-4 py-3 text-right text-white text-sm">
+                      {champion.losses}
+                    </td>
                     <td className="px-4 py-3 text-right">
                       <span className="text-white font-semibold">
                         {champion.winRate}%
-                      </span>
-                      <span className="text-white text-xs ml-1">
-                        ({champion.win}승 {champion.playCount - champion.win}
-                        패)
                       </span>
                     </td>
                     <td className="px-4 py-3 text-right">
@@ -326,19 +347,21 @@ export default function ChampionStats({
                       </span>
                     </td>
                     <td className="px-4 py-3 text-right text-white text-sm">
-                      {champion.avgKills}
+                      {champion.kills.toFixed(1)}
                     </td>
                     <td className="px-4 py-3 text-right text-white text-sm">
-                      {champion.avgDeaths}
+                      {champion.deaths.toFixed(1)}
                     </td>
                     <td className="px-4 py-3 text-right text-white text-sm">
-                      {champion.avgAssists}
+                      {champion.assists.toFixed(1)}
                     </td>
                     <td className="px-4 py-3 text-right text-white text-sm">
-                      {champion.avgCS !== null ? champion.avgCS : "-"}
+                      {champion.cs !== null ? champion.cs.toFixed(1) : "-"}
                     </td>
                     <td className="px-4 py-3 text-right text-white text-sm">
-                      {formatDuration(champion.avgDuration)}
+                      {champion.duration !== null
+                        ? formatDuration(champion.duration)
+                        : "-"}
                     </td>
                   </tr>
                 );

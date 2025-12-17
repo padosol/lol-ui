@@ -190,3 +190,9 @@ export interface ChampionRotationResponse {
   freeChampionIdsForNewPlayers: number[];
   freeChampionIds: number[];
 }
+
+// 매치 ID 목록 응답 타입 (문서 기준)
+export interface MatchIdsResponse {
+  content: string[];
+  hasNext: boolean;
+}
