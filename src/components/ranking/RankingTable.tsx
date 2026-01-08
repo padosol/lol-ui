@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useMemo } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { getTierImageUrl, getTierName } from "@/utils/tier";
 import { getChampionImageUrl } from "@/utils/champion";
+import { getTierImageUrl, getTierName } from "@/utils/tier";
+import Image from "next/image";
+import Link from "next/link";
+import { useMemo, useState } from "react";
 
 interface MostPlayedChampion {
   championName: string;
@@ -48,11 +48,40 @@ function generateDummyData(region: string, queueType: string): RankingPlayer[] {
 
   // 인기 챔피언 목록
   const popularChampions = [
-    "Yasuo", "Zed", "LeeSin", "Thresh", "Jhin", "Vayne", "Lux", "Ahri",
-    "Ezreal", "Jinx", "Garen", "Darius", "MasterYi", "Yone", "Sett",
-    "Kaisa", "Akali", "Irelia", "Riven", "Fiora", "Katarina", "Talon",
-    "Graves", "TwistedFate", "Orianna", "Syndra", "LeBlanc", "Zoe",
-    "Caitlyn", "Ashe", "Varus", "Tristana", "Sivir", "MissFortune"
+    "Yasuo",
+    "Zed",
+    "LeeSin",
+    "Thresh",
+    "Jhin",
+    "Vayne",
+    "Lux",
+    "Ahri",
+    "Ezreal",
+    "Jinx",
+    "Garen",
+    "Darius",
+    "MasterYi",
+    "Yone",
+    "Sett",
+    "Kaisa",
+    "Akali",
+    "Irelia",
+    "Riven",
+    "Fiora",
+    "Katarina",
+    "Talon",
+    "Graves",
+    "TwistedFate",
+    "Orianna",
+    "Syndra",
+    "LeBlanc",
+    "Zoe",
+    "Caitlyn",
+    "Ashe",
+    "Varus",
+    "Tristana",
+    "Sivir",
+    "MissFortune",
   ];
 
   const players: RankingPlayer[] = [];
@@ -82,9 +111,10 @@ function generateDummyData(region: string, queueType: string): RankingPlayer[] {
   for (let i = 0; i < 100; i++) {
     const tierIndex = Math.floor(i / 10);
     const tier = tiers[Math.min(tierIndex, tiers.length - 1)];
-    const division = tier === "CHALLENGER" || tier === "GRANDMASTER" || tier === "MASTER" 
-      ? "" 
-      : ranks[Math.floor(Math.random() * ranks.length)];
+    const division =
+      tier === "CHALLENGER" || tier === "GRANDMASTER" || tier === "MASTER"
+        ? ""
+        : ranks[Math.floor(Math.random() * ranks.length)];
 
     const wins = Math.floor(Math.random() * 300) + 50;
     const losses = Math.floor(Math.random() * 200) + 30;
@@ -105,13 +135,16 @@ function generateDummyData(region: string, queueType: string): RankingPlayer[] {
     };
 
     const [minLP, maxLP] = lpRange[tier] || [0, 100];
-    const leaguePoints = Math.floor(Math.random() * (maxLP - minLP + 1)) + minLP;
+    const leaguePoints =
+      Math.floor(Math.random() * (maxLP - minLP + 1)) + minLP;
 
     const nameIndex = i % names.length;
     const tagline = region === "kr" ? "KR1" : region.toUpperCase();
 
     // 모스트 챔피언 3개 랜덤 선택
-    const shuffledChampions = [...popularChampions].sort(() => Math.random() - 0.5);
+    const shuffledChampions = [...popularChampions].sort(
+      () => Math.random() - 0.5
+    );
     const mostPlayedChampions: MostPlayedChampion[] = shuffledChampions
       .slice(0, 3)
       .map((champion, idx) => ({
@@ -380,7 +413,9 @@ export default function RankingTable({ region, queueType }: RankingTableProps) {
                 aria-label="Pagination"
               >
                 <button
-                  onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+                  onClick={() =>
+                    setCurrentPage((prev) => Math.max(1, prev - 1))
+                  }
                   disabled={currentPage === 1}
                   className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-600 bg-gray-800 text-sm font-medium text-gray-300 hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
@@ -429,4 +464,3 @@ export default function RankingTable({ region, queueType }: RankingTableProps) {
     </div>
   );
 }
-

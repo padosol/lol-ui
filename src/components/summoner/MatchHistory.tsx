@@ -114,7 +114,9 @@ export default function MatchHistory({
       const style = window.getComputedStyle(el);
       const overflowY = style.overflowY;
       const canScroll =
-        overflowY === "auto" || overflowY === "scroll" || overflowY === "overlay";
+        overflowY === "auto" ||
+        overflowY === "scroll" ||
+        overflowY === "overlay";
       return canScroll && el.scrollHeight > el.clientHeight + 1;
     };
 
@@ -681,10 +683,14 @@ export default function MatchHistory({
                             {/* 소환사 주문 */}
                             <div className="flex flex-col gap-1">
                               {myData.summoner1Id > 0 && (
-                                <SummonerSpellImage spellId={myData.summoner1Id} />
+                                <SummonerSpellImage
+                                  spellId={myData.summoner1Id}
+                                />
                               )}
                               {myData.summoner2Id > 0 && (
-                                <SummonerSpellImage spellId={myData.summoner2Id} />
+                                <SummonerSpellImage
+                                  spellId={myData.summoner2Id}
+                                />
                               )}
                             </div>
                             {/* 스펠 */}

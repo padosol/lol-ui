@@ -1,29 +1,40 @@
 "use client";
 
-import { ChevronDown, Search } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useState, useEffect, useRef } from "react";
-import { normalizeRegion } from "@/utils/summoner";
 import { searchSummonerAutocomplete } from "@/lib/api/summoner";
 import type { SummonerAutocompleteItem } from "@/types/api";
-import Image from "next/image";
 import { getProfileIconImageUrl } from "@/utils/profile";
-import { getTierImageUrl, getTierColor, getTierInitial } from "@/utils/tier";
+import { normalizeRegion } from "@/utils/summoner";
+import { getTierColor, getTierImageUrl, getTierInitial } from "@/utils/tier";
+import { ChevronDown, Search } from "lucide-react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+
+type RegionOption = { value: string; label: string; subLabel?: string };
+const REGION_OPTIONS: RegionOption[] = [
+  { value: "KR", label: "한국", subLabel: "KR" },
+  { value: "US", label: "미국", subLabel: "US" },
+  { value: "JP", label: "일본", subLabel: "JP" },
+];
 
 export default function LogoSearchSection() {
   const router = useRouter();
   const [region, setRegion] = useState("KR");
+  const [isRegionOpen, setIsRegionOpen] = useState(false);
   const [summonerName, setSummonerName] = useState("");
-  const [autocompleteResults, setAutocompleteResults] = useState<SummonerAutocompleteItem[]>([]);
+  const [autocompleteResults, setAutocompleteResults] = useState<
+    SummonerAutocompleteItem[]
+  >([]);
   const [isLoadingAutocomplete, setIsLoadingAutocomplete] = useState(false);
   const [showAutocomplete, setShowAutocomplete] = useState(false);
   const autocompleteRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const regionRef = useRef<HTMLDivElement>(null);
 
   // 디바운스를 위한 useEffect
   useEffect(() => {
     const trimmedName = summonerName.trim();
-    
+
     if (trimmedName.length < 2) {
       setAutocompleteResults([]);
       setShowAutocomplete(false);
@@ -34,7 +45,10 @@ export default function LogoSearchSection() {
       setIsLoadingAutocomplete(true);
       try {
         const normalizedRegion = normalizeRegion(region);
-        const results = await searchSummonerAutocomplete(trimmedName, normalizedRegion);
+        const results = await searchSummonerAutocomplete(
+          trimmedName,
+          normalizedRegion
+        );
         setAutocompleteResults(results);
         setShowAutocomplete(results.length > 0);
       } catch (error) {
@@ -56,9 +70,18 @@ export default function LogoSearchSection() {
         autocompleteRef.current &&
         !autocompleteRef.current.contains(event.target as Node) &&
         inputRef.current &&
-        !inputRef.current.contains(event.target as Node)
+        !inputRef.current.contains(event.target as Node) &&
+        regionRef.current &&
+        !regionRef.current.contains(event.target as Node)
       ) {
         setShowAutocomplete(false);
+      }
+
+      if (
+        regionRef.current &&
+        !regionRef.current.contains(event.target as Node)
+      ) {
+        setIsRegionOpen(false);
       }
     };
 
@@ -81,7 +104,9 @@ export default function LogoSearchSection() {
   };
 
   const handleAutocompleteSelect = (item: SummonerAutocompleteItem) => {
-    const gameName = item.tagLine ? `${item.gameName}-${item.tagLine}` : item.gameName;
+    const gameName = item.tagLine
+      ? `${item.gameName}-${item.tagLine}`
+      : item.gameName;
     const encodedName = encodeURIComponent(gameName);
     const normalizedRegion = normalizeRegion(region);
     router.push(`/summoners/${normalizedRegion}/${encodedName}`);
@@ -105,17 +130,64 @@ export default function LogoSearchSection() {
           <div className="w-full max-w-2xl -mt-4">
             <form onSubmit={handleSearch} className="flex gap-0 items-stretch">
               {/* 리전 선택 */}
-              <div className="relative flex">
-                <select
-                  value={region}
-                  onChange={(e) => setRegion(e.target.value)}
-                  className="px-4 py-3 pr-10 bg-gray-800 hover:bg-gray-700 rounded-l-lg border-t border-b border-l border-gray-700 border-r border-gray-600 font-medium text-sm text-gray-200 min-w-[100px] cursor-pointer focus:outline-none appearance-none h-full"
+              <div ref={regionRef} className="relative flex">
+                <button
+                  type="button"
+                  onClick={() => setIsRegionOpen((v) => !v)}
+                  className="relative px-3 py-2.5 pr-10 bg-gray-800 hover:bg-gray-700 rounded-l-lg border border-r border-gray-700 font-medium text-sm text-gray-200 min-w-[96px] cursor-pointer focus:outline-none h-full flex items-center gap-2"
+                  aria-haspopup="listbox"
+                  aria-expanded={isRegionOpen}
                 >
-                  <option value="KR">한국</option>
-                  <option value="US">미국</option>
-                  <option value="JP">일본</option>
-                </select>
-                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                  <span className="flex items-center gap-2 min-w-0">
+                    <span className="text-gray-100">
+                      {REGION_OPTIONS.find((o) => o.value === region)?.label ??
+                        region}
+                    </span>
+                    <span className="text-[10px] text-gray-400">
+                      {REGION_OPTIONS.find((o) => o.value === region)
+                        ?.subLabel ?? region}
+                    </span>
+                  </span>
+                  <ChevronDown
+                    className={`absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 transition-transform ${
+                      isRegionOpen ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+
+                {isRegionOpen && (
+                  <div className="absolute top-full left-0 mt-1 w-full bg-gray-800 border border-gray-700 rounded-lg shadow-lg z-50 overflow-hidden">
+                    <div className="py-1" role="listbox" aria-label="리전 선택">
+                      {REGION_OPTIONS.map((opt) => {
+                        const selected = opt.value === region;
+                        return (
+                          <button
+                            key={opt.value}
+                            type="button"
+                            onClick={() => {
+                              setRegion(opt.value);
+                              setIsRegionOpen(false);
+                            }}
+                            className={`w-full px-3 py-1.5 flex items-center justify-between text-left transition-colors cursor-pointer ${
+                              selected
+                                ? "bg-gray-700/70 text-white"
+                                : "text-gray-200 hover:bg-gray-700"
+                            }`}
+                            role="option"
+                            aria-selected={selected}
+                          >
+                            <span className="font-medium text-sm">
+                              {opt.label}
+                            </span>
+                            <span className="text-xs text-gray-400">
+                              {opt.subLabel}
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* 검색 입력 */}
@@ -141,7 +213,7 @@ export default function LogoSearchSection() {
                 <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 text-xs">
                   Game name + #{region}1
                 </div>
-                
+
                 {/* 자동완성 드롭다운 */}
                 {showAutocomplete && (
                   <div
@@ -155,7 +227,7 @@ export default function LogoSearchSection() {
                     ) : autocompleteResults.length > 0 ? (
                       <div className="py-1">
                         {autocompleteResults.map((item, index) => {
-                          const uniqueKey = item.tagLine 
+                          const uniqueKey = item.tagLine
                             ? `${item.gameName}-${item.tagLine}-${index}`
                             : `${item.gameName}-${index}`;
                           return (
@@ -165,10 +237,12 @@ export default function LogoSearchSection() {
                               className="w-full px-3 py-1.5 flex items-center gap-2 hover:bg-gray-700 transition-colors text-left cursor-pointer"
                             >
                               {/* 1. 프로필 아이콘 */}
-                              <div className="w-8 h-8 bg-gray-700 rounded-lg overflow-hidden relative flex-shrink-0">
+                              <div className="w-8 h-8 bg-gray-700 rounded-lg overflow-hidden relative shrink-0">
                                 {item.profileIconId ? (
                                   <Image
-                                    src={getProfileIconImageUrl(item.profileIconId)}
+                                    src={getProfileIconImageUrl(
+                                      item.profileIconId
+                                    )}
                                     alt="Profile Icon"
                                     fill
                                     sizes="32px"
@@ -201,7 +275,7 @@ export default function LogoSearchSection() {
 
                               {/* 3. 티어 정보 */}
                               {item.tier && item.rank && (
-                                <div className="flex flex-row items-center gap-2 flex-shrink-0">
+                                <div className="flex flex-row items-center gap-2 shrink-0">
                                   <div className="w-10 h-10 bg-gray-800 rounded-lg overflow-hidden relative">
                                     {getTierImageUrl(item.tier) ? (
                                       <Image
@@ -214,7 +288,7 @@ export default function LogoSearchSection() {
                                       />
                                     ) : (
                                       <div
-                                        className={`w-full h-full bg-gradient-to-br ${getTierColor(
+                                        className={`w-full h-full bg-linear-to-br ${getTierColor(
                                           item.tier
                                         )} flex items-center justify-center`}
                                       >
