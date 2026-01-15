@@ -1,6 +1,6 @@
 "use client";
 
-import type { SpectatorParticipant } from "@/types/spectator";
+import type { SpectatorParticipant, SpectatorBannedChampion } from "@/types/spectator";
 import IngamePlayer from "./IngamePlayer";
 import BannedChampions from "./BannedChampions";
 
@@ -9,7 +9,7 @@ interface IngameTeamProps {
   teamId: 100 | 200;
   teamName: string;
   teamColor: string;
-  bannedChampions?: any[];
+  bannedChampions?: SpectatorBannedChampion[];
 }
 
 export default function IngameTeam({

@@ -31,7 +31,7 @@ interface RankingTableProps {
 }
 
 // 더미 데이터 생성 함수
-function generateDummyData(region: string, queueType: string): RankingPlayer[] {
+function generateDummyData(region: string, _queueType: string): RankingPlayer[] {
   const tiers = [
     "CHALLENGER",
     "GRANDMASTER",

@@ -3,6 +3,7 @@
  */
 
 import { useGameDataStore, type SummonerJson } from "@/stores/useGameDataStore";
+import type { ItemData } from "@/types/api";
 
 /**
  * 소환사 주문 JSON 데이터를 로드합니다 (zustand store 사용)
@@ -113,7 +114,7 @@ export function getRuneImageUrl(runeId: number): string {
  * @param item 아이템 객체 또는 배열
  * @returns 아이템 ID 배열 (최대 7개: 0-6 슬롯)
  */
-export function extractItemIds(item: any): number[] {
+export function extractItemIds(item: ItemData | number[] | null | undefined): number[] {
   if (!item) return [0, 0, 0, 0, 0, 0, 0];
 
   // item이 배열인 경우
@@ -125,8 +126,8 @@ export function extractItemIds(item: any): number[] {
   if (typeof item === "object") {
     const items: number[] = [];
     for (let i = 0; i < 7; i++) {
-      const key = `item${i}`;
-      items.push(item[key] || 0);
+      const key = `item${i}` as keyof ItemData;
+      items.push((item[key] as number) || 0);
     }
     return items;
   }

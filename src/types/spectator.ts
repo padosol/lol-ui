@@ -2,6 +2,11 @@
  * Spectator API 응답 타입
  */
 
+export interface GameCustomizationObject {
+  category: string;
+  content: string;
+}
+
 export interface SpectatorParticipant {
   puuid: string | null;
   teamId: 100 | 200;
@@ -12,7 +17,7 @@ export interface SpectatorParticipant {
   profileIconId: number;
   riotId: string;
   bot: boolean;
-  gameCustomizationObjects: any[];
+  gameCustomizationObjects: GameCustomizationObject[];
   perks: {
     perkIds: number[];
     perkStyle: number;

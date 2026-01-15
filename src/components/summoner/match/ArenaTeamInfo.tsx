@@ -16,7 +16,7 @@ interface ArenaTeamInfoProps {
 export default function ArenaTeamInfo({
   participants,
   myPuuid,
-  myPlacement,
+  myPlacement: _myPlacement,
   region = "kr",
 }: ArenaTeamInfoProps) {
   const getSummonerUrl = (participant: ParticipantData) => {
