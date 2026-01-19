@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test } from '@playwright/test';
 
 test('브라우저 에러 확인', async ({ page }) => {
   // 콘솔 에러 수집

@@ -15,7 +15,7 @@ interface Message {
   isMine?: boolean;
 }
 
-export default function FanLetter({ summonerName }: FanLetterProps) {
+export default function FanLetter({ summonerName: _summonerName }: FanLetterProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "1",

@@ -8,12 +8,10 @@ import { useEffect, useState } from "react";
 
 interface IngamePlayerProps {
   participant: SpectatorParticipant;
-  championName?: string;
 }
 
 export default function IngamePlayer({
   participant,
-  championName,
 }: IngamePlayerProps) {
   const [champId, setChampId] = useState<string>("");
   const [champName, setChampName] = useState<string>("");

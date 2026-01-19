@@ -82,13 +82,13 @@ export interface ParticipantData {
   championName: string;
   consumablesPurchased: number;
   goldEarned: number;
-  item: any | null;
+  item: ItemData | number[] | null;
   summoner1Id: number;
   summoner2Id: number;
   itemsPurchased: number;
   participantId: number;
-  statValue: any | null;
-  style: any | null;
+  statValue: StatValue | null;
+  style: RuneStyle | string | null;
   visionScore: number;
   totalMinionsKilled: number;
   neutralMinionsKilled: number;
@@ -117,8 +117,8 @@ export interface ParticipantData {
   playerAugment2: number;
   playerAugment3: number;
   playerAugment4: number;
-  itemSeq: any | null;
-  skillSeq: any | null;
+  itemSeq: number[] | null;
+  skillSeq: number[] | null;
 }
 
 export interface GameInfoData {
@@ -196,6 +196,42 @@ export interface ApiError {
   message: string;
   status?: number;
   code?: string;
+}
+
+// 아이템 데이터 타입
+export interface ItemData {
+  item0?: number;
+  item1?: number;
+  item2?: number;
+  item3?: number;
+  item4?: number;
+  item5?: number;
+  item6?: number;
+}
+
+// 룬 스타일 타입
+export interface RuneSelection {
+  perk: number;
+  var1: number;
+  var2: number;
+  var3: number;
+}
+
+export interface RuneStyleEntry {
+  style: number;
+  selections: RuneSelection[];
+}
+
+export interface RuneStyle {
+  styles: RuneStyleEntry[];
+  primaryRuneId?: number;
+  primaryRuneIds?: number[];
+  secondaryRuneId?: number;
+}
+
+// 스탯 값 타입
+export interface StatValue {
+  [key: string]: number | string;
 }
 
 // 챔피언 로테이션 응답 타입

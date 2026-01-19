@@ -105,8 +105,10 @@ export default function ProfileSection({
   };
 
   const handleRefresh = async () => {
-    if (!profileData?.puuid || !profileData?.platform) return;
+    if (!profileData?.puuid) return;
     if (isRefreshDisabled()) return;
+
+    const platform = profileData.platform || region;
 
     // 클릭 시간 기록
     setLastClickTime(Date.now());
@@ -114,7 +116,7 @@ export default function ProfileSection({
     // 갱신 요청
     refresh(
       {
-        platform: profileData.platform,
+        platform,
         puuid: profileData.puuid,
       },
       {

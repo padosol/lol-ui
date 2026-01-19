@@ -1,9 +1,8 @@
 "use client";
 
-import { useAuthStore } from "@/stores/useAuthStore";
-
 export default function Header() {
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  // TODO: 로그인 기능 구현 시 아래 주석 해제
+  // const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
   return (
     <header className="bg-gray-900 border-b border-gray-800">
