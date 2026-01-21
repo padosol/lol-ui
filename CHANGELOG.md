@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/padosol/lol-ui/compare/v1.3.0...v1.4.0) (2026-01-21)
+
+
+### Features
+
+* add dark/light theme support with Material Design 2 color system ([0bea9f0](https://github.com/padosol/lol-ui/commit/0bea9f01b5689c93db5019bebd3ea0a3cb29a9e5))
+
 ## [1.3.0](https://github.com/padosol/lol-ui/compare/v1.2.0...v1.3.0) (2026-01-19)
 
 
