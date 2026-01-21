@@ -57,7 +57,7 @@ export default function MatchDetailInfo({
 
     return (
       <div
-        className="border-t border-gray-700/50 bg-gray-900/80 p-2 cursor-default"
+        className="border-t border-divider/50 bg-surface-1/80 p-2 cursor-default"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="space-y-1.5">
@@ -68,11 +68,11 @@ export default function MatchDetailInfo({
                 key={placement}
                 className={`p-1.5 rounded ${
                   isMyTeam
-                    ? "bg-red-900/20 border border-red-500/50"
-                    : "bg-gray-800/30 border border-gray-700/50"
+                    ? "bg-loss/10 border border-loss/50"
+                    : "bg-surface-4/30 border border-divider/50"
                 }`}
               >
-                <div className="text-gray-300 text-[11px] font-semibold mb-1">
+                <div className="text-on-surface text-[11px] font-semibold mb-1">
                   {placement}위
                 </div>
                 <div className="grid grid-cols-2 gap-1">
@@ -105,13 +105,13 @@ export default function MatchDetailInfo({
                         key={participant.participantId}
                         className={`flex flex-col gap-0.5 p-1 rounded ${
                           isMe
-                            ? "bg-red-900/50 border border-red-500/60"
-                            : "bg-gray-800/20"
+                            ? "bg-loss/30 border border-loss/60"
+                            : "bg-surface-4/20"
                         }`}
                       >
                         {/* 상단: 기본 정보 */}
                         <div className="flex items-start gap-1.5">
-                          <div className="w-7 h-7 bg-gray-700 rounded overflow-hidden relative shrink-0">
+                          <div className="w-7 h-7 bg-surface-8 rounded overflow-hidden relative shrink-0">
                             <Image
                               src={getChampionImageUrl(
                                 participant.championName || ""
@@ -124,18 +124,18 @@ export default function MatchDetailInfo({
                             />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <div className="text-white text-[11px] font-medium truncate">
+                            <div className="text-on-surface text-[11px] font-medium truncate">
                               {participant.riotIdGameName ||
                                 participant.summonerName}
                             </div>
-                            <div className="text-gray-400 text-[9px]">
+                            <div className="text-on-surface-medium text-[9px]">
                               {participant.championName}
                             </div>
                           </div>
                           <div className="flex flex-col items-start gap-0.5 text-[11px]">
-                            <div className="text-white font-semibold">
+                            <div className="text-on-surface font-semibold">
                               {participant.kills} /{" "}
-                              <span className="text-red-400">
+                              <span className="text-loss">
                                 {participant.deaths}
                               </span>{" "}
                               / {participant.assists}
@@ -154,7 +154,7 @@ export default function MatchDetailInfo({
                             {participantItems.slice(0, 6).map((itemId, idx) => (
                               <div
                                 key={idx}
-                                className="w-5 h-5 bg-gray-800 rounded border border-gray-700/50 overflow-hidden relative"
+                                className="w-5 h-5 bg-surface-4 rounded border border-divider/50 overflow-hidden relative"
                               >
                                 {itemId > 0 ? (
                                   <Image
@@ -166,7 +166,7 @@ export default function MatchDetailInfo({
                                     unoptimized
                                   />
                                 ) : (
-                                  <div className="w-full h-full bg-gray-800/50"></div>
+                                  <div className="w-full h-full bg-surface-4/50"></div>
                                 )}
                               </div>
                             ))}
@@ -176,31 +176,31 @@ export default function MatchDetailInfo({
                         <div className="flex gap-1.5">
                           {/* 피해량 막대 */}
                           <div className="flex items-center gap-1.5 flex-1">
-                            <div className="text-gray-400 text-[9px] w-6 shrink-0">
+                            <div className="text-on-surface-medium text-[9px] w-6 shrink-0">
                               피해
                             </div>
-                            <div className="flex-1 h-2.5 bg-gray-700/50 rounded-full overflow-hidden">
+                            <div className="flex-1 h-2.5 bg-surface-8/50 rounded-full overflow-hidden">
                               <div
-                                className="h-full bg-orange-400/70 rounded-full transition-all"
+                                className="h-full bg-warning/70 rounded-full transition-all"
                                 style={{ width: `${damagePercentage}%` }}
                               />
                             </div>
-                            <div className="text-orange-300 text-[9px] w-10 text-right shrink-0">
+                            <div className="text-warning text-[9px] w-10 text-right shrink-0">
                               {(damage / 1000).toFixed(1)}k
                             </div>
                           </div>
                           {/* 받은 피해량 막대 */}
                           <div className="flex items-center gap-1.5 flex-1">
-                            <div className="text-gray-400 text-[9px] w-6 shrink-0">
+                            <div className="text-on-surface-medium text-[9px] w-6 shrink-0">
                               피해
                             </div>
-                            <div className="flex-1 h-2.5 bg-gray-700/50 rounded-full overflow-hidden">
+                            <div className="flex-1 h-2.5 bg-surface-8/50 rounded-full overflow-hidden">
                               <div
-                                className="h-full bg-blue-400/70 rounded-full transition-all"
+                                className="h-full bg-team-blue/70 rounded-full transition-all"
                                 style={{ width: `${damageTakenPercentage}%` }}
                               />
                             </div>
-                            <div className="text-blue-300 text-[9px] w-10 text-right shrink-0">
+                            <div className="text-team-blue text-[9px] w-10 text-right shrink-0">
                               {(damageTaken / 1000).toFixed(1)}k
                             </div>
                           </div>
@@ -276,17 +276,17 @@ export default function MatchDetailInfo({
 
   return (
     <div
-      className="border-t border-gray-700/50 bg-gray-900/80 p-3 cursor-default"
+      className="border-t border-divider/50 bg-surface-1/80 p-3 cursor-default"
       onClick={(e) => e.stopPropagation()}
     >
       <div className="grid grid-cols-2 gap-3">
         {/* 블루팀 */}
         <div className="space-y-1.5">
           <div className="flex items-center justify-between mb-1.5">
-            <div className="text-blue-400 text-xs font-semibold">
+            <div className="text-team-blue text-xs font-semibold">
               블루팀 {blueTeam.some((p) => p.win) ? "승리" : "패배"}
             </div>
-            <div className="flex items-center gap-2 text-[10px] text-gray-400">
+            <div className="flex items-center gap-2 text-[10px] text-on-surface-medium">
               <span>바론 {blueTeamStats.baron}</span>
               <span>드래곤 {blueTeamStats.dragon}</span>
               <span>타워 {blueTeamStats.turret}</span>
@@ -334,13 +334,13 @@ export default function MatchDetailInfo({
                 key={participant.participantId}
                 className={`flex flex-col p-1 rounded ${
                   isMe
-                    ? "bg-blue-900/40 border border-blue-500/50"
-                    : "bg-gray-800/30"
+                    ? "bg-team-blue/20 border border-team-blue/50"
+                    : "bg-surface-4/30"
                 }`}
               >
                 {/* 상단: 기본 정보 */}
                 <div className="flex items-start gap-1.5">
-                  <div className="w-7 h-7 bg-gray-700 rounded overflow-hidden relative shrink-0">
+                  <div className="w-7 h-7 bg-surface-8 rounded overflow-hidden relative shrink-0">
                     <Image
                       src={getChampionImageUrl(participant.championName || "")}
                       alt={participant.championName || "Unknown"}
@@ -351,30 +351,30 @@ export default function MatchDetailInfo({
                     />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="text-white text-[11px] font-medium truncate">
+                    <div className="text-on-surface text-[11px] font-medium truncate">
                       {participant.riotIdGameName || participant.summonerName}
                     </div>
-                    <div className="text-gray-400 text-[9px]">
+                    <div className="text-on-surface-medium text-[9px]">
                       {participant.championName}
                     </div>
                   </div>
                   <div className="flex flex-col items-start gap-0.5 text-[11px]">
-                    <div className="text-white font-semibold">
+                    <div className="text-on-surface font-semibold">
                       {participant.kills} /{" "}
-                      <span className="text-red-400">{participant.deaths}</span>{" "}
+                      <span className="text-loss">{participant.deaths}</span>{" "}
                       / {participant.assists}
                     </div>
-                    <div className="text-gray-400 text-[9px]">
+                    <div className="text-on-surface-medium text-[9px]">
                       {participantKDA === "perfect"
                         ? "perfect"
                         : `${participantKDA}:1 평점`}
                     </div>
                   </div>
                   <div className="flex flex-col items-start gap-0.5 text-[11px]">
-                    <div className="text-gray-400 text-[9px]">
+                    <div className="text-on-surface-medium text-[9px]">
                       {participantTotalCS}({participantCsPerMin})
                     </div>
-                    <div className="text-yellow-400 text-[9px]">
+                    <div className="text-gold text-[9px]">
                       {((participant.goldEarned || 0) / 1000).toFixed(1)}k
                     </div>
                   </div>
@@ -382,7 +382,7 @@ export default function MatchDetailInfo({
                     {participantItems.slice(0, 6).map((itemId, idx) => (
                       <div
                         key={idx}
-                        className="w-5 h-5 bg-gray-800 rounded border border-gray-700/50 overflow-hidden relative"
+                        className="w-5 h-5 bg-surface-4 rounded border border-divider/50 overflow-hidden relative"
                       >
                         {itemId > 0 ? (
                           <Image
@@ -394,7 +394,7 @@ export default function MatchDetailInfo({
                             unoptimized
                           />
                         ) : (
-                          <div className="w-full h-full bg-gray-800/50"></div>
+                          <div className="w-full h-full bg-surface-4/50"></div>
                         )}
                       </div>
                     ))}
@@ -423,10 +423,10 @@ export default function MatchDetailInfo({
         {/* 레드팀 */}
         <div className="space-y-1.5">
           <div className="flex items-center justify-between mb-1.5">
-            <div className="text-red-400 text-xs font-semibold">
+            <div className="text-loss text-xs font-semibold">
               레드팀 {redTeam.some((p) => p.win) ? "승리" : "패배"}
             </div>
-            <div className="flex items-center gap-2 text-[10px] text-gray-400">
+            <div className="flex items-center gap-2 text-[10px] text-on-surface-medium">
               <span>바론 {redTeamStats.baron}</span>
               <span>드래곤 {redTeamStats.dragon}</span>
               <span>타워 {redTeamStats.turret}</span>
@@ -474,13 +474,13 @@ export default function MatchDetailInfo({
                 key={participant.participantId}
                 className={`flex flex-col p-1 rounded ${
                   isMe
-                    ? "bg-red-900/40 border border-red-500/50"
-                    : "bg-gray-800/30"
+                    ? "bg-team-red/20 border border-team-red/50"
+                    : "bg-surface-4/30"
                 }`}
               >
                 {/* 상단: 기본 정보 */}
                 <div className="flex items-start gap-1.5">
-                  <div className="w-7 h-7 bg-gray-700 rounded overflow-hidden relative shrink-0">
+                  <div className="w-7 h-7 bg-surface-8 rounded overflow-hidden relative shrink-0">
                     <Image
                       src={getChampionImageUrl(participant.championName || "")}
                       alt={participant.championName || "Unknown"}
@@ -491,30 +491,30 @@ export default function MatchDetailInfo({
                     />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="text-white text-[11px] font-medium truncate">
+                    <div className="text-on-surface text-[11px] font-medium truncate">
                       {participant.riotIdGameName || participant.summonerName}
                     </div>
-                    <div className="text-gray-400 text-[9px]">
+                    <div className="text-on-surface-medium text-[9px]">
                       {participant.championName}
                     </div>
                   </div>
                   <div className="flex flex-col items-start gap-0.5 text-[11px]">
-                    <div className="text-white font-semibold">
+                    <div className="text-on-surface font-semibold">
                       {participant.kills} /{" "}
-                      <span className="text-red-400">{participant.deaths}</span>{" "}
+                      <span className="text-loss">{participant.deaths}</span>{" "}
                       / {participant.assists}
                     </div>
-                    <div className="text-gray-400 text-[9px]">
+                    <div className="text-on-surface-medium text-[9px]">
                       {participantKDA === "perfect"
                         ? "perfect"
                         : `${participantKDA}:1 평점`}
                     </div>
                   </div>
                   <div className="flex flex-col items-start gap-0.5 text-[11px]">
-                    <div className="text-gray-400 text-[9px]">
+                    <div className="text-on-surface-medium text-[9px]">
                       {participantTotalCS}({participantCsPerMin})
                     </div>
-                    <div className="text-yellow-400 text-[9px]">
+                    <div className="text-gold text-[9px]">
                       {((participant.goldEarned || 0) / 1000).toFixed(1)}k
                     </div>
                   </div>
@@ -522,7 +522,7 @@ export default function MatchDetailInfo({
                     {participantItems.slice(0, 6).map((itemId, idx) => (
                       <div
                         key={idx}
-                        className="w-5 h-5 bg-gray-800 rounded border border-gray-700/50 overflow-hidden relative"
+                        className="w-5 h-5 bg-surface-4 rounded border border-divider/50 overflow-hidden relative"
                       >
                         {itemId > 0 ? (
                           <Image
@@ -534,7 +534,7 @@ export default function MatchDetailInfo({
                             unoptimized
                           />
                         ) : (
-                          <div className="w-full h-full bg-gray-800/50"></div>
+                          <div className="w-full h-full bg-surface-4/50"></div>
                         )}
                       </div>
                     ))}

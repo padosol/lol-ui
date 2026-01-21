@@ -37,7 +37,7 @@ function SummonerSpellImage({ spellId }: { spellId: number }) {
   }
 
   return (
-    <div className="w-7 h-7 bg-gray-800 rounded border border-gray-700/50 overflow-hidden relative shadow-sm flex items-center justify-center">
+    <div className="w-7 h-7 bg-surface-4 rounded border border-divider/50 overflow-hidden relative shadow-sm flex items-center justify-center">
       <Image
         src={imageUrl}
         alt={`Summoner ${spellId}`}
@@ -374,10 +374,10 @@ export default function MatchHistory({
     return (
       <div className="space-y-4">
         {showTitle && (
-          <h2 className="text-2xl font-bold text-white mb-2">최근 전적</h2>
+          <h2 className="text-2xl font-bold text-on-surface mb-2">최근 전적</h2>
         )}
-        <div className="bg-gray-800/50 rounded-lg border border-gray-700/50 p-12 text-center">
-          <div className="text-gray-400 text-lg">소환사 정보가 필요합니다.</div>
+        <div className="bg-surface-4/50 rounded-lg border border-divider/50 p-12 text-center">
+          <div className="text-on-surface-medium text-lg">소환사 정보가 필요합니다.</div>
         </div>
       </div>
     );
@@ -387,12 +387,12 @@ export default function MatchHistory({
     return (
       <div className="space-y-4">
         {showTitle && (
-          <h2 className="text-2xl font-bold text-white mb-2">최근 전적</h2>
+          <h2 className="text-2xl font-bold text-on-surface mb-2">최근 전적</h2>
         )}
-        <div className="bg-gray-800/50 rounded-lg border border-gray-700/50 p-12 flex items-center justify-center">
+        <div className="bg-surface-4/50 rounded-lg border border-divider/50 p-12 flex items-center justify-center">
           <div className="flex flex-col items-center gap-3">
-            <div className="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-            <div className="text-gray-400 text-sm">전적을 불러오는 중...</div>
+            <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+            <div className="text-on-surface-medium text-sm">전적을 불러오는 중...</div>
           </div>
         </div>
       </div>
@@ -403,10 +403,10 @@ export default function MatchHistory({
     return (
       <div className="space-y-4">
         {showTitle && (
-          <h2 className="text-2xl font-bold text-white mb-2">최근 전적</h2>
+          <h2 className="text-2xl font-bold text-on-surface mb-2">최근 전적</h2>
         )}
-        <div className="bg-gray-800/50 rounded-lg border border-gray-700/50 p-12 text-center">
-          <div className="text-gray-400 text-lg">전적 데이터가 없습니다.</div>
+        <div className="bg-surface-4/50 rounded-lg border border-divider/50 p-12 text-center">
+          <div className="text-on-surface-medium text-lg">전적 데이터가 없습니다.</div>
         </div>
       </div>
     );
@@ -445,17 +445,17 @@ export default function MatchHistory({
   return (
     <div ref={rootRef} className="space-y-4">
       {showTitle && (
-        <h2 className="text-2xl font-bold text-white mb-2">최근 전적</h2>
+        <h2 className="text-2xl font-bold text-on-surface mb-2">최근 전적</h2>
       )}
 
       {/* 게임 모드 필터 탭 */}
-      <div className="flex gap-1 mb-4 bg-gray-800/50 rounded-lg p-1 border border-gray-700/50 overflow-x-auto">
+      <div className="flex gap-1 mb-4 bg-surface-2/50 rounded-lg p-1 border border-divider/50 overflow-x-auto">
         <button
           onClick={() => setGameModeFilter("ALL")}
           className={`px-4 py-2 text-sm font-medium transition-all whitespace-nowrap rounded-md cursor-pointer ${
             gameModeFilter === "ALL"
-              ? "text-white bg-gray-700 shadow-lg shadow-gray-700/20"
-              : "text-gray-400 hover:text-gray-200 hover:bg-gray-700/50"
+              ? "text-on-surface bg-surface-8 shadow-lg shadow-surface-8/20"
+              : "text-on-surface-medium hover:text-on-surface hover:bg-surface-8/50"
           }`}
         >
           전체
@@ -464,8 +464,8 @@ export default function MatchHistory({
           onClick={() => setGameModeFilter("RANKED")}
           className={`px-4 py-2 text-sm font-medium transition-all whitespace-nowrap rounded-md cursor-pointer ${
             gameModeFilter === "RANKED"
-              ? "text-white bg-gray-700 shadow-lg shadow-gray-700/20"
-              : "text-gray-400 hover:text-gray-200 hover:bg-gray-700/50"
+              ? "text-on-surface bg-surface-8 shadow-lg shadow-surface-8/20"
+              : "text-on-surface-medium hover:text-on-surface hover:bg-surface-8/50"
           }`}
         >
           랭크
@@ -474,8 +474,8 @@ export default function MatchHistory({
           onClick={() => setGameModeFilter("FLEX")}
           className={`px-4 py-2 text-sm font-medium transition-all whitespace-nowrap rounded-md cursor-pointer ${
             gameModeFilter === "FLEX"
-              ? "text-white bg-gray-700 shadow-lg shadow-gray-700/20"
-              : "text-gray-400 hover:text-gray-200 hover:bg-gray-700/50"
+              ? "text-on-surface bg-surface-8 shadow-lg shadow-surface-8/20"
+              : "text-on-surface-medium hover:text-on-surface hover:bg-surface-8/50"
           }`}
         >
           자유랭크
@@ -484,8 +484,8 @@ export default function MatchHistory({
           onClick={() => setGameModeFilter("NORMAL")}
           className={`px-4 py-2 text-sm font-medium transition-all whitespace-nowrap rounded-md cursor-pointer ${
             gameModeFilter === "NORMAL"
-              ? "text-white bg-gray-700 shadow-lg shadow-gray-700/20"
-              : "text-gray-400 hover:text-gray-200 hover:bg-gray-700/50"
+              ? "text-on-surface bg-surface-8 shadow-lg shadow-surface-8/20"
+              : "text-on-surface-medium hover:text-on-surface hover:bg-surface-8/50"
           }`}
         >
           일반
@@ -494,8 +494,8 @@ export default function MatchHistory({
           onClick={() => setGameModeFilter("ARENA")}
           className={`px-4 py-2 text-sm font-medium transition-all whitespace-nowrap rounded-md cursor-pointer ${
             gameModeFilter === "ARENA"
-              ? "text-white bg-gray-700 shadow-lg shadow-gray-700/20"
-              : "text-gray-400 hover:text-gray-200 hover:bg-gray-700/50"
+              ? "text-on-surface bg-surface-8 shadow-lg shadow-surface-8/20"
+              : "text-on-surface-medium hover:text-on-surface hover:bg-surface-8/50"
           }`}
         >
           아레나
@@ -588,28 +588,28 @@ export default function MatchHistory({
             }
           }
 
-          // 승리/패배/다시하기에 따른 색상 변수
+          // 승리/패배/다시하기에 따른 색상 변수 (Material Design 2)
           const isRemake = match.result === "REMAKE";
           const borderColor = isRemake
-            ? "border-gray-500"
+            ? "border-on-surface-disabled"
             : match.result === "WIN"
-            ? "border-blue-500"
-            : "border-red-500";
+            ? "border-win"
+            : "border-loss";
           const bgColor = isRemake
-            ? "bg-gray-500/10"
+            ? "bg-surface-8/50"
             : match.result === "WIN"
-            ? "bg-blue-500/10"
-            : "bg-red-500/10";
+            ? "bg-win/10"
+            : "bg-loss/10";
           const textColor = isRemake
-            ? "text-gray-400"
+            ? "text-on-surface-disabled"
             : match.result === "WIN"
-            ? "text-blue-400"
-            : "text-red-400";
+            ? "text-win"
+            : "text-loss";
           const shadowColor = isRemake
-            ? "hover:shadow-gray-500/10"
+            ? "hover:shadow-surface-8/10"
             : match.result === "WIN"
-            ? "hover:shadow-blue-500/10"
-            : "hover:shadow-red-500/10";
+            ? "hover:shadow-win/10"
+            : "hover:shadow-loss/10";
 
           const isExpanded = expandedMatchId === match.id;
 
@@ -619,14 +619,14 @@ export default function MatchHistory({
               className={`group relative flex flex-col w-full border-l-4 ${borderColor} ${bgColor} rounded-lg overflow-hidden transition-all hover:shadow-lg ${shadowColor} cursor-pointer`}
               onClick={() => setExpandedMatchId(isExpanded ? null : match.id)}
             >
-              <div className="grid grid-cols-[120px_1fr_200px_30px] bg-gray-900/50 backdrop-blur-sm w-full">
+              <div className="grid grid-cols-[120px_1fr_200px_30px] bg-surface-1/50 backdrop-blur-sm w-full">
                 {/* 1. 게임 정보 섹션 */}
                 <div className="flex flex-col items-start justify-start p-3 text-xs shrink-0 h-full gap-4">
                   <div className="flex flex-col items-start gap-0.5">
                     <span className={`font-bold text-sm ${textColor}`}>
                       {gameModeName}
                     </span>
-                    <span className="text-gray-400 text-xs">
+                    <span className="text-on-surface-medium text-xs">
                       {match.gameDate}
                     </span>
                   </div>
@@ -642,7 +642,7 @@ export default function MatchHistory({
                           : "패배"}
                       </strong>
                     </div>
-                    <span className="text-gray-400 text-xs">
+                    <span className="text-on-surface-medium text-xs">
                       {formatDuration(match.gameDuration)}
                     </span>
                   </div>
@@ -658,7 +658,7 @@ export default function MatchHistory({
                         <div className="flex items-center gap-1.5">
                           {/* 챔피언 아이콘 */}
                           <div className="relative">
-                            <div className="w-14 h-14 md:w-16 md:h-16 bg-gray-800 rounded-lg overflow-hidden relative border-2 border-gray-700/50 shadow-lg">
+                            <div className="w-14 h-14 md:w-16 md:h-16 bg-surface-4 rounded-lg overflow-hidden relative border-2 border-divider/50 shadow-lg">
                               {match.championIcon ? (
                                 <Image
                                   src={match.championIcon}
@@ -674,7 +674,7 @@ export default function MatchHistory({
                                 </span>
                               )}
                               {myData.champLevel > 0 && (
-                                <span className="absolute bottom-0 right-0 flex items-center justify-center rounded-tl-lg bg-gray-900/90 text-[10px] font-bold text-white px-1.5 py-0.5">
+                                <span className="absolute bottom-0 right-0 flex items-center justify-center rounded-tl-lg bg-surface-1/90 text-[10px] font-bold text-on-surface px-1.5 py-0.5">
                                   {myData.champLevel}
                                 </span>
                               )}
@@ -703,7 +703,7 @@ export default function MatchHistory({
                                   const spellUrl =
                                     getStyleImageUrl(primaryRuneId);
                                   return spellUrl ? (
-                                    <div className="w-7 h-7 bg-gray-800 rounded border border-gray-700/50 overflow-hidden relative shadow-sm flex items-center justify-center">
+                                    <div className="w-7 h-7 bg-surface-4 rounded border border-divider overflow-hidden relative shadow-sm flex items-center justify-center">
                                       <Image
                                         src={spellUrl}
                                         alt="Spell 1"
@@ -725,7 +725,7 @@ export default function MatchHistory({
                                   const spellUrl =
                                     getStyleImageUrl(secondaryRuneId);
                                   return spellUrl ? (
-                                    <div className="w-7 h-7 bg-gray-800 rounded border border-gray-700/50 overflow-hidden relative shadow-sm flex items-center justify-center">
+                                    <div className="w-7 h-7 bg-surface-4 rounded border border-divider overflow-hidden relative shadow-sm flex items-center justify-center">
                                       <Image
                                         src={spellUrl}
                                         alt="Spell 2"
@@ -746,7 +746,7 @@ export default function MatchHistory({
                             {/* 룬 */}
                             <div className="flex flex-col gap-1">
                               {mainRuneId > 0 && (
-                                <div className="w-6 h-6 bg-gray-800 rounded-full border border-gray-700/50 overflow-hidden relative shadow-sm">
+                                <div className="w-6 h-6 bg-surface-4 rounded-full border border-divider overflow-hidden relative shadow-sm">
                                   <Image
                                     src={`https://static.mmrtr.shop/perks/${mainRuneId}.png`}
                                     alt="Main Rune"
@@ -758,7 +758,7 @@ export default function MatchHistory({
                                 </div>
                               )}
                               {subRuneStyleId > 0 && (
-                                <div className="w-6 h-6 bg-gray-800 rounded-full border border-gray-700/50 overflow-hidden relative shadow-sm">
+                                <div className="w-6 h-6 bg-surface-4 rounded-full border border-divider overflow-hidden relative shadow-sm">
                                   <Image
                                     src={`https://static.mmrtr.shop/styles/${subRuneStyleId}.png`}
                                     alt="Sub Rune Style"
@@ -777,13 +777,13 @@ export default function MatchHistory({
                       {/* KDA + 통계 */}
                       <div className="flex flex-col items-start gap-0.5 min-w-[100px]">
                         <div className="flex items-center gap-1.5 text-base font-semibold -mt-1">
-                          <span className="text-white">{match.kda.kills}</span>
-                          <span className="text-gray-500">/</span>
-                          <span className="text-red-400">
+                          <span className="text-on-surface">{match.kda.kills}</span>
+                          <span className="text-on-surface-disabled">/</span>
+                          <span className="text-loss">
                             {match.kda.deaths}
                           </span>
-                          <span className="text-gray-500">/</span>
-                          <span className="text-white">
+                          <span className="text-on-surface-disabled">/</span>
+                          <span className="text-on-surface">
                             {match.kda.assists}
                           </span>
                         </div>
@@ -798,10 +798,10 @@ export default function MatchHistory({
                               : `${calculateKDA(match.kda)}:1 평점`}
                           </span>
                         </div>
-                        <div className="text-gray-400 text-xs font-medium">
+                        <div className="text-on-surface-medium text-xs font-medium">
                           <span>
                             CS {totalCS}{" "}
-                            <span className="text-gray-500">({csPerMin})</span>
+                            <span className="text-on-surface-disabled">({csPerMin})</span>
                           </span>
                         </div>
                       </div>
@@ -814,7 +814,7 @@ export default function MatchHistory({
                         {items.slice(0, 6).map((itemId, idx) => (
                           <div
                             key={idx}
-                            className="w-7 h-7 bg-gray-800 rounded border border-gray-700/50 overflow-hidden relative shadow-sm"
+                            className="w-7 h-7 bg-surface-4 rounded border border-divider/50 overflow-hidden relative shadow-sm"
                           >
                             <Image
                               src={getItemImageUrl(itemId)}
@@ -828,7 +828,7 @@ export default function MatchHistory({
                         ))}
                         {/* 와드 슬롯 */}
                         {items[6] > 0 && (
-                          <div className="w-7 h-7 bg-gray-800 rounded-full border border-gray-700/50 overflow-hidden relative shadow-sm">
+                          <div className="w-7 h-7 bg-surface-4 rounded-full border border-divider/50 overflow-hidden relative shadow-sm">
                             <Image
                               src={getItemImageUrl(items[6])}
                               alt="Ward"
@@ -866,7 +866,7 @@ export default function MatchHistory({
                 {/* 4. 화살표 섹션 */}
                 <div className="flex items-end justify-center p-2">
                   <ChevronDown
-                    className={`w-5 h-5 text-gray-400 transition-transform ${
+                    className={`w-5 h-5 text-on-surface-medium transition-transform ${
                       isExpanded ? "rotate-180" : ""
                     }`}
                   />
@@ -895,11 +895,11 @@ export default function MatchHistory({
           <button
             onClick={loadMoreMatches}
             disabled={isLoading}
-            className="px-8 py-3 bg-gray-700 hover:bg-gray-600 disabled:bg-gray-700 disabled:cursor-not-allowed cursor-pointer text-white rounded-lg font-semibold transition-all shadow-lg shadow-gray-700/20 hover:shadow-gray-600/30 disabled:shadow-none"
+            className="px-8 py-3 bg-surface-8 hover:bg-surface-12 disabled:bg-surface-8 disabled:cursor-not-allowed cursor-pointer text-on-surface rounded-lg font-semibold transition-all shadow-lg shadow-surface-8/20 hover:shadow-surface-12/30 disabled:shadow-none"
           >
             {isLoading ? (
               <span className="flex items-center gap-2">
-                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                <div className="w-4 h-4 border-2 border-on-surface-disabled border-t-on-surface rounded-full animate-spin"></div>
                 전적을 불러오는 중...
               </span>
             ) : (
@@ -915,7 +915,7 @@ export default function MatchHistory({
           type="button"
           onClick={scrollToTop}
           aria-label="맨 위로"
-          className="fixed bottom-6 right-10 z-50 w-11 h-11 rounded-full bg-gray-800/90 hover:bg-gray-700 text-white border border-gray-700/60 shadow-lg backdrop-blur flex items-center justify-center transition-all cursor-pointer"
+          className="fixed bottom-6 right-10 z-50 w-11 h-11 rounded-full bg-surface-4/90 hover:bg-surface-8 text-on-surface border border-divider/60 shadow-lg backdrop-blur flex items-center justify-center transition-all cursor-pointer"
         >
           <ArrowUp className="w-5 h-5" />
         </button>

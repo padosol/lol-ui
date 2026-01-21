@@ -1,11 +1,118 @@
 @import "tailwindcss";
 
-:root {
-  --background: #0a0a0a;
-  --foreground: #ededed;
+:root,
+html.dark {
+  /* Material Design Dark Theme Base */
+  --md-surface-base: #121212;
+
+  /* 엘리베이션 기반 표면색 (흰색 오버레이 적용) */
+  --md-elevation-0: #121212;   /* 0dp - 0% */
+  --md-elevation-1: #1E1E1E;   /* 1dp - 5% */
+  --md-elevation-2: #232323;   /* 2dp - 7% */
+  --md-elevation-3: #252525;   /* 3dp - 8% */
+  --md-elevation-4: #272727;   /* 4dp - 9% */
+  --md-elevation-6: #2C2C2C;   /* 6dp - 11% */
+  --md-elevation-8: #2E2E2E;   /* 8dp - 12% */
+  --md-elevation-12: #333333;  /* 12dp - 14% */
+  --md-elevation-16: #353535;  /* 16dp - 15% */
+  --md-elevation-24: #383838;  /* 24dp - 16% */
+
+  /* 텍스트 불투명도 */
+  --md-text-high: rgba(255, 255, 255, 0.87);
+  --md-text-medium: rgba(255, 255, 255, 0.60);
+  --md-text-disabled: rgba(255, 255, 255, 0.38);
+
+  /* 테두리/구분선 */
+  --md-divider: rgba(255, 255, 255, 0.12);
+
+  /* 액센트 색상 (Material Design 2 Dark Theme 표준) */
+  --md-primary: #BB86FC;       /* Purple 200 - 식별 가능하면서 desaturated */
+  --md-secondary: #03DAC6;     /* Teal 200 - 보조 액센트 */
+  --md-error: #CF6679;         /* Pink-Red - Material Design 2 Dark Error 표준 */
+  --md-success: #81C784;       /* Green 300 - desaturated, 충분한 대비 */
+  --md-warning: #FFB74D;       /* Orange 300 - desaturated amber */
+
+  /* LOL 게임 특화 색상 (desaturated) */
+  --md-win: #4CAF50;           /* 승리 - desaturated green */
+  --md-loss: #E57373;          /* 패배 - desaturated red */
+  --md-team-blue: #64B5F6;     /* 블루팀 - Blue 300 */
+  --md-team-red: #E57373;      /* 레드팀 - Red 300 */
+  --md-gold: #FFD54F;          /* 골드 - Amber 300 */
+  --md-rank-top: #FFD54F;      /* 1-3위 - Amber 300 */
+  --md-rank-high: #64B5F6;     /* 4-10위 - Blue 300 */
+
+  /* 레거시 호환 */
+  --background: var(--md-elevation-0);
+  --foreground: var(--md-text-high);
+}
+
+/* 라이트 테마 */
+html.light {
+  --md-surface-base: #FFFFFF;
+
+  --md-elevation-0: #FFFFFF;
+  --md-elevation-1: #F5F5F5;
+  --md-elevation-2: #EEEEEE;
+  --md-elevation-3: #E8E8E8;
+  --md-elevation-4: #E0E0E0;
+  --md-elevation-6: #D9D9D9;
+  --md-elevation-8: #D4D4D4;
+  --md-elevation-12: #C8C8C8;
+  --md-elevation-16: #C0C0C0;
+  --md-elevation-24: #B8B8B8;
+
+  --md-text-high: rgba(0, 0, 0, 0.87);
+  --md-text-medium: rgba(0, 0, 0, 0.60);
+  --md-text-disabled: rgba(0, 0, 0, 0.38);
+
+  --md-divider: rgba(0, 0, 0, 0.12);
+
+  --md-primary: #1976D2;       /* Blue 700 */
+  --md-error: #D32F2F;         /* Red 700 */
+  --md-success: #388E3C;       /* Green 700 */
+  --md-warning: #F57C00;       /* Orange 700 */
+
+  --background: var(--md-elevation-0);
+  --foreground: var(--md-text-high);
 }
 
 @theme inline {
+  /* 표면색 (Elevation 기반) */
+  --color-surface: var(--md-elevation-0);
+  --color-surface-1: var(--md-elevation-1);
+  --color-surface-2: var(--md-elevation-2);
+  --color-surface-4: var(--md-elevation-4);
+  --color-surface-6: var(--md-elevation-6);
+  --color-surface-8: var(--md-elevation-8);
+  --color-surface-12: var(--md-elevation-12);
+  --color-surface-16: var(--md-elevation-16);
+  --color-surface-24: var(--md-elevation-24);
+
+  /* 텍스트색 (87%/60%/38% 불투명도) */
+  --color-on-surface: var(--md-text-high);
+  --color-on-surface-medium: var(--md-text-medium);
+  --color-on-surface-disabled: var(--md-text-disabled);
+
+  /* 테두리/구분선 (12% 불투명도) */
+  --color-divider: var(--md-divider);
+
+  /* 액센트 색상 */
+  --color-primary: var(--md-primary);
+  --color-secondary: var(--md-secondary);
+  --color-error: var(--md-error);
+  --color-success: var(--md-success);
+  --color-warning: var(--md-warning);
+
+  /* LOL 게임 특화 */
+  --color-win: var(--md-win);
+  --color-loss: var(--md-loss);
+  --color-team-blue: var(--md-team-blue);
+  --color-team-red: var(--md-team-red);
+  --color-gold: var(--md-gold);
+  --color-rank-top: var(--md-rank-top);
+  --color-rank-high: var(--md-rank-high);
+
+  /* 기존 변수 유지 (레거시 호환) */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
@@ -17,8 +124,31 @@ body {
   color: var(--foreground);
   font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont,
     "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  /* 다크 모드 최적화 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 * {
   box-sizing: border-box;
+}
+
+/* 스크롤바 다크 테마 스타일링 */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--md-elevation-0);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--md-elevation-8);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--md-elevation-12);
 }

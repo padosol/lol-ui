@@ -61,16 +61,16 @@ export default function ArenaTeamInfo({
               key={placement}
               className={`py-0.5 rounded w-full ${
                 isMyTeam
-                  ? "bg-red-900/30 border border-red-500/50"
-                  : "bg-gray-800/30"
+                  ? "bg-loss/20 border border-loss/50"
+                  : "bg-surface-4/30"
               }`}
             >
               <div className="flex items-center gap-1 w-full min-w-0">
                 <div
                   className={`text-[10px] w-6 shrink-0 text-center ${
                     placement === 1
-                      ? "text-yellow-400 font-semibold"
-                      : "text-gray-400"
+                      ? "text-gold font-semibold"
+                      : "text-on-surface-medium"
                   }`}
                 >
                   {placement}위
@@ -80,7 +80,7 @@ export default function ArenaTeamInfo({
                     key={participant.participantId}
                     className="flex items-center gap-1 flex-1 min-w-0 overflow-hidden"
                   >
-                    <div className="w-4 h-4 bg-gray-700 rounded overflow-hidden relative shrink-0">
+                    <div className="w-4 h-4 bg-surface-8 rounded overflow-hidden relative shrink-0">
                       <Image
                         src={getChampionImageUrl(
                           participant.championName || ""
@@ -97,7 +97,7 @@ export default function ArenaTeamInfo({
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={(e) => e.stopPropagation()}
-                      className="text-white text-[10px] truncate min-w-0 flex-1 hover:text-blue-400 hover:underline transition-colors"
+                      className="text-on-surface text-[10px] truncate min-w-0 flex-1 hover:text-primary hover:underline transition-colors"
                     >
                       {participant.riotIdGameName || participant.summonerName}
                     </Link>

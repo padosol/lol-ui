@@ -41,17 +41,17 @@ export default function IngameHeader({ data }: IngameHeaderProps) {
   }, [data.gameStartTime]);
 
   return (
-    <div className="bg-gray-800/80 backdrop-blur-sm border-b border-gray-700 px-4 py-2">
+    <div className="bg-surface-4/80 backdrop-blur-sm border-b border-divider px-4 py-2">
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
-            <div className="text-white font-semibold text-base">{gameType}</div>
-            <div className="px-1.5 py-0.5 bg-red-600 rounded text-white text-xs font-bold">
+            <div className="text-on-surface font-semibold text-base">{gameType}</div>
+            <div className="px-1.5 py-0.5 bg-error rounded text-on-surface text-xs font-bold">
               Live
             </div>
           </div>
-          <div className="h-4 w-px bg-gray-600"></div>
-          <div className="text-gray-400 text-sm">게임시간: {gameTime}</div>
+          <div className="h-4 w-px bg-divider"></div>
+          <div className="text-on-surface-medium text-sm">게임시간: {gameTime}</div>
         </div>
       </div>
     </div>

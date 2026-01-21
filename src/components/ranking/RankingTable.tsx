@@ -222,45 +222,45 @@ export default function RankingTable({ region, queueType }: RankingTableProps) {
   };
 
   return (
-    <div className="bg-gray-800 rounded-lg overflow-hidden">
+    <div className="bg-surface-4 rounded-lg overflow-hidden">
       {/* 테이블 헤더 */}
       <div className="overflow-x-auto">
         <table className="w-full">
-          <thead className="bg-gray-700">
+          <thead className="bg-surface-8">
             <tr>
               <th
-                className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-600 transition-colors"
+                className="px-4 py-3 text-left text-xs font-medium text-on-surface uppercase tracking-wider cursor-pointer hover:bg-surface-12 transition-colors"
                 onClick={() => handleSort("rank")}
               >
                 <div className="flex items-center gap-2">
                   순위 {getSortIcon("rank")}
                 </div>
               </th>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+              <th className="px-4 py-3 text-left text-xs font-medium text-on-surface uppercase tracking-wider">
                 소환사
               </th>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+              <th className="px-4 py-3 text-left text-xs font-medium text-on-surface uppercase tracking-wider">
                 모스트 챔피언
               </th>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+              <th className="px-4 py-3 text-left text-xs font-medium text-on-surface uppercase tracking-wider">
                 승리
               </th>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+              <th className="px-4 py-3 text-left text-xs font-medium text-on-surface uppercase tracking-wider">
                 패배
               </th>
               <th
-                className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-600 transition-colors"
+                className="px-4 py-3 text-left text-xs font-medium text-on-surface uppercase tracking-wider cursor-pointer hover:bg-surface-12 transition-colors"
                 onClick={() => handleSort("winRate")}
               >
                 <div className="flex items-center gap-2">
                   승률 {getSortIcon("winRate")}
                 </div>
               </th>
-              <th className="px-2 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+              <th className="px-2 py-3 text-left text-xs font-medium text-on-surface uppercase tracking-wider">
                 티어
               </th>
               <th
-                className="px-2 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-600 transition-colors"
+                className="px-2 py-3 text-left text-xs font-medium text-on-surface uppercase tracking-wider cursor-pointer hover:bg-surface-12 transition-colors"
                 onClick={() => handleSort("lp")}
               >
                 <div className="flex items-center gap-2">
@@ -269,21 +269,21 @@ export default function RankingTable({ region, queueType }: RankingTableProps) {
               </th>
             </tr>
           </thead>
-          <tbody className="bg-gray-800 divide-y divide-gray-700">
+          <tbody className="bg-surface-4 divide-y divide-divider">
             {paginatedData.map((player) => (
               <tr
                 key={player.rank}
-                className="hover:bg-gray-700 transition-colors"
+                className="hover:bg-surface-8 transition-colors"
               >
                 <td className="px-4 py-4 whitespace-nowrap">
                   <div className="flex items-center">
                     <span
                       className={`text-sm font-semibold ${
                         player.rank <= 3
-                          ? "text-yellow-400"
+                          ? "text-rank-top"
                           : player.rank <= 10
-                          ? "text-blue-400"
-                          : "text-gray-300"
+                          ? "text-rank-high"
+                          : "text-on-surface"
                       }`}
                     >
                       {player.rank}
@@ -293,10 +293,10 @@ export default function RankingTable({ region, queueType }: RankingTableProps) {
                 <td className="px-4 py-4 whitespace-nowrap">
                   <Link
                     href={`/summoners/${region}/${player.summonerName}-${player.tagline}`}
-                    className="text-sm font-medium text-gray-300 hover:text-gray-200 transition-colors"
+                    className="text-sm font-medium text-on-surface hover:text-on-surface-medium transition-colors"
                   >
                     {player.summonerName}
-                    <span className="text-gray-500">#{player.tagline}</span>
+                    <span className="text-on-surface-disabled">#{player.tagline}</span>
                   </Link>
                 </td>
                 <td className="px-4 py-4">
@@ -307,7 +307,7 @@ export default function RankingTable({ region, queueType }: RankingTableProps) {
                         className="relative group"
                         title={`${champion.championName} (${champion.games}게임)`}
                       >
-                        <div className="relative w-8 h-8 rounded overflow-hidden border border-gray-600 hover:border-blue-500 transition-colors">
+                        <div className="relative w-8 h-8 rounded overflow-hidden border border-divider hover:border-primary transition-colors">
                           <Image
                             src={getChampionImageUrl(champion.championName)}
                             alt={champion.championName}
@@ -318,20 +318,20 @@ export default function RankingTable({ region, queueType }: RankingTableProps) {
                           />
                         </div>
                         {idx === 0 && (
-                          <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-blue-500 rounded-full border-2 border-gray-800"></div>
+                          <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-primary rounded-full border-2 border-surface-4"></div>
                         )}
                       </div>
                     ))}
                   </div>
                 </td>
                 <td className="px-4 py-4 whitespace-nowrap">
-                  <span className="text-sm text-gray-300">{player.wins}</span>
+                  <span className="text-sm text-on-surface">{player.wins}</span>
                 </td>
                 <td className="px-4 py-4 whitespace-nowrap">
-                  <span className="text-sm text-gray-300">{player.losses}</span>
+                  <span className="text-sm text-on-surface">{player.losses}</span>
                 </td>
                 <td className="px-4 py-4 whitespace-nowrap">
-                  <span className="text-sm font-medium text-gray-300">
+                  <span className="text-sm font-medium text-on-surface">
                     {player.winRate}%
                   </span>
                 </td>
@@ -350,11 +350,11 @@ export default function RankingTable({ region, queueType }: RankingTableProps) {
                       </div>
                     )}
                     <div>
-                      <div className="text-sm font-medium text-gray-300">
+                      <div className="text-sm font-medium text-on-surface">
                         {getTierName(player.tier)}
                       </div>
                       {player.division && (
-                        <div className="text-xs text-gray-400">
+                        <div className="text-xs text-on-surface-medium">
                           {player.division}
                         </div>
                       )}
@@ -362,7 +362,7 @@ export default function RankingTable({ region, queueType }: RankingTableProps) {
                   </div>
                 </td>
                 <td className="px-2 py-4 whitespace-nowrap">
-                  <span className="text-sm text-gray-300">
+                  <span className="text-sm text-on-surface">
                     {player.leaguePoints} LP
                   </span>
                 </td>
@@ -374,12 +374,12 @@ export default function RankingTable({ region, queueType }: RankingTableProps) {
 
       {/* 페이지네이션 */}
       {totalPages > 1 && (
-        <div className="bg-gray-700 px-4 py-3 flex items-center justify-between border-t border-gray-600">
+        <div className="bg-surface-8 px-4 py-3 flex items-center justify-between border-t border-divider">
           <div className="flex-1 flex justify-between sm:hidden">
             <button
               onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
               disabled={currentPage === 1}
-              className="relative inline-flex items-center px-4 py-2 border border-gray-600 text-sm font-medium rounded-md text-gray-300 bg-gray-800 hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="relative inline-flex items-center px-4 py-2 border border-divider text-sm font-medium rounded-md text-on-surface bg-surface-4 hover:bg-surface-6 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               이전
             </button>
@@ -388,14 +388,14 @@ export default function RankingTable({ region, queueType }: RankingTableProps) {
                 setCurrentPage((prev) => Math.min(totalPages, prev + 1))
               }
               disabled={currentPage === totalPages}
-              className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-600 text-sm font-medium rounded-md text-gray-300 bg-gray-800 hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="ml-3 relative inline-flex items-center px-4 py-2 border border-divider text-sm font-medium rounded-md text-on-surface bg-surface-4 hover:bg-surface-6 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               다음
             </button>
           </div>
           <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
             <div>
-              <p className="text-sm text-gray-300">
+              <p className="text-sm text-on-surface">
                 <span className="font-medium">
                   {(currentPage - 1) * itemsPerPage + 1}
                 </span>
@@ -417,7 +417,7 @@ export default function RankingTable({ region, queueType }: RankingTableProps) {
                     setCurrentPage((prev) => Math.max(1, prev - 1))
                   }
                   disabled={currentPage === 1}
-                  className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-600 bg-gray-800 text-sm font-medium text-gray-300 hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-divider bg-surface-4 text-sm font-medium text-on-surface hover:bg-surface-6 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   이전
                 </button>
@@ -439,8 +439,8 @@ export default function RankingTable({ region, queueType }: RankingTableProps) {
                       onClick={() => setCurrentPage(pageNum)}
                       className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
                         currentPage === pageNum
-                          ? "z-10 bg-blue-600 border-blue-600 text-white"
-                          : "bg-gray-800 border-gray-600 text-gray-300 hover:bg-gray-600"
+                          ? "z-10 bg-primary border-primary text-on-surface"
+                          : "bg-surface-4 border-divider text-on-surface hover:bg-surface-6"
                       }`}
                     >
                       {pageNum}
@@ -452,7 +452,7 @@ export default function RankingTable({ region, queueType }: RankingTableProps) {
                     setCurrentPage((prev) => Math.min(totalPages, prev + 1))
                   }
                   disabled={currentPage === totalPages}
-                  className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-600 bg-gray-800 text-sm font-medium text-gray-300 hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-divider bg-surface-4 text-sm font-medium text-on-surface hover:bg-surface-6 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   다음
                 </button>

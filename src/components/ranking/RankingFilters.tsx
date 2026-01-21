@@ -43,18 +43,18 @@ export default function RankingFilters({
   const tierInfo = getTierInfo(region, queueType);
 
   return (
-    <div className="bg-gray-800 rounded-lg p-4 mb-6">
+    <div className="bg-surface-4 rounded-lg p-4 mb-6">
       <div className="grid grid-cols-3 gap-4">
         {/* 1섹션: 지역, 랭킹 타입 */}
         <div className="flex gap-4">
           <div className="w-32">
-            <label className="block text-sm font-medium text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-on-surface mb-2">
               지역
             </label>
             <select
               value={region}
               onChange={(e) => onRegionChange(e.target.value)}
-              className="w-full bg-gray-700 text-white border border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full bg-surface-8 text-on-surface border border-divider rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
               {regions.map((r) => (
                 <option key={r.value} value={r.value}>
@@ -65,13 +65,13 @@ export default function RankingFilters({
           </div>
 
           <div className="w-32">
-            <label className="block text-sm font-medium text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-on-surface mb-2">
               랭킹 타입
             </label>
             <select
               value={queueType}
               onChange={(e) => onQueueTypeChange(e.target.value)}
-              className="w-full bg-gray-700 text-white border border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full bg-surface-8 text-on-surface border border-divider rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
               {queueTypes.map((q) => (
                 <option key={q.value} value={q.value}>
@@ -87,22 +87,22 @@ export default function RankingFilters({
 
         {/* 3섹션: 챌린저/그랜드마스터 정보 */}
         <div className="flex gap-3 justify-end">
-          <div className="bg-gray-700 rounded-md p-3 w-40">
-            <div className="text-xs text-gray-400 mb-1">챌린저</div>
-            <div className="text-sm text-gray-300">
-              커트라인: <span className="font-semibold text-white">{tierInfo.challenger.cutoff} LP</span>
+          <div className="bg-surface-8 rounded-md p-3 w-40">
+            <div className="text-xs text-on-surface-medium mb-1">챌린저</div>
+            <div className="text-sm text-on-surface">
+              커트라인: <span className="font-semibold text-on-surface">{tierInfo.challenger.cutoff} LP</span>
             </div>
-            <div className="text-sm text-gray-300">
-              인원: <span className="font-semibold text-white">{tierInfo.challenger.players}명</span>
+            <div className="text-sm text-on-surface">
+              인원: <span className="font-semibold text-on-surface">{tierInfo.challenger.players}명</span>
             </div>
           </div>
-          <div className="bg-gray-700 rounded-md p-3 w-40">
-            <div className="text-xs text-gray-400 mb-1">그랜드마스터</div>
-            <div className="text-sm text-gray-300">
-              커트라인: <span className="font-semibold text-white">{tierInfo.grandmaster.cutoff} LP</span>
+          <div className="bg-surface-8 rounded-md p-3 w-40">
+            <div className="text-xs text-on-surface-medium mb-1">그랜드마스터</div>
+            <div className="text-sm text-on-surface">
+              커트라인: <span className="font-semibold text-on-surface">{tierInfo.grandmaster.cutoff} LP</span>
             </div>
-            <div className="text-sm text-gray-300">
-              인원: <span className="font-semibold text-white">{tierInfo.grandmaster.players}명</span>
+            <div className="text-sm text-on-surface">
+              인원: <span className="font-semibold text-on-surface">{tierInfo.grandmaster.players}명</span>
             </div>
           </div>
         </div>

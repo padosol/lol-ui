@@ -53,7 +53,7 @@ export default function IngamePlayer({
     : participant.riotId;
 
   return (
-    <div className="flex items-center gap-1.5 px-2 py-1 rounded border border-gray-700 bg-gray-800/50 hover:bg-gray-800/70 transition-all shadow-md hover:shadow-lg">
+    <div className="flex items-center gap-1.5 px-2 py-1 rounded border border-divider bg-surface-4/50 hover:bg-surface-4/70 transition-all shadow-md hover:shadow-lg">
       {/* 챔피언 아이콘 */}
       <div className="w-10 h-10 rounded overflow-hidden relative shrink-0">
         {championImageUrl ? (
@@ -66,7 +66,7 @@ export default function IngamePlayer({
             unoptimized
           />
         ) : (
-          <div className="w-full h-full bg-gray-700 flex items-center justify-center text-gray-400 text-xs">
+          <div className="w-full h-full bg-surface-8 flex items-center justify-center text-on-surface-medium text-xs">
             ?
           </div>
         )}
@@ -74,11 +74,11 @@ export default function IngamePlayer({
 
       {/* 플레이어 정보 */}
       <div className="flex-1 min-w-0">
-        <div className="text-white text-xs font-semibold truncate">
+        <div className="text-on-surface text-xs font-semibold truncate">
           {displayName}
         </div>
         {champName && (
-          <div className="text-gray-400 text-[10px] truncate">{champName}</div>
+          <div className="text-on-surface-medium text-[10px] truncate">{champName}</div>
         )}
       </div>
 

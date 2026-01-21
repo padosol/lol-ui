@@ -1,5 +1,6 @@
 import { QueryProvider } from "@/providers/QueryProvider";
 import GameDataLoader from "@/components/GameDataLoader";
+import { ThemeProvider } from "@/components/ThemeProvider";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -25,13 +26,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="ko" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <QueryProvider>
-          <GameDataLoader />
-          {children}
+          <ThemeProvider>
+            <GameDataLoader />
+            {children}
+          </ThemeProvider>
         </QueryProvider>
       </body>
     </html>

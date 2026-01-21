@@ -13,22 +13,23 @@ export default function DamageBar({
   value,
   color,
 }: DamageBarProps) {
+  // Material Design 2 desaturated colors
   const colorClasses = {
     orange: {
-      bar: "bg-orange-400/70",
-      text: "text-orange-300",
+      bar: "bg-warning/70",
+      text: "text-warning",
     },
     blue: {
-      bar: "bg-blue-400/70",
-      text: "text-blue-300",
+      bar: "bg-primary/70",
+      text: "text-primary",
     },
     red: {
-      bar: "bg-red-400/70",
-      text: "text-red-300",
+      bar: "bg-loss/70",
+      text: "text-loss",
     },
     lime: {
-      bar: "bg-lime-400/70",
-      text: "text-lime-300",
+      bar: "bg-success/70",
+      text: "text-success",
     },
   };
 
@@ -37,10 +38,10 @@ export default function DamageBar({
   return (
     <div className="flex flex-col flex-1">
       {/* 상단: 라벨 */}
-      <div className="text-gray-400 text-[9px]">{label}</div>
+      <div className="text-on-surface-medium text-[9px]">{label}</div>
       {/* 하단: 바 + 데미지 */}
       <div className="flex items-center gap-1.5">
-        <div className="flex-1 h-1.5 bg-gray-700/50 rounded-full overflow-hidden">
+        <div className="flex-1 h-1.5 bg-surface-8/50 rounded-full overflow-hidden">
           <div
             className={`h-full ${colors.bar} rounded-full transition-all`}
             style={{ width: `${percentage}%` }}

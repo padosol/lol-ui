@@ -40,10 +40,10 @@ export default function ChampionStatsOverview({
     return (
       <div>
         {showTitle && (
-          <h2 className="text-xl font-bold text-white mb-4">챔피언 통계</h2>
+          <h2 className="text-xl font-bold text-on-surface mb-4">챔피언 통계</h2>
         )}
         <div className="flex items-center justify-center py-12">
-          <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+          <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
         </div>
       </div>
     );
@@ -53,9 +53,9 @@ export default function ChampionStatsOverview({
     return (
       <div>
         {showTitle && (
-          <h2 className="text-xl font-bold text-white mb-4">챔피언 통계</h2>
+          <h2 className="text-xl font-bold text-on-surface mb-4">챔피언 통계</h2>
         )}
-        <div className="text-center py-12 text-gray-400">
+        <div className="text-center py-12 text-on-surface-medium">
           소환사 정보가 필요합니다.
         </div>
       </div>
@@ -66,9 +66,9 @@ export default function ChampionStatsOverview({
     return (
       <div>
         {showTitle && (
-          <h2 className="text-xl font-bold text-white mb-4">챔피언 통계</h2>
+          <h2 className="text-xl font-bold text-on-surface mb-4">챔피언 통계</h2>
         )}
-        <div className="text-center text-gray-400 border border-gray-600 rounded-lg">
+        <div className="text-center text-on-surface-medium border border-divider rounded-lg">
           챔피언 통계 데이터가 없습니다.
         </div>
       </div>
@@ -84,7 +84,7 @@ export default function ChampionStatsOverview({
   return (
     <div>
       {showTitle && (
-        <h2 className="text-xl font-bold text-white mb-4">챔피언 통계</h2>
+        <h2 className="text-xl font-bold text-on-surface mb-4">챔피언 통계</h2>
       )}
       <div className="space-y-2">
         {displayedStats.map((champion, index) => {
@@ -102,10 +102,10 @@ export default function ChampionStatsOverview({
           return (
             <div
               key={champion.championId || index}
-              className="flex items-center gap-2 p-2 bg-gray-700/50 rounded-lg hover:bg-gray-700 transition-colors"
+              className="flex items-center gap-2 p-2 bg-surface-8/50 rounded-lg hover:bg-surface-8 transition-colors"
             >
               {/* 챔피언 아이콘 */}
-              <div className="w-10 h-10 bg-gray-600 rounded-lg flex items-center justify-center overflow-hidden relative">
+              <div className="w-10 h-10 bg-surface-6 rounded-lg flex items-center justify-center overflow-hidden relative">
                 <Image
                   src={getChampionImageUrl(champion.championName)}
                   alt={champion.championName}
@@ -120,7 +120,7 @@ export default function ChampionStatsOverview({
               <div className="flex-1 min-w-0">
                 {/* 1줄: 좌(챔피언명) / 우(승률) */}
                 <div className="flex items-center justify-between gap-3">
-                  <div className="text-white font-semibold text-xs leading-tight truncate">
+                  <div className="text-on-surface font-semibold text-xs leading-tight truncate">
                     {championNameKo}
                   </div>
                   <div
@@ -134,13 +134,13 @@ export default function ChampionStatsOverview({
 
                 {/* 2줄: 좌(KDA) / 우(게임 수) */}
                 <div className="flex items-center justify-between gap-3 mt-1.5 leading-tight">
-                  <div className="text-gray-500 text-[11px]">
+                  <div className="text-on-surface-disabled text-[11px]">
                     KDA{" "}
                     <span className={getKDAColorClass(kda)}>
                       {kda === "perfect" ? "perfect" : kda.toFixed(2)}
                     </span>
                   </div>
-                  <div className="shrink-0 text-gray-400 text-xs">
+                  <div className="shrink-0 text-on-surface-medium text-xs">
                     {champion.playCount}게임
                   </div>
                 </div>

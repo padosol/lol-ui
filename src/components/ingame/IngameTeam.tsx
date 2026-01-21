@@ -24,7 +24,7 @@ export default function IngameTeam({
   return (
     <div className="flex flex-col gap-1">
       <div
-        className={`flex items-center justify-between text-sm font-bold ${teamColor} px-0 py-1.5 rounded-t-lg bg-gray-800/50`}
+        className={`flex items-center justify-between text-sm font-bold ${teamColor} px-0 py-1.5 rounded-t-lg bg-surface-4/50`}
       >
         <span>{teamName}</span>
         {bannedChampions.length > 0 && (

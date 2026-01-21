@@ -35,7 +35,7 @@ export default function TeamInfo({
       {/* 블루팀 */}
       {blueTeam.length > 0 && (
         <div className="flex flex-col w-[90px] shrink-0">
-          <div className="text-blue-400 text-[10px] font-semibold h-[14px] flex items-center">
+          <div className="text-team-blue text-[10px] font-semibold h-[14px] flex items-center">
             블루팀
           </div>
           <div className="space-y-0">
@@ -45,10 +45,10 @@ export default function TeamInfo({
                 <div
                   key={participant.participantId}
                   className={`flex items-center gap-1 h-5 rounded ${
-                    isMe ? "bg-blue-900/50" : "bg-gray-800/20"
+                    isMe ? "bg-team-blue/20" : "bg-surface-4/20"
                   }`}
                 >
-                  <div className="w-4 h-4 bg-gray-700 rounded overflow-hidden shrink-0 relative">
+                  <div className="w-4 h-4 bg-surface-8 rounded overflow-hidden shrink-0 relative">
                     <Image
                       src={getChampionImageUrl(participant.championName || "")}
                       alt={participant.championName || "Unknown"}
@@ -64,7 +64,7 @@ export default function TeamInfo({
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={(e) => e.stopPropagation()}
-                      className="block text-white text-[10px] font-medium truncate leading-tight hover:text-blue-400 hover:underline transition-colors"
+                      className="block text-on-surface text-[10px] font-medium truncate leading-tight hover:text-team-blue hover:underline transition-colors"
                     >
                       {participant.riotIdGameName || participant.summonerName}
                     </Link>
@@ -79,7 +79,7 @@ export default function TeamInfo({
       {/* 레드팀 */}
       {redTeam.length > 0 && (
         <div className="flex flex-col w-[90px] shrink-0">
-          <div className="text-red-400 text-[10px] font-semibold h-[14px] flex items-center">
+          <div className="text-team-red text-[10px] font-semibold h-[14px] flex items-center">
             레드팀
           </div>
           <div className="space-y-0">
@@ -89,10 +89,10 @@ export default function TeamInfo({
                 <div
                   key={participant.participantId}
                   className={`flex items-center gap-1 h-5 rounded ${
-                    isMe ? "bg-red-900/50 " : "bg-gray-800/20"
+                    isMe ? "bg-team-red/20 " : "bg-surface-4/20"
                   }`}
                 >
-                  <div className="w-4 h-4 bg-gray-700 rounded overflow-hidden shrink-0 relative">
+                  <div className="w-4 h-4 bg-surface-8 rounded overflow-hidden shrink-0 relative">
                     <Image
                       src={getChampionImageUrl(participant.championName || "")}
                       alt={participant.championName || "Unknown"}
@@ -108,7 +108,7 @@ export default function TeamInfo({
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={(e) => e.stopPropagation()}
-                      className="block text-white text-[10px] font-medium truncate leading-tight hover:text-red-400 hover:underline transition-colors"
+                      className="block text-on-surface text-[10px] font-medium truncate leading-tight hover:text-team-red hover:underline transition-colors"
                     >
                       {participant.riotIdGameName || participant.summonerName}
                     </Link>

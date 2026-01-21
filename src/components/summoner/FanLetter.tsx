@@ -64,7 +64,7 @@ export default function FanLetter({ summonerName: _summonerName }: FanLetterProp
   };
 
   return (
-    <div className="flex flex-col h-[600px] bg-gray-900 rounded-lg">
+    <div className="flex flex-col h-[600px] bg-surface rounded-lg">
       {/* 메시지 영역 */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages.map((message) => (
@@ -76,8 +76,8 @@ export default function FanLetter({ summonerName: _summonerName }: FanLetterProp
           >
             {/* 프로필 이미지 */}
             {!message.isMine && (
-              <div className="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center flex-shrink-0">
-                <span className="text-white text-xs">
+              <div className="w-8 h-8 bg-surface-6 rounded-full flex items-center justify-center flex-shrink-0">
+                <span className="text-on-surface text-xs">
                   {message.author.charAt(0)}
                 </span>
               </div>
@@ -90,7 +90,7 @@ export default function FanLetter({ summonerName: _summonerName }: FanLetterProp
             >
               {/* 작성자 이름 */}
               {!message.isMine && (
-                <span className="text-gray-400 text-xs px-1">
+                <span className="text-on-surface-medium text-xs px-1">
                   {message.author}
                 </span>
               )}
@@ -99,8 +99,8 @@ export default function FanLetter({ summonerName: _summonerName }: FanLetterProp
               <div
                 className={`px-4 py-2 rounded-lg ${
                   message.isMine
-                    ? "bg-blue-500 text-white rounded-tr-none"
-                    : "bg-gray-700 text-white rounded-tl-none"
+                    ? "bg-primary text-on-surface rounded-tr-none"
+                    : "bg-surface-6 text-on-surface rounded-tl-none"
                 }`}
               >
                 <p className="text-sm whitespace-pre-wrap break-words">
@@ -109,7 +109,7 @@ export default function FanLetter({ summonerName: _summonerName }: FanLetterProp
               </div>
 
               {/* 시간 */}
-              <span className="text-gray-500 text-xs px-1">
+              <span className="text-on-surface-disabled text-xs px-1">
                 {formatTime(message.timestamp)}
               </span>
             </div>
@@ -118,18 +118,18 @@ export default function FanLetter({ summonerName: _summonerName }: FanLetterProp
       </div>
 
       {/* 입력 영역 */}
-      <div className="border-t border-gray-700 p-4 bg-gray-800">
+      <div className="border-t border-divider p-4 bg-surface-4">
         <form onSubmit={handleSend} className="flex gap-2">
           <input
             type="text"
             value={inputMessage}
             onChange={(e) => setInputMessage(e.target.value)}
             placeholder="팬 래터를 입력하세요..."
-            className="flex-1 px-4 py-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-600"
+            className="flex-1 px-4 py-2 bg-surface-6 text-on-surface rounded-lg focus:outline-none focus:ring-2 focus:ring-primary border border-divider"
           />
           <button
             type="submit"
-            className="px-4 py-2 bg-gray-700 hover:bg-gray-600 cursor-pointer text-white rounded-lg flex items-center justify-center transition-colors"
+            className="px-4 py-2 bg-surface-6 hover:bg-surface-8 cursor-pointer text-on-surface rounded-lg flex items-center justify-center transition-colors"
           >
             <Send className="w-5 h-5" />
           </button>

@@ -50,14 +50,14 @@ export default function SummonerPage({ params }: PageProps) {
   // 로딩 중
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-900">
+      <div className="min-h-screen bg-surface">
         <Header />
         <Navigation />
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex items-center justify-center py-20">
             <div className="text-center">
-              <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-              <p className="text-gray-400">소환사 정보를 불러오는 중...</p>
+              <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+              <p className="text-on-surface-medium">소환사 정보를 불러오는 중...</p>
             </div>
           </div>
         </main>
@@ -69,7 +69,7 @@ export default function SummonerPage({ params }: PageProps) {
   // 404 에러 - 소환사를 찾을 수 없음
   if (isNotFound) {
     return (
-      <div className="min-h-screen bg-gray-900">
+      <div className="min-h-screen bg-surface">
         <Header />
         <Navigation />
         <SummonerNotFound summonerName={summonerName} tagline={tagline} />
@@ -81,17 +81,17 @@ export default function SummonerPage({ params }: PageProps) {
   // 기타 에러
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-900">
+      <div className="min-h-screen bg-surface">
         <Header />
         <Navigation />
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center py-20">
-            <p className="text-red-400 text-lg mb-4">
+            <p className="text-error text-lg mb-4">
               오류가 발생했습니다: {error.message}
             </p>
             <button
               onClick={() => window.location.reload()}
-              className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
+              className="px-6 py-2 bg-primary hover:bg-primary/90 text-on-surface rounded-lg"
             >
               다시 시도
             </button>
@@ -105,12 +105,12 @@ export default function SummonerPage({ params }: PageProps) {
   // 데이터가 없을 경우
   if (!data) {
     return (
-      <div className="min-h-screen bg-gray-900">
+      <div className="min-h-screen bg-surface">
         <Header />
         <Navigation />
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center py-20">
-            <p className="text-gray-400">데이터를 불러올 수 없습니다.</p>
+            <p className="text-on-surface-medium">데이터를 불러올 수 없습니다.</p>
           </div>
         </main>
         <Footer />
@@ -120,7 +120,7 @@ export default function SummonerPage({ params }: PageProps) {
 
   // 정상적으로 데이터 표시
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen bg-surface">
       <Header />
       <Navigation />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

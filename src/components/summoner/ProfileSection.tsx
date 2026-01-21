@@ -188,16 +188,16 @@ export default function ProfileSection({
 
   if (isLoading || !profileData) {
     return (
-      <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
+      <div className="bg-surface-4 rounded-lg p-6 border border-divider">
         <div className="flex items-center justify-center py-12">
-          <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+          <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="bg-gray-800 rounded-lg p-4 md:p-6 border border-gray-700">
+    <div className="bg-surface-4 rounded-lg p-4 md:p-6 border border-divider">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
         {/* 첫 번째 열: 프로필 아이콘, 프로필 이름, 랭크 정보, 갱신 버튼, 승률 통계 */}
         <div className="flex flex-col gap-3 md:gap-4">
@@ -205,7 +205,7 @@ export default function ProfileSection({
           <div className="flex items-start gap-3 md:gap-4">
             {/* 소환사 아이콘 */}
             <div className="relative shrink-0">
-              <div className="w-16 h-16 md:w-20 md:h-20 bg-gray-700 rounded-lg overflow-hidden border-2 border-gray-600 relative">
+              <div className="w-16 h-16 md:w-20 md:h-20 bg-surface-8 rounded-lg overflow-hidden border-2 border-divider relative">
                 {profileData.profileIconId ? (
                   <Image
                     src={getProfileIconImageUrl(profileData.profileIconId)}
@@ -221,7 +221,7 @@ export default function ProfileSection({
                   </span>
                 )}
               </div>
-              <div className="absolute bottom-0 right-0 bg-black text-white text-[9px] md:text-[10px] font-bold px-1 md:px-1.5 py-0.5 rounded border border-gray-900">
+              <div className="absolute bottom-0 right-0 bg-surface text-on-surface text-[9px] md:text-[10px] font-bold px-1 md:px-1.5 py-0.5 rounded border border-divider">
                 {profileData.summonerLevel}
               </div>
             </div>
@@ -230,10 +230,10 @@ export default function ProfileSection({
             <div className="flex-1 flex flex-col gap-3 md:gap-4">
               {/* 프로필 이름 */}
               <div>
-                <h1 className="text-lg md:text-xl font-bold text-white break-words">
+                <h1 className="text-lg md:text-xl font-bold text-on-surface break-words">
                   {profileData.gameName || summonerName}
                   {profileData.tagLine && (
-                    <span className="text-gray-400 ml-1 md:ml-2 text-sm md:text-base">
+                    <span className="text-on-surface-medium ml-1 md:ml-2 text-sm md:text-base">
                       #{profileData.tagLine}
                     </span>
                   )}
@@ -245,7 +245,7 @@ export default function ProfileSection({
                 <button
                   onClick={handleRefresh}
                   disabled={isRefreshDisabled()}
-                  className="flex items-center justify-center gap-1.5 px-2 py-1 bg-gray-700 hover:bg-gray-600 disabled:bg-gray-700 disabled:cursor-not-allowed cursor-pointer text-white rounded-lg text-xs font-medium transition-colors w-fit"
+                  className="flex items-center justify-center gap-1.5 px-2 py-1 bg-surface-8 hover:bg-surface-12 disabled:bg-surface-8 disabled:cursor-not-allowed cursor-pointer text-on-surface rounded-lg text-xs font-medium transition-colors w-fit"
                 >
                   <RefreshCw
                     className={`w-3 h-3 ${
@@ -255,7 +255,7 @@ export default function ProfileSection({
                   갱신
                 </button>
                 {remainingTime !== null && remainingTime > 0 && (
-                  <span className="text-[10px] text-gray-400 whitespace-nowrap">
+                  <span className="text-[10px] text-on-surface-medium whitespace-nowrap">
                     {Math.floor(remainingTime / 60)}:
                     {String(remainingTime % 60).padStart(2, "0")} 후 가능
                   </span>

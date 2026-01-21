@@ -175,10 +175,10 @@ export default function ChampionStats({
     return (
       <div>
         {showTitle && (
-          <h2 className="text-xl font-bold text-white mb-4">챔피언 통계</h2>
+          <h2 className="text-xl font-bold text-on-surface mb-4">챔피언 통계</h2>
         )}
         <div className="flex items-center justify-center py-12">
-          <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+          <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
         </div>
       </div>
     );
@@ -188,9 +188,9 @@ export default function ChampionStats({
     return (
       <div>
         {showTitle && (
-          <h2 className="text-xl font-bold text-white mb-4">챔피언 통계</h2>
+          <h2 className="text-xl font-bold text-on-surface mb-4">챔피언 통계</h2>
         )}
-        <div className="text-center py-12 text-white">
+        <div className="text-center py-12 text-on-surface">
           소환사 정보가 필요합니다.
         </div>
       </div>
@@ -201,9 +201,9 @@ export default function ChampionStats({
     return (
       <div>
         {showTitle && (
-          <h2 className="text-xl font-bold text-white mb-4">챔피언 통계</h2>
+          <h2 className="text-xl font-bold text-on-surface mb-4">챔피언 통계</h2>
         )}
-        <div className="text-center text-white border border-gray-600 rounded-lg py-12">
+        <div className="text-center text-on-surface border border-divider rounded-lg py-12">
           챔피언 통계 데이터가 없습니다.
         </div>
       </div>
@@ -213,18 +213,18 @@ export default function ChampionStats({
   return (
     <div>
       {showTitle && (
-        <h2 className="text-xl font-bold text-white mb-4">챔피언 통계</h2>
+        <h2 className="text-xl font-bold text-on-surface mb-4">챔피언 통계</h2>
       )}
-      <div className="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
+      <div className="bg-surface-4 rounded-lg border border-divider overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-gray-900/50 border-b border-gray-700">
+            <thead className="bg-surface-1/50 border-b border-divider">
               <tr>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-white">
+                <th className="px-4 py-3 text-left text-xs font-semibold text-on-surface">
                   챔피언
                 </th>
                 <th
-                  className="px-4 py-3 text-right text-xs font-semibold text-white cursor-pointer hover:text-gray-300 transition-colors"
+                  className="px-4 py-3 text-right text-xs font-semibold text-on-surface cursor-pointer hover:text-on-surface-medium transition-colors"
                   onClick={() => handleSort("playCount")}
                 >
                   게임
@@ -235,7 +235,7 @@ export default function ChampionStats({
                   )}
                 </th>
                 <th
-                  className="px-4 py-3 text-right text-xs font-semibold text-white cursor-pointer hover:text-gray-300 transition-colors"
+                  className="px-4 py-3 text-right text-xs font-semibold text-on-surface cursor-pointer hover:text-on-surface-medium transition-colors"
                   onClick={() => handleSort("wins")}
                 >
                   승리
@@ -246,7 +246,7 @@ export default function ChampionStats({
                   )}
                 </th>
                 <th
-                  className="px-4 py-3 text-right text-xs font-semibold text-white cursor-pointer hover:text-gray-300 transition-colors"
+                  className="px-4 py-3 text-right text-xs font-semibold text-on-surface cursor-pointer hover:text-on-surface-medium transition-colors"
                   onClick={() => handleSort("losses")}
                 >
                   패배
@@ -257,7 +257,7 @@ export default function ChampionStats({
                   )}
                 </th>
                 <th
-                  className="px-4 py-3 text-right text-xs font-semibold text-white cursor-pointer hover:text-gray-300 transition-colors"
+                  className="px-4 py-3 text-right text-xs font-semibold text-on-surface cursor-pointer hover:text-on-surface-medium transition-colors"
                   onClick={() => handleSort("winRate")}
                 >
                   승률
@@ -268,7 +268,7 @@ export default function ChampionStats({
                   )}
                 </th>
                 <th
-                  className="px-4 py-3 text-right text-xs font-semibold text-white cursor-pointer hover:text-gray-300 transition-colors"
+                  className="px-4 py-3 text-right text-xs font-semibold text-on-surface cursor-pointer hover:text-on-surface-medium transition-colors"
                   onClick={() => handleSort("kda")}
                 >
                   KDA
@@ -279,7 +279,7 @@ export default function ChampionStats({
                   )}
                 </th>
                 <th
-                  className="px-4 py-3 text-right text-xs font-semibold text-white cursor-pointer hover:text-gray-300 transition-colors"
+                  className="px-4 py-3 text-right text-xs font-semibold text-on-surface cursor-pointer hover:text-on-surface-medium transition-colors"
                   onClick={() => handleSort("kills")}
                 >
                   K
@@ -290,7 +290,7 @@ export default function ChampionStats({
                   )}
                 </th>
                 <th
-                  className="px-4 py-3 text-right text-xs font-semibold text-white cursor-pointer hover:text-gray-300 transition-colors"
+                  className="px-4 py-3 text-right text-xs font-semibold text-on-surface cursor-pointer hover:text-on-surface-medium transition-colors"
                   onClick={() => handleSort("deaths")}
                 >
                   D
@@ -301,7 +301,7 @@ export default function ChampionStats({
                   )}
                 </th>
                 <th
-                  className="px-4 py-3 text-right text-xs font-semibold text-white cursor-pointer hover:text-gray-300 transition-colors"
+                  className="px-4 py-3 text-right text-xs font-semibold text-on-surface cursor-pointer hover:text-on-surface-medium transition-colors"
                   onClick={() => handleSort("assists")}
                 >
                   A
@@ -311,7 +311,7 @@ export default function ChampionStats({
                     </span>
                   )}
                 </th>
-                <th className="px-4 py-3 text-right text-xs font-semibold text-white">
+                <th className="px-4 py-3 text-right text-xs font-semibold text-on-surface">
                   CS
                 </th>
               </tr>
@@ -324,11 +324,11 @@ export default function ChampionStats({
                 return (
                   <tr
                     key={champion.championId || index}
-                    className="border-b border-gray-700/50 hover:bg-gray-700/30 transition-colors"
+                    className="border-b border-divider/50 hover:bg-surface-8/30 transition-colors"
                   >
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 bg-gray-600 rounded-lg flex items-center justify-center overflow-hidden relative shrink-0">
+                        <div className="w-8 h-8 bg-surface-6 rounded-lg flex items-center justify-center overflow-hidden relative shrink-0">
                           <Image
                             src={getChampionImageUrl(champion.championName)}
                             alt={champion.championName}
@@ -338,40 +338,40 @@ export default function ChampionStats({
                             unoptimized
                           />
                         </div>
-                        <span className="text-white font-medium text-sm">
+                        <span className="text-on-surface font-medium text-sm">
                           {getChampionNameByEnglishName(champion.championName)}
                         </span>
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-right text-white text-sm">
+                    <td className="px-4 py-3 text-right text-on-surface text-sm">
                       {champion.playCount}
                     </td>
-                    <td className="px-4 py-3 text-right text-white text-sm">
+                    <td className="px-4 py-3 text-right text-on-surface text-sm">
                       {champion.win}
                     </td>
-                    <td className="px-4 py-3 text-right text-white text-sm">
+                    <td className="px-4 py-3 text-right text-on-surface text-sm">
                       {champion.losses}
                     </td>
                     <td className="px-4 py-3 text-right">
-                      <span className="text-white font-semibold">
+                      <span className="text-on-surface font-semibold">
                         {champion.winRate.toFixed(2)}%
                       </span>
                     </td>
                     <td className="px-4 py-3 text-right">
-                      <span className="text-sm font-semibold text-white">
+                      <span className="text-sm font-semibold text-on-surface">
                         {kdaDisplay}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-right text-white text-sm">
+                    <td className="px-4 py-3 text-right text-on-surface text-sm">
                       {champion.kills.toFixed(1)}
                     </td>
-                    <td className="px-4 py-3 text-right text-white text-sm">
+                    <td className="px-4 py-3 text-right text-on-surface text-sm">
                       {champion.deaths.toFixed(1)}
                     </td>
-                    <td className="px-4 py-3 text-right text-white text-sm">
+                    <td className="px-4 py-3 text-right text-on-surface text-sm">
                       {champion.assists.toFixed(1)}
                     </td>
-                    <td className="px-4 py-3 text-right text-white text-sm">
+                    <td className="px-4 py-3 text-right text-on-surface text-sm">
                       {champion.cs !== null ? champion.cs.toFixed(1) : "-"}
                     </td>
                   </tr>

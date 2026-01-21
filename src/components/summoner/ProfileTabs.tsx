@@ -28,7 +28,7 @@ export default function ProfileTabs({ summonerName, puuid }: ProfileTabsProps) {
   return (
     <div className="mt-6">
       {/* 탭 헤더 */}
-      <div className="bg-gray-800 rounded-t-lg border border-b-0 border-gray-700">
+      <div className="bg-surface-4 rounded-t-lg border border-b-0 border-divider">
         <div className="flex gap-0">
           {tabs.map((tab) => (
             <button
@@ -36,8 +36,8 @@ export default function ProfileTabs({ summonerName, puuid }: ProfileTabsProps) {
               onClick={() => setActiveTab(tab.id)}
               className={`px-6 py-3 font-medium text-sm transition-colors border-b-2 cursor-pointer ${
                 activeTab === tab.id
-                  ? "text-gray-200 border-gray-500 bg-gray-900"
-                  : "text-gray-400 border-transparent hover:text-gray-300"
+                  ? "text-on-surface border-on-surface-medium bg-surface-1"
+                  : "text-on-surface-medium border-transparent hover:text-on-surface"
               }`}
             >
               {tab.label}
@@ -47,7 +47,7 @@ export default function ProfileTabs({ summonerName, puuid }: ProfileTabsProps) {
       </div>
 
       {/* 탭 콘텐츠 */}
-      <div className="bg-gray-800 rounded-b-lg border border-gray-700">
+      <div className="bg-surface-4 rounded-b-lg border border-divider">
         {activeTab === "overview" && (
           <div className="p-6">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
