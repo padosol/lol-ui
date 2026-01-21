@@ -21,7 +21,7 @@ const queueTypes = [
 ];
 
 // 더미 데이터 - 실제 데이터로 교체 필요
-const getTierInfo = (region: string, queueType: string) => {
+const getTierInfo = (_region: string, _queueType: string) => {
   return {
     challenger: {
       cutoff: 1200,

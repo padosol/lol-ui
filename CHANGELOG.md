@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.3.0](https://github.com/padosol/lol-ui/compare/v1.2.0...v1.3.0) (2026-01-19)
+
+
+### Features
+
+* GitHub Actions 워크플로우 및 프로젝트 문서 개선 ([386a39d](https://github.com/padosol/lol-ui/commit/386a39d0406c31242351dad7ae220253afb35e0e))
+* GitHub Actions 워크플로우 및 프로젝트 문서 개선 ([ebe2d9a](https://github.com/padosol/lol-ui/commit/ebe2d9a642f732fc0c86b9a467c676f21c606a8a))
+
+
+### Bug Fixes
+
+* ProfileSection에서 platform 값 폴백 처리 추가 ([47d30d6](https://github.com/padosol/lol-ui/commit/47d30d65bca7d398ae96f8fe2e3634f3a2e0e348))
+* TypeScript 타입 안전성 개선 및 lint 에러 수정 ([8f3bbc2](https://github.com/padosol/lol-ui/commit/8f3bbc24d5ef660773ff21d4da0844f2247c54ec))
+
 ## [1.2.0](https://github.com/padosol/lol-ui/compare/v1.1.0...v1.2.0) (2026-01-15)
 
 

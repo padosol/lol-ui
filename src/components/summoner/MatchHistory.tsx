@@ -72,7 +72,6 @@ export default function MatchHistory({
   const [gameModeFilter, setGameModeFilter] = useState<GameModeFilter>("ALL");
   const [expandedMatchId, setExpandedMatchId] = useState<string | null>(null);
   const [showTopButton, setShowTopButton] = useState(false);
-  const limit = 20;
 
   // 매치 ID 리스트 가져오기
   const { data: matchIdsData, isLoading: isLoadingIds } = useMatchIds(
@@ -82,14 +81,17 @@ export default function MatchHistory({
     region
   );
 
-  // puuid/region 변경 시 누적 데이터 초기화
+  // puuid/region 변경 시 누적 데이터 초기화 - 의도적인 상태 리셋
+  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     setPage(1);
     setAccMatchIds([]);
     setExpandedMatchId(null);
   }, [puuid, region]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
-  // 페이지별 응답을 누적(append)해서 유지
+  // 페이지별 응답을 누적(append)해서 유지 - 외부 데이터 동기화
+  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     const newIds = matchIdsData?.content;
     if (!newIds || newIds.length === 0) return;
@@ -107,6 +109,7 @@ export default function MatchHistory({
       return next;
     });
   }, [matchIdsData]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   // 스크롤 위치에 따라 Top 버튼 표시/숨김
   useEffect(() => {
@@ -184,7 +187,7 @@ export default function MatchHistory({
         enabled: !!matchId && !!puuid,
         staleTime: 10 * 60 * 1000, // 10분간 캐시 유지
       })),
-    [matchIds, limit, puuid]
+    [matchIds, puuid]
   );
 
   const matchDetailsQueries = useQueries({

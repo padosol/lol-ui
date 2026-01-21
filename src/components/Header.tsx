@@ -4,7 +4,8 @@ import { useAuthStore } from "@/stores/useAuthStore";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
 export default function Header() {
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  // TODO: 로그인 기능 구현 시 아래 주석 해제
+  // const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
   return (
     <header className="bg-surface-1 border-b border-divider">

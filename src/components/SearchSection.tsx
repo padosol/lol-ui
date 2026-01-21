@@ -4,7 +4,7 @@ import { Search } from "lucide-react";
 import { useState } from "react";
 
 export default function SearchSection() {
-  const [region, setRegion] = useState("KR");
+  const [region, _setRegion] = useState("KR");
   const [summonerName, setSummonerName] = useState("");
 
   const handleSearch = (e: React.FormEvent) => {
