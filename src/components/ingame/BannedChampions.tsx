@@ -56,7 +56,7 @@ export default function BannedChampions({
       {bannedInfo.map((ban, index) => (
         <div
           key={index}
-          className="w-10 h-10 rounded overflow-hidden relative border border-gray-600 bg-gray-800"
+          className="w-10 h-10 rounded overflow-hidden relative border border-divider bg-surface-4"
         >
           {ban.championId !== -1 && ban.championName ? (
             <Image
@@ -71,7 +71,7 @@ export default function BannedChampions({
               }}
             />
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-gray-500 text-xs">
+            <div className="w-full h-full flex items-center justify-center text-on-surface-disabled text-xs">
               없음
             </div>
           )}

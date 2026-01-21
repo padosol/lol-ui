@@ -33,8 +33,8 @@ export default function IngameTab() {
     return (
       <div className="flex items-center justify-center py-12">
         <div className="text-center">
-          <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-400">인게임 정보를 불러오는 중...</p>
+          <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-on-surface-medium">인게임 정보를 불러오는 중...</p>
         </div>
       </div>
     );
@@ -43,12 +43,12 @@ export default function IngameTab() {
   if (error || !data) {
     return (
       <div className="text-center py-12">
-        <p className="text-red-400 mb-2">
+        <p className="text-error mb-2">
           오류: {error || "데이터를 불러올 수 없습니다"}
         </p>
         <button
           onClick={() => window.location.reload()}
-          className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm"
+          className="px-4 py-2 bg-primary hover:bg-primary/90 text-on-surface rounded-lg text-sm"
         >
           다시 시도
         </button>
@@ -69,7 +69,7 @@ export default function IngameTab() {
           participants={data.participants}
           teamId={100}
           teamName="블루팀"
-          teamColor="text-blue-400"
+          teamColor="text-team-blue"
           bannedChampions={blueBans}
         />
 
@@ -78,7 +78,7 @@ export default function IngameTab() {
           participants={data.participants}
           teamId={200}
           teamName="레드팀"
-          teamColor="text-red-400"
+          teamColor="text-team-red"
           bannedChampions={redBans}
         />
       </div>

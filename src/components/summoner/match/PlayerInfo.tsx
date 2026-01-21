@@ -41,7 +41,7 @@ export default function PlayerInfo({
     <div className="space-y-3">
       {/* 챔피언 포트레이트 */}
       <div className="relative w-20 h-20 mx-auto">
-        <div className="w-20 h-20 bg-gray-700 rounded-full overflow-hidden relative">
+        <div className="w-20 h-20 bg-surface-8 rounded-full overflow-hidden relative">
           {championIcon ? (
             <Image
               src={championIcon}
@@ -57,8 +57,8 @@ export default function PlayerInfo({
         </div>
         {/* 챔피언 레벨 */}
         {champLevel > 0 && (
-          <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-black rounded-full flex items-center justify-center border-2 border-gray-600">
-            <span className="text-white text-xs font-bold">{champLevel}</span>
+          <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-black rounded-full flex items-center justify-center border-2 border-surface-6">
+            <span className="text-on-surface text-xs font-bold">{champLevel}</span>
           </div>
         )}
       </div>
@@ -66,8 +66,8 @@ export default function PlayerInfo({
       {/* 챔피언 정보 (일반 모드에서만 표시) */}
       {!isArena && (
         <div className="text-center">
-          <div className="text-white font-semibold text-sm">{champion}</div>
-          <div className="text-gray-400 text-xs">
+          <div className="text-on-surface font-semibold text-sm">{champion}</div>
+          <div className="text-on-surface-medium text-xs">
             {getPositionName(position)}
           </div>
         </div>
@@ -76,7 +76,7 @@ export default function PlayerInfo({
       {/* 소환사 주문 및 룬 (2x2 그리드) */}
       <div className="grid grid-cols-2 gap-1 max-w-[60px] mx-auto">
         {summoner1Id > 0 && (
-          <div className="w-7 h-7 bg-gray-700 rounded overflow-hidden relative">
+          <div className="w-7 h-7 bg-surface-8 rounded overflow-hidden relative">
             <Image
               src={getSpellImageUrl(summoner1Id)}
               alt="Spell 1"
@@ -88,7 +88,7 @@ export default function PlayerInfo({
           </div>
         )}
         {summoner2Id > 0 && (
-          <div className="w-7 h-7 bg-gray-700 rounded overflow-hidden relative">
+          <div className="w-7 h-7 bg-surface-8 rounded overflow-hidden relative">
             <Image
               src={getSpellImageUrl(summoner2Id)}
               alt="Spell 2"
@@ -100,15 +100,15 @@ export default function PlayerInfo({
           </div>
         )}
         {/* 룬은 style에서 추출 필요 (추후 구현) */}
-        <div className="w-7 h-7 bg-gray-700 rounded"></div>
-        <div className="w-7 h-7 bg-gray-700 rounded"></div>
+        <div className="w-7 h-7 bg-surface-8 rounded"></div>
+        <div className="w-7 h-7 bg-surface-8 rounded"></div>
       </div>
 
       {/* KDA (일반 모드에서만 표시) */}
       {!isArena && (
         <div className="text-center">
-          <div className="text-white font-semibold text-sm">
-            {kda.kills} / <span className="text-red-400">{kda.deaths}</span> /{" "}
+          <div className="text-on-surface font-semibold text-sm">
+            {kda.kills} / <span className="text-loss">{kda.deaths}</span> /{" "}
             {kda.assists}
           </div>
           <div className="text-xs">
@@ -125,7 +125,7 @@ export default function PlayerInfo({
           {items.slice(0, 6).map((itemId, idx) => (
             <div
               key={idx}
-              className="w-6 h-6 bg-gray-700 rounded overflow-hidden relative"
+              className="w-6 h-6 bg-surface-8 rounded overflow-hidden relative"
             >
               {itemId > 0 ? (
                 <Image
@@ -137,13 +137,13 @@ export default function PlayerInfo({
                   unoptimized
                 />
               ) : (
-                <div className="w-full h-full bg-gray-800"></div>
+                <div className="w-full h-full bg-surface-4"></div>
               )}
             </div>
           ))}
           {/* 와드 슬롯 */}
           {items[6] > 0 && (
-            <div className="w-6 h-6 bg-gray-700 rounded overflow-hidden relative">
+            <div className="w-6 h-6 bg-surface-8 rounded overflow-hidden relative">
               <Image
                 src={getItemImageUrl(items[6])}
                 alt="Ward"

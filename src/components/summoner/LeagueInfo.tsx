@@ -19,10 +19,10 @@ export default function LeagueInfo({
     return (
       <div>
         {showTitle && (
-          <h2 className="text-xl font-bold text-white mb-4">리그 정보</h2>
+          <h2 className="text-xl font-bold text-on-surface mb-4">리그 정보</h2>
         )}
         <div className="flex items-center justify-center py-12">
-          <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+          <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
         </div>
       </div>
     );
@@ -32,9 +32,9 @@ export default function LeagueInfo({
     return (
       <div>
         {showTitle && (
-          <h2 className="text-xl font-bold text-white mb-4">리그 정보</h2>
+          <h2 className="text-xl font-bold text-on-surface mb-4">리그 정보</h2>
         )}
-        <div className="text-center py-12 text-gray-400">
+        <div className="text-center py-12 text-on-surface-medium">
           소환사 정보가 필요합니다.
         </div>
       </div>
@@ -51,9 +51,9 @@ export default function LeagueInfo({
     return (
       <div>
         {showTitle && (
-          <h2 className="text-xl font-bold text-white mb-4">리그 정보</h2>
+          <h2 className="text-xl font-bold text-on-surface mb-4">리그 정보</h2>
         )}
-        <div className="text-center text-gray-400 border border-gray-600 rounded-lg">
+        <div className="text-center text-on-surface-medium border border-divider rounded-lg">
           리그 정보가 없습니다.
         </div>
       </div>
@@ -99,16 +99,16 @@ export default function LeagueInfo({
   return (
     <div>
       {showTitle && (
-        <h2 className="text-xl font-bold text-white mb-4">리그 정보</h2>
+        <h2 className="text-xl font-bold text-on-surface mb-4">리그 정보</h2>
       )}
       <div className="space-y-4">
         {leagues.map((league, index) => (
           <div
             key={index}
-            className="bg-gray-700/50 rounded-lg p-4 border border-gray-600"
+            className="bg-surface-8/50 rounded-lg p-4 border border-divider"
           >
             <div className="flex items-center justify-between mb-3">
-              <h3 className="text-white font-semibold">
+              <h3 className="text-on-surface font-semibold">
                 {getQueueTypeName(league.leagueType)}
               </h3>
             </div>
@@ -116,7 +116,7 @@ export default function LeagueInfo({
             <div className="flex items-center gap-4">
               {/* 티어 아이콘 */}
               <div className="relative w-16 h-16 shrink-0">
-                <div className="w-16 h-16 bg-gray-800 rounded-lg overflow-hidden border-2 border-gray-600 relative shadow-lg">
+                <div className="w-16 h-16 bg-surface-4 rounded-lg overflow-hidden border-2 border-divider relative shadow-lg">
                   {getTierImageUrl(league.tier) ? (
                     <Image
                       src={getTierImageUrl(league.tier)}
@@ -132,7 +132,7 @@ export default function LeagueInfo({
                         league.tier
                       )} flex items-center justify-center`}
                     >
-                      <span className="text-white text-xl font-bold">
+                      <span className="text-on-surface text-xl font-bold">
                         {getTierInitial(league.tier)}
                       </span>
                     </div>
@@ -142,25 +142,25 @@ export default function LeagueInfo({
 
               {/* 랭크 정보 */}
               <div className="flex-1">
-                <div className="text-white font-semibold text-lg mb-1">
+                <div className="text-on-surface font-semibold text-lg mb-1">
                   {league.tier} {league.rank}
                 </div>
-                <div className="text-gray-400 text-sm mb-2">
+                <div className="text-on-surface-medium text-sm mb-2">
                   {league.leaguePoints} LP
                 </div>
                 <div className="flex items-center gap-4 text-sm">
                   <div>
-                    <span className="text-gray-400">승률 </span>
-                    <span className="text-white font-semibold">
+                    <span className="text-on-surface-medium">승률 </span>
+                    <span className="text-on-surface font-semibold">
                       {league.oow}
                     </span>
                   </div>
                   <div>
-                    <span className="text-green-400 font-semibold">
+                    <span className="text-win font-semibold">
                       {league.wins}승
                     </span>
-                    <span className="text-gray-500 mx-1">/</span>
-                    <span className="text-red-400 font-semibold">
+                    <span className="text-on-surface-disabled mx-1">/</span>
+                    <span className="text-loss font-semibold">
                       {league.losses}패
                     </span>
                   </div>

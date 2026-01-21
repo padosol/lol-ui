@@ -115,14 +115,14 @@ export default function LogoSearchSection() {
   };
 
   return (
-    <section className="bg-gray-900 border-b border-gray-800 py-12">
+    <section className="bg-surface-1 border-b border-divider py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center gap-10">
           {/* 로고 영역 - 이미지가 들어갈 공간 */}
           <div className="flex items-center justify-center">
             <div className="w-64 h-32 flex items-center justify-center">
               {/* 추후 이미지로 교체될 공간 */}
-              <h1 className="text-3xl font-bold text-blue-500">MMRTR</h1>
+              <h1 className="text-3xl font-bold text-primary">MMRTR</h1>
             </div>
           </div>
 
@@ -134,29 +134,29 @@ export default function LogoSearchSection() {
                 <button
                   type="button"
                   onClick={() => setIsRegionOpen((v) => !v)}
-                  className="relative px-3 py-2.5 pr-10 bg-gray-800 hover:bg-gray-700 rounded-l-lg border border-r border-gray-700 font-medium text-sm text-gray-200 min-w-[96px] cursor-pointer focus:outline-none h-full flex items-center gap-2"
+                  className="relative px-3 py-2.5 pr-10 bg-surface-4 hover:bg-surface-8 rounded-l-lg border border-r border-divider font-medium text-sm text-on-surface min-w-[96px] cursor-pointer focus:outline-none h-full flex items-center gap-2"
                   aria-haspopup="listbox"
                   aria-expanded={isRegionOpen}
                 >
                   <span className="flex items-center gap-2 min-w-0">
-                    <span className="text-gray-100">
+                    <span className="text-on-surface">
                       {REGION_OPTIONS.find((o) => o.value === region)?.label ??
                         region}
                     </span>
-                    <span className="text-[10px] text-gray-400">
+                    <span className="text-[10px] text-on-surface-medium">
                       {REGION_OPTIONS.find((o) => o.value === region)
                         ?.subLabel ?? region}
                     </span>
                   </span>
                   <ChevronDown
-                    className={`absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 transition-transform ${
+                    className={`absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-on-surface-medium transition-transform ${
                       isRegionOpen ? "rotate-180" : ""
                     }`}
                   />
                 </button>
 
                 {isRegionOpen && (
-                  <div className="absolute top-full left-0 mt-1 w-full bg-gray-800 border border-gray-700 rounded-lg shadow-lg z-50 overflow-hidden">
+                  <div className="absolute top-full left-0 mt-1 w-full bg-surface-4 border border-divider rounded-lg shadow-lg z-50 overflow-hidden">
                     <div className="py-1" role="listbox" aria-label="리전 선택">
                       {REGION_OPTIONS.map((opt) => {
                         const selected = opt.value === region;
@@ -170,8 +170,8 @@ export default function LogoSearchSection() {
                             }}
                             className={`w-full px-3 py-1.5 flex items-center justify-between text-left transition-colors cursor-pointer ${
                               selected
-                                ? "bg-gray-700/70 text-white"
-                                : "text-gray-200 hover:bg-gray-700"
+                                ? "bg-surface-8 text-on-surface"
+                                : "text-on-surface hover:bg-surface-8"
                             }`}
                             role="option"
                             aria-selected={selected}
@@ -179,7 +179,7 @@ export default function LogoSearchSection() {
                             <span className="font-medium text-sm">
                               {opt.label}
                             </span>
-                            <span className="text-xs text-gray-400">
+                            <span className="text-xs text-on-surface-medium">
                               {opt.subLabel}
                             </span>
                           </button>
@@ -208,9 +208,9 @@ export default function LogoSearchSection() {
                     }
                   }}
                   placeholder="Game name + #KR1"
-                  className="w-full px-4 py-3 pr-12 bg-gray-800 border border-gray-700 border-l-0 border-r-0 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent h-full"
+                  className="w-full px-4 py-3 pr-12 bg-surface-4 border border-divider border-l-0 border-r-0 text-on-surface placeholder-on-surface-disabled focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent h-full"
                 />
-                <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 text-xs">
+                <div className="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-disabled text-xs">
                   Game name + #{region}1
                 </div>
 
@@ -218,10 +218,10 @@ export default function LogoSearchSection() {
                 {showAutocomplete && (
                   <div
                     ref={autocompleteRef}
-                    className="absolute top-full left-0 right-0 mt-1 bg-gray-800 border border-gray-700 rounded-lg shadow-lg z-50 max-h-80 overflow-y-auto"
+                    className="absolute top-full left-0 right-0 mt-1 bg-surface-4 border border-divider rounded-lg shadow-lg z-50 max-h-80 overflow-y-auto"
                   >
                     {isLoadingAutocomplete ? (
-                      <div className="p-4 text-center text-gray-400">
+                      <div className="p-4 text-center text-on-surface-medium">
                         검색 중...
                       </div>
                     ) : autocompleteResults.length > 0 ? (
@@ -234,10 +234,10 @@ export default function LogoSearchSection() {
                             <button
                               key={uniqueKey}
                               onClick={() => handleAutocompleteSelect(item)}
-                              className="w-full px-3 py-1.5 flex items-center gap-2 hover:bg-gray-700 transition-colors text-left cursor-pointer"
+                              className="w-full px-3 py-1.5 flex items-center gap-2 hover:bg-surface-8 transition-colors text-left cursor-pointer"
                             >
                               {/* 1. 프로필 아이콘 */}
-                              <div className="w-8 h-8 bg-gray-700 rounded-lg overflow-hidden relative shrink-0">
+                              <div className="w-8 h-8 bg-surface-8 rounded-lg overflow-hidden relative shrink-0">
                                 {item.profileIconId ? (
                                   <Image
                                     src={getProfileIconImageUrl(
@@ -258,16 +258,16 @@ export default function LogoSearchSection() {
 
                               {/* 2. 기본 정보 */}
                               <div className="flex-1 min-w-0 flex flex-row items-center gap-2">
-                                <div className="text-white font-medium text-sm truncate">
+                                <div className="text-on-surface font-medium text-sm truncate">
                                   {item.gameName}
                                   {item.tagLine && (
-                                    <span className="text-gray-400 ml-1">
+                                    <span className="text-on-surface-medium ml-1">
                                       #{item.tagLine}
                                     </span>
                                   )}
                                 </div>
                                 {item.summonerLevel && (
-                                  <div className="text-gray-400 text-xs">
+                                  <div className="text-on-surface-medium text-xs">
                                     레벨 {item.summonerLevel}
                                   </div>
                                 )}
@@ -276,7 +276,7 @@ export default function LogoSearchSection() {
                               {/* 3. 티어 정보 */}
                               {item.tier && item.rank && (
                                 <div className="flex flex-row items-center gap-2 shrink-0">
-                                  <div className="w-10 h-10 bg-gray-800 rounded-lg overflow-hidden relative">
+                                  <div className="w-10 h-10 bg-surface-4 rounded-lg overflow-hidden relative">
                                     {getTierImageUrl(item.tier) ? (
                                       <Image
                                         src={getTierImageUrl(item.tier)}
@@ -292,18 +292,18 @@ export default function LogoSearchSection() {
                                           item.tier
                                         )} flex items-center justify-center`}
                                       >
-                                        <span className="text-white text-xs font-bold">
+                                        <span className="text-on-surface text-xs font-bold">
                                           {getTierInitial(item.tier)}
                                         </span>
                                       </div>
                                     )}
                                   </div>
                                   <div className="flex flex-row items-center gap-2">
-                                    <div className="text-white text-xs font-semibold">
+                                    <div className="text-on-surface text-xs font-semibold">
                                       {item.tier} {item.rank}
                                     </div>
                                     {item.leaguePoints !== null && (
-                                      <div className="text-gray-400 text-xs">
+                                      <div className="text-on-surface-medium text-xs">
                                         {item.leaguePoints}LP
                                       </div>
                                     )}
@@ -315,7 +315,7 @@ export default function LogoSearchSection() {
                         })}
                       </div>
                     ) : (
-                      <div className="p-4 text-center text-gray-400">
+                      <div className="p-4 text-center text-on-surface-medium">
                         검색 결과가 없습니다.
                       </div>
                     )}
@@ -326,7 +326,7 @@ export default function LogoSearchSection() {
               {/* 검색 버튼 */}
               <button
                 type="submit"
-                className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-r-lg flex items-center justify-center border border-l-0 border-blue-500 h-full"
+                className="px-6 py-3 bg-primary hover:bg-primary/90 text-on-surface rounded-r-lg flex items-center justify-center border border-l-0 border-primary h-full"
               >
                 <Search className="w-5 h-5" />
               </button>

@@ -39,14 +39,14 @@ export default function MatchSummary({ matches }: MatchSummaryProps) {
   const losses = matches.length - wins;
   const winRate = ((wins / matches.length) * 100).toFixed(1);
 
-  // 전적 요약 원차트 데이터
+  // 전적 요약 원차트 데이터 (Material Design 2 desaturated colors)
   const winLossChartData = {
     labels: ["승리", "패배"],
     datasets: [
       {
         data: [wins, losses],
-        backgroundColor: ["#22c55e", "#ef4444"],
-        borderColor: ["#16a34a", "#dc2626"],
+        backgroundColor: ["#4CAF50", "#E57373"], // desaturated green/red
+        borderColor: ["#388E3C", "#C62828"],
         borderWidth: 2,
       },
     ],
@@ -123,15 +123,15 @@ export default function MatchSummary({ matches }: MatchSummaryProps) {
     count: positionStats[position] || 0,
   }));
 
-  // 포지션 막대차트 데이터
+  // 포지션 막대차트 데이터 (Material Design primary color)
   const positionChartData = {
     labels: positions.map(() => ""), // 축약 문구 제거
     datasets: [
       {
         label: "게임 수",
         data: positions.map((pos) => pos.count),
-        backgroundColor: "#3b82f6",
-        borderColor: "#2563eb",
+        backgroundColor: "#BB86FC", // Material Design 2 primary
+        borderColor: "#9965F4",
         borderWidth: 1,
       },
     ],
@@ -160,10 +160,10 @@ export default function MatchSummary({ matches }: MatchSummaryProps) {
         beginAtZero: true,
         ticks: {
           stepSize: 1,
-          color: "#9ca3af",
+          color: "rgba(255, 255, 255, 0.60)",
         },
         grid: {
-          color: "#374151",
+          color: "rgba(255, 255, 255, 0.12)",
         },
       },
       x: {
@@ -178,36 +178,36 @@ export default function MatchSummary({ matches }: MatchSummaryProps) {
   };
 
   return (
-    <div className="bg-gray-900 rounded-lg p-2 mb-3 border border-gray-700">
+    <div className="bg-surface-1 rounded-lg p-2 mb-3 border border-divider">
       <div className="grid grid-cols-1 md:grid-cols-7 gap-2">
         {/* 전적 요약 - 원차트 */}
         <div className="md:col-span-2 space-y-1">
-          <div className="text-gray-400 text-xs mb-0.5">전적 요약</div>
+          <div className="text-on-surface-medium text-xs mb-0.5">전적 요약</div>
           <div className="flex flex-col items-center gap-1.5">
             <div className="relative w-20 h-20">
               <Doughnut data={winLossChartData} options={winLossChartOptions} />
               <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <div className="text-white font-bold text-xs">{winRate}%</div>
-                <div className="text-gray-400 text-[9px]">승률</div>
+                <div className="text-on-surface font-bold text-xs">{winRate}%</div>
+                <div className="text-on-surface-medium text-[9px]">승률</div>
               </div>
             </div>
             <div className="flex items-center gap-2.5 text-[11px]">
               <div className="flex items-center gap-1">
-                <div className="w-1.5 h-1.5 bg-green-500 rounded"></div>
-                <span className="text-gray-300">
+                <div className="w-1.5 h-1.5 bg-win rounded"></div>
+                <span className="text-on-surface-medium">
                   승리{" "}
-                  <span className="text-green-400 font-semibold">{wins}</span>
+                  <span className="text-win font-semibold">{wins}</span>
                 </span>
               </div>
               <div className="flex items-center gap-1">
-                <div className="w-1.5 h-1.5 bg-red-500 rounded"></div>
-                <span className="text-gray-300">
+                <div className="w-1.5 h-1.5 bg-loss rounded"></div>
+                <span className="text-on-surface-medium">
                   패배{" "}
-                  <span className="text-red-400 font-semibold">{losses}</span>
+                  <span className="text-loss font-semibold">{losses}</span>
                 </span>
               </div>
             </div>
-            <div className="text-gray-400 text-[9px]">
+            <div className="text-on-surface-medium text-[9px]">
               총 {matches.length}게임
             </div>
           </div>
@@ -215,14 +215,14 @@ export default function MatchSummary({ matches }: MatchSummaryProps) {
 
         {/* 주요 챔피언 - Row 형태 */}
         <div className="md:col-span-3 space-y-1">
-          <div className="text-gray-400 text-xs mb-0.5">주요 챔피언</div>
+          <div className="text-on-surface-medium text-xs mb-0.5">주요 챔피언</div>
           <div className="space-y-1">
             {topChampions.map((champ, index) => (
               <div
                 key={index}
-                className="flex items-center gap-1.5 p-1 bg-gray-800 rounded-lg hover:bg-gray-750 transition-colors"
+                className="flex items-center gap-1.5 p-1 bg-surface-4 rounded-lg hover:bg-surface-6 transition-colors"
               >
-                <div className="w-7 h-7 bg-gray-700 rounded-lg flex items-center justify-center overflow-hidden shrink-0 relative">
+                <div className="w-7 h-7 bg-surface-8 rounded-lg flex items-center justify-center overflow-hidden shrink-0 relative">
                   {champ.icon && champ.icon.startsWith("http") ? (
                     <Image
                       src={champ.icon}
@@ -237,15 +237,15 @@ export default function MatchSummary({ matches }: MatchSummaryProps) {
                   )}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="text-white text-[11px] font-medium truncate">
+                  <div className="text-on-surface text-[11px] font-medium truncate">
                     {champ.name}
                   </div>
-                  <div className="text-gray-400 text-[9px]">
+                  <div className="text-on-surface-medium text-[9px]">
                     {champ.games}게임 · 승률 {champ.winRate}%
                   </div>
                 </div>
                 <div className="text-right">
-                  <div className="text-white text-[11px] font-semibold">
+                  <div className="text-on-surface text-[11px] font-semibold">
                     {champ.wins}승 {champ.games - champ.wins}패
                   </div>
                 </div>
@@ -256,7 +256,7 @@ export default function MatchSummary({ matches }: MatchSummaryProps) {
 
         {/* 포지션 - 막대차트 */}
         <div className="md:col-span-2 space-y-1">
-          <div className="text-gray-400 text-xs mb-0.5">포지션</div>
+          <div className="text-on-surface-medium text-xs mb-0.5">포지션</div>
           <div className="relative">
             <div className="h-24">
               <Bar data={positionChartData} options={positionChartOptions} />

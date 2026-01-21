@@ -15,7 +15,7 @@ export default function Navigation() {
   ];
 
   return (
-    <nav className="bg-gray-900 border-b border-gray-800">
+    <nav className="bg-surface-1 border-b border-divider">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14">
           <div className="flex items-center gap-6">
@@ -27,8 +27,8 @@ export default function Navigation() {
                   href={item.href}
                   className={`font-medium text-sm transition-colors pb-1 border-b-2 ${
                     isActive
-                      ? "text-blue-500 border-blue-500"
-                      : "text-gray-300 hover:text-blue-500 border-transparent"
+                      ? "text-primary border-primary"
+                      : "text-on-surface-medium hover:text-primary border-transparent"
                   }`}
                 >
                   {item.label}
@@ -41,8 +41,8 @@ export default function Navigation() {
               href="/mypage"
               className={`font-medium text-sm transition-colors pb-1 border-b-2 ${
                 pathname === "/mypage"
-                  ? "text-blue-500 border-blue-500"
-                  : "text-gray-300 hover:text-blue-500 border-transparent"
+                  ? "text-primary border-primary"
+                  : "text-on-surface-medium hover:text-primary border-transparent"
               }`}
             >
               마이페이지

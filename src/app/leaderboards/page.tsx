@@ -12,13 +12,13 @@ export default function LeaderboardsPage() {
   const [queueType, setQueueType] = useState("solo");
 
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen bg-surface">
       <Header />
       <Navigation />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-6">
-          <h2 className="text-3xl font-bold text-white mb-2">솔로 랭크</h2>
-          <p className="text-gray-400">리그 오브 레전드 랭킹을 확인하세요</p>
+          <h2 className="text-3xl font-bold text-on-surface mb-2">솔로 랭크</h2>
+          <p className="text-on-surface-medium">리그 오브 레전드 랭킹을 확인하세요</p>
         </div>
 
         <RankingFilters
