@@ -17,7 +17,7 @@ export default function Navigation() {
   return (
     <nav className="bg-surface-1 border-b border-divider">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-14">
+        <div className="flex items-center justify-between h-10">
           <div className="flex items-center h-full gap-6">
             {navItems.map((item) => {
               const isActive = pathname === item.href;
