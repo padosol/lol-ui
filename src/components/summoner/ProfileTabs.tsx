@@ -1,5 +1,6 @@
 "use client";
 
+import type { LeagueInfoResponse } from "@/types/api";
 import { useState } from "react";
 import ChampionStats from "./ChampionStats";
 import ChampionStatsOverview from "./ChampionStatsOverview";
@@ -11,11 +12,12 @@ import MatchHistory from "./MatchHistory";
 interface ProfileTabsProps {
   summonerName: string;
   puuid?: string | null;
+  initialLeagueData?: LeagueInfoResponse;
 }
 
 type TabType = "overview" | "champions" | "ingame" | "fanletter";
 
-export default function ProfileTabs({ summonerName, puuid }: ProfileTabsProps) {
+export default function ProfileTabs({ summonerName, puuid, initialLeagueData }: ProfileTabsProps) {
   const [activeTab, setActiveTab] = useState<TabType>("overview");
 
   const tabs = [
@@ -55,7 +57,7 @@ export default function ProfileTabs({ summonerName, puuid }: ProfileTabsProps) {
                 <MatchHistory puuid={puuid} showTitle={false} />
               </div>
               <div className="lg:col-span-1 space-y-6">
-                <LeagueInfo puuid={puuid} showTitle={false} />
+                <LeagueInfo puuid={puuid} showTitle={false} initialData={initialLeagueData} />
                 <div>
                   <ChampionStatsOverview
                     puuid={puuid}

@@ -5,6 +5,7 @@ import {
   useSummonerProfile,
 } from "@/hooks/useSummoner";
 import { getSummonerRenewalStatus } from "@/lib/api/summoner";
+import type { SummonerProfile } from "@/types/api";
 import { getProfileIconImageUrl } from "@/utils/profile";
 import { parseSummonerName } from "@/utils/summoner";
 import { RefreshCw } from "lucide-react";
@@ -14,11 +15,13 @@ import { useEffect, useRef, useState } from "react";
 interface ProfileSectionProps {
   summonerName: string; // gameName 형식: "name-tagLine"
   region?: string;
+  initialData?: SummonerProfile; // 서버에서 미리 가져온 초기 데이터 (SSR용)
 }
 
 export default function ProfileSection({
   summonerName,
   region: propRegion,
+  initialData,
 }: ProfileSectionProps) {
   // region이 prop으로 전달되지 않은 경우 파싱
   const parsed = propRegion
@@ -29,7 +32,8 @@ export default function ProfileSection({
 
   const { data: profileData, isLoading } = useSummonerProfile(
     summonerName,
-    region
+    region,
+    { initialData }
   );
 
   const { mutate: refresh, isPending: isRefreshing } = useRefreshSummonerData();
