@@ -18,14 +18,14 @@ export default function Navigation() {
     <nav className="bg-surface-1 border-b border-divider">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14">
-          <div className="flex items-center gap-6">
+          <div className="flex items-center h-full gap-6">
             {navItems.map((item) => {
               const isActive = pathname === item.href;
               return (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`font-medium text-sm transition-colors pb-1 border-b-2 ${
+                  className={`h-full flex items-center font-medium text-sm transition-colors border-b-2 ${
                     isActive
                       ? "text-primary border-primary"
                       : "text-on-surface-medium hover:text-primary border-transparent"
@@ -39,7 +39,7 @@ export default function Navigation() {
           {isLoggedIn && (
             <Link
               href="/mypage"
-              className={`font-medium text-sm transition-colors pb-1 border-b-2 ${
+              className={`h-full flex items-center font-medium text-sm transition-colors border-b-2 ${
                 pathname === "/mypage"
                   ? "text-primary border-primary"
                   : "text-on-surface-medium hover:text-primary border-transparent"
