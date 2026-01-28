@@ -67,7 +67,7 @@ export default function MatchHistory({
 }: MatchHistoryProps) {
   const rootRef = useRef<HTMLDivElement | null>(null);
   const scrollTargetRef = useRef<Window | HTMLElement | null>(null);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const [accMatchIds, setAccMatchIds] = useState<string[]>([]);
   const [gameModeFilter, setGameModeFilter] = useState<GameModeFilter>("ALL");
   const [expandedMatchId, setExpandedMatchId] = useState<string | null>(null);
@@ -84,7 +84,7 @@ export default function MatchHistory({
 
   // puuid/region 변경 시 누적 데이터 초기화
   useEffect(() => {
-    setPage(1);
+    setPage(0);
     setAccMatchIds([]);
     setExpandedMatchId(null);
   }, [puuid, region]);
