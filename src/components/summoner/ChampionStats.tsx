@@ -29,13 +29,14 @@ type SortDirection = "asc" | "desc";
 
 export default function ChampionStats({
   puuid,
-  season = "25",
+  season = "26",
   showTitle = true,
   limit,
 }: ChampionStatsProps) {
   const { data: championStats = [], isLoading } = useChampionRanking(
     puuid || "",
-    season
+    season,
+    420
   );
 
   const [sortField, setSortField] = useState<SortField>("playCount");

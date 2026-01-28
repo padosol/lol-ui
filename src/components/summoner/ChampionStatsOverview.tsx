@@ -18,13 +18,14 @@ interface ChampionStatsOverviewProps {
 
 export default function ChampionStatsOverview({
   puuid,
-  season = "25",
+  season = "26",
   showTitle = true,
   limit = 5,
 }: ChampionStatsOverviewProps) {
   const { data: championStats = [], isLoading } = useChampionRanking(
     puuid || "",
-    season
+    season,
+    420
   );
 
   // champion.json 데이터 로드 (zustand store 사용)
@@ -40,7 +41,10 @@ export default function ChampionStatsOverview({
     return (
       <div>
         {showTitle && (
-          <h2 className="text-xl font-bold text-on-surface mb-4">챔피언 통계</h2>
+          <>
+            <h2 className="text-lg font-bold text-on-surface mb-2">솔로랭크 모스트5</h2>
+            <div className="border-b border-divider mb-4" />
+          </>
         )}
         <div className="flex items-center justify-center py-12">
           <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
@@ -53,7 +57,10 @@ export default function ChampionStatsOverview({
     return (
       <div>
         {showTitle && (
-          <h2 className="text-xl font-bold text-on-surface mb-4">챔피언 통계</h2>
+          <>
+            <h2 className="text-lg font-bold text-on-surface mb-2">솔로랭크 모스트5</h2>
+            <div className="border-b border-divider mb-4" />
+          </>
         )}
         <div className="text-center py-12 text-on-surface-medium">
           소환사 정보가 필요합니다.
@@ -66,7 +73,10 @@ export default function ChampionStatsOverview({
     return (
       <div>
         {showTitle && (
-          <h2 className="text-xl font-bold text-on-surface mb-4">챔피언 통계</h2>
+          <>
+            <h2 className="text-lg font-bold text-on-surface mb-2">솔로랭크 모스트5</h2>
+            <div className="border-b border-divider mb-4" />
+          </>
         )}
         <div className="text-center text-on-surface-medium border border-divider rounded-lg">
           챔피언 통계 데이터가 없습니다.
@@ -84,7 +94,10 @@ export default function ChampionStatsOverview({
   return (
     <div>
       {showTitle && (
-        <h2 className="text-xl font-bold text-on-surface mb-4">챔피언 통계</h2>
+        <>
+          <h2 className="text-lg font-bold text-on-surface mb-2">솔로랭크 모스트5</h2>
+          <div className="border-b border-divider mb-4" />
+        </>
       )}
       <div className="space-y-2">
         {displayedStats.map((champion, index) => {

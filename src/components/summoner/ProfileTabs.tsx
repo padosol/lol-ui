@@ -61,7 +61,7 @@ export default function ProfileTabs({ summonerName, puuid, initialLeagueData }: 
                 <div>
                   <ChampionStatsOverview
                     puuid={puuid}
-                    showTitle={false}
+                    showTitle={true}
                     limit={5}
                   />
                 </div>
