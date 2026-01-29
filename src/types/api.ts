@@ -210,3 +210,18 @@ export interface MatchIdsResponse {
   content: string[];
   hasNext: boolean;
 }
+
+// 랭킹 플레이어 타입
+export interface RankingPlayer {
+  puuid: string;
+  currentRank: number;
+  rankChange: number;
+  gameName: string;
+  tagLine: string;
+  wins: number;
+  losses: number;
+  winRate: number;
+  tier: string;
+  leaguePoints: number;
+  champions: string[];
+}

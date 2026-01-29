@@ -28,7 +28,7 @@ export default function LeaderboardsPage() {
           onQueueTypeChange={setQueueType}
         />
 
-        <RankingTable region={region} queueType={queueType} />
+        <RankingTable key={`${region}-${queueType}`} region={region} queueType={queueType} />
       </main>
       <Footer />
     </div>
