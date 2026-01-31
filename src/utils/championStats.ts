@@ -4,10 +4,10 @@
  */
 
 export const WIN_RATE_COLOR_CLASSES = {
-  LT_40: "text-gray-400",
-  LT_50: "text-red-400",
-  LT_60: "text-blue-400",
-  GTE_60: "text-yellow-400",
+  LT_40: "text-stat-neutral",
+  LT_50: "text-stat-low",
+  LT_60: "text-stat-mid",
+  GTE_60: "text-stat-high",
 } as const;
 
 /**
