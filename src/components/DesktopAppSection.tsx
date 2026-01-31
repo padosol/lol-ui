@@ -18,15 +18,25 @@ interface ChampionData {
 export default function DesktopAppSection() {
   const { data: rotationData, isLoading } = useChampionRotate("kr");
   const [champions, setChampions] = useState<ChampionData[]>([]);
+  const [hasLoadedChampions, setHasLoadedChampions] = useState(false);
 
   useEffect(() => {
     if (
       rotationData?.freeChampionIds &&
       rotationData.freeChampionIds.length > 0
     ) {
-      getChampionsByIds(rotationData.freeChampionIds).then(setChampions);
+      getChampionsByIds(rotationData.freeChampionIds)
+        .then(setChampions)
+        .finally(() => setHasLoadedChampions(true));
     }
   }, [rotationData]);
+
+  // rotationData가 있고 아직 로드 완료되지 않았으면 로딩 중
+  const isChampionsLoading =
+    !isLoading &&
+    rotationData?.freeChampionIds &&
+    rotationData.freeChampionIds.length > 0 &&
+    !hasLoadedChampions;
 
   return (
     <section className="bg-gradient-to-br from-surface to-surface-4 py-16 min-h-[300px]">
@@ -40,7 +50,7 @@ export default function DesktopAppSection() {
           </p>
         </div>
 
-        {isLoading ? (
+        {isLoading || isChampionsLoading ? (
           <div className="flex items-center justify-center py-12">
             <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
           </div>

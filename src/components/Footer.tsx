@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <footer className="bg-surface-1 text-on-surface-medium mt-16">
+    <footer className="bg-surface-1 text-on-surface-medium">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* 하단 저작권 */}
         <div className="border-t border-divider pt-8">

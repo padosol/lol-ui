@@ -146,21 +146,21 @@ export function getKDAColorClass(kdaValue: string | number): string {
     kdaValue === "perfect" ||
     (typeof kdaValue === "string" && kdaValue.toLowerCase() === "perfect")
   ) {
-    return "text-yellow-400"; // perfect: 금색 계열
+    return "text-stat-high"; // perfect: 금색 계열
   }
 
   const kda = typeof kdaValue === "string" ? parseFloat(kdaValue) : kdaValue;
   const integerPart = Math.floor(kda);
 
   if (integerPart >= 5) {
-    return "text-orange-300"; // 5.x 이상: 오렌지 계열
+    return "text-stat-perfect"; // 5.x 이상: 오렌지 계열
   } else if (integerPart >= 4) {
-    return "text-red-400"; // 4.x: 빨간색 계열
+    return "text-stat-low"; // 4.x: 빨간색 계열
   } else if (integerPart >= 3) {
-    return "text-blue-400"; // 3.x: 파란색 계열
+    return "text-stat-mid"; // 3.x: 파란색 계열
   } else if (integerPart >= 2) {
-    return "text-teal-500"; // 2.x: 청록색 계열 (차분한 톤)
+    return "text-secondary"; // 2.x: 청록색 계열 (차분한 톤)
   } else {
-    return "text-gray-400"; // 1.x: 회색 계열
+    return "text-stat-neutral"; // 1.x: 회색 계열
   }
 }

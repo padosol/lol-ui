@@ -10,9 +10,9 @@ export default function Home() {
       <Header />
       <Navigation />
       <LogoSearchSection />
-      <main>
+      <div>
         <DesktopAppSection />
-      </main>
+      </div>
       <Footer />
     </div>
   );

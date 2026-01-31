@@ -41,6 +41,13 @@ html.dark {
   --md-rank-top: #FFD54F;      /* 1-3위 - Amber 300 */
   --md-rank-high: #64B5F6;     /* 4-10위 - Blue 300 */
 
+  /* 통계 색상 */
+  --md-stat-low: #EF5350;      /* Red 400 */
+  --md-stat-mid: #42A5F5;      /* Blue 400 */
+  --md-stat-high: #FFCA28;     /* Amber 400 */
+  --md-stat-perfect: #FFA726;  /* Orange 400 */
+  --md-stat-neutral: #9E9E9E;  /* Gray 500 */
+
   /* 레거시 호환 */
   --background: var(--md-elevation-0);
   --foreground: var(--md-text-high);
@@ -50,16 +57,17 @@ html.dark {
 html.light {
   --md-surface-base: #FFFFFF;
 
-  --md-elevation-0: #FFFFFF;
-  --md-elevation-1: #F5F5F5;
-  --md-elevation-2: #EEEEEE;
-  --md-elevation-3: #E8E8E8;
-  --md-elevation-4: #E0E0E0;
-  --md-elevation-6: #D9D9D9;
-  --md-elevation-8: #D4D4D4;
-  --md-elevation-12: #C8C8C8;
-  --md-elevation-16: #C0C0C0;
-  --md-elevation-24: #B8B8B8;
+  /* 배경은 얕은 회색, 표면(카드 등)은 흰색으로 "떠 있는" 효과 */
+  --md-elevation-0: #F5F5F5;   /* 배경 - 얕은 회색 */
+  --md-elevation-1: #FFFFFF;   /* 표면 - 흰색 */
+  --md-elevation-2: #FFFFFF;
+  --md-elevation-3: #FFFFFF;
+  --md-elevation-4: #FFFFFF;
+  --md-elevation-6: #FFFFFF;
+  --md-elevation-8: #FFFFFF;
+  --md-elevation-12: #FFFFFF;
+  --md-elevation-16: #FFFFFF;
+  --md-elevation-24: #FFFFFF;
 
   --md-text-high: rgba(0, 0, 0, 0.87);
   --md-text-medium: rgba(0, 0, 0, 0.60);
@@ -68,9 +76,26 @@ html.light {
   --md-divider: rgba(0, 0, 0, 0.12);
 
   --md-primary: #1976D2;       /* Blue 700 */
+  --md-secondary: #00897B;     /* Teal 600 */
   --md-error: #D32F2F;         /* Red 700 */
   --md-success: #388E3C;       /* Green 700 */
   --md-warning: #F57C00;       /* Orange 700 */
+
+  /* LOL 게임 특화 색상 (라이트 테마 최적화) */
+  --md-win: #2E7D32;           /* Green 800 */
+  --md-loss: #C62828;          /* Red 800 */
+  --md-team-blue: #1565C0;     /* Blue 800 */
+  --md-team-red: #C62828;      /* Red 800 */
+  --md-gold: #F57F17;          /* Yellow 900 */
+  --md-rank-top: #F57F17;      /* Yellow 900 */
+  --md-rank-high: #1565C0;     /* Blue 800 */
+
+  /* 통계 색상 */
+  --md-stat-low: #C62828;      /* Red 800 */
+  --md-stat-mid: #1565C0;      /* Blue 800 */
+  --md-stat-high: #F57F17;     /* Yellow 900 */
+  --md-stat-perfect: #E65100;  /* Orange 900 */
+  --md-stat-neutral: #616161;  /* Gray 700 */
 
   --background: var(--md-elevation-0);
   --foreground: var(--md-text-high);
@@ -111,6 +136,13 @@ html.light {
   --color-gold: var(--md-gold);
   --color-rank-top: var(--md-rank-top);
   --color-rank-high: var(--md-rank-high);
+
+  /* 통계 색상 */
+  --color-stat-low: var(--md-stat-low);
+  --color-stat-mid: var(--md-stat-mid);
+  --color-stat-high: var(--md-stat-high);
+  --color-stat-perfect: var(--md-stat-perfect);
+  --color-stat-neutral: var(--md-stat-neutral);
 
   /* 기존 변수 유지 (레거시 호환) */
   --color-background: var(--background);

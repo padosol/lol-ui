@@ -5,6 +5,7 @@ import {
   useSummonerProfile,
 } from "@/hooks/useSummoner";
 import { getSummonerRenewalStatus } from "@/lib/api/summoner";
+import type { SummonerProfile } from "@/types/api";
 import { getProfileIconImageUrl } from "@/utils/profile";
 import { parseSummonerName } from "@/utils/summoner";
 import { RefreshCw } from "lucide-react";
@@ -14,11 +15,13 @@ import { useEffect, useRef, useState } from "react";
 interface ProfileSectionProps {
   summonerName: string; // gameName 형식: "name-tagLine"
   region?: string;
+  initialData?: SummonerProfile; // 서버에서 미리 가져온 초기 데이터 (SSR용)
 }
 
 export default function ProfileSection({
   summonerName,
   region: propRegion,
+  initialData,
 }: ProfileSectionProps) {
   // region이 prop으로 전달되지 않은 경우 파싱
   const parsed = propRegion
@@ -29,7 +32,8 @@ export default function ProfileSection({
 
   const { data: profileData, isLoading } = useSummonerProfile(
     summonerName,
-    region
+    region,
+    { initialData }
   );
 
   const { mutate: refresh, isPending: isRefreshing } = useRefreshSummonerData();
@@ -202,7 +206,7 @@ export default function ProfileSection({
         {/* 첫 번째 열: 프로필 아이콘, 프로필 이름, 랭크 정보, 갱신 버튼, 승률 통계 */}
         <div className="flex flex-col gap-3 md:gap-4">
           {/* 프로필 아이콘과 이름, 갱신 버튼 */}
-          <div className="flex items-start gap-3 md:gap-4">
+          <div className="flex items-stretch gap-3 md:gap-4">
             {/* 소환사 아이콘 */}
             <div className="relative shrink-0">
               <div className="w-16 h-16 md:w-20 md:h-20 bg-surface-8 rounded-lg overflow-hidden border-2 border-divider relative">
@@ -241,14 +245,14 @@ export default function ProfileSection({
               </div>
 
               {/* 갱신 버튼 */}
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 mt-auto">
                 <button
                   onClick={handleRefresh}
                   disabled={isRefreshDisabled()}
-                  className="flex items-center justify-center gap-1.5 px-2 py-1 bg-surface-8 hover:bg-surface-12 disabled:bg-surface-8 disabled:cursor-not-allowed cursor-pointer text-on-surface rounded-lg text-xs font-medium transition-colors w-fit"
+                  className="flex items-center justify-center gap-1.5 px-3 py-1.5 bg-surface-8 hover:bg-surface-12 disabled:bg-surface-8 disabled:cursor-not-allowed cursor-pointer text-on-surface rounded-lg text-sm font-medium transition-colors w-fit"
                 >
                   <RefreshCw
-                    className={`w-3 h-3 ${
+                    className={`w-4 h-4 ${
                       isRefreshing || isPolling ? "animate-spin" : ""
                     }`}
                   />

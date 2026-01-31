@@ -246,3 +246,30 @@ export interface MatchIdsResponse {
   content: string[];
   hasNext: boolean;
 }
+
+// 랭킹 플레이어 타입
+export interface RankingPlayer {
+  puuid: string;
+  currentRank: number;
+  rankChange: number;
+  gameName: string;
+  tagLine: string;
+  wins: number;
+  losses: number;
+  winRate: number;
+  tier: string;
+  rank: string | null; // 티어 내 단계 (I, II, III, IV)
+  leaguePoints: number;
+  champions: string[];
+}
+
+// 랭킹 응답 타입 (페이지네이션 포함)
+export interface RankingResponse {
+  content: RankingPlayer[];
+  page: number;
+  size: number;
+  totalElements: number;
+  totalPages: number;
+  isFirst: boolean;
+  isLast: boolean;
+}

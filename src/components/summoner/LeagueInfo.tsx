@@ -1,19 +1,22 @@
 "use client";
 
 import { useLeagueInfo } from "@/hooks/useSummoner";
+import type { LeagueInfoResponse } from "@/types/api";
 import { getTierImageUrl } from "@/utils/tier";
 import Image from "next/image";
 
 interface LeagueInfoProps {
   puuid?: string | null;
   showTitle?: boolean;
+  initialData?: LeagueInfoResponse;
 }
 
 export default function LeagueInfo({
   puuid,
   showTitle = true,
+  initialData,
 }: LeagueInfoProps) {
-  const { data: leagueInfo, isLoading } = useLeagueInfo(puuid || "");
+  const { data: leagueInfo, isLoading } = useLeagueInfo(puuid || "", { initialData });
 
   if (isLoading) {
     return (

@@ -18,13 +18,19 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
  * 소환사 프로필 정보 조회 훅
  * @param gameName 게임 유저명 (형식: "name-tagLine", 예: "hide on bush-KR1")
  * @param region 지역명 (기본값: "kr")
+ * @param options.initialData 서버에서 미리 가져온 초기 데이터 (SSR용)
  */
-export function useSummonerProfile(gameName: string, region: string = "kr") {
+export function useSummonerProfile(
+  gameName: string,
+  region: string = "kr",
+  options?: { initialData?: SummonerProfile }
+) {
   return useQuery<SummonerProfile, Error>({
     queryKey: ["summoner", "profile", gameName, region],
     queryFn: () => getSummonerProfile(gameName, region),
     enabled: !!gameName, // gameName이 있을 때만 쿼리 실행
     staleTime: 5 * 60 * 1000, // 5분간 캐시 유지
+    initialData: options?.initialData,
   });
 }
 
@@ -32,13 +38,13 @@ export function useSummonerProfile(gameName: string, region: string = "kr") {
  * 매치 ID 리스트 조회 훅
  * @param puuid 조회할 유저의 PUUID
  * @param queueId 큐 ID (선택)
- * @param pageNo 페이지 번호 (기본값: 1, 1부터 시작)
+ * @param pageNo 페이지 번호 (기본값: 0, 0부터 시작)
  * @param region 지역 (기본값: "kr")
  */
 export function useMatchIds(
   puuid: string,
   queueId?: number,
-  pageNo: number = 1,
+  pageNo: number = 0,
   region: string = "kr"
 ) {
   return useQuery<MatchIdsResponse, Error>({
@@ -86,13 +92,18 @@ export function useChampionRanking(
 /**
  * 소환사 리그 정보 조회 훅
  * @param puuid 조회할 소환사의 PUUID
+ * @param options.initialData 서버에서 미리 가져온 초기 데이터 (SSR용)
  */
-export function useLeagueInfo(puuid: string) {
+export function useLeagueInfo(
+  puuid: string,
+  options?: { initialData?: LeagueInfoResponse }
+) {
   return useQuery<LeagueInfoResponse, Error>({
     queryKey: ["summoner", "league", puuid],
     queryFn: () => getLeagueByPuuid(puuid),
     enabled: !!puuid,
     staleTime: 5 * 60 * 1000, // 5분간 캐시 유지
+    initialData: options?.initialData,
   });
 }
 
