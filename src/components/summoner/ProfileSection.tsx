@@ -249,10 +249,10 @@ export default function ProfileSection({
                 <button
                   onClick={handleRefresh}
                   disabled={isRefreshDisabled()}
-                  className="flex items-center justify-center gap-1.5 px-2 py-1 bg-surface-8 hover:bg-surface-12 disabled:bg-surface-8 disabled:cursor-not-allowed cursor-pointer text-on-surface rounded-lg text-xs font-medium transition-colors w-fit"
+                  className="flex items-center justify-center gap-1.5 px-3 py-1.5 bg-surface-8 hover:bg-surface-12 disabled:bg-surface-8 disabled:cursor-not-allowed cursor-pointer text-on-surface rounded-lg text-sm font-medium transition-colors w-fit"
                 >
                   <RefreshCw
-                    className={`w-3 h-3 ${
+                    className={`w-4 h-4 ${
                       isRefreshing || isPolling ? "animate-spin" : ""
                     }`}
                   />
