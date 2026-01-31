@@ -20,7 +20,12 @@ interface SummonerSpellData {
   id: string;
   key: string;
   name: string;
-  [key: string]: any;
+  description?: string;
+  cooldown?: number[];
+  image?: {
+    full: string;
+  };
+  [key: string]: string | number | number[] | { full: string } | undefined;
 }
 
 interface SummonerJson {

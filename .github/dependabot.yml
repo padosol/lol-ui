@@ -1,9 +1,25 @@
 version: 2
 updates:
-  - package-ecosystem: "pnpm" # 사용할 패키지 매니저 (pip, maven, docker 등)
-    directory: "/" # 매니페스트 파일 위치
+  # npm 의존성 업데이트 (pnpm 프로젝트도 npm ecosystem 사용)
+  - package-ecosystem: "npm"
+    directory: "/"
     schedule:
-      interval: "daily" # 확인 주기 (daily, weekly, monthly)
-    open-pull-requests-limit: 10 # 동시에 열어둘 PR 최대 개수
+      interval: "weekly"
+      day: "monday"
     labels:
-      - "dependencies" # PR에 붙일 라벨
+      - "dependencies"
+    commit-message:
+      prefix: "chore(deps)"
+    open-pull-requests-limit: 10
+
+  # GitHub Actions 업데이트
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    labels:
+      - "dependencies"
+      - "github-actions"
+    commit-message:
+      prefix: "chore(deps)"
