@@ -1,5 +1,5 @@
 import { getRanking } from "@/lib/api/rank";
-import type { RankingPlayer } from "@/types/api";
+import type { RankingResponse } from "@/types/api";
 import { useQuery } from "@tanstack/react-query";
 
 /**
@@ -15,7 +15,7 @@ export function useRanking(
   page: number,
   tier?: string
 ) {
-  return useQuery<RankingPlayer[], Error>({
+  return useQuery<RankingResponse, Error>({
     queryKey: ["ranking", region, rankType, page, tier],
     queryFn: () => getRanking(region, rankType, page, tier),
     enabled: !!region,

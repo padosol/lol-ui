@@ -63,7 +63,7 @@ export default function RankingTable({ region, queueType }: RankingTableProps) {
     );
   }
 
-  if (!data || data.length === 0) {
+  if (!data || data.content.length === 0) {
     return (
       <div className="bg-surface-4 rounded-lg overflow-hidden">
         <div className="flex items-center justify-center py-20">
@@ -107,7 +107,7 @@ export default function RankingTable({ region, queueType }: RankingTableProps) {
             </tr>
           </thead>
           <tbody className="bg-surface-4 divide-y divide-divider">
-            {data.map((player) => (
+            {data.content.map((player) => (
               <tr
                 key={player.puuid}
                 className="hover:bg-surface-8 transition-colors"
@@ -217,7 +217,7 @@ export default function RankingTable({ region, queueType }: RankingTableProps) {
           </button>
           <button
             onClick={() => setCurrentPage((prev) => prev + 1)}
-            disabled={data.length < 20}
+            disabled={data.isLast}
             className="ml-3 relative inline-flex items-center px-4 py-2 border border-divider text-sm font-medium rounded-md text-on-surface bg-surface-4 hover:bg-surface-6 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             다음
@@ -226,7 +226,8 @@ export default function RankingTable({ region, queueType }: RankingTableProps) {
         <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
           <div>
             <p className="text-sm text-on-surface">
-              페이지 <span className="font-medium">{currentPage}</span>
+              페이지 <span className="font-medium">{currentPage}</span> / <span className="font-medium">{data.totalPages}</span>
+              <span className="ml-2 text-on-surface-disabled">(총 {data.totalElements}명)</span>
             </p>
           </div>
           <div>
@@ -248,8 +249,10 @@ export default function RankingTable({ region, queueType }: RankingTableProps) {
                 } else {
                   pageNum = currentPage - 2 + i;
                 }
-
-                return (
+                return pageNum;
+              })
+                .filter((pageNum) => pageNum >= 1 && pageNum <= data.totalPages)
+                .map((pageNum) => (
                   <button
                     key={pageNum}
                     onClick={() => setCurrentPage(pageNum)}
@@ -261,11 +264,10 @@ export default function RankingTable({ region, queueType }: RankingTableProps) {
                   >
                     {pageNum}
                   </button>
-                );
-              })}
+                ))}
               <button
                 onClick={() => setCurrentPage((prev) => prev + 1)}
-                disabled={data.length < 20}
+                disabled={data.isLast}
                 className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-divider bg-surface-4 text-sm font-medium text-on-surface hover:bg-surface-6 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 다음
