@@ -206,7 +206,7 @@ export default function ProfileSection({
         {/* 첫 번째 열: 프로필 아이콘, 프로필 이름, 랭크 정보, 갱신 버튼, 승률 통계 */}
         <div className="flex flex-col gap-3 md:gap-4">
           {/* 프로필 아이콘과 이름, 갱신 버튼 */}
-          <div className="flex items-start gap-3 md:gap-4">
+          <div className="flex items-stretch gap-3 md:gap-4">
             {/* 소환사 아이콘 */}
             <div className="relative shrink-0">
               <div className="w-16 h-16 md:w-20 md:h-20 bg-surface-8 rounded-lg overflow-hidden border-2 border-divider relative">
@@ -245,7 +245,7 @@ export default function ProfileSection({
               </div>
 
               {/* 갱신 버튼 */}
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 mt-auto">
                 <button
                   onClick={handleRefresh}
                   disabled={isRefreshDisabled()}
