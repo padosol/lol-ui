@@ -1,5 +1,8 @@
 "use client";
 
+import { ChevronDown } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+
 interface RankingFiltersProps {
   region: string;
   queueType: string;
@@ -41,6 +44,38 @@ export default function RankingFilters({
   onQueueTypeChange,
 }: RankingFiltersProps) {
   const tierInfo = getTierInfo(region, queueType);
+  const [isRegionOpen, setIsRegionOpen] = useState(false);
+  const [isQueueTypeOpen, setIsQueueTypeOpen] = useState(false);
+  const regionRef = useRef<HTMLDivElement>(null);
+  const queueTypeRef = useRef<HTMLDivElement>(null);
+
+  // 외부 클릭 시 드롭다운 닫기
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        regionRef.current &&
+        !regionRef.current.contains(event.target as Node)
+      ) {
+        setIsRegionOpen(false);
+      }
+      if (
+        queueTypeRef.current &&
+        !queueTypeRef.current.contains(event.target as Node)
+      ) {
+        setIsQueueTypeOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const selectedRegionLabel =
+    regions.find((r) => r.value === region)?.label ?? region;
+  const selectedQueueTypeLabel =
+    queueTypes.find((q) => q.value === queueType)?.label ?? queueType;
 
   return (
     <div className="bg-surface-4 rounded-lg p-4 mb-6">
@@ -51,34 +86,102 @@ export default function RankingFilters({
             <label className="block text-sm font-medium text-on-surface mb-2">
               지역
             </label>
-            <select
-              value={region}
-              onChange={(e) => onRegionChange(e.target.value)}
-              className="w-full bg-surface-8 text-on-surface border border-divider rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            >
-              {regions.map((r) => (
-                <option key={r.value} value={r.value}>
-                  {r.label}
-                </option>
-              ))}
-            </select>
+            <div ref={regionRef} className="relative">
+              <button
+                type="button"
+                onClick={() => setIsRegionOpen((v) => !v)}
+                className="w-full bg-surface-8 text-on-surface border border-divider rounded-md px-3 py-2 flex items-center justify-between cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                aria-haspopup="listbox"
+                aria-expanded={isRegionOpen}
+              >
+                <span className="text-sm">{selectedRegionLabel}</span>
+                <ChevronDown
+                  className={`w-4 h-4 text-on-surface-medium transition-transform ${
+                    isRegionOpen ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+
+              {isRegionOpen && (
+                <div className="absolute top-full left-0 mt-1 w-full bg-surface-4 border border-divider rounded-md shadow-lg z-50 overflow-hidden">
+                  <div className="py-1" role="listbox" aria-label="지역 선택">
+                    {regions.map((r) => {
+                      const selected = r.value === region;
+                      return (
+                        <button
+                          key={r.value}
+                          type="button"
+                          onClick={() => {
+                            onRegionChange(r.value);
+                            setIsRegionOpen(false);
+                          }}
+                          className={`w-full px-3 py-1.5 text-left text-sm transition-colors cursor-pointer ${
+                            selected
+                              ? "bg-surface-8 text-on-surface"
+                              : "text-on-surface hover:bg-surface-8"
+                          }`}
+                          role="option"
+                          aria-selected={selected}
+                        >
+                          {r.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="w-32">
             <label className="block text-sm font-medium text-on-surface mb-2">
               랭킹 타입
             </label>
-            <select
-              value={queueType}
-              onChange={(e) => onQueueTypeChange(e.target.value)}
-              className="w-full bg-surface-8 text-on-surface border border-divider rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            >
-              {queueTypes.map((q) => (
-                <option key={q.value} value={q.value}>
-                  {q.label}
-                </option>
-              ))}
-            </select>
+            <div ref={queueTypeRef} className="relative">
+              <button
+                type="button"
+                onClick={() => setIsQueueTypeOpen((v) => !v)}
+                className="w-full bg-surface-8 text-on-surface border border-divider rounded-md px-3 py-2 flex items-center justify-between cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                aria-haspopup="listbox"
+                aria-expanded={isQueueTypeOpen}
+              >
+                <span className="text-sm">{selectedQueueTypeLabel}</span>
+                <ChevronDown
+                  className={`w-4 h-4 text-on-surface-medium transition-transform ${
+                    isQueueTypeOpen ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+
+              {isQueueTypeOpen && (
+                <div className="absolute top-full left-0 mt-1 w-full bg-surface-4 border border-divider rounded-md shadow-lg z-50 overflow-hidden">
+                  <div className="py-1" role="listbox" aria-label="랭킹 타입 선택">
+                    {queueTypes.map((q) => {
+                      const selected = q.value === queueType;
+                      return (
+                        <button
+                          key={q.value}
+                          type="button"
+                          onClick={() => {
+                            onQueueTypeChange(q.value);
+                            setIsQueueTypeOpen(false);
+                          }}
+                          className={`w-full px-3 py-1.5 text-left text-sm transition-colors cursor-pointer ${
+                            selected
+                              ? "bg-surface-8 text-on-surface"
+                              : "text-on-surface hover:bg-surface-8"
+                          }`}
+                          role="option"
+                          aria-selected={selected}
+                        >
+                          {q.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
