@@ -60,7 +60,8 @@ export interface MatchDetail {
   gameInfoData: GameInfoData;
   participantData: ParticipantData[];
   teamInfoData: {
-    [key: string]: TeamInfo;
+    blueTeam: TeamInfo;
+    redTeam: TeamInfo;
   };
 }
 
@@ -141,6 +142,10 @@ export interface TeamInfo {
   teamId: number;
   win: boolean;
   championKills: number;
+  baronKills: number;
+  dragonKills: number;
+  towerKills: number;
+  inhibitorKills: number;
   championId: number[];
   pickTurn: number[];
 }
