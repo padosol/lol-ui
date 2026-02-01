@@ -5,10 +5,11 @@ import Header from "@/components/Header";
 import Navigation from "@/components/Navigation";
 import RankingFilters from "@/components/ranking/RankingFilters";
 import RankingTable from "@/components/ranking/RankingTable";
+import { useRegionStore } from "@/stores/useRegionStore";
 import { useState } from "react";
 
 export default function LeaderboardsPage() {
-  const [region, setRegion] = useState("kr");
+  const { region, setRegion } = useRegionStore();
   const [queueType, setQueueType] = useState("solo");
 
   return (
