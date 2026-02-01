@@ -51,7 +51,7 @@ export default function ChampionStatsOverview({
   const renderTabHeader = () => (
     <div className="mb-3">
       <div className="flex items-center justify-between mb-2">
-        <h2 className="text-lg font-bold text-on-surface">모스트 5</h2>
+        <h2 className="text-sm font-semibold text-on-surface">모스트 5</h2>
       </div>
       <div className="flex gap-1 bg-surface-6/50 p-1 rounded-lg">
         {queueTabs.map((tab) => (
@@ -129,15 +129,15 @@ export default function ChampionStatsOverview({
           return (
             <div
               key={champion.championId || index}
-              className="flex items-center gap-2 p-2 bg-surface-8/50 rounded-lg hover:bg-surface-8 transition-colors"
+              className="flex items-center gap-1.5 p-1.5 bg-surface-8/50 rounded-lg hover:bg-surface-8 transition-colors border border-divider"
             >
               {/* 챔피언 아이콘 */}
-              <div className="w-10 h-10 bg-surface-6 rounded-lg flex items-center justify-center overflow-hidden relative">
+              <div className="w-8 h-8 bg-surface-6 rounded-lg flex items-center justify-center overflow-hidden relative">
                 <Image
                   src={getChampionImageUrl(champion.championName)}
                   alt={champion.championName}
                   fill
-                  sizes="40px"
+                  sizes="32px"
                   className="object-cover"
                   unoptimized
                 />
