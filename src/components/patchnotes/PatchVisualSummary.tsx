@@ -148,7 +148,7 @@ export default function PatchVisualSummary({
   const totalCount = buffs.length + nerfs.length + adjusts.length;
 
   return (
-    <div className="sticky top-4 z-10 bg-surface-1 rounded-lg border border-divider/50 overflow-hidden">
+    <div className="sticky top-4 z-20 bg-surface-1 rounded-lg border border-divider/50 overflow-hidden">
       {/* 헤더 - 클릭으로 접기/펼치기 */}
       <button
         onClick={() => setIsExpanded(!isExpanded)}
