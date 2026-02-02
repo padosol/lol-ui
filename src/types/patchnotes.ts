@@ -19,7 +19,8 @@ export interface PatchVersion {
 // 챔피언 변경사항
 export interface ChampionChange {
   championId: number;
-  championName: string;
+  championKey: string; // 영문 ID (예: "Aatrox")
+  championName: string; // 한글 이름 (예: "아트록스")
   changeType: ChangeType;
   summary: string;
   details: ChangeDetail[];
@@ -71,4 +72,79 @@ export interface PatchNoteResponse {
   champions: ChampionChange[];
   items: ItemChange[];
   systems: SystemChange[];
+}
+
+// 아레나 챔피언 변경사항
+export interface ArenaChampionChange {
+  championId: number;
+  championKey: string; // 영문 ID (예: "Aatrox")
+  championName: string; // 한글 이름 (예: "아트록스")
+  changeType: ChangeType;
+  summary: string;
+  details: ChangeDetail[];
+}
+
+// 아레나 시스템 변경사항
+export interface ArenaSystemChange {
+  category: string;
+  changeType: ChangeType;
+  summary: string;
+  details: ChangeDetail[];
+}
+
+// 아레나 변경사항
+export interface ArenaChanges {
+  champions: ArenaChampionChange[];
+  systems: ArenaSystemChange[];
+}
+
+// 무작위 총력전(ARAM) 챔피언 변경사항
+export interface AramChampionChange {
+  championId: number;
+  championKey: string; // 영문 ID (예: "Aatrox")
+  championName: string; // 한글 이름 (예: "아트록스")
+  changeType: ChangeType;
+  summary: string;
+  details: ChangeDetail[];
+}
+
+// 무작위 총력전(ARAM) 시스템 변경사항
+export interface AramSystemChange {
+  category: string;
+  changeType: ChangeType;
+  summary: string;
+  details: ChangeDetail[];
+}
+
+// 무작위 총력전(ARAM) 변경사항
+export interface AramChanges {
+  champions: AramChampionChange[];
+  systems: AramSystemChange[];
+}
+
+// 메타 예측
+export interface MetaPrediction {
+  category: string;
+  predictions: string[];
+}
+
+// 요약 통계
+export interface PatchSummary {
+  championBuffs: number;
+  championNerfs: number;
+  championAdjusts: number;
+  itemBuffs: number;
+  itemNerfs: number;
+  itemAdjusts: number;
+  arenaBuffs: number;
+  arenaNerfs: number;
+  arenaAdjusts: number;
+}
+
+// 확장된 패치노트
+export interface PatchNoteExtended extends PatchNote {
+  arena?: ArenaChanges;
+  aram?: AramChanges;
+  metaPredictions?: MetaPrediction[];
+  summary?: PatchSummary;
 }

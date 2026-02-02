@@ -45,6 +45,7 @@ export default function ItemChanges({ changes }: ItemChangesProps) {
           {changes.map((change, index) => (
             <ChangeCard
               key={`${change.itemId}-${index}`}
+              id={`item-${change.itemId}`}
               name={change.itemName}
               imageUrl={getItemImageUrl(change.itemId)}
               changeType={change.changeType}
