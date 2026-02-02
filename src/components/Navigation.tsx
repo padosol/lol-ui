@@ -11,6 +11,7 @@ export default function Navigation() {
   const navItems = [
     { label: "홈", href: "/" },
     { label: "랭킹", href: "/leaderboards" },
+    { label: "패치노트", href: "/patch-notes" },
     // { label: "챔피언 분석", href: "/champion-analysis" },
   ];
 
