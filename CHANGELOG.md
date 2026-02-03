@@ -1,5 +1,31 @@
 # Changelog
 
+## [1.4.0](https://github.com/padosol/lol-ui/compare/v1.3.0...v1.4.0) (2026-02-03)
+
+
+### Features
+
+* add arena/aram sections and visual summary to patch notes ([af2123c](https://github.com/padosol/lol-ui/commit/af2123cbfd56b25e3ceeaf703e7a77f3ea84fe47))
+* add dark/light theme support with Material Design 2 color system ([0bea9f0](https://github.com/padosol/lol-ui/commit/0bea9f01b5689c93db5019bebd3ea0a3cb29a9e5))
+* add pagination metadata to ranking API response ([95414b1](https://github.com/padosol/lol-ui/commit/95414b186071b0d3bcc5a0c06af02e718bb49aff))
+* add patch notes page with champion/item/system changes ([4f69034](https://github.com/padosol/lol-ui/commit/4f69034d092c84f918e25a1502721d7cc750ed5b))
+* add patch notes page with static data and visual summary ([dd3ced6](https://github.com/padosol/lol-ui/commit/dd3ced6f8fdc1369f5f642dfb858db8c08e88958))
+* add region store and improve champion stats UI ([e9988be](https://github.com/padosol/lol-ui/commit/e9988be7414071e355bd5c0610510edcec83947a))
+* dark/light theme support with Material Design 2 ([9441e61](https://github.com/padosol/lol-ui/commit/9441e61a483aff80f69706b49969241e6e63638e))
+* integrate ranking API with real backend data ([8bb1631](https://github.com/padosol/lol-ui/commit/8bb163101eff13b067f8ce1901b60e9f3a32a8a7))
+* invert light theme surface colors and add semantic stat colors ([462287f](https://github.com/padosol/lol-ui/commit/462287ffd1152ee6561485a3eb003b2d78b4890d))
+* replace native select with custom dropdown in ranking filters ([cff0026](https://github.com/padosol/lol-ui/commit/cff0026bf4d91ff285f3771b6324d7f6f45bd2a2))
+* update champion stats to season 26 solo ranked queue ([f7a07ae](https://github.com/padosol/lol-ui/commit/f7a07ae79001f7984330d55615b57918a5035af3))
+* update teamInfoData structure to use blueTeam/redTeam keys ([af9daad](https://github.com/padosol/lol-ui/commit/af9daadb6b6ab8137b5e82326f2aa0885fc388d8))
+
+
+### Bug Fixes
+
+* change match list pagination to start from page 0 ([f65e17a](https://github.com/padosol/lol-ui/commit/f65e17a4222d2e1a43bdbf074fbb6abda88093ed))
+* correct navigation link vertical alignment ([9bbd9b7](https://github.com/padosol/lol-ui/commit/9bbd9b7ed90c0417da37b1eaeac241c6ba75f4fe))
+* improve home page layout and game data loading ([74a9cce](https://github.com/padosol/lol-ui/commit/74a9cce4f0fae5e47820ef72cdcc5e54db8bd7ad))
+* increase z-index on sticky PatchVisualSummary to prevent content overlap ([262718a](https://github.com/padosol/lol-ui/commit/262718adaf3ab9d72f93febfc7336de87b4bbdad))
+
 ## [1.3.0](https://github.com/padosol/lol-ui/compare/v1.2.0...v1.3.0) (2026-01-19)
 
 
