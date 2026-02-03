@@ -47,8 +47,7 @@ export default function IngamePlayer({
     ? getChampionImageUrl(champId)
     : `https://static.mmrtr.shop/champion/${participant.championId}.png`;
 
-  const isBot = !participant.puuid;
-  const displayName = isBot
+  const displayName = participant.isBot
     ? `${participant.riotId} (Bot)`
     : participant.riotId;
 

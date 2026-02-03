@@ -13,7 +13,7 @@ interface IngameTeamProps {
 }
 
 export default function IngameTeam({
-  participants,
+  participants = [],
   teamId,
   teamName,
   teamColor,

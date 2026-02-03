@@ -2,34 +2,20 @@
 
 import IngameHeader from "@/components/ingame/IngameHeader";
 import IngameTeam from "@/components/ingame/IngameTeam";
-import type { SpectatorData } from "@/types/spectator";
-import { useEffect, useState } from "react";
+import { useActiveGame } from "@/hooks/useSpectator";
+import { Gamepad2 } from "lucide-react";
 
-export default function IngameTab() {
-  const [data, setData] = useState<SpectatorData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+interface IngameTabProps {
+  region: string;
+  puuid?: string | null;
+}
 
-  useEffect(() => {
-    const loadSpectatorData = async () => {
-      try {
-        const response = await fetch("/data/spectator.json");
-        if (!response.ok) {
-          throw new Error("Failed to load spectator data");
-        }
-        const jsonData = await response.json();
-        setData(jsonData);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Unknown error");
-      } finally {
-        setLoading(false);
-      }
-    };
+export default function IngameTab({ region, puuid }: IngameTabProps) {
+  const { data, isLoading, error, refetch } = useActiveGame(region, puuid);
 
-    loadSpectatorData();
-  }, []);
+  console.log(data)
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center py-12">
         <div className="text-center">
@@ -40,18 +26,33 @@ export default function IngameTab() {
     );
   }
 
-  if (error || !data) {
+  if (error) {
     return (
       <div className="text-center py-12">
         <p className="text-error mb-2">
-          오류: {error || "데이터를 불러올 수 없습니다"}
+          오류: {error.message || "데이터를 불러올 수 없습니다"}
         </p>
         <button
-          onClick={() => window.location.reload()}
+          onClick={() => refetch()}
           className="px-4 py-2 bg-primary hover:bg-primary/90 text-on-surface rounded-lg text-sm"
         >
           다시 시도
         </button>
+      </div>
+    );
+  }
+
+  // 게임 중이 아닌 경우
+  if (!data) {
+    return (
+      <div className="flex flex-col items-center justify-center py-16">
+        <Gamepad2 className="w-16 h-16 text-on-surface-medium mb-4" />
+        <p className="text-on-surface text-lg font-medium mb-2">
+          현재 게임 중이 아닙니다
+        </p>
+        <p className="text-on-surface-medium text-sm">
+          소환사가 게임을 시작하면 여기에 정보가 표시됩니다
+        </p>
       </div>
     );
   }
@@ -66,7 +67,7 @@ export default function IngameTab() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
         {/* 블루팀 */}
         <IngameTeam
-          participants={data.participants}
+          participants={data.participants ?? []}
           teamId={100}
           teamName="블루팀"
           teamColor="text-team-blue"
@@ -75,7 +76,7 @@ export default function IngameTab() {
 
         {/* 레드팀 */}
         <IngameTeam
-          participants={data.participants}
+          participants={data.participants ?? []}
           teamId={200}
           teamName="레드팀"
           teamColor="text-team-red"
