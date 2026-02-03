@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.5.0](https://github.com/padosol/lol-ui/compare/v1.4.0...v1.5.0) (2026-02-03)
+
+
+### Features
+
+* implement live spectator API integration for ingame tab ([28017ea](https://github.com/padosol/lol-ui/commit/28017ea38ee2ad616f9cfab439a1928ffa8d0b85))
+* implement live spectator API integration for ingame tab ([8d3d661](https://github.com/padosol/lol-ui/commit/8d3d6611f06ebc5bef15bdfdd334d672e2d8b257))
+
 ## [1.4.0](https://github.com/padosol/lol-ui/compare/v1.3.0...v1.4.0) (2026-02-03)
 
 
