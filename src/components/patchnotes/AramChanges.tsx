@@ -25,7 +25,7 @@ export default function AramChanges({ changes }: AramChangesProps) {
           </h4>
           {changes.champions.map((change, index) => (
             <ChangeCard
-              key={`aram-champion-${change.championId}-${index}`}
+              key={`aram-champion-${change.championKey}-${index}`}
               id={`aram-champion-${change.championKey}`}
               name={change.championName}
               imageUrl={getChampionImageUrl(change.championKey)}

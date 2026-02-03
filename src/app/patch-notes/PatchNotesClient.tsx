@@ -15,7 +15,7 @@ export default function PatchNotesClient() {
   // 사용자가 선택한 버전이 있으면 그것을, 없으면 첫 번째 패치를 사용
   const selectedVersion = useMemo(() => {
     if (userSelectedVersion) return userSelectedVersion;
-    if (patches && patches.length > 0) return patches[0].version;
+    if (patches && patches.length > 0) return patches[0].versionId;
     return null;
   }, [userSelectedVersion, patches]);
 

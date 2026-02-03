@@ -53,7 +53,7 @@ export default function ArenaChanges({ changes }: ArenaChangesProps) {
               </h4>
               {changes.champions.map((change, index) => (
                 <ChangeCard
-                  key={`arena-champion-${change.championId}-${index}`}
+                  key={`arena-champion-${change.championKey}-${index}`}
                   id={`arena-champion-${change.championKey}`}
                   name={change.championName}
                   imageUrl={getChampionImageUrl(change.championKey)}

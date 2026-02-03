@@ -9,16 +9,21 @@ export type ChangeType =
   | "rework"
   | "bugfix";
 
-// 패치 버전 목록 아이템
+// 패치 버전 목록 아이템 (기존 - 호환성 유지)
 export interface PatchVersion {
   version: string;
   releaseDate: string;
   highlights: string[];
 }
 
+// API 응답: 패치노트 목록 아이템
+export interface PatchVersionListItem {
+  versionId: string;
+  title: string;
+}
+
 // 챔피언 변경사항
 export interface ChampionChange {
-  championId: number;
   championKey: string; // 영문 ID (예: "Aatrox")
   championName: string; // 한글 이름 (예: "아트록스")
   changeType: ChangeType;
@@ -50,12 +55,26 @@ export interface ChangeDetail {
   after: string;
 }
 
+// 에픽 목표물 변경사항 (바론, 드래곤, 협곡의 전령 등)
+export interface EpicObjectiveChange {
+  objectiveName: string;
+  changeType: ChangeType;
+  summary: string;
+  details: ChangeDetail[];
+}
+
+// 공통 변경사항 (소환사의 협곡)
+export interface CommonChanges {
+  champions: ChampionChange[];
+  items: ItemChange[];
+  epicObjectives: EpicObjectiveChange[];
+}
+
 // 패치노트 상세
 export interface PatchNote {
   version: string;
   releaseDate: string;
-  champions: ChampionChange[];
-  items: ItemChange[];
+  common: CommonChanges;
   systems: SystemChange[];
 }
 
@@ -65,18 +84,25 @@ export interface PatchVersionsResponse {
   hasNext: boolean;
 }
 
-// 패치노트 상세 응답
+// 패치노트 상세 응답 (기존 - 호환성 유지)
 export interface PatchNoteResponse {
   version: string;
   releaseDate: string;
-  champions: ChampionChange[];
-  items: ItemChange[];
+  common: CommonChanges;
   systems: SystemChange[];
+}
+
+// API 응답: 패치노트 상세 (새 API)
+export interface PatchNoteDetailResponse {
+  versionId: string;
+  title: string;
+  content: import("./patchRaw").RawPatchNote;
+  patchUrl?: string;
+  createdAt?: string;
 }
 
 // 아레나 챔피언 변경사항
 export interface ArenaChampionChange {
-  championId: number;
   championKey: string; // 영문 ID (예: "Aatrox")
   championName: string; // 한글 이름 (예: "아트록스")
   changeType: ChangeType;
@@ -100,7 +126,6 @@ export interface ArenaChanges {
 
 // 무작위 총력전(ARAM) 챔피언 변경사항
 export interface AramChampionChange {
-  championId: number;
   championKey: string; // 영문 ID (예: "Aatrox")
   championName: string; // 한글 이름 (예: "아트록스")
   changeType: ChangeType;
@@ -147,4 +172,6 @@ export interface PatchNoteExtended extends PatchNote {
   aram?: AramChanges;
   metaPredictions?: MetaPrediction[];
   summary?: PatchSummary;
+  patchUrl?: string;
+  createdAt?: string;
 }

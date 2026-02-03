@@ -44,7 +44,7 @@ export default function ChampionChanges({ changes }: ChampionChangesProps) {
         <div className="p-4 pt-0 space-y-2">
           {changes.map((change, index) => (
             <ChangeCard
-              key={`${change.championId}-${index}`}
+              key={`champion-${change.championKey}-${index}`}
               id={`champion-${change.championKey}`}
               name={change.championName}
               imageUrl={getChampionImageUrl(change.championKey)}

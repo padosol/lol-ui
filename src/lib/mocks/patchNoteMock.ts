@@ -1,6 +1,7 @@
 import type {
   ArenaChanges,
   ChampionChange,
+  CommonChanges,
   ItemChange,
   MetaPrediction,
   PatchNoteExtended,
@@ -11,7 +12,6 @@ import type {
 const championChanges: ChampionChange[] = [
   // 버프 챔피언 (6명)
   {
-    championId: 266,
     championKey: "Aatrox",
     championName: "아트록스",
     changeType: "buff",
@@ -22,7 +22,6 @@ const championChanges: ChampionChange[] = [
     ],
   },
   {
-    championId: 22,
     championKey: "Ashe",
     championName: "애쉬",
     changeType: "buff",
@@ -32,7 +31,6 @@ const championChanges: ChampionChange[] = [
     ],
   },
   {
-    championId: 11,
     championKey: "MasterYi",
     championName: "마스터 이",
     changeType: "buff",
@@ -43,7 +41,6 @@ const championChanges: ChampionChange[] = [
     ],
   },
   {
-    championId: 163,
     championKey: "Taliyah",
     championName: "탈리야",
     changeType: "buff",
@@ -54,7 +51,6 @@ const championChanges: ChampionChange[] = [
     ],
   },
   {
-    championId: 110,
     championKey: "Varus",
     championName: "바루스",
     changeType: "buff",
@@ -65,7 +61,6 @@ const championChanges: ChampionChange[] = [
     ],
   },
   {
-    championId: 234,
     championKey: "Viego",
     championName: "비에고",
     changeType: "buff",
@@ -78,7 +73,6 @@ const championChanges: ChampionChange[] = [
   },
   // 너프 챔피언 (8명)
   {
-    championId: 887,
     championKey: "Gwen",
     championName: "그웬",
     changeType: "nerf",
@@ -88,7 +82,6 @@ const championChanges: ChampionChange[] = [
     ],
   },
   {
-    championId: 126,
     championKey: "Jayce",
     championName: "제이스",
     changeType: "nerf",
@@ -98,7 +91,6 @@ const championChanges: ChampionChange[] = [
     ],
   },
   {
-    championId: 876,
     championKey: "Lillia",
     championName: "릴리아",
     changeType: "nerf",
@@ -109,7 +101,6 @@ const championChanges: ChampionChange[] = [
     ],
   },
   {
-    championId: 54,
     championKey: "Malphite",
     championName: "말파이트",
     changeType: "nerf",
@@ -122,7 +113,6 @@ const championChanges: ChampionChange[] = [
     ],
   },
   {
-    championId: 20,
     championKey: "Nunu",
     championName: "누누와 윌럼프",
     changeType: "nerf",
@@ -134,7 +124,6 @@ const championChanges: ChampionChange[] = [
     ],
   },
   {
-    championId: 15,
     championKey: "Sivir",
     championName: "시비르",
     changeType: "nerf",
@@ -145,7 +134,6 @@ const championChanges: ChampionChange[] = [
     ],
   },
   {
-    championId: 901,
     championKey: "Smolder",
     championName: "스몰더",
     changeType: "nerf",
@@ -155,7 +143,6 @@ const championChanges: ChampionChange[] = [
     ],
   },
   {
-    championId: 238,
     championKey: "Zed",
     championName: "제드",
     changeType: "nerf",
@@ -220,7 +207,6 @@ const arenaChanges: ArenaChanges = {
   champions: [
     // 너프 챔피언 (3명)
     {
-      championId: 166,
       championKey: "Akshan",
       championName: "아센",
       changeType: "nerf",
@@ -231,7 +217,6 @@ const arenaChanges: ArenaChanges = {
       ],
     },
     {
-      championId: 28,
       championKey: "Evelynn",
       championName: "이블린",
       changeType: "nerf",
@@ -242,7 +227,6 @@ const arenaChanges: ArenaChanges = {
       ],
     },
     {
-      championId: 143,
       championKey: "Zyra",
       championName: "자이라",
       changeType: "nerf",
@@ -253,7 +237,6 @@ const arenaChanges: ArenaChanges = {
     },
     // 버프 챔피언 (2명)
     {
-      championId: 41,
       championKey: "Gangplank",
       championName: "갱플랭크",
       changeType: "buff",
@@ -264,7 +247,6 @@ const arenaChanges: ArenaChanges = {
       ],
     },
     {
-      championId: 117,
       championKey: "Lulu",
       championName: "룰루",
       changeType: "buff",
@@ -275,7 +257,6 @@ const arenaChanges: ArenaChanges = {
     },
     // 조정 챔피언 (2명)
     {
-      championId: 11,
       championKey: "MasterYi",
       championName: "마스터 이",
       changeType: "adjust",
@@ -285,7 +266,6 @@ const arenaChanges: ArenaChanges = {
       ],
     },
     {
-      championId: 44,
       championKey: "Taric",
       championName: "타릭",
       changeType: "adjust",
@@ -333,12 +313,18 @@ const metaPredictions: MetaPrediction[] = [
   },
 ];
 
+// 공통 변경사항
+const commonChanges: CommonChanges = {
+  champions: championChanges,
+  items: itemChanges,
+  epicObjectives: [],
+};
+
 // 완성된 26.2 패치노트 더미데이터
 export const mockPatchNote262: PatchNoteExtended = {
   version: "26.2",
   releaseDate: "2026-01-22",
-  champions: championChanges,
-  items: itemChanges,
+  common: commonChanges,
   systems: systemChanges,
   arena: arenaChanges,
   metaPredictions: metaPredictions,

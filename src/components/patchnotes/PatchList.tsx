@@ -5,7 +5,7 @@ import PatchListItem from "./PatchListItem";
 
 interface PatchListProps {
   selectedVersion: string | null;
-  onSelectVersion: (version: string) => void;
+  onSelectVersion: (versionId: string) => void;
 }
 
 export default function PatchList({
@@ -51,10 +51,10 @@ export default function PatchList({
     <div className="space-y-2">
       {patches.map((patch) => (
         <PatchListItem
-          key={patch.version}
+          key={patch.versionId}
           patch={patch}
-          isSelected={selectedVersion === patch.version}
-          onClick={() => onSelectVersion(patch.version)}
+          isSelected={selectedVersion === patch.versionId}
+          onClick={() => onSelectVersion(patch.versionId)}
         />
       ))}
     </div>

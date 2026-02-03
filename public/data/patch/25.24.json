@@ -1,0 +1,423 @@
+{
+  "version": "25.24",
+  "rift": {
+    "champions": [
+      {
+        "targetName": "아트록스",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "Q - 몬스터 대상 최소 추가 피해량", "before": "40", "after": "15" }
+        ]
+      },
+      {
+        "targetName": "암베사",
+        "type": "champion",
+        "direction": "adjust",
+        "changes": [
+          { "statName": "기본 지속 효과 피해량", "before": "(+추가 공격력의 30%)", "after": "(+추가 공격력의 25%)" },
+          { "statName": "E - 피해량", "before": "(+추가 공격력의 40/45/50/55/60%)", "after": "(+추가 공격력의 50%)" }
+        ]
+      },
+      {
+        "targetName": "럭스",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          { "statName": "기본 지속 효과 주문력 계수", "before": "(+주문력의 30%)", "after": "(+주문력의 35%)" },
+          { "statName": "Q - 주문력 계수", "before": "(+주문력의 65%)", "after": "(+주문력의 75%)" }
+        ]
+      },
+      {
+        "targetName": "미스 포츈",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "기본 체력", "before": "640", "after": "625" },
+          { "statName": "체력 증가량", "before": "103", "after": "100" }
+        ]
+      },
+      {
+        "targetName": "키아나",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "Q - 몬스터 대상 피해량", "before": "1.75x", "after": "1.55x" }
+        ]
+      },
+      {
+        "targetName": "사일러스",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "기본 지속 효과 몬스터 대상 피해량", "before": "1.3x", "after": "1.15x" }
+        ]
+      },
+      {
+        "targetName": "탐 켄치",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          { "statName": "기본 지속 효과 피해량", "before": "(+추가 체력의 4%)", "after": "(+추가 체력의 4.5%)" }
+        ]
+      },
+      {
+        "targetName": "볼리베어",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          { "statName": "W - 피해량", "before": "(+공격력의 100%)", "after": "(+공격력의 110%)" }
+        ]
+      },
+      {
+        "targetName": "자헨",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "Q - 대기/재사용 지속시간", "before": "5초", "after": "4초" },
+          { "statName": "Q1 - 추가 피해량 계수", "before": "(+추가 공격력의 20/30/40/50/60%)", "after": "(+추가 공격력의 20/25/30/35/40%)" },
+          { "statName": "Q2 - 추가 피해량 계수", "before": "(+추가 공격력의 20/30/40/50/60%)", "after": "(+추가 공격력의 20/25/30/35/40%)" },
+          { "statName": "E - 가장자리 추가 피해량 계수", "before": "(+추가 공격력의 100%)", "after": "(+추가 공격력의 75%)" }
+        ]
+      },
+      {
+        "targetName": "브라움",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          { "statName": "기본 체력", "before": "610", "after": "630" },
+          { "statName": "기본 지속 효과 후속 공격 시 피해량", "before": "20%", "after": "40%" }
+        ]
+      },
+      {
+        "targetName": "문도 박사",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "Q - 몬스터 대상 최대 피해량", "before": "350/425/500/575/650", "after": "300/375/450/525/600" }
+        ]
+      },
+      {
+        "targetName": "케인",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "기본 지속 효과 추가 효과 감소 후 마법 피해", "before": "25~45%", "after": "20~40%" }
+        ]
+      },
+      {
+        "targetName": "카직스",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "W - 기본 피해량", "before": "85/115/145/175/205", "after": "75/105/135/165/195" }
+        ]
+      },
+      {
+        "targetName": "마스터 이",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "기본 체력", "before": "655", "after": "640" },
+          { "statName": "공격력 증가량", "before": "2.8", "after": "2.5" }
+        ]
+      },
+      {
+        "targetName": "멜",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "E - 구체 마법 피해량", "before": "60/105/150/195/240", "after": "60/100/140/180/220" },
+          { "statName": "E - 초당 마법 피해량", "before": "16/32/48/64/80", "after": "16/26/36/46/56" },
+          { "statName": "E - 유지되는 해로운 효과 지속시간", "before": "0.75초", "after": "0.5초" },
+          { "statName": "E - 마나 소모량", "before": "50/55/60/65/70", "after": "50/60/70/80/90" }
+        ]
+      },
+      {
+        "targetName": "나서스",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          { "statName": "기본 체력", "before": "631", "after": "650" },
+          { "statName": "Q - 기본 피해량", "before": "35/55/75/95/115", "after": "40/60/80/100/120" }
+        ]
+      },
+      {
+        "targetName": "니달리",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "Q - 525유닛 거리 이상 추가 피해량", "before": "30~125%", "after": "0~125%" }
+        ]
+      },
+      {
+        "targetName": "세주아니",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          { "statName": "Q - 재사용 대기시간", "before": "19/17.5/16/14.5/13초", "after": "18/16.5/15/13.5/12초" },
+          { "statName": "Q - 마나 소모량", "before": "70/75/80/85/90", "after": "60/65/70/75/80" },
+          { "statName": "Q - 주문력 계수", "before": "60%", "after": "75%" },
+          { "statName": "W - 마나 소모량", "before": "65", "after": "60" },
+          { "statName": "W - 첫 번째 적중 시 주문력 계수", "before": "20%", "after": "30%" },
+          { "statName": "E - 주문력 계수", "before": "60%", "after": "70%" },
+          { "statName": "R - 재사용 대기시간", "before": "130/110/90초", "after": "120/105/90초" }
+        ]
+      },
+      {
+        "targetName": "스웨인",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          { "statName": "기본 지속 효과 영혼 조각당 체력 회복", "before": "3~6% (레벨에 따라)", "after": "6%" }
+        ]
+      },
+      {
+        "targetName": "빅토르",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          { "statName": "Q - 보호막 흡수량", "before": "40~115 (레벨에 따라) (+주문력의 18%)", "after": "40~140 (레벨에 따라) (+주문력의 25%)" }
+        ]
+      },
+      {
+        "targetName": "자헨",
+        "type": "champion",
+        "direction": "adjust",
+        "changes": [
+          { "statName": "기본 지속 효과 중첩당 추가 공격력", "before": "1.5~3.3 (레벨에 따라)", "after": "1.5~2.8 (레벨에 따라)" },
+          { "statName": "Q - 공격력 계수", "before": "추가 공격력의 30/40/50/60/70%", "after": "추가 공격력의 20/30/40/50/60%" },
+          { "statName": "Q - 2차 사용 시 기본 피해량", "before": "30/60/90/120/150", "after": "25/50/75/100/125" },
+          { "statName": "Q - 재사용 대기시간", "before": "9/8/7/6/5초", "after": "10/9/8/7/6초" },
+          { "statName": "Q - 몬스터 대상 피해량 계수", "before": "50%", "after": "75%" },
+          { "statName": "E - 글레이브 끝 피해량", "before": "4/5/6/7/8%", "after": "4/4.5/5/5.5/6%" }
+        ]
+      },
+      {
+        "targetName": "제드",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "기본 지속 효과 몬스터 대상 피해량", "before": "2x", "after": "1.8x" }
+        ]
+      }
+    ],
+    "items": [],
+    "systems": [
+      {
+        "targetName": "핏빛 길",
+        "type": "rune",
+        "direction": "buff",
+        "changes": [
+          { "statName": "중첩당 생명력 흡수", "before": "0.4%", "after": "0.45%" },
+          { "statName": "최대 생명력 흡수", "before": "6%", "after": "6.75%" }
+        ]
+      }
+    ]
+  },
+  "aram": {
+    "champions": [
+      {
+        "targetName": "브랜드",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "받는 피해량", "before": "105%", "after": "110%" },
+          { "statName": "스킬 가속", "before": "-10", "after": "-20" }
+        ]
+      }
+    ],
+    "items": [
+      {
+        "targetName": "강철심장",
+        "type": "item",
+        "direction": "buff",
+        "changes": [
+          { "statName": "최대 체력으로 전환되는 피해량 계수", "before": "0.08", "after": "1" }
+        ]
+      },
+      {
+        "targetName": "몰락한 왕의 검",
+        "type": "item",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "대상 현재 체력 비례 피해량", "before": "12% / 10%", "after": "9% / 6%" }
+        ]
+      }
+    ],
+    "systems": []
+  },
+  "arena": {
+    "champions": [
+      {
+        "targetName": "아지르",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          { "statName": "W - 재충전 시간", "before": "12~6초", "after": "10~6초" }
+        ]
+      },
+      {
+        "targetName": "밀리오",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          { "statName": "기본 지속 효과 불태우기 피해량", "before": "10~50", "after": "20~100" },
+          { "statName": "Q - 재사용 대기시간", "before": "10초", "after": "8초" },
+          { "statName": "R - 기본 체력 회복량", "before": "150~350", "after": "200~500" }
+        ]
+      },
+      {
+        "targetName": "트런들",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "Q - 깨물기 아레나 계수", "before": "적용", "after": "삭제" },
+          { "statName": "R - 저항력 감소량 아레나 계수", "before": "적용", "after": "삭제" }
+        ]
+      },
+      {
+        "targetName": "암베사",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "Q - 재사용 대기시간", "before": "14~10초", "after": "16~12초" }
+        ]
+      },
+      {
+        "targetName": "자이라",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "식물 피해량 주문력 계수", "before": "0.2", "after": "0.15" }
+        ]
+      },
+      {
+        "targetName": "벨베스",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "R - 아레나 적중 시 계수", "before": "8/11/14", "after": "6/8/10" }
+        ]
+      }
+    ],
+    "items": [
+      {
+        "targetName": "파편 소유자",
+        "type": "item",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "최대 능력치 파편 증폭", "before": "80%", "after": "50%" }
+        ]
+      },
+      {
+        "targetName": "부서진 여왕의 왕관",
+        "type": "item",
+        "direction": "buff",
+        "changes": [
+          { "statName": "체력", "before": "300", "after": "350" },
+          { "statName": "보호막 흡수량", "before": "40%", "after": "50%" }
+        ]
+      },
+      {
+        "targetName": "만년서리",
+        "type": "item",
+        "direction": "buff",
+        "changes": [
+          { "statName": "기본 피해량", "before": "250", "after": "300" }
+        ]
+      },
+      {
+        "targetName": "질책",
+        "type": "item",
+        "direction": "buff",
+        "changes": [
+          { "statName": "대상 현재 체력 비례 피해량", "before": "10%", "after": "13%" }
+        ]
+      },
+      {
+        "targetName": "혈마법사의 투구",
+        "type": "item",
+        "direction": "buff",
+        "changes": [
+          { "statName": "공격력", "before": "60", "after": "70" }
+        ]
+      },
+      {
+        "targetName": "마공화살",
+        "type": "item",
+        "direction": "buff",
+        "changes": [
+          { "statName": "화살 피해량", "before": "20~60", "after": "50~100" }
+        ]
+      },
+      {
+        "targetName": "킨코우 십수",
+        "type": "item",
+        "direction": "buff",
+        "changes": [
+          { "statName": "적응형 능력치", "before": "70", "after": "85" },
+          { "statName": "최소 이동 속도 제공", "before": "30%", "after": "50%" }
+        ]
+      },
+      {
+        "targetName": "광휘의 미덕",
+        "type": "item",
+        "direction": "buff",
+        "changes": [
+          { "statName": "틱당 체력 회복", "before": "2.5%", "after": "3%" }
+        ]
+      },
+      {
+        "targetName": "황혼의 끝자락",
+        "type": "item",
+        "direction": "buff",
+        "changes": [
+          { "statName": "추가 공격력 및 주문력", "before": "20%", "after": "25%" }
+        ]
+      },
+      {
+        "targetName": "쌍둥이 가면",
+        "type": "item",
+        "direction": "buff",
+        "changes": [
+          { "statName": "단독 보유 시 능력치", "before": "15%", "after": "20%" },
+          { "statName": "아군 보유 시 능력치", "before": "30%", "after": "35%" }
+        ]
+      },
+      {
+        "targetName": "현실 균열",
+        "type": "item",
+        "direction": "buff",
+        "changes": [
+          { "statName": "재사용 대기시간", "before": "15초", "after": "12초" }
+        ]
+      },
+      {
+        "targetName": "참수자",
+        "type": "item",
+        "direction": "buff",
+        "changes": [
+          { "statName": "이동 속도", "before": "6%", "after": "8%" }
+        ]
+      },
+      {
+        "targetName": "불사대마왕의 왕관",
+        "type": "item",
+        "direction": "buff",
+        "changes": [
+          { "statName": "라운드 승리 시 증폭 비율 획득량", "before": "1%", "after": "1.2%" }
+        ]
+      },
+      {
+        "targetName": "스태틱의 단검",
+        "type": "item",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "튕기기 주문력 계수", "before": "45%", "after": "25%" }
+        ]
+      }
+    ],
+    "systems": []
+  }
+}
