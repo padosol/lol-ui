@@ -2,22 +2,15 @@
  * Spectator API 응답 타입
  */
 
-export interface GameCustomizationObject {
-  category: string;
-  content: string;
-}
-
 export interface SpectatorParticipant {
   puuid: string | null;
   teamId: 100 | 200;
   spell1Id: number;
   spell2Id: number;
   championId: number;
-  lastSelectedSkinIndex: number;
   profileIconId: number;
   riotId: string;
-  bot: boolean;
-  gameCustomizationObjects: GameCustomizationObject[];
+  isBot: boolean;
   perks: {
     perkIds: number[];
     perkStyle: number;
@@ -38,12 +31,18 @@ export interface SpectatorData {
   gameType: string;
   gameQueueConfigId: number;
   participants: SpectatorParticipant[];
-  observers: {
-    encryptionKey: string;
-  };
+  encryptionKey: string;
   platformId: string;
   bannedChampions: SpectatorBannedChampion[];
   gameStartTime: number;
   gameLength: number;
+}
+
+/**
+ * 큐 탭 정보 타입
+ */
+export interface QueueTab {
+  queueId: number;
+  queueName: string;
 }
 

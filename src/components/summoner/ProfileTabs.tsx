@@ -12,6 +12,7 @@ import MatchHistory from "./MatchHistory";
 interface ProfileTabsProps {
   summonerName: string;
   puuid?: string | null;
+  region: string;
   initialLeagueData?: LeagueInfoResponse;
 }
 
@@ -20,6 +21,7 @@ type TabType = "overview" | "champions" | "ingame" | "fanletter";
 export default function ProfileTabs({
   summonerName,
   puuid,
+  region,
   initialLeagueData,
 }: ProfileTabsProps) {
   const [activeTab, setActiveTab] = useState<TabType>("overview");
@@ -86,7 +88,7 @@ export default function ProfileTabs({
 
         {activeTab === "ingame" && (
           <div className="p-6">
-            <IngameTab />
+            <IngameTab region={region} puuid={puuid} />
           </div>
         )}
 

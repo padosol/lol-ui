@@ -33,6 +33,7 @@ export default function SummonerPageClient({
         <ProfileTabs
           summonerName={gameName}
           puuid={profileData.puuid}
+          region={region}
           initialLeagueData={leagueData || undefined}
         />
       </main>
