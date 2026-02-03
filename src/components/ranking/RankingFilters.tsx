@@ -1,22 +1,15 @@
 "use client";
 
+import { AVAILABLE_REGIONS, type RegionValue } from "@/stores/useRegionStore";
 import { ChevronDown } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 interface RankingFiltersProps {
-  region: string;
+  region: RegionValue;
   queueType: string;
-  onRegionChange: (region: string) => void;
+  onRegionChange: (region: RegionValue) => void;
   onQueueTypeChange: (queueType: string) => void;
 }
-
-const regions = [
-  { value: "kr", label: "한국" },
-  { value: "na", label: "북미" },
-  { value: "euw", label: "유럽 서부" },
-  { value: "eune", label: "유럽 동북" },
-  { value: "jp", label: "일본" },
-];
 
 const queueTypes = [
   { value: "solo", label: "솔로랭크" },
@@ -72,8 +65,7 @@ export default function RankingFilters({
     };
   }, []);
 
-  const selectedRegionLabel =
-    regions.find((r) => r.value === region)?.label ?? region;
+  const selectedRegion = AVAILABLE_REGIONS.find((r) => r.value === region);
   const selectedQueueTypeLabel =
     queueTypes.find((q) => q.value === queueType)?.label ?? queueType;
 
@@ -94,7 +86,12 @@ export default function RankingFilters({
                 aria-haspopup="listbox"
                 aria-expanded={isRegionOpen}
               >
-                <span className="text-sm">{selectedRegionLabel}</span>
+                <span className="text-sm">
+                  {selectedRegion?.label ?? region}{" "}
+                  <span className="text-on-surface-medium">
+                    {selectedRegion?.subLabel}
+                  </span>
+                </span>
                 <ChevronDown
                   className={`w-4 h-4 text-on-surface-medium transition-transform ${
                     isRegionOpen ? "rotate-180" : ""
@@ -105,7 +102,7 @@ export default function RankingFilters({
               {isRegionOpen && (
                 <div className="absolute top-full left-0 mt-1 w-full bg-surface-4 border border-divider rounded-md shadow-lg z-50 overflow-hidden">
                   <div className="py-1" role="listbox" aria-label="지역 선택">
-                    {regions.map((r) => {
+                    {AVAILABLE_REGIONS.map((r) => {
                       const selected = r.value === region;
                       return (
                         <button
@@ -123,7 +120,10 @@ export default function RankingFilters({
                           role="option"
                           aria-selected={selected}
                         >
-                          {r.label}
+                          {r.label}{" "}
+                          <span className="text-on-surface-medium">
+                            {r.subLabel}
+                          </span>
                         </button>
                       );
                     })}

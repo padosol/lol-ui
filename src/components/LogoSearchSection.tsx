@@ -1,25 +1,18 @@
 "use client";
 
 import { searchSummonerAutocomplete } from "@/lib/api/summoner";
+import { AVAILABLE_REGIONS, useRegionStore } from "@/stores/useRegionStore";
 import type { SummonerAutocompleteItem } from "@/types/api";
 import { getProfileIconImageUrl } from "@/utils/profile";
-import { normalizeRegion } from "@/utils/summoner";
 import { getTierColor, getTierImageUrl, getTierInitial } from "@/utils/tier";
 import { ChevronDown, Search } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-type RegionOption = { value: string; label: string; subLabel?: string };
-const REGION_OPTIONS: RegionOption[] = [
-  { value: "KR", label: "한국", subLabel: "KR" },
-  { value: "US", label: "미국", subLabel: "US" },
-  { value: "JP", label: "일본", subLabel: "JP" },
-];
-
 export default function LogoSearchSection() {
   const router = useRouter();
-  const [region, setRegion] = useState("KR");
+  const { region, setRegion } = useRegionStore();
   const [isRegionOpen, setIsRegionOpen] = useState(false);
   const [summonerName, setSummonerName] = useState("");
   const [autocompleteResults, setAutocompleteResults] = useState<
@@ -44,10 +37,9 @@ export default function LogoSearchSection() {
     const debounceTimer = setTimeout(async () => {
       setIsLoadingAutocomplete(true);
       try {
-        const normalizedRegion = normalizeRegion(region);
         const results = await searchSummonerAutocomplete(
           trimmedName,
-          normalizedRegion
+          region
         );
         setAutocompleteResults(results);
         setShowAutocomplete(results.length > 0);
@@ -97,8 +89,7 @@ export default function LogoSearchSection() {
     if (trimmedName) {
       // 입력값을 URL 인코딩하여 소환사 상세 페이지로 이동
       const encodedName = encodeURIComponent(trimmedName);
-      const normalizedRegion = normalizeRegion(region);
-      router.push(`/summoners/${normalizedRegion}/${encodedName}`);
+      router.push(`/summoners/${region}/${encodedName}`);
       setShowAutocomplete(false);
     }
   };
@@ -108,8 +99,7 @@ export default function LogoSearchSection() {
       ? `${item.gameName}-${item.tagLine}`
       : item.gameName;
     const encodedName = encodeURIComponent(gameName);
-    const normalizedRegion = normalizeRegion(region);
-    router.push(`/summoners/${normalizedRegion}/${encodedName}`);
+    router.push(`/summoners/${region}/${encodedName}`);
     setShowAutocomplete(false);
     setSummonerName(gameName);
   };
@@ -140,11 +130,11 @@ export default function LogoSearchSection() {
                 >
                   <span className="flex items-center gap-2 min-w-0">
                     <span className="text-on-surface">
-                      {REGION_OPTIONS.find((o) => o.value === region)?.label ??
+                      {AVAILABLE_REGIONS.find((o) => o.value === region)?.label ??
                         region}
                     </span>
                     <span className="text-[10px] text-on-surface-medium">
-                      {REGION_OPTIONS.find((o) => o.value === region)
+                      {AVAILABLE_REGIONS.find((o) => o.value === region)
                         ?.subLabel ?? region}
                     </span>
                   </span>
@@ -158,7 +148,7 @@ export default function LogoSearchSection() {
                 {isRegionOpen && (
                   <div className="absolute top-full left-0 mt-1 w-full bg-surface-4 border border-divider rounded-lg shadow-lg z-50 overflow-hidden">
                     <div className="py-1" role="listbox" aria-label="리전 선택">
-                      {REGION_OPTIONS.map((opt) => {
+                      {AVAILABLE_REGIONS.map((opt) => {
                         const selected = opt.value === region;
                         return (
                           <button
@@ -211,7 +201,7 @@ export default function LogoSearchSection() {
                   className="w-full px-4 py-3 pr-12 bg-surface-4 border border-divider border-l-0 border-r-0 text-on-surface placeholder-on-surface-disabled focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent h-full"
                 />
                 <div className="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-disabled text-xs">
-                  Game name + #{region}1
+                  Game name + #{region.toUpperCase()}1
                 </div>
 
                 {/* 자동완성 드롭다운 */}

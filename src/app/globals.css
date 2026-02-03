@@ -48,6 +48,12 @@ html.dark {
   --md-stat-perfect: #FFA726;  /* Orange 400 */
   --md-stat-neutral: #9E9E9E;  /* Gray 500 */
 
+  /* 패치노트 변경유형 색상 */
+  --md-buff: #66BB6A;          /* Green 400 - 상향 */
+  --md-nerf: #EF5350;          /* Red 400 - 하향 */
+  --md-adjust: #42A5F5;        /* Blue 400 - 조정 */
+  --md-info: #29B6F6;          /* Light Blue 400 - 정보 */
+
   /* 레거시 호환 */
   --background: var(--md-elevation-0);
   --foreground: var(--md-text-high);
@@ -97,6 +103,12 @@ html.light {
   --md-stat-perfect: #E65100;  /* Orange 900 */
   --md-stat-neutral: #616161;  /* Gray 700 */
 
+  /* 패치노트 변경유형 색상 */
+  --md-buff: #2E7D32;          /* Green 800 - 상향 */
+  --md-nerf: #C62828;          /* Red 800 - 하향 */
+  --md-adjust: #1565C0;        /* Blue 800 - 조정 */
+  --md-info: #0277BD;          /* Light Blue 800 - 정보 */
+
   --background: var(--md-elevation-0);
   --foreground: var(--md-text-high);
 }
@@ -143,6 +155,12 @@ html.light {
   --color-stat-high: var(--md-stat-high);
   --color-stat-perfect: var(--md-stat-perfect);
   --color-stat-neutral: var(--md-stat-neutral);
+
+  /* 패치노트 변경유형 */
+  --color-buff: var(--md-buff);
+  --color-nerf: var(--md-nerf);
+  --color-adjust: var(--md-adjust);
+  --color-info: var(--md-info);
 
   /* 기존 변수 유지 (레거시 호환) */
   --color-background: var(--background);

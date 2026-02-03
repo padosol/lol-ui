@@ -7,7 +7,9 @@ import { getChampionNameByEnglishName } from "@/utils/champion";
 import { calcWinRateCeil2, getWinRateTextClass } from "@/utils/championStats";
 import { getKDAColorClass } from "@/utils/game";
 import Image from "next/image";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+
+type QueueTabType = "solo" | "flex";
 
 interface ChampionStatsOverviewProps {
   puuid?: string | null;
@@ -16,16 +18,24 @@ interface ChampionStatsOverviewProps {
   limit?: number;
 }
 
+const queueTabs: { id: QueueTabType; label: string }[] = [
+  { id: "solo", label: "솔로랭크" },
+  { id: "flex", label: "자유 랭크" },
+];
+
 export default function ChampionStatsOverview({
   puuid,
   season = "26",
   showTitle = true,
   limit = 5,
 }: ChampionStatsOverviewProps) {
+  const [activeQueue, setActiveQueue] = useState<QueueTabType>("solo");
+  const queueId = activeQueue === "solo" ? 420 : 440;
+
   const { data: championStats = [], isLoading } = useChampionRanking(
     puuid || "",
     season,
-    420
+    queueId
   );
 
   // champion.json 데이터 로드 (zustand store 사용)
@@ -37,15 +47,34 @@ export default function ChampionStatsOverview({
   // limit이 있으면 제한
   const displayedStats = limit ? championStats.slice(0, limit) : championStats;
 
+  // 탭 헤더 렌더링
+  const renderTabHeader = () => (
+    <div className="mb-3">
+      <div className="flex items-center justify-between mb-2">
+        <h2 className="text-sm font-semibold text-on-surface">모스트 5</h2>
+      </div>
+      <div className="flex gap-1 bg-surface-6/50 p-1 rounded-lg">
+        {queueTabs.map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveQueue(tab.id)}
+            className={`px-3 py-1.5 text-sm rounded-md transition-colors cursor-pointer ${
+              activeQueue === tab.id
+                ? "bg-surface-1 text-on-surface font-semibold"
+                : "text-on-surface-medium hover:text-on-surface"
+            }`}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+
   if (isLoading) {
     return (
-      <div>
-        {showTitle && (
-          <>
-            <h2 className="text-lg font-bold text-on-surface mb-2">솔로랭크 모스트5</h2>
-            <div className="border-b border-divider mb-4" />
-          </>
-        )}
+      <div className="border border-divider rounded-lg p-4">
+        {showTitle && renderTabHeader()}
         <div className="flex items-center justify-center py-12">
           <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
         </div>
@@ -55,13 +84,8 @@ export default function ChampionStatsOverview({
 
   if (!puuid) {
     return (
-      <div>
-        {showTitle && (
-          <>
-            <h2 className="text-lg font-bold text-on-surface mb-2">솔로랭크 모스트5</h2>
-            <div className="border-b border-divider mb-4" />
-          </>
-        )}
+      <div className="border border-divider rounded-lg p-4">
+        {showTitle && renderTabHeader()}
         <div className="text-center py-12 text-on-surface-medium">
           소환사 정보가 필요합니다.
         </div>
@@ -71,15 +95,10 @@ export default function ChampionStatsOverview({
 
   if (displayedStats.length === 0 && !isLoading) {
     return (
-      <div>
-        {showTitle && (
-          <>
-            <h2 className="text-lg font-bold text-on-surface mb-2">솔로랭크 모스트5</h2>
-            <div className="border-b border-divider mb-4" />
-          </>
-        )}
-        <div className="text-center text-on-surface-medium border border-divider rounded-lg">
-          챔피언 통계 데이터가 없습니다.
+      <div className="border border-divider rounded-lg p-4">
+        {showTitle && renderTabHeader()}
+        <div className="text-center text-on-surface-medium border border-divider rounded-lg py-4">
+          {activeQueue === "solo" ? "솔로랭크" : "자유 랭크"} 챔피언 통계 데이터가 없습니다.
         </div>
       </div>
     );
@@ -92,13 +111,8 @@ export default function ChampionStatsOverview({
   };
 
   return (
-    <div>
-      {showTitle && (
-        <>
-          <h2 className="text-lg font-bold text-on-surface mb-2">솔로랭크 모스트5</h2>
-          <div className="border-b border-divider mb-4" />
-        </>
-      )}
+    <div className="border border-divider rounded-lg p-4">
+      {showTitle && renderTabHeader()}
       <div className="space-y-2">
         {displayedStats.map((champion, index) => {
           const winRate = calcWinRateCeil2(champion.win, champion.playCount);
@@ -115,15 +129,15 @@ export default function ChampionStatsOverview({
           return (
             <div
               key={champion.championId || index}
-              className="flex items-center gap-2 p-2 bg-surface-8/50 rounded-lg hover:bg-surface-8 transition-colors"
+              className="flex items-center gap-1.5 p-1.5 bg-surface-8/50 rounded-lg hover:bg-surface-8 transition-colors border border-divider"
             >
               {/* 챔피언 아이콘 */}
-              <div className="w-10 h-10 bg-surface-6 rounded-lg flex items-center justify-center overflow-hidden relative">
+              <div className="w-8 h-8 bg-surface-6 rounded-lg flex items-center justify-center overflow-hidden relative">
                 <Image
                   src={getChampionImageUrl(champion.championName)}
                   alt={champion.championName}
                   fill
-                  sizes="40px"
+                  sizes="32px"
                   className="object-cover"
                   unoptimized
                 />

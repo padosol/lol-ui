@@ -217,61 +217,19 @@ export default function MatchDetailInfo({
     );
   }
 
-  // 팀별 오브젝트 처치 수 계산
+  // 팀별 오브젝트 처치 수 (teamInfoData에서 직접 가져옴)
   const blueTeamStats = {
-    baron: blueTeam.reduce(
-      (sum, p) =>
-        sum +
-        ((p as ParticipantData & { baronKills?: number }).baronKills || 0),
-      0
-    ),
-    dragon: blueTeam.reduce(
-      (sum, p) =>
-        sum +
-        ((p as ParticipantData & { dragonKills?: number }).dragonKills || 0),
-      0
-    ),
-    turret: blueTeam.reduce(
-      (sum, p) =>
-        sum +
-        ((p as ParticipantData & { turretKills?: number }).turretKills || 0),
-      0
-    ),
-    inhibitor: blueTeam.reduce(
-      (sum, p) =>
-        sum +
-        ((p as ParticipantData & { inhibitorKills?: number }).inhibitorKills ||
-          0),
-      0
-    ),
+    baron: detail.teamInfoData.blueTeam.baronKills,
+    dragon: detail.teamInfoData.blueTeam.dragonKills,
+    turret: detail.teamInfoData.blueTeam.towerKills,
+    inhibitor: detail.teamInfoData.blueTeam.inhibitorKills,
   };
 
   const redTeamStats = {
-    baron: redTeam.reduce(
-      (sum, p) =>
-        sum +
-        ((p as ParticipantData & { baronKills?: number }).baronKills || 0),
-      0
-    ),
-    dragon: redTeam.reduce(
-      (sum, p) =>
-        sum +
-        ((p as ParticipantData & { dragonKills?: number }).dragonKills || 0),
-      0
-    ),
-    turret: redTeam.reduce(
-      (sum, p) =>
-        sum +
-        ((p as ParticipantData & { turretKills?: number }).turretKills || 0),
-      0
-    ),
-    inhibitor: redTeam.reduce(
-      (sum, p) =>
-        sum +
-        ((p as ParticipantData & { inhibitorKills?: number }).inhibitorKills ||
-          0),
-      0
-    ),
+    baron: detail.teamInfoData.redTeam.baronKills,
+    dragon: detail.teamInfoData.redTeam.dragonKills,
+    turret: detail.teamInfoData.redTeam.towerKills,
+    inhibitor: detail.teamInfoData.redTeam.inhibitorKills,
   };
 
   return (
