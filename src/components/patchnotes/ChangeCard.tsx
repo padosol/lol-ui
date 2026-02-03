@@ -47,20 +47,10 @@ export default function ChangeCard({
           <span className="font-medium text-on-surface truncate">{name}</span>
           <ChangeBadge type={changeType} />
         </div>
-
-        {/* 요약 */}
-        <span className="text-sm text-on-surface-medium truncate hidden sm:block max-w-[200px]">
-          {summary}
-        </span>
       </div>
 
       {/* 상세 내용 - 항상 펼쳐진 상태 */}
       <div className="px-4 pb-4 pt-2 border-t border-divider/50">
-        {/* 요약 (모바일에서만 표시) */}
-        <p className="text-sm text-on-surface-medium mb-3 sm:hidden">
-          {summary}
-        </p>
-
         {/* 변경 상세 */}
         {details.length > 0 && (
           <div className="space-y-2">

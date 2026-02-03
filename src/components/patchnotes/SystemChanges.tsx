@@ -61,20 +61,10 @@ export default function SystemChanges({ changes }: SystemChangesProps) {
                   </span>
                   <ChangeBadge type={change.changeType} />
                 </div>
-
-                {/* 요약 */}
-                <span className="text-sm text-on-surface-medium truncate hidden sm:block max-w-[200px]">
-                  {change.summary}
-                </span>
               </div>
 
               {/* 상세 내용 - 항상 펼쳐진 상태 */}
               <div className="px-4 pb-4 pt-2 border-t border-divider/50">
-                {/* 요약 (모바일에서만 표시) */}
-                <p className="text-sm text-on-surface-medium mb-3 sm:hidden">
-                  {change.summary}
-                </p>
-
                 {/* 변경 상세 */}
                 {change.details.length > 0 && (
                   <div className="space-y-2">
