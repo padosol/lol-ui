@@ -2,7 +2,7 @@
 
 import { useTierCutoffs } from "@/hooks/useRanking";
 import { AVAILABLE_REGIONS, type RegionValue } from "@/stores/useRegionStore";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 interface RankingFiltersProps {
@@ -22,6 +22,30 @@ const getQueueParam = (
   queueType: string
 ): "RANKED_SOLO_5x5" | "RANKED_FLEX_SR" => {
   return queueType === "flex" ? "RANKED_FLEX_SR" : "RANKED_SOLO_5x5";
+};
+
+// LP 변동 표시 헬퍼 함수
+const getLpChangeDisplay = (lpChange: number | undefined) => {
+  if (lpChange === undefined) return null;
+
+  if (lpChange === 0) {
+    return <span className="text-on-surface-medium text-xs ml-1">-</span>;
+  }
+
+  if (lpChange > 0) {
+    return (
+      <span className="flex items-center text-win text-xs ml-1">
+        <ChevronUp className="w-3 h-3" />
+        {lpChange}
+      </span>
+    );
+  }
+  return (
+    <span className="flex items-center text-lose text-xs ml-1">
+      <ChevronDown className="w-3 h-3" />
+      {Math.abs(lpChange)}
+    </span>
+  );
 };
 
 export default function RankingFilters({
@@ -209,35 +233,37 @@ export default function RankingFilters({
           ) : (
             <>
               <div className="bg-surface-8 rounded-md p-3 w-40">
-                <div className="text-xs text-on-surface-medium mb-1">챌린저</div>
-                <div className="text-sm text-on-surface">
+                <div className="text-sm font-medium text-on-surface-medium mb-1">챌린저</div>
+                <div className="text-sm text-on-surface flex items-center">
                   커트라인:{" "}
                   <span className="font-semibold text-on-surface">
                     {challengerData?.minLeaguePoints ?? "-"} LP
                   </span>
+                  {getLpChangeDisplay(challengerData?.lpChange)}
                 </div>
-                {challengerData?.players !== undefined && (
+                {challengerData?.userCount !== undefined && (
                   <div className="text-sm text-on-surface">
                     인원:{" "}
                     <span className="font-semibold text-on-surface">
-                      {challengerData.players}명
+                      {challengerData.userCount}명
                     </span>
                   </div>
                 )}
               </div>
               <div className="bg-surface-8 rounded-md p-3 w-40">
-                <div className="text-xs text-on-surface-medium mb-1">그랜드마스터</div>
-                <div className="text-sm text-on-surface">
+                <div className="text-sm font-medium text-on-surface-medium mb-1">그랜드마스터</div>
+                <div className="text-sm text-on-surface flex items-center">
                   커트라인:{" "}
                   <span className="font-semibold text-on-surface">
                     {grandmasterData?.minLeaguePoints ?? "-"} LP
                   </span>
+                  {getLpChangeDisplay(grandmasterData?.lpChange)}
                 </div>
-                {grandmasterData?.players !== undefined && (
+                {grandmasterData?.userCount !== undefined && (
                   <div className="text-sm text-on-surface">
                     인원:{" "}
                     <span className="font-semibold text-on-surface">
-                      {grandmasterData.players}명
+                      {grandmasterData.userCount}명
                     </span>
                   </div>
                 )}

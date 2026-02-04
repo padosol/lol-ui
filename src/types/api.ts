@@ -287,7 +287,8 @@ export interface TierCutoff {
   region: string;
   minLeaguePoints: number;
   updatedAt: string;
-  players?: number; // 백엔드 추가 예정
+  lpChange?: number; // LP 변동값
+  userCount?: number; // 유저 수
 }
 
 // 티어 커트오프 응답 (배열)
