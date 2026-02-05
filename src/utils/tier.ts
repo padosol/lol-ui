@@ -2,6 +2,8 @@
  * 티어 이미지 URL 생성 유틸리티
  */
 
+const IMAGE_HOST = process.env.NEXT_PUBLIC_IMAGE_HOST || 'https://static.mmrtr.shop';
+
 /**
  * 티어 이름으로 이미지 URL을 생성합니다.
  * @param tier 티어 이름 (예: "IRON", "BRONZE", "SILVER", "GOLD", "PLATINUM", "EMERALD", "DIAMOND", "MASTER", "GRANDMASTER", "CHALLENGER")
@@ -13,7 +15,7 @@ export function getTierImageUrl(tier: string): string {
   }
   // 티어 이름을 대문자로 변환
   const normalizedTier = tier.toUpperCase();
-  return `https://static.mmrtr.shop/tier/${normalizedTier}.png`;
+  return `${IMAGE_HOST}/tier/${normalizedTier}.png`;
 }
 
 /**

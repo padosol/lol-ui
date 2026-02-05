@@ -2,6 +2,8 @@
  * 포지션 이미지 URL 생성 유틸리티
  */
 
+const IMAGE_HOST = process.env.NEXT_PUBLIC_IMAGE_HOST || 'https://static.mmrtr.shop';
+
 /**
  * 포지션 이름으로 이미지 URL을 생성합니다.
  * @param position 포지션 이름 (예: "TOP", "JUNGLE", "MID", "ADC", "SUPPORT")
@@ -13,7 +15,7 @@ export function getPositionImageUrl(position: string): string {
   }
   // 포지션 이름을 대문자로 변환
   const normalizedPosition = position.toUpperCase();
-  return `https://static.mmrtr.shop/position/${normalizedPosition}.png`;
+  return `${IMAGE_HOST}/position/${normalizedPosition}.png`;
 }
 
 /**

@@ -2,6 +2,8 @@
  * 스타일 이미지 URL 생성 유틸리티
  */
 
+const IMAGE_HOST = process.env.NEXT_PUBLIC_IMAGE_HOST || 'https://static.mmrtr.shop';
+
 /**
  * 스타일 ID로 이미지 URL을 생성합니다.
  * @param styleId 스타일 ID
@@ -11,6 +13,6 @@ export function getStyleImageUrl(styleId: number): string {
   if (!styleId || styleId === 0) {
     return "";
   }
-  return `https://static.mmrtr.shop/styles/${styleId}.png`;
+  return `${IMAGE_HOST}/styles/${styleId}.png`;
 }
 

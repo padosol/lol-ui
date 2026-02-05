@@ -8,6 +8,8 @@ import {
   type ChampionJson,
 } from "@/stores/useGameDataStore";
 
+const IMAGE_HOST = process.env.NEXT_PUBLIC_IMAGE_HOST || 'https://static.mmrtr.shop';
+
 /**
  * 챔피언 JSON 데이터를 로드합니다 (zustand store 사용)
  */
@@ -81,7 +83,7 @@ export function getChampionImageUrl(championName: string): string {
   if (!championName) {
     return "";
   }
-  return `https://static.mmrtr.shop/champion/${championName}.png`;
+  return `${IMAGE_HOST}/champion/${championName}.png`;
 }
 
 /**
