@@ -23,8 +23,10 @@ import MatchSummary from "./MatchSummary";
 type GameModeFilter = "ALL" | "RANKED" | "FLEX" | "NORMAL" | "ARENA";
 
 // 소환사 주문 이미지 컴포넌트 (비동기 로드)
-function SummonerSpellImage({ spellId }: { spellId: number }) {
+function SummonerSpellImage({ spellId, small }: { spellId: number; small?: boolean }) {
   const [imageUrl, setImageUrl] = useState<string>("");
+  const sizeClass = small ? "w-6 h-6" : "w-7 h-7";
+  const imgSize = small ? 24 : 28;
 
   useEffect(() => {
     if (spellId > 0) {
@@ -37,12 +39,12 @@ function SummonerSpellImage({ spellId }: { spellId: number }) {
   }
 
   return (
-    <div className="w-7 h-7 bg-surface-4 rounded border border-divider/50 overflow-hidden relative shadow-sm flex items-center justify-center">
+    <div className={`${sizeClass} bg-surface-4 rounded border border-divider/50 overflow-hidden relative shadow-sm flex items-center justify-center`}>
       <Image
         src={imageUrl}
         alt={`Summoner ${spellId}`}
-        width={28}
-        height={28}
+        width={imgSize}
+        height={imgSize}
         className="object-cover"
         unoptimized
         onError={(e) => {
@@ -619,7 +621,8 @@ export default function MatchHistory({
               className={`group relative flex flex-col w-full border-l-4 ${borderColor} ${bgColor} rounded-lg overflow-hidden transition-all hover:shadow-lg ${shadowColor} cursor-pointer`}
               onClick={() => setExpandedMatchId(isExpanded ? null : match.id)}
             >
-              <div className="grid grid-cols-[120px_1fr_200px_30px] bg-surface-1/50 backdrop-blur-sm w-full">
+              {/* 데스크톱 레이아웃 (md 이상) */}
+              <div className="hidden md:grid grid-cols-[120px_1fr_200px_30px] bg-surface-1/50 backdrop-blur-sm w-full">
                 {/* 1. 게임 정보 섹션 */}
                 <div className="flex flex-col items-start justify-start p-3 text-xs shrink-0 h-full gap-4">
                   <div className="flex flex-col items-start gap-0.5">
@@ -870,6 +873,152 @@ export default function MatchHistory({
                       isExpanded ? "rotate-180" : ""
                     }`}
                   />
+                </div>
+              </div>
+
+              {/* 모바일 레이아웃 (md 미만) */}
+              <div className="md:hidden bg-surface-1/50 backdrop-blur-sm w-full p-2.5">
+                {/* Row 1: 승패 + 게임타입 + 시간 | 날짜 + 화살표 */}
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <span className={`font-bold text-sm ${textColor}`}>
+                      {isArena
+                        ? `${myData.placement || 999}위`
+                        : match.result === "REMAKE"
+                        ? "다시하기"
+                        : match.result === "WIN"
+                        ? "승리"
+                        : "패배"}
+                    </span>
+                    <span className={`text-xs ${textColor}`}>{gameModeName}</span>
+                    <span className="text-on-surface-medium text-xs">
+                      {formatDuration(match.gameDuration)}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-on-surface-medium text-xs">{match.gameDate}</span>
+                    <ChevronDown
+                      className={`w-4 h-4 text-on-surface-medium transition-transform ${
+                        isExpanded ? "rotate-180" : ""
+                      }`}
+                    />
+                  </div>
+                </div>
+
+                {/* Row 2: 챔피언+스펠+룬 | KDA | 아이템 */}
+                <div className="flex items-center gap-2">
+                  {/* 왼쪽: 챔프 + 스펠 + 룬 */}
+                  <div className="flex items-center gap-1 shrink-0">
+                    {/* 챔피언 아이콘 */}
+                    <div className="relative">
+                      <div className="w-10 h-10 bg-surface-4 rounded-lg overflow-hidden relative border border-divider/50 shadow-sm">
+                        {match.championIcon ? (
+                          <Image
+                            src={match.championIcon}
+                            alt={match.champion}
+                            fill
+                            sizes="40px"
+                            className="object-cover"
+                            unoptimized
+                          />
+                        ) : (
+                          <span className="text-lg flex items-center justify-center w-full h-full">
+                            🎮
+                          </span>
+                        )}
+                        {myData.champLevel > 0 && (
+                          <span className="absolute bottom-0 right-0 flex items-center justify-center rounded-tl bg-surface-1/90 text-[8px] font-bold text-on-surface px-1 py-0">
+                            {myData.champLevel}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    {/* 소환사 주문 */}
+                    <div className="flex flex-col gap-0.5">
+                      {myData.summoner1Id > 0 && (
+                        <SummonerSpellImage spellId={myData.summoner1Id} small />
+                      )}
+                      {myData.summoner2Id > 0 && (
+                        <SummonerSpellImage spellId={myData.summoner2Id} small />
+                      )}
+                    </div>
+                    {/* 룬 */}
+                    <div className="flex flex-col gap-0.5">
+                      {mainRuneId > 0 && (
+                        <div className="w-5 h-5 bg-surface-4 rounded-full border border-divider overflow-hidden relative shadow-sm">
+                          <Image
+                            src={`https://static.mmrtr.shop/perks/${mainRuneId}.png`}
+                            alt="Main Rune"
+                            fill
+                            sizes="20px"
+                            className="object-cover"
+                            unoptimized
+                          />
+                        </div>
+                      )}
+                      {subRuneStyleId > 0 && (
+                        <div className="w-5 h-5 bg-surface-4 rounded-full border border-divider overflow-hidden relative shadow-sm">
+                          <Image
+                            src={`https://static.mmrtr.shop/styles/${subRuneStyleId}.png`}
+                            alt="Sub Rune Style"
+                            fill
+                            sizes="20px"
+                            className="object-cover"
+                            unoptimized
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* 중앙: KDA */}
+                  <div className="flex flex-col items-center flex-1 min-w-0">
+                    <div className="flex items-center gap-1 text-sm font-semibold">
+                      <span className="text-on-surface">{match.kda.kills}</span>
+                      <span className="text-on-surface-disabled">/</span>
+                      <span className="text-loss">{match.kda.deaths}</span>
+                      <span className="text-on-surface-disabled">/</span>
+                      <span className="text-on-surface">{match.kda.assists}</span>
+                    </div>
+                    <div className="text-[11px] font-medium">
+                      <span className={getKDAColorClass(calculateKDA(match.kda))}>
+                        {calculateKDA(match.kda) === "perfect"
+                          ? "perfect"
+                          : `${calculateKDA(match.kda)}:1 평점`}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* 오른쪽: 아이템 */}
+                  <div className="grid grid-cols-4 gap-0.5 shrink-0">
+                    {items.slice(0, 6).map((itemId, idx) => (
+                      <div
+                        key={idx}
+                        className="w-5 h-5 bg-surface-4 rounded border border-divider/50 overflow-hidden relative"
+                      >
+                        <Image
+                          src={getItemImageUrl(itemId)}
+                          alt={`Item ${itemId}`}
+                          fill
+                          sizes="20px"
+                          className="object-cover"
+                          unoptimized
+                        />
+                      </div>
+                    ))}
+                    {items[6] > 0 && (
+                      <div className="w-5 h-5 bg-surface-4 rounded-full border border-divider/50 overflow-hidden relative">
+                        <Image
+                          src={getItemImageUrl(items[6])}
+                          alt="Ward"
+                          fill
+                          sizes="20px"
+                          className="object-cover"
+                          unoptimized
+                        />
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
 
