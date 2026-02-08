@@ -96,6 +96,7 @@ export default function ArenaTeamInfo({
                       href={getSummonerUrl(participant)}
                       target="_blank"
                       rel="noopener noreferrer"
+                      prefetch={false}
                       onClick={(e) => e.stopPropagation()}
                       className="text-on-surface text-[10px] truncate min-w-0 flex-1 hover:text-primary hover:underline transition-colors"
                     >

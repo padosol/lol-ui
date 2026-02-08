@@ -63,6 +63,7 @@ export default function TeamInfo({
                       href={getSummonerUrl(participant)}
                       target="_blank"
                       rel="noopener noreferrer"
+                      prefetch={false}
                       onClick={(e) => e.stopPropagation()}
                       className="block text-on-surface text-[10px] font-medium truncate leading-tight hover:text-team-blue hover:underline transition-colors"
                     >
@@ -107,6 +108,7 @@ export default function TeamInfo({
                       href={getSummonerUrl(participant)}
                       target="_blank"
                       rel="noopener noreferrer"
+                      prefetch={false}
                       onClick={(e) => e.stopPropagation()}
                       className="block text-on-surface text-[10px] font-medium truncate leading-tight hover:text-team-red hover:underline transition-colors"
                     >
