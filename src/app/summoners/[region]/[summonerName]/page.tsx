@@ -1,4 +1,5 @@
 import { getLeagueByPuuid } from "@/lib/api/league";
+import { serverApiClient } from "@/lib/api/server-client";
 import { getSummonerProfile } from "@/lib/api/summoner";
 import { logger } from "@/lib/logger";
 import { normalizeRegion, parseSummonerName } from "@/utils/summoner";
@@ -32,7 +33,7 @@ export default async function SummonerPage({ params }: PageProps) {
   // 서버에서 직접 API 호출
   let profileData;
   try {
-    profileData = await getSummonerProfile(gameName, region);
+    profileData = await getSummonerProfile(gameName, region, serverApiClient);
   } catch (error) {
     logger.error("Failed to load summoner profile", {
       url: `/summoners/${region}/${gameName}`,
@@ -47,7 +48,7 @@ export default async function SummonerPage({ params }: PageProps) {
   }
 
   // 리그 정보 가져오기 (실패해도 페이지는 표시)
-  const leagueData = await getLeagueByPuuid(profileData.puuid).catch(
+  const leagueData = await getLeagueByPuuid(profileData.puuid, serverApiClient).catch(
     (error) => {
       logger.warn("Failed to load league data", {
         error: error instanceof Error ? error.message : "Unknown error",

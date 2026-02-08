@@ -1,20 +1,16 @@
 import { logger } from "@/lib/logger";
 import axios, { InternalAxiosRequestConfig } from "axios";
 
-// axios 타입 확장: 요청 시작 시간 기록용
-declare module "axios" {
-  interface InternalAxiosRequestConfig {
-    metadata?: { startTime: number };
-  }
-}
+// 서버 전용 API 기본 URL 설정
+// API_URL_INTERNAL: NEXT_PUBLIC_ 접두사 없음 → 서버에서만 접근 가능 (런타임 환경변수)
+// Docker 내부 네트워크 URL (예: http://lol-server:8100/api) 사용
+const SERVER_API_BASE_URL =
+  process.env.API_URL_INTERNAL ||
+  process.env.NEXT_PUBLIC_API_URL ||
+  "http://localhost:8100/api";
 
-// API 기본 URL 설정 (환경 변수에서 가져오기)
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:8100/api";
-
-// axios 인스턴스 생성
-export const apiClient = axios.create({
-  baseURL: API_BASE_URL,
+export const serverApiClient = axios.create({
+  baseURL: SERVER_API_BASE_URL,
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",
@@ -22,7 +18,7 @@ export const apiClient = axios.create({
 });
 
 // 요청 인터셉터
-apiClient.interceptors.request.use(
+serverApiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     config.metadata = { startTime: Date.now() };
     logger.info("API Request", {
@@ -37,7 +33,7 @@ apiClient.interceptors.request.use(
 );
 
 // 응답 인터셉터 (에러 처리)
-apiClient.interceptors.response.use(
+serverApiClient.interceptors.response.use(
   (response) => {
     const duration = response.config.metadata?.startTime
       ? Date.now() - response.config.metadata.startTime
@@ -61,7 +57,6 @@ apiClient.interceptors.response.use(
       : undefined;
 
     if (error.response) {
-      // 서버에서 응답이 온 경우
       const status: number = error.response.status;
       const statusText: string = error.response.statusText || "";
       const logCtx = { method, url, status, duration, error: statusText };
@@ -72,7 +67,6 @@ apiClient.interceptors.response.use(
         logger.warn("API Error Response", logCtx);
       }
     } else if (error.request) {
-      // 요청은 보냈지만 응답을 받지 못한 경우
       const isTimeout = error.code === "ECONNABORTED";
       const errorMsg = isTimeout
         ? `요청 시간이 초과되었습니다 (${error.message})`
@@ -84,7 +78,6 @@ apiClient.interceptors.response.use(
         error: errorMsg,
       });
     } else {
-      // 요청 설정 중 오류가 발생한 경우
       logger.error("API Request Setup Error", {
         method,
         url,
@@ -95,5 +88,3 @@ apiClient.interceptors.response.use(
     return Promise.reject(error);
   },
 );
-
-export default apiClient;
