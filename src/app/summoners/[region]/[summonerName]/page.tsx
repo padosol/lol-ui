@@ -1,7 +1,8 @@
-import { notFound } from "next/navigation";
 import { getLeagueByPuuid } from "@/lib/api/league";
 import { getSummonerProfile } from "@/lib/api/summoner";
-import { parseSummonerName, normalizeRegion } from "@/utils/summoner";
+import { logger } from "@/lib/logger";
+import { normalizeRegion, parseSummonerName } from "@/utils/summoner";
+import { notFound } from "next/navigation";
 import SummonerPageClient from "./SummonerPageClient";
 
 interface PageProps {
@@ -32,8 +33,11 @@ export default async function SummonerPage({ params }: PageProps) {
   let profileData;
   try {
     profileData = await getSummonerProfile(gameName, region);
-  } catch {
-    // 에러 발생 시 (404 포함) notFound 호출
+  } catch (error) {
+    logger.error("Failed to load summoner profile", {
+      url: `/summoners/${region}/${gameName}`,
+      error: error instanceof Error ? error.message : "Unknown error",
+    });
     notFound();
   }
 
@@ -43,7 +47,14 @@ export default async function SummonerPage({ params }: PageProps) {
   }
 
   // 리그 정보 가져오기 (실패해도 페이지는 표시)
-  const leagueData = await getLeagueByPuuid(profileData.puuid).catch(() => null);
+  const leagueData = await getLeagueByPuuid(profileData.puuid).catch(
+    (error) => {
+      logger.warn("Failed to load league data", {
+        error: error instanceof Error ? error.message : "Unknown error",
+      });
+      return null;
+    },
+  );
 
   return (
     <SummonerPageClient

@@ -1,4 +1,12 @@
-import axios from "axios";
+import axios, { InternalAxiosRequestConfig } from "axios";
+import { logger } from "@/lib/logger";
+
+// axios 타입 확장: 요청 시작 시간 기록용
+declare module "axios" {
+  interface InternalAxiosRequestConfig {
+    metadata?: { startTime: number };
+  }
+}
 
 // API 기본 URL 설정 (환경 변수에서 가져오기)
 const API_BASE_URL =
@@ -13,56 +21,74 @@ export const apiClient = axios.create({
   },
 });
 
-// 요청 인터셉터 (인증 토큰 추가 등)
+// 요청 인터셉터
 apiClient.interceptors.request.use(
-  (config) => {
-    // 필요시 인증 토큰 추가
-    // const token = localStorage.getItem('token');
-    // if (token) {
-    //   config.headers.Authorization = `Bearer ${token}`;
-    // }
+  (config: InternalAxiosRequestConfig) => {
+    config.metadata = { startTime: Date.now() };
+    logger.info("API Request", {
+      method: config.method?.toUpperCase(),
+      url: `${config.baseURL ?? ""}${config.url ?? ""}`,
+    });
     return config;
   },
   (error) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 // 응답 인터셉터 (에러 처리)
 apiClient.interceptors.response.use(
   (response) => {
+    const duration = response.config.metadata?.startTime
+      ? Date.now() - response.config.metadata.startTime
+      : undefined;
+    logger.info("API Response", {
+      method: response.config.method?.toUpperCase(),
+      url: `${response.config.baseURL ?? ""}${response.config.url ?? ""}`,
+      status: response.status,
+      duration,
+    });
     return response;
   },
   (error) => {
-    // 공통 에러 처리
+    const config = error.config as InternalAxiosRequestConfig | undefined;
+    const duration = config?.metadata?.startTime
+      ? Date.now() - config.metadata.startTime
+      : undefined;
+    const method = config?.method?.toUpperCase();
+    const url = config
+      ? `${config.baseURL ?? ""}${config.url ?? ""}`
+      : undefined;
+
     if (error.response) {
       // 서버에서 응답이 온 경우
-      switch (error.response.status) {
-        case 401:
-          // 인증 에러 처리
-          console.error("인증이 필요합니다.");
-          break;
-        case 404:
-          console.error("요청한 리소스를 찾을 수 없습니다.");
-          break;
-        case 500:
-          console.error("서버 오류가 발생했습니다.");
-          break;
-        default:
-          console.error(
-            "API 요청 중 오류가 발생했습니다:",
-            error.response.data
-          );
+      const status: number = error.response.status;
+      const statusText: string = error.response.statusText || "";
+      const logCtx = { method, url, status, duration, error: statusText };
+
+      if (status >= 500) {
+        logger.error("API Server Error", logCtx);
+      } else {
+        logger.warn("API Error Response", logCtx);
       }
     } else if (error.request) {
       // 요청은 보냈지만 응답을 받지 못한 경우
-      console.error("서버에 연결할 수 없습니다.");
+      const isTimeout = error.code === "ECONNABORTED";
+      const errorMsg = isTimeout
+        ? `요청 시간이 초과되었습니다 (${error.message})`
+        : `서버에 연결할 수 없습니다 (${error.message})`;
+      logger.error("API No Response", { method, url, duration, error: errorMsg });
     } else {
       // 요청 설정 중 오류가 발생한 경우
-      console.error("요청 설정 중 오류가 발생했습니다:", error.message);
+      logger.error("API Request Setup Error", {
+        method,
+        url,
+        error: error.message,
+      });
     }
+
     return Promise.reject(error);
-  }
+  },
 );
 
 export default apiClient;
