@@ -4,6 +4,7 @@ import type {
   SummonerProfile,
   SummonerRenewalResponse,
 } from "@/types/api";
+import type { AxiosInstance } from "axios";
 import { apiClient } from "./client";
 
 /**
@@ -38,9 +39,10 @@ export async function searchSummonerAutocomplete(
  */
 export async function getSummonerProfile(
   gameName: string,
-  region: string = "kr"
+  region: string = "kr",
+  client: AxiosInstance = apiClient
 ): Promise<SummonerProfile> {
-  const response = await apiClient.get<ApiResponse<SummonerProfile>>(
+  const response = await client.get<ApiResponse<SummonerProfile>>(
     `/v1/summoners/${region}/${encodeURIComponent(gameName)}`
   );
   return response.data.data;

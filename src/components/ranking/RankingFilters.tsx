@@ -1,7 +1,8 @@
 "use client";
 
+import { useTierCutoffs } from "@/hooks/useRanking";
 import { AVAILABLE_REGIONS, type RegionValue } from "@/stores/useRegionStore";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 interface RankingFiltersProps {
@@ -16,18 +17,35 @@ const queueTypes = [
   { value: "flex", label: "자유랭크" },
 ];
 
-// 더미 데이터 - 실제 데이터로 교체 필요
-const getTierInfo = (_region: string, _queueType: string) => {
-  return {
-    challenger: {
-      cutoff: 1200,
-      players: 300,
-    },
-    grandmaster: {
-      cutoff: 1000,
-      players: 1000,
-    },
-  };
+// queueType을 API queue 파라미터로 변환
+const getQueueParam = (
+  queueType: string
+): "RANKED_SOLO_5x5" | "RANKED_FLEX_SR" => {
+  return queueType === "flex" ? "RANKED_FLEX_SR" : "RANKED_SOLO_5x5";
+};
+
+// LP 변동 표시 헬퍼 함수
+const getLpChangeDisplay = (lpChange: number | undefined) => {
+  if (lpChange === undefined) return null;
+
+  if (lpChange === 0) {
+    return <span className="text-on-surface-medium text-xs ml-1">-</span>;
+  }
+
+  if (lpChange > 0) {
+    return (
+      <span className="flex items-center text-win text-xs ml-1">
+        <ChevronUp className="w-3 h-3" />
+        {lpChange}
+      </span>
+    );
+  }
+  return (
+    <span className="flex items-center text-lose text-xs ml-1">
+      <ChevronDown className="w-3 h-3" />
+      {Math.abs(lpChange)}
+    </span>
+  );
 };
 
 export default function RankingFilters({
@@ -36,7 +54,12 @@ export default function RankingFilters({
   onRegionChange,
   onQueueTypeChange,
 }: RankingFiltersProps) {
-  const tierInfo = getTierInfo(region, queueType);
+  const queueParam = getQueueParam(queueType);
+  const { data: tierCutoffs, isLoading, isError } = useTierCutoffs(region, queueParam);
+
+  // API 응답에서 챌린저/그랜드마스터 데이터 추출
+  const challengerData = tierCutoffs?.find((t) => t.tier === "CHALLENGER");
+  const grandmasterData = tierCutoffs?.find((t) => t.tier === "GRANDMASTER");
   const [isRegionOpen, setIsRegionOpen] = useState(false);
   const [isQueueTypeOpen, setIsQueueTypeOpen] = useState(false);
   const regionRef = useRef<HTMLDivElement>(null);
@@ -190,24 +213,63 @@ export default function RankingFilters({
 
         {/* 3섹션: 챌린저/그랜드마스터 정보 */}
         <div className="flex gap-3 justify-end">
-          <div className="bg-surface-8 rounded-md p-3 w-40">
-            <div className="text-xs text-on-surface-medium mb-1">챌린저</div>
-            <div className="text-sm text-on-surface">
-              커트라인: <span className="font-semibold text-on-surface">{tierInfo.challenger.cutoff} LP</span>
+          {isLoading ? (
+            <>
+              <div className="bg-surface-8 rounded-md p-3 w-40 animate-pulse">
+                <div className="h-4 bg-surface-12 rounded w-16 mb-2"></div>
+                <div className="h-4 bg-surface-12 rounded w-24 mb-1"></div>
+                <div className="h-4 bg-surface-12 rounded w-20"></div>
+              </div>
+              <div className="bg-surface-8 rounded-md p-3 w-40 animate-pulse">
+                <div className="h-4 bg-surface-12 rounded w-20 mb-2"></div>
+                <div className="h-4 bg-surface-12 rounded w-24 mb-1"></div>
+                <div className="h-4 bg-surface-12 rounded w-20"></div>
+              </div>
+            </>
+          ) : isError ? (
+            <div className="bg-surface-8 rounded-md p-3 text-sm text-on-surface-medium">
+              커트라인 정보를 불러올 수 없습니다
             </div>
-            <div className="text-sm text-on-surface">
-              인원: <span className="font-semibold text-on-surface">{tierInfo.challenger.players}명</span>
-            </div>
-          </div>
-          <div className="bg-surface-8 rounded-md p-3 w-40">
-            <div className="text-xs text-on-surface-medium mb-1">그랜드마스터</div>
-            <div className="text-sm text-on-surface">
-              커트라인: <span className="font-semibold text-on-surface">{tierInfo.grandmaster.cutoff} LP</span>
-            </div>
-            <div className="text-sm text-on-surface">
-              인원: <span className="font-semibold text-on-surface">{tierInfo.grandmaster.players}명</span>
-            </div>
-          </div>
+          ) : (
+            <>
+              <div className="bg-surface-8 rounded-md p-3 w-40">
+                <div className="text-sm font-medium text-on-surface-medium mb-1">챌린저</div>
+                <div className="text-sm text-on-surface flex items-center">
+                  커트라인:{" "}
+                  <span className="font-semibold text-on-surface">
+                    {challengerData?.minLeaguePoints ?? "-"} LP
+                  </span>
+                  {getLpChangeDisplay(challengerData?.lpChange)}
+                </div>
+                {challengerData?.userCount !== undefined && (
+                  <div className="text-sm text-on-surface">
+                    인원:{" "}
+                    <span className="font-semibold text-on-surface">
+                      {challengerData.userCount}명
+                    </span>
+                  </div>
+                )}
+              </div>
+              <div className="bg-surface-8 rounded-md p-3 w-40">
+                <div className="text-sm font-medium text-on-surface-medium mb-1">그랜드마스터</div>
+                <div className="text-sm text-on-surface flex items-center">
+                  커트라인:{" "}
+                  <span className="font-semibold text-on-surface">
+                    {grandmasterData?.minLeaguePoints ?? "-"} LP
+                  </span>
+                  {getLpChangeDisplay(grandmasterData?.lpChange)}
+                </div>
+                {grandmasterData?.userCount !== undefined && (
+                  <div className="text-sm text-on-surface">
+                    인원:{" "}
+                    <span className="font-semibold text-on-surface">
+                      {grandmasterData.userCount}명
+                    </span>
+                  </div>
+                )}
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

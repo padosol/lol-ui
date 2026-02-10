@@ -57,24 +57,37 @@ export default function ProfileTabs({
       {/* 탭 콘텐츠 */}
       <div className="bg-surface-4 rounded-b-lg border border-divider">
         {activeTab === "overview" && (
-          <div className="p-6">
+          <div className="p-4 md:p-6">
+            {/* 모바일 전용: 리그정보 + 모스트5를 매치 히스토리 위에 배치 */}
+            <div className="lg:hidden space-y-4 mb-6">
+              <LeagueInfo
+                puuid={puuid}
+                showTitle={false}
+                initialData={initialLeagueData}
+              />
+              <ChampionStatsOverview
+                puuid={puuid}
+                showTitle={true}
+                limit={5}
+              />
+            </div>
+
+            {/* 데스크톱: 기존 3컬럼 그리드 유지 */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               <div className="lg:col-span-2">
                 <MatchHistory puuid={puuid} showTitle={false} />
               </div>
-              <div className="lg:col-span-1 space-y-6">
+              <div className="hidden lg:block lg:col-span-1 space-y-6">
                 <LeagueInfo
                   puuid={puuid}
                   showTitle={false}
                   initialData={initialLeagueData}
                 />
-                <div>
-                  <ChampionStatsOverview
-                    puuid={puuid}
-                    showTitle={true}
-                    limit={5}
-                  />
-                </div>
+                <ChampionStatsOverview
+                  puuid={puuid}
+                  showTitle={true}
+                  limit={5}
+                />
               </div>
             </div>
           </div>

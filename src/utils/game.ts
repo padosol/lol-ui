@@ -5,6 +5,8 @@
 import { useGameDataStore, type SummonerJson } from "@/stores/useGameDataStore";
 import type { ItemData } from "@/types/api";
 
+const IMAGE_HOST = process.env.NEXT_PUBLIC_IMAGE_HOST || 'https://static.mmrtr.shop';
+
 /**
  * 소환사 주문 JSON 데이터를 로드합니다 (zustand store 사용)
  */
@@ -29,7 +31,7 @@ async function loadSummonerData(): Promise<SummonerJson | null> {
  * @returns 아이템 이미지 URL
  */
 export function getItemImageUrl(itemId: number): string {
-  return `https://static.mmrtr.shop/items/${itemId}.png`;
+  return `${IMAGE_HOST}/items/${itemId}.png`;
 }
 
 /**
@@ -45,21 +47,21 @@ export async function getSpellImageUrlAsync(spellId: number): Promise<string> {
   try {
     const data = await loadSummonerData();
     if (!data) {
-      return `https://static.mmrtr.shop/spells/${spellId}.png`;
+      return `${IMAGE_HOST}/spells/${spellId}.png`;
     }
     const key = String(spellId);
     const spell = data.data[key];
-    
+
     if (spell && spell.id) {
-      return `https://static.mmrtr.shop/spells/${spell.id}.png`;
+      return `${IMAGE_HOST}/spells/${spell.id}.png`;
     }
-    
+
     // fallback: 원래 방식
-    return `https://static.mmrtr.shop/spells/${spellId}.png`;
+    return `${IMAGE_HOST}/spells/${spellId}.png`;
   } catch (error) {
     console.error("Failed to load summoner data:", error);
     // fallback: 원래 방식
-    return `https://static.mmrtr.shop/spells/${spellId}.png`;
+    return `${IMAGE_HOST}/spells/${spellId}.png`;
   }
 }
 
@@ -72,19 +74,19 @@ export function getSpellImageUrl(spellId: number): string {
   if (!spellId || spellId === 0) {
     return "";
   }
-  
+
   // zustand store에서 데이터 가져오기
   const store = useGameDataStore.getState();
   if (store.summonerData) {
     const key = String(spellId);
     const spell = store.summonerData.data[key];
     if (spell && spell.id) {
-      return `https://static.mmrtr.shop/spells/${spell.id}.png`;
+      return `${IMAGE_HOST}/spells/${spell.id}.png`;
     }
   }
-  
+
   // fallback: 원래 방식
-  return `https://static.mmrtr.shop/spells/${spellId}.png`;
+  return `${IMAGE_HOST}/spells/${spellId}.png`;
 }
 
 /**
@@ -96,7 +98,7 @@ export function getPerkImageUrl(perkId: number): string {
   if (!perkId || perkId === 0) {
     return "";
   }
-  return `https://static.mmrtr.shop/perks/${perkId}.png`;
+  return `${IMAGE_HOST}/perks/${perkId}.png`;
 }
 
 /**

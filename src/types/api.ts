@@ -278,3 +278,18 @@ export interface RankingResponse {
   isFirst: boolean;
   isLast: boolean;
 }
+
+// 티어 커트오프 항목
+export interface TierCutoff {
+  id: number;
+  queue: "RANKED_SOLO_5x5" | "RANKED_FLEX_SR";
+  tier: "CHALLENGER" | "GRANDMASTER";
+  region: string;
+  minLeaguePoints: number;
+  updatedAt: string;
+  lpChange?: number; // LP 변동값
+  userCount?: number; // 유저 수
+}
+
+// 티어 커트오프 응답 (배열)
+export type TierCutoffResponse = TierCutoff[];

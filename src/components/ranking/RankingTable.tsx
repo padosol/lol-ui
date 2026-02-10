@@ -3,7 +3,7 @@
 import { useRanking } from "@/hooks/useRanking";
 import { getChampionImageUrl } from "@/utils/champion";
 import { getTierImageUrl, getTierName } from "@/utils/tier";
-import { ChevronDown, ChevronUp, Minus } from "lucide-react";
+import { ChevronDown, ChevronUp, Crown, Minus } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -110,10 +110,17 @@ export default function RankingTable({ region, queueType }: RankingTableProps) {
             {data.content.map((player) => (
               <tr
                 key={player.puuid}
-                className="hover:bg-surface-8 transition-colors"
+                className={
+                  player.currentRank === 1
+                    ? "rank-1-row transition-colors"
+                    : "hover:bg-surface-8 transition-colors"
+                }
               >
-                <td className="px-4 py-4 whitespace-nowrap">
+                <td className={`px-4 py-4 whitespace-nowrap ${player.currentRank === 1 ? "border-l-3 border-rank-top" : ""}`}>
                   <div className="flex items-center gap-2">
+                    {player.currentRank === 1 && (
+                      <Crown className="w-4 h-4 text-rank-top animate-crown-glow" />
+                    )}
                     <span
                       className={`text-sm font-semibold ${
                         player.currentRank <= 3
@@ -123,7 +130,7 @@ export default function RankingTable({ region, queueType }: RankingTableProps) {
                           : "text-on-surface"
                       }`}
                     >
-                      {player.currentRank}
+                      {player.currentRank !== 1 && player.currentRank}
                     </span>
                     {getRankChangeIcon(player.rankChange)}
                   </div>
@@ -131,10 +138,14 @@ export default function RankingTable({ region, queueType }: RankingTableProps) {
                 <td className="px-4 py-4 whitespace-nowrap">
                   <Link
                     href={`/summoners/${region}/${player.gameName}-${player.tagLine}`}
-                    className="text-sm font-medium text-on-surface hover:text-on-surface-medium transition-colors"
+                    className={
+                      player.currentRank === 1
+                        ? "text-sm font-bold text-rank-top hover:text-rank-top/80 transition-colors"
+                        : "text-sm font-medium text-on-surface hover:text-on-surface-medium transition-colors"
+                    }
                   >
                     {player.gameName}
-                    <span className="text-on-surface-disabled">#{player.tagLine}</span>
+                    <span className={player.currentRank === 1 ? "text-rank-top/60" : "text-on-surface-disabled"}>#{player.tagLine}</span>
                   </Link>
                 </td>
                 <td className="px-4 py-4">
@@ -195,7 +206,11 @@ export default function RankingTable({ region, queueType }: RankingTableProps) {
                   </div>
                 </td>
                 <td className="px-2 py-4 whitespace-nowrap">
-                  <span className="text-sm text-on-surface">
+                  <span className={
+                    player.currentRank === 1
+                      ? "text-sm font-bold text-rank-top"
+                      : "text-sm text-on-surface"
+                  }>
                     {player.leaguePoints} LP
                   </span>
                 </td>

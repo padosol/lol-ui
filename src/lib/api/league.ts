@@ -1,4 +1,5 @@
 import type { ApiResponse, LeagueInfoResponse } from "@/types/api";
+import type { AxiosInstance } from "axios";
 import { apiClient } from "./client";
 
 /**
@@ -8,9 +9,10 @@ import { apiClient } from "./client";
  * @returns 리그 정보 객체
  */
 export async function getLeagueByPuuid(
-  puuid: string
+  puuid: string,
+  client: AxiosInstance = apiClient
 ): Promise<LeagueInfoResponse> {
-  const response = await apiClient.get<ApiResponse<LeagueInfoResponse>>(
+  const response = await client.get<ApiResponse<LeagueInfoResponse>>(
     `/v1/leagues/by-puuid/${puuid}`
   );
   return response.data.data;
