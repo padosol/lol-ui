@@ -1,6 +1,5 @@
 "use client";
 
-import { useAuthStore } from "@/stores/useAuthStore";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
 export default function Header() {

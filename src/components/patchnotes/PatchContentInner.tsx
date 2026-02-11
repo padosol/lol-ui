@@ -5,7 +5,6 @@ import type {
   AramChanges as AramChangesType,
   ArenaChanges as ArenaChangesType,
   PatchNoteExtended,
-  PatchSummary,
 } from "@/types/patchnotes";
 import { ExternalLink, Gamepad2, Map, Settings, Snowflake } from "lucide-react";
 import { useState } from "react";
@@ -16,52 +15,6 @@ import ItemChanges from "./ItemChanges";
 import MetaPredictions from "./MetaPredictions";
 import PatchVisualSummary from "./PatchVisualSummary";
 import SystemChanges from "./SystemChanges";
-
-function calculateSummary(patchNote: PatchNoteExtended): PatchSummary {
-  const common = patchNote.common;
-  const championBuffs = common.champions.filter(
-    (c) => c.changeType === "buff"
-  ).length;
-  const championNerfs = common.champions.filter(
-    (c) => c.changeType === "nerf"
-  ).length;
-  const championAdjusts = common.champions.filter(
-    (c) => c.changeType === "adjust" || c.changeType === "rework"
-  ).length;
-
-  const itemBuffs = common.items.filter(
-    (i) => i.changeType === "buff"
-  ).length;
-  const itemNerfs = common.items.filter(
-    (i) => i.changeType === "nerf"
-  ).length;
-  const itemAdjusts = common.items.filter(
-    (i) => i.changeType === "adjust" || i.changeType === "new"
-  ).length;
-
-  // 아레나 통계 계산
-  const arena = patchNote.arena;
-  const arenaBuffs =
-    arena?.champions.filter((c) => c.changeType === "buff").length ?? 0;
-  const arenaNerfs =
-    arena?.champions.filter((c) => c.changeType === "nerf").length ?? 0;
-  const arenaAdjusts =
-    arena?.champions.filter(
-      (c) => c.changeType === "adjust" || c.changeType === "rework"
-    ).length ?? 0;
-
-  return {
-    championBuffs,
-    championNerfs,
-    championAdjusts,
-    itemBuffs,
-    itemNerfs,
-    itemAdjusts,
-    arenaBuffs,
-    arenaNerfs,
-    arenaAdjusts,
-  };
-}
 
 type TabType = "rift" | "aram" | "arena" | "system";
 
