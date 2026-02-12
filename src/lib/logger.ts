@@ -25,14 +25,14 @@ function timestamp(): string {
 export const logger = {
   info(message: string, ctx?: LogContext): void {
     if (process.env.NODE_ENV !== "development") return;
-    console.log(`[MMRTR] [INFO] [${timestamp()}] ${message}${formatContext(ctx)}`);
+    console.log(`[METAPICK] [INFO] [${timestamp()}] ${message}${formatContext(ctx)}`);
   },
 
   warn(message: string, ctx?: LogContext): void {
-    console.warn(`[MMRTR] [WARN] [${timestamp()}] ${message}${formatContext(ctx)}`);
+    console.warn(`[METAPICK] [WARN] [${timestamp()}] ${message}${formatContext(ctx)}`);
   },
 
   error(message: string, ctx?: LogContext): void {
-    console.error(`[MMRTR] [ERROR] [${timestamp()}] ${message}${formatContext(ctx)}`);
+    console.error(`[METAPICK] [ERROR] [${timestamp()}] ${message}${formatContext(ctx)}`);
   },
 };

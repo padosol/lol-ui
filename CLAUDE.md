@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-League of Legends 전적 검색 서비스 (MMRTR). Next.js 16 App Router 기반 웹 애플리케이션.
+League of Legends 전적 검색 서비스 (METAPICK). Next.js 16 App Router 기반 웹 애플리케이션.
 
 ## Commands
 
