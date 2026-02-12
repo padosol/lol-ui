@@ -12,6 +12,9 @@ declare module "axios" {
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || "http://localhost:8100/api";
 
+console.log("[API Config] NEXT_PUBLIC_API_URL:", process.env.NEXT_PUBLIC_API_URL);
+console.log("[API Config] API_BASE_URL:", API_BASE_URL);
+
 // axios 인스턴스 생성
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,
@@ -25,6 +28,12 @@ export const apiClient = axios.create({
 apiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     config.metadata = { startTime: Date.now() };
+    console.log("[API Request]", {
+      baseURL: config.baseURL,
+      url: config.url,
+      fullURL: `${config.baseURL ?? ""}${config.url ?? ""}`,
+      method: config.method?.toUpperCase(),
+    });
     logger.info("API Request", {
       method: config.method?.toUpperCase(),
       url: `${config.baseURL ?? ""}${config.url ?? ""}`,
