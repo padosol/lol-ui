@@ -112,7 +112,7 @@ export default function LogoSearchSection() {
           <div className="flex items-center justify-center">
             <div className="w-64 h-32 flex items-center justify-center">
               {/* 추후 이미지로 교체될 공간 */}
-              <h1 className="text-3xl font-bold text-primary">MMRTR</h1>
+              <h1 className="text-3xl font-bold text-primary">METAPICK</h1>
             </div>
           </div>
 
@@ -139,9 +139,8 @@ export default function LogoSearchSection() {
                     </span>
                   </span>
                   <ChevronDown
-                    className={`absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-on-surface-medium transition-transform ${
-                      isRegionOpen ? "rotate-180" : ""
-                    }`}
+                    className={`absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-on-surface-medium transition-transform ${isRegionOpen ? "rotate-180" : ""
+                      }`}
                   />
                 </button>
 
@@ -158,11 +157,10 @@ export default function LogoSearchSection() {
                               setRegion(opt.value);
                               setIsRegionOpen(false);
                             }}
-                            className={`w-full px-3 py-1.5 flex items-center justify-between text-left transition-colors cursor-pointer ${
-                              selected
+                            className={`w-full px-3 py-1.5 flex items-center justify-between text-left transition-colors cursor-pointer ${selected
                                 ? "bg-surface-8 text-on-surface"
                                 : "text-on-surface hover:bg-surface-8"
-                            }`}
+                              }`}
                             role="option"
                             aria-selected={selected}
                           >
