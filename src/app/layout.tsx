@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "MMRTR - The Best LoL Builds and Tier List",
+  title: "METAPICK - The Best LoL Builds and Tier List",
   description: "Search Riot ID and Tagline for Stats",
 };
 
