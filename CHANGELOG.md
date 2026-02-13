@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.5.0](https://github.com/padosol/lol-ui/compare/v1.4.0...v1.5.0) (2026-02-12)
+
+
+### Features
+
+* add Docker support with multi-stage build ([3775f75](https://github.com/padosol/lol-ui/commit/3775f759dc5df776922a468385ffa43621e7c5bb))
+* add LP change display and improve tier cutoff UI ([91ef7c1](https://github.com/padosol/lol-ui/commit/91ef7c1480f6c07522ec2949530a5e5488417381))
+* add rank 1 highlight styling, mobile responsive layout for match history and profile ([af23344](https://github.com/padosol/lol-ui/commit/af233443969d4c5008aac2b2fd14d8ec9371748e))
+* add structured server-side API logging with [MMRTR] prefix ([b11d0ba](https://github.com/padosol/lol-ui/commit/b11d0ba679d7980121c15d0b8ef6010b67baebe8))
+* implement live spectator API integration for ingame tab ([28017ea](https://github.com/padosol/lol-ui/commit/28017ea38ee2ad616f9cfab439a1928ffa8d0b85))
+* implement live spectator API integration for ingame tab ([8d3d661](https://github.com/padosol/lol-ui/commit/8d3d6611f06ebc5bef15bdfdd334d672e2d8b257))
+* integrate tier-cutoff API for ranking page ([7a82fc1](https://github.com/padosol/lol-ui/commit/7a82fc104f76cb46f500b0cbad89f7a3479913bc))
+
+
+### Bug Fixes
+
+* add Header, Navigation, Footer to summoner not-found page ([0776197](https://github.com/padosol/lol-ui/commit/0776197a16e4ace42d2b98c580a8826e4abf0120))
+* add server-side API client for Docker internal network SSR calls ([c1b62a6](https://github.com/padosol/lol-ui/commit/c1b62a60de212645380a894249544a619a487705))
+* disable Link prefetch on match participant links to prevent unnecessary API calls ([1276f18](https://github.com/padosol/lol-ui/commit/1276f18624eb7a9fce2a9233e1f28cac771e69fb))
+* pin pnpm version to 10.12.1 in Dockerfile ([0c2135b](https://github.com/padosol/lol-ui/commit/0c2135b3a2f2a932412ddf1df910bd20f1eef894))
+
 ## [1.4.0](https://github.com/padosol/lol-ui/compare/v1.3.0...v1.4.0) (2026-02-03)
 
 
