@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.6.0](https://github.com/padosol/lol-ui/compare/v1.5.1...v1.6.0) (2026-02-13)
+
+
+### Features
+
+* **home:** add two-column layout with free champions and patch notes ([85f0a53](https://github.com/padosol/lol-ui/commit/85f0a53a3f17542c82e7154f8e6cd731535fabd9))
+* **home:** add two-column layout with free champions and patch notes ([8c4f02e](https://github.com/padosol/lol-ui/commit/8c4f02e996af6500775a8aa340bde7f828f8c0f9))
+
 ## [1.5.1](https://github.com/padosol/lol-ui/compare/v1.5.0...v1.5.1) (2026-02-13)
 
 
