@@ -11,6 +11,14 @@ updates:
     commit-message:
       prefix: "chore(deps)"
     open-pull-requests-limit: 10
+    groups:
+      production-minor-patch:
+        dependency-type: "production"
+        update-types:
+          - "minor"
+          - "patch"
+      dev-dependencies:
+        dependency-type: "development"
 
   # GitHub Actions 업데이트
   - package-ecosystem: "github-actions"
@@ -23,3 +31,7 @@ updates:
       - "github-actions"
     commit-message:
       prefix: "chore(deps)"
+    groups:
+      actions-all:
+        patterns:
+          - "*"
