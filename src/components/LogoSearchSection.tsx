@@ -158,8 +158,8 @@ export default function LogoSearchSection() {
                               setIsRegionOpen(false);
                             }}
                             className={`w-full px-3 py-1.5 flex items-center justify-between text-left transition-colors cursor-pointer ${selected
-                                ? "bg-surface-8 text-on-surface"
-                                : "text-on-surface hover:bg-surface-8"
+                              ? "bg-surface-8 text-on-surface"
+                              : "text-on-surface hover:bg-surface-8"
                               }`}
                             role="option"
                             aria-selected={selected}
