@@ -11,6 +11,10 @@ updates:
     commit-message:
       prefix: "chore(deps)"
     open-pull-requests-limit: 10
+    ignore:
+      # eslint-plugin-react가 ESLint 10을 지원할 때까지 메이저 업데이트 차단
+      - dependency-name: "eslint"
+        update-types: ["version-update:semver-major"]
     groups:
       production-minor-patch:
         dependency-type: "production"
