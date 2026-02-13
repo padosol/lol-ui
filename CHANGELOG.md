@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.5.1](https://github.com/padosol/lol-ui/compare/v1.5.0...v1.5.1) (2026-02-13)
+
+
+### Bug Fixes
+
+* **deps:** ignore eslint major update incompatible with eslint-plugin-react ([ea2ae4e](https://github.com/padosol/lol-ui/commit/ea2ae4ea0fab8394444231d599daa977b24f438f))
+* **deps:** ignore eslint major update until plugin compatibility ([a20b36b](https://github.com/padosol/lol-ui/commit/a20b36b8d3ff207b5f7e9ecf302c3a8d3f89d6c0))
+
 ## [1.5.0](https://github.com/padosol/lol-ui/compare/v1.4.0...v1.5.0) (2026-02-12)
 
 
