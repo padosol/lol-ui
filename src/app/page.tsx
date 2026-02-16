@@ -1,9 +1,9 @@
-import Header from "@/components/Header";
-import Navigation from "@/components/Navigation";
-import LogoSearchSection from "@/components/LogoSearchSection";
-import DesktopAppSection from "@/components/DesktopAppSection";
-import HomePatchNotes from "@/components/HomePatchNotes";
-import Footer from "@/components/Footer";
+import Header from "@/components/layout/Header";
+import Navigation from "@/components/layout/Navigation";
+import LogoSearchSection from "@/components/home/LogoSearchSection";
+import DesktopAppSection from "@/components/home/DesktopAppSection";
+import HomePatchNotes from "@/components/home/HomePatchNotes";
+import Footer from "@/components/layout/Footer";
 
 export default function Home() {
   return (

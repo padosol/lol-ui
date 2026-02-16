@@ -1,8 +1,8 @@
 "use client";
 
-import Footer from "@/components/Footer";
-import Header from "@/components/Header";
-import Navigation from "@/components/Navigation";
+import Footer from "@/components/layout/Footer";
+import Header from "@/components/layout/Header";
+import Navigation from "@/components/layout/Navigation";
 import ProfileSection from "@/components/summoner/ProfileSection";
 import ProfileTabs from "@/components/summoner/ProfileTabs";
 import type { LeagueInfoResponse, SummonerProfile } from "@/types/api";

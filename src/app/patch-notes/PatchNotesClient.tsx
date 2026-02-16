@@ -1,8 +1,8 @@
 "use client";
 
-import Footer from "@/components/Footer";
-import Header from "@/components/Header";
-import Navigation from "@/components/Navigation";
+import Footer from "@/components/layout/Footer";
+import Header from "@/components/layout/Header";
+import Navigation from "@/components/layout/Navigation";
 import PatchContent from "@/components/patchnotes/PatchContent";
 import PatchList from "@/components/patchnotes/PatchList";
 import { usePatchVersions } from "@/hooks/usePatchNotes";

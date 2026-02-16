@@ -1,6 +1,6 @@
 "use client";
 
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { ThemeToggle } from "@/components/providers/ThemeToggle";
 
 export default function Header() {
   // TODO: 로그인 기능 구현 시 아래 주석 해제

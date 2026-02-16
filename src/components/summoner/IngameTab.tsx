@@ -1,7 +1,7 @@
 "use client";
 
-import IngameHeader from "@/components/ingame/IngameHeader";
-import IngameTeam from "@/components/ingame/IngameTeam";
+import IngameHeader from "@/components/summoner/ingame/IngameHeader";
+import IngameTeam from "@/components/summoner/ingame/IngameTeam";
 import { useActiveGame } from "@/hooks/useSpectator";
 import { Gamepad2 } from "lucide-react";
 
