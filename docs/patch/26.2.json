@@ -1,0 +1,505 @@
+{
+  "version": "26.2",
+  "rift": {
+    "champions": [
+      {
+        "targetName": "아트록스",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          {
+            "statName": "기본 지속 효과 - 사신 태세 대상 최대 체력 비례 추가 마법 피해",
+            "before": "4~8% (레벨에 따라)",
+            "after": "4~10% (레벨에 따라)"
+          },
+          {
+            "statName": "Q - 다르킨의 검 몬스터 대상 추가 피해량",
+            "before": "15",
+            "after": "25"
+          }
+        ]
+      },
+      {
+        "targetName": "애쉬",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          {
+            "statName": "공격력 증가량",
+            "before": "3",
+            "after": "3.5"
+          }
+        ]
+      },
+      {
+        "targetName": "그웬",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          {
+            "statName": "기본 지속 효과 - 가위 난도질 몬스터 대상 피해량 한도",
+            "before": "5 (+주문력의 10%)",
+            "after": "3 (+주문력의 5%)"
+          }
+        ]
+      },
+      {
+        "targetName": "제이스",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          {
+            "statName": "Q - 하늘로! / 전격 폭발 몬스터 대상 추가 피해량",
+            "before": "50",
+            "after": "25"
+          }
+        ]
+      },
+      {
+        "targetName": "릴리아",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          {
+            "statName": "기본 지속 효과 - 꿈나무 지팡이 대형 몬스터 대상 체력 회복량",
+            "before": "39 (+주문력의 15%)",
+            "after": "39 (+주문력의 9%)"
+          },
+          {
+            "statName": "Q - 뾰로롱 강타 주문력 계수",
+            "before": "주문력의 35%",
+            "after": "주문력의 30%"
+          }
+        ]
+      },
+      {
+        "targetName": "말파이트",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          {
+            "statName": "W - 천둥소리 몬스터 대상 피해량",
+            "before": "2x",
+            "after": "1.8x"
+          },
+          {
+            "statName": "E - 지면 강타 피해량",
+            "before": "80/120/160/200/240 (+주문력의 60%) (+방어력의 40%)",
+            "after": "60/95/130/165/200 (+주문력의 60%) (+방어력의 40%)"
+          },
+          {
+            "statName": "E - 지면 강타 마나 소모량",
+            "before": "50",
+            "after": "50/55/60/65/70"
+          },
+          {
+            "statName": "R - 멈출 수 없는 힘 재사용 대기시간",
+            "before": "130/105/80초",
+            "after": "130/115/100초"
+          }
+        ]
+      },
+      {
+        "targetName": "마스터 이",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          {
+            "statName": "방어력 증가량",
+            "before": "4.2",
+            "after": "4.5"
+          },
+          {
+            "statName": "Q - 일격 필살 적중 시 피해량 계수",
+            "before": "65%",
+            "after": "75%"
+          }
+        ]
+      },
+      {
+        "targetName": "누누와 윌럼프",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          {
+            "statName": "Q - 잡아먹기 재사용 대기시간",
+            "before": "12/11/10/9/8초",
+            "after": "13/12/11/10/9초"
+          },
+          {
+            "statName": "W - 데굴데굴 눈덩이! 최대 피해량",
+            "before": "180/225/270/315/360 (+주문력의 150%)",
+            "after": "150/195/240/285/330 (+주문력의 150%)"
+          },
+          {
+            "statName": "E - 눈덩이 팡팡팡 적중 1회당 피해량",
+            "before": "16/24/32/40/48 (+주문력의 15%)",
+            "after": "14/21/28/35/42"
+          }
+        ]
+      },
+      {
+        "targetName": "시비르",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          {
+            "statName": "공격 속도 증가량",
+            "before": "2%",
+            "after": "1.6%"
+          },
+          {
+            "statName": "방어력 증가량",
+            "before": "4.45",
+            "after": "4.0"
+          }
+        ]
+      },
+      {
+        "targetName": "스몰더",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          {
+            "statName": "방어력 증가량",
+            "before": "4.7",
+            "after": "4.0"
+          }
+        ]
+      },
+      {
+        "targetName": "탈리야",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          {
+            "statName": "Q - 파편 난사 몬스터 대상 추가 피해량",
+            "before": "20",
+            "after": "20/25/30/35/40"
+          },
+          {
+            "statName": "E - 대지의 파동 몬스터 대상 피해량 계수",
+            "before": "190%",
+            "after": "225%"
+          }
+        ]
+      },
+      {
+        "targetName": "바루스",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          {
+            "statName": "Q - 꿰뚫는 화살 최대 충전 시 기본 피해량",
+            "before": "80/150/220/290/360",
+            "after": "80/160/240/320/400"
+          },
+          {
+            "statName": "W - 역병 화살 적중 시 기본 피해량",
+            "before": "6/14/22/30/38",
+            "after": "8/17/26/35/44"
+          }
+        ]
+      },
+      {
+        "targetName": "비에고",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          {
+            "statName": "공격 속도 증가량",
+            "before": "2.25%",
+            "after": "2.75%"
+          },
+          {
+            "statName": "Q - 몰락한 왕의 검 적중 시 체력 비례 추가 치명타 피해량 계수",
+            "before": "50%",
+            "after": "70%"
+          },
+          {
+            "statName": "Q - 몰락한 왕의 검 사용 시 추가 치명타 피해량 계수",
+            "before": "50%",
+            "after": "60%"
+          }
+        ]
+      },
+      {
+        "targetName": "제드",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          {
+            "statName": "기본 지속 효과 - 약자 멸시 몬스터 대상 피해량",
+            "before": "1.8x",
+            "after": "1.2x"
+          }
+        ]
+      }
+    ],
+    "items": [
+      {
+        "targetName": "밴들파이프",
+        "type": "item",
+        "direction": "nerf",
+        "changes": [
+          {
+            "statName": "총가격",
+            "before": "2,000골드",
+            "after": "2,300골드"
+          },
+          {
+            "statName": "조합 가격",
+            "before": "500골드",
+            "after": "800골드"
+          }
+        ]
+      },
+      {
+        "targetName": "악마사냥꾼의 화살",
+        "type": "item",
+        "direction": "buff",
+        "changes": [
+          {
+            "statName": "공격 속도",
+            "before": "40%",
+            "after": "45%"
+          },
+          {
+            "statName": "확정 치명타 피해량 계수",
+            "before": "75%",
+            "after": "80%"
+          },
+          {
+            "statName": "치명타 적용 시 추가 고정 피해량",
+            "before": "10%",
+            "after": "15%"
+          }
+        ]
+      },
+      {
+        "targetName": "마법광학 장치 C44",
+        "type": "item",
+        "direction": "buff",
+        "changes": [
+          {
+            "statName": "공격력",
+            "before": "50",
+            "after": "55"
+          },
+          {
+            "statName": "최대 피해 증폭에 필요한 사거리",
+            "before": "700",
+            "after": "600"
+          }
+        ]
+      }
+    ],
+    "systems": []
+  },
+  "arena": {
+    "champions": [
+      {
+        "targetName": "자헨",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          {
+            "statName": "E - 찬란한 쇄도 재사용 대기시간",
+            "before": "10~8초",
+            "after": "12~10초"
+          },
+          {
+            "statName": "R - 단호한 판결 방어구 관통력",
+            "before": "10/20/30%",
+            "after": "5/15/25%"
+          }
+        ]
+      },
+      {
+        "targetName": "벨베스",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          {
+            "statName": "기본 지속 효과 - 연보랏빛 죽음 라운드당 중첩 감소",
+            "before": "12",
+            "after": "10"
+          },
+          {
+            "statName": "추가 체력 감소",
+            "before": "250/400/550",
+            "after": "250/350/450"
+          }
+        ]
+      },
+      {
+        "targetName": "자이라",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          {
+            "statName": "식물 지속시간",
+            "before": "8초",
+            "after": "6초"
+          }
+        ]
+      },
+      {
+        "targetName": "마스터 이",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          {
+            "statName": "Q - 일격 필살 재사용 대기시간 적용 시점",
+            "before": "스킬 사용 시",
+            "after": "스킬 종료 시"
+          }
+        ]
+      },
+      {
+        "targetName": "타릭",
+        "type": "champion",
+        "direction": "adjust",
+        "changes": [
+          {
+            "statName": "기본 지속 효과 - 담대함 피해량",
+            "before": "12.5~46.5 (레벨에 따라) (+계수 포함)",
+            "after": "25~93 (레벨에 따라) (계수 삭제)"
+          }
+        ]
+      },
+      {
+        "targetName": "갱플랭크",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          {
+            "statName": "기본 지속 효과 - 불의 심판 재사용 대기시간",
+            "before": "15초",
+            "after": "10초"
+          },
+          {
+            "statName": "R - 포탄 세례 재사용 대기시간",
+            "before": "160/140/120초",
+            "after": "130/100/90초"
+          }
+        ]
+      },
+      {
+        "targetName": "룰루",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          {
+            "statName": "Q - 반짝반짝 창 두 번째 화살 피해량 증가",
+            "before": "50%",
+            "after": "75%"
+          }
+        ]
+      }
+    ],
+    "items": [
+      {
+        "targetName": "스태틱의 단검",
+        "type": "item",
+        "direction": "nerf",
+        "changes": [
+          {
+            "statName": "튕기는 범위",
+            "before": "1,500",
+            "after": "750"
+          },
+          {
+            "statName": "추가 공격력 계수",
+            "before": "0.65",
+            "after": "0.5"
+          }
+        ]
+      },
+      {
+        "targetName": "밴들파이프",
+        "type": "item",
+        "direction": "buff",
+        "changes": [
+          {
+            "statName": "공격 속도 오오라",
+            "before": "30%",
+            "after": "45%"
+          },
+          {
+            "statName": "이동 속도",
+            "before": "20",
+            "after": "35"
+          }
+        ]
+      }
+    ],
+    "systems": [
+      {
+        "targetName": "주문 취소",
+        "type": "augment",
+        "direction": "adjust",
+        "changes": [
+          {
+            "statName": "군중 제어 효과 연계 지속시간 감소",
+            "before": "지난 7초 중 5초",
+            "after": "지난 7초 중 4초"
+          },
+          {
+            "statName": "(신규) 발동 시 고정 피해",
+            "before": "-",
+            "after": "최대 체력의 10% + 발동 횟수당 5%"
+          }
+        ]
+      },
+      {
+        "targetName": "신비한 주먹",
+        "type": "augment",
+        "direction": "adjust",
+        "changes": [
+          {
+            "statName": "적중 시 스킬 재사용 대기시간 감소",
+            "before": "20%",
+            "after": "1.25초"
+          }
+        ]
+      },
+      {
+        "targetName": "미동 없이",
+        "type": "augment",
+        "direction": "adjust",
+        "changes": [
+          {
+            "statName": "대기 시간",
+            "before": "1.25초",
+            "after": "0.75초"
+          }
+        ]
+      },
+      {
+        "targetName": "미치광이 모자장수",
+        "type": "augment",
+        "direction": "buff",
+        "changes": [
+          {
+            "statName": "모자당 적응형 능력치",
+            "before": "10",
+            "after": "12"
+          }
+        ]
+      },
+      {
+        "targetName": "야수화",
+        "type": "augment",
+        "direction": "adjust",
+        "changes": [
+          {
+            "statName": "증강 등급",
+            "before": "골드",
+            "after": "실버"
+          }
+        ]
+      }
+    ]
+  }
+}

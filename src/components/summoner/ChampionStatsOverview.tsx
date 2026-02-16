@@ -2,6 +2,7 @@
 
 import { useChampionRanking } from "@/hooks/useSummoner";
 import { useGameDataStore } from "@/stores/useGameDataStore";
+import GameTooltip from "@/components/tooltip/GameTooltip";
 import { getChampionImageUrl } from "@/utils/champion";
 import { getChampionNameByEnglishName } from "@/utils/champion";
 import { calcWinRateCeil2, getWinRateTextClass } from "@/utils/championStats";
@@ -132,16 +133,18 @@ export default function ChampionStatsOverview({
               className="flex items-center gap-1.5 p-1.5 bg-surface-8/50 rounded-lg hover:bg-surface-8 transition-colors border border-divider"
             >
               {/* 챔피언 아이콘 */}
-              <div className="w-8 h-8 bg-surface-6 rounded-lg flex items-center justify-center overflow-hidden relative">
-                <Image
-                  src={getChampionImageUrl(champion.championName)}
-                  alt={champion.championName}
-                  fill
-                  sizes="32px"
-                  className="object-cover"
-                  unoptimized
-                />
-              </div>
+              <GameTooltip type="champion" id={champion.championName}>
+                <div className="w-8 h-8 bg-surface-6 rounded-lg flex items-center justify-center overflow-hidden relative">
+                  <Image
+                    src={getChampionImageUrl(champion.championName)}
+                    alt={champion.championName}
+                    fill
+                    sizes="32px"
+                    className="object-cover"
+                    unoptimized
+                  />
+                </div>
+              </GameTooltip>
 
               {/* 통계 정보 */}
               <div className="flex-1 min-w-0">

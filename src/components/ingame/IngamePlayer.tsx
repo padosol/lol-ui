@@ -1,5 +1,6 @@
 "use client";
 
+import GameTooltip from "@/components/tooltip/GameTooltip";
 import type { SpectatorParticipant } from "@/types/spectator";
 import { getChampionById, getChampionImageUrl } from "@/utils/champion";
 import { getPerkImageUrl, getSpellImageUrlAsync } from "@/utils/game";
@@ -54,22 +55,24 @@ export default function IngamePlayer({
   return (
     <div className="flex items-center gap-1.5 px-2 py-1 rounded border border-divider bg-surface-4/50 hover:bg-surface-4/70 transition-all shadow-md hover:shadow-lg">
       {/* 챔피언 아이콘 */}
-      <div className="w-10 h-10 rounded overflow-hidden relative shrink-0">
-        {championImageUrl ? (
-          <Image
-            src={championImageUrl}
-            alt={champId || "Champion"}
-            fill
-            sizes="48px"
-            className="object-cover"
-            unoptimized
-          />
-        ) : (
-          <div className="w-full h-full bg-surface-8 flex items-center justify-center text-on-surface-medium text-xs">
-            ?
-          </div>
-        )}
-      </div>
+      <GameTooltip type="champion" id={champId} disabled={!champId}>
+        <div className="w-10 h-10 rounded overflow-hidden relative shrink-0">
+          {championImageUrl ? (
+            <Image
+              src={championImageUrl}
+              alt={champId || "Champion"}
+              fill
+              sizes="48px"
+              className="object-cover"
+              unoptimized
+            />
+          ) : (
+            <div className="w-full h-full bg-surface-8 flex items-center justify-center text-on-surface-medium text-xs">
+              ?
+            </div>
+          )}
+        </div>
+      </GameTooltip>
 
       {/* 플레이어 정보 */}
       <div className="flex-1 min-w-0">
@@ -86,61 +89,69 @@ export default function IngamePlayer({
         {/* 스펠 - 가로로 묶기 */}
         <div className="flex gap-0.5">
           {participant.spell1Id > 0 && spell1Url && (
-            <div className="w-5 h-5 rounded overflow-hidden relative">
-              <Image
-                src={spell1Url}
-                alt="Spell 1"
-                fill
-                sizes="20px"
-                className="object-cover"
-                unoptimized
-                onError={(e) => {
-                  e.currentTarget.style.display = "none";
-                }}
-              />
-            </div>
+            <GameTooltip type="spell" id={participant.spell1Id}>
+              <div className="w-5 h-5 rounded overflow-hidden relative">
+                <Image
+                  src={spell1Url}
+                  alt="Spell 1"
+                  fill
+                  sizes="20px"
+                  className="object-cover"
+                  unoptimized
+                  onError={(e) => {
+                    e.currentTarget.style.display = "none";
+                  }}
+                />
+              </div>
+            </GameTooltip>
           )}
           {participant.spell2Id > 0 && spell2Url && (
-            <div className="w-5 h-5 rounded overflow-hidden relative">
-              <Image
-                src={spell2Url}
-                alt="Spell 2"
-                fill
-                sizes="20px"
-                className="object-cover"
-                unoptimized
-                onError={(e) => {
-                  e.currentTarget.style.display = "none";
-                }}
-              />
-            </div>
+            <GameTooltip type="spell" id={participant.spell2Id}>
+              <div className="w-5 h-5 rounded overflow-hidden relative">
+                <Image
+                  src={spell2Url}
+                  alt="Spell 2"
+                  fill
+                  sizes="20px"
+                  className="object-cover"
+                  unoptimized
+                  onError={(e) => {
+                    e.currentTarget.style.display = "none";
+                  }}
+                />
+              </div>
+            </GameTooltip>
           )}
         </div>
         {/* 룬 - 가로로 묶기 */}
         <div className="flex gap-0.5">
           {participant.perks.perkIds.length > 0 && (
-            <div className="w-5 h-5 rounded overflow-hidden relative">
-              <Image
-                src={getPerkImageUrl(participant.perks.perkIds[0])}
-                alt="Main Rune"
-                fill
-                sizes="20px"
-                className="object-cover"
-                unoptimized
-              />
-            </div>
+            <GameTooltip type="rune" id={participant.perks.perkIds[0]}>
+              <div className="w-5 h-5 rounded overflow-hidden relative">
+                <Image
+                  src={getPerkImageUrl(participant.perks.perkIds[0])}
+                  alt="Main Rune"
+                  fill
+                  sizes="20px"
+                  className="object-cover"
+                  unoptimized
+                />
+              </div>
+            </GameTooltip>
           )}
           {participant.perks.perkSubStyle > 0 && (
-            <div className="w-5 h-5 rounded overflow-hidden relative">
-              <Image
-                src={getPerkImageUrl(participant.perks.perkSubStyle)}
-                alt="Sub Rune"
-                fill
-                sizes="20px"
-                className="object-cover"
-                unoptimized
-              />
-            </div>
+            <GameTooltip type="rune" id={participant.perks.perkSubStyle}>
+              <div className="w-5 h-5 rounded overflow-hidden relative">
+                <Image
+                  src={getPerkImageUrl(participant.perks.perkSubStyle)}
+                  alt="Sub Rune"
+                  fill
+                  sizes="20px"
+                  className="object-cover"
+                  unoptimized
+                />
+              </div>
+            </GameTooltip>
           )}
         </div>
       </div>

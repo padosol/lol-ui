@@ -1,5 +1,6 @@
 "use client";
 
+import GameTooltip from "@/components/tooltip/GameTooltip";
 import { useRanking } from "@/hooks/useRanking";
 import { getChampionImageUrl } from "@/utils/champion";
 import { getTierImageUrl, getTierName } from "@/utils/tier";
@@ -152,25 +153,23 @@ export default function RankingTable({ region, queueType }: RankingTableProps) {
                 <td className="px-4 py-4">
                   <div className="flex items-center gap-1">
                     {player.champions.map((championName, idx) => (
-                      <div
-                        key={idx}
-                        className="relative group"
-                        title={championName}
-                      >
-                        <div className="relative w-8 h-8 rounded overflow-hidden border border-divider hover:border-primary transition-colors">
-                          <Image
-                            src={getChampionImageUrl(championName)}
-                            alt={championName}
-                            fill
-                            sizes="32px"
-                            className="object-cover"
-                            unoptimized
-                          />
+                      <GameTooltip key={idx} type="champion" id={championName}>
+                        <div className="relative group">
+                          <div className="relative w-8 h-8 rounded overflow-hidden border border-divider hover:border-primary transition-colors">
+                            <Image
+                              src={getChampionImageUrl(championName)}
+                              alt={championName}
+                              fill
+                              sizes="32px"
+                              className="object-cover"
+                              unoptimized
+                            />
+                          </div>
+                          {idx === 0 && (
+                            <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-primary rounded-full border-2 border-surface-4"></div>
+                          )}
                         </div>
-                        {idx === 0 && (
-                          <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-primary rounded-full border-2 border-surface-4"></div>
-                        )}
-                      </div>
+                      </GameTooltip>
                     ))}
                   </div>
                 </td>
