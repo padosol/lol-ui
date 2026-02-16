@@ -1,5 +1,6 @@
 "use client";
 
+import GameTooltip from "@/components/tooltip/GameTooltip";
 import type { Match, MatchDetail, ParticipantData } from "@/types/api";
 import { getChampionImageUrl } from "@/utils/champion";
 import {
@@ -111,18 +112,20 @@ export default function MatchDetailInfo({
                       >
                         {/* 상단: 기본 정보 */}
                         <div className="flex items-start gap-1.5">
-                          <div className="w-7 h-7 bg-surface-8 rounded overflow-hidden relative shrink-0">
-                            <Image
-                              src={getChampionImageUrl(
-                                participant.championName || ""
-                              )}
-                              alt={participant.championName || "Unknown"}
-                              fill
-                              sizes="28px"
-                              className="object-cover"
-                              unoptimized
-                            />
-                          </div>
+                          <GameTooltip type="champion" id={participant.championName || ""} disabled={!participant.championName}>
+                            <div className="w-7 h-7 bg-surface-8 rounded overflow-hidden relative shrink-0">
+                              <Image
+                                src={getChampionImageUrl(
+                                  participant.championName || ""
+                                )}
+                                alt={participant.championName || "Unknown"}
+                                fill
+                                sizes="28px"
+                                className="object-cover"
+                                unoptimized
+                              />
+                            </div>
+                          </GameTooltip>
                           <div className="flex-1 min-w-0">
                             <div className="text-on-surface text-[11px] font-medium truncate">
                               {participant.riotIdGameName ||
@@ -152,23 +155,22 @@ export default function MatchDetailInfo({
                           </div>
                           <div className="grid grid-cols-3 gap-0.5">
                             {participantItems.slice(0, 6).map((itemId, idx) => (
-                              <div
-                                key={idx}
-                                className="w-5 h-5 bg-surface-4 rounded border border-divider/50 overflow-hidden relative"
-                              >
-                                {itemId > 0 ? (
-                                  <Image
-                                    src={getItemImageUrl(itemId)}
-                                    alt={`Item ${itemId}`}
-                                    fill
-                                    sizes="20px"
-                                    className="object-cover"
-                                    unoptimized
-                                  />
-                                ) : (
-                                  <div className="w-full h-full bg-surface-4/50"></div>
-                                )}
-                              </div>
+                              <GameTooltip key={idx} type="item" id={itemId} disabled={itemId <= 0}>
+                                <div className="w-5 h-5 bg-surface-4 rounded border border-divider/50 overflow-hidden relative">
+                                  {itemId > 0 ? (
+                                    <Image
+                                      src={getItemImageUrl(itemId)}
+                                      alt={`Item ${itemId}`}
+                                      fill
+                                      sizes="20px"
+                                      className="object-cover"
+                                      unoptimized
+                                    />
+                                  ) : (
+                                    <div className="w-full h-full bg-surface-4/50"></div>
+                                  )}
+                                </div>
+                              </GameTooltip>
                             ))}
                           </div>
                         </div>
@@ -298,16 +300,18 @@ export default function MatchDetailInfo({
               >
                 {/* 상단: 기본 정보 */}
                 <div className="flex items-start gap-1.5">
-                  <div className="w-7 h-7 bg-surface-8 rounded overflow-hidden relative shrink-0">
-                    <Image
-                      src={getChampionImageUrl(participant.championName || "")}
-                      alt={participant.championName || "Unknown"}
-                      fill
-                      sizes="28px"
-                      className="object-cover"
-                      unoptimized
-                    />
-                  </div>
+                  <GameTooltip type="champion" id={participant.championName || ""} disabled={!participant.championName}>
+                    <div className="w-7 h-7 bg-surface-8 rounded overflow-hidden relative shrink-0">
+                      <Image
+                        src={getChampionImageUrl(participant.championName || "")}
+                        alt={participant.championName || "Unknown"}
+                        fill
+                        sizes="28px"
+                        className="object-cover"
+                        unoptimized
+                      />
+                    </div>
+                  </GameTooltip>
                   <div className="flex-1 min-w-0">
                     <div className="text-on-surface text-[11px] font-medium truncate">
                       {participant.riotIdGameName || participant.summonerName}
@@ -338,23 +342,22 @@ export default function MatchDetailInfo({
                   </div>
                   <div className="grid grid-cols-3 gap-0.5">
                     {participantItems.slice(0, 6).map((itemId, idx) => (
-                      <div
-                        key={idx}
-                        className="w-5 h-5 bg-surface-4 rounded border border-divider/50 overflow-hidden relative"
-                      >
-                        {itemId > 0 ? (
-                          <Image
-                            src={getItemImageUrl(itemId)}
-                            alt={`Item ${itemId}`}
-                            fill
-                            sizes="20px"
-                            className="object-cover"
-                            unoptimized
-                          />
-                        ) : (
-                          <div className="w-full h-full bg-surface-4/50"></div>
-                        )}
-                      </div>
+                      <GameTooltip key={idx} type="item" id={itemId} disabled={itemId <= 0}>
+                        <div className="w-5 h-5 bg-surface-4 rounded border border-divider/50 overflow-hidden relative">
+                          {itemId > 0 ? (
+                            <Image
+                              src={getItemImageUrl(itemId)}
+                              alt={`Item ${itemId}`}
+                              fill
+                              sizes="20px"
+                              className="object-cover"
+                              unoptimized
+                            />
+                          ) : (
+                            <div className="w-full h-full bg-surface-4/50"></div>
+                          )}
+                        </div>
+                      </GameTooltip>
                     ))}
                   </div>
                 </div>
@@ -438,16 +441,18 @@ export default function MatchDetailInfo({
               >
                 {/* 상단: 기본 정보 */}
                 <div className="flex items-start gap-1.5">
-                  <div className="w-7 h-7 bg-surface-8 rounded overflow-hidden relative shrink-0">
-                    <Image
-                      src={getChampionImageUrl(participant.championName || "")}
-                      alt={participant.championName || "Unknown"}
-                      fill
-                      sizes="28px"
-                      className="object-cover"
-                      unoptimized
-                    />
-                  </div>
+                  <GameTooltip type="champion" id={participant.championName || ""} disabled={!participant.championName}>
+                    <div className="w-7 h-7 bg-surface-8 rounded overflow-hidden relative shrink-0">
+                      <Image
+                        src={getChampionImageUrl(participant.championName || "")}
+                        alt={participant.championName || "Unknown"}
+                        fill
+                        sizes="28px"
+                        className="object-cover"
+                        unoptimized
+                      />
+                    </div>
+                  </GameTooltip>
                   <div className="flex-1 min-w-0">
                     <div className="text-on-surface text-[11px] font-medium truncate">
                       {participant.riotIdGameName || participant.summonerName}
@@ -478,23 +483,22 @@ export default function MatchDetailInfo({
                   </div>
                   <div className="grid grid-cols-3 gap-0.5">
                     {participantItems.slice(0, 6).map((itemId, idx) => (
-                      <div
-                        key={idx}
-                        className="w-5 h-5 bg-surface-4 rounded border border-divider/50 overflow-hidden relative"
-                      >
-                        {itemId > 0 ? (
-                          <Image
-                            src={getItemImageUrl(itemId)}
-                            alt={`Item ${itemId}`}
-                            fill
-                            sizes="20px"
-                            className="object-cover"
-                            unoptimized
-                          />
-                        ) : (
-                          <div className="w-full h-full bg-surface-4/50"></div>
-                        )}
-                      </div>
+                      <GameTooltip key={idx} type="item" id={itemId} disabled={itemId <= 0}>
+                        <div className="w-5 h-5 bg-surface-4 rounded border border-divider/50 overflow-hidden relative">
+                          {itemId > 0 ? (
+                            <Image
+                              src={getItemImageUrl(itemId)}
+                              alt={`Item ${itemId}`}
+                              fill
+                              sizes="20px"
+                              className="object-cover"
+                              unoptimized
+                            />
+                          ) : (
+                            <div className="w-full h-full bg-surface-4/50"></div>
+                          )}
+                        </div>
+                      </GameTooltip>
                     ))}
                   </div>
                 </div>

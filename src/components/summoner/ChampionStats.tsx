@@ -2,6 +2,7 @@
 
 import { useChampionRanking } from "@/hooks/useSummoner";
 import { useGameDataStore } from "@/stores/useGameDataStore";
+import GameTooltip from "@/components/tooltip/GameTooltip";
 import {
   getChampionImageUrl,
   getChampionNameByEnglishName,
@@ -329,16 +330,18 @@ export default function ChampionStats({
                   >
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 bg-surface-6 rounded-lg flex items-center justify-center overflow-hidden relative shrink-0">
-                          <Image
-                            src={getChampionImageUrl(champion.championName)}
-                            alt={champion.championName}
-                            fill
-                            sizes="32px"
-                            className="object-cover"
-                            unoptimized
-                          />
-                        </div>
+                        <GameTooltip type="champion" id={champion.championName}>
+                          <div className="w-8 h-8 bg-surface-6 rounded-lg flex items-center justify-center overflow-hidden relative shrink-0">
+                            <Image
+                              src={getChampionImageUrl(champion.championName)}
+                              alt={champion.championName}
+                              fill
+                              sizes="32px"
+                              className="object-cover"
+                              unoptimized
+                            />
+                          </div>
+                        </GameTooltip>
                         <span className="text-on-surface font-medium text-sm">
                           {getChampionNameByEnglishName(champion.championName)}
                         </span>

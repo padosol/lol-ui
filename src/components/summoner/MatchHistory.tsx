@@ -12,6 +12,7 @@ import {
 } from "@/utils/game";
 import { getStyleImageUrl } from "@/utils/styles";
 import { useQueries } from "@tanstack/react-query";
+import GameTooltip from "@/components/tooltip/GameTooltip";
 import { ArrowUp, ChevronDown } from "lucide-react";
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -39,20 +40,22 @@ function SummonerSpellImage({ spellId, small }: { spellId: number; small?: boole
   }
 
   return (
-    <div className={`${sizeClass} bg-surface-4 rounded border border-divider/50 overflow-hidden relative shadow-sm flex items-center justify-center`}>
-      <Image
-        src={imageUrl}
-        alt={`Summoner ${spellId}`}
-        width={imgSize}
-        height={imgSize}
-        className="object-cover"
-        unoptimized
-        onError={(e) => {
-          const target = e.target as HTMLImageElement;
-          target.style.display = "none";
-        }}
-      />
-    </div>
+    <GameTooltip type="spell" id={spellId}>
+      <div className={`${sizeClass} bg-surface-4 rounded border border-divider/50 overflow-hidden relative shadow-sm flex items-center justify-center`}>
+        <Image
+          src={imageUrl}
+          alt={`Summoner ${spellId}`}
+          width={imgSize}
+          height={imgSize}
+          className="object-cover"
+          unoptimized
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            target.style.display = "none";
+          }}
+        />
+      </div>
+    </GameTooltip>
   );
 }
 
@@ -660,29 +663,31 @@ export default function MatchHistory({
                       <div className="flex items-center gap-2">
                         <div className="flex items-center gap-1.5">
                           {/* 챔피언 아이콘 */}
-                          <div className="relative">
-                            <div className="w-14 h-14 md:w-16 md:h-16 bg-surface-4 rounded-lg overflow-hidden relative border-2 border-divider/50 shadow-lg">
-                              {match.championIcon ? (
-                                <Image
-                                  src={match.championIcon}
-                                  alt={match.champion}
-                                  fill
-                                  sizes="64px"
-                                  className="object-cover"
-                                  unoptimized
-                                />
-                              ) : (
-                                <span className="text-2xl flex items-center justify-center w-full h-full">
-                                  🎮
-                                </span>
-                              )}
-                              {myData.champLevel > 0 && (
-                                <span className="absolute bottom-0 right-0 flex items-center justify-center rounded-tl-lg bg-surface-1/90 text-[10px] font-bold text-on-surface px-1.5 py-0.5">
-                                  {myData.champLevel}
-                                </span>
-                              )}
+                          <GameTooltip type="champion" id={match.champion}>
+                            <div className="relative">
+                              <div className="w-14 h-14 md:w-16 md:h-16 bg-surface-4 rounded-lg overflow-hidden relative border-2 border-divider/50 shadow-lg">
+                                {match.championIcon ? (
+                                  <Image
+                                    src={match.championIcon}
+                                    alt={match.champion}
+                                    fill
+                                    sizes="64px"
+                                    className="object-cover"
+                                    unoptimized
+                                  />
+                                ) : (
+                                  <span className="text-2xl flex items-center justify-center w-full h-full">
+                                    🎮
+                                  </span>
+                                )}
+                                {myData.champLevel > 0 && (
+                                  <span className="absolute bottom-0 right-0 flex items-center justify-center rounded-tl-lg bg-surface-1/90 text-[10px] font-bold text-on-surface px-1.5 py-0.5">
+                                    {myData.champLevel}
+                                  </span>
+                                )}
+                              </div>
                             </div>
-                          </div>
+                          </GameTooltip>
 
                           {/* 소환사 주문 + 스펠 + 룬 */}
                           <div className="flex flex-row gap-1 items-start">
@@ -749,28 +754,32 @@ export default function MatchHistory({
                             {/* 룬 */}
                             <div className="flex flex-col gap-1">
                               {mainRuneId > 0 && (
-                                <div className="w-6 h-6 bg-surface-4 rounded-full border border-divider overflow-hidden relative shadow-sm">
-                                  <Image
-                                    src={`https://static.mmrtr.shop/perks/${mainRuneId}.png`}
-                                    alt="Main Rune"
-                                    fill
-                                    sizes="24px"
-                                    className="object-cover"
-                                    unoptimized
-                                  />
-                                </div>
+                                <GameTooltip type="rune" id={mainRuneId}>
+                                  <div className="w-6 h-6 bg-surface-4 rounded-full border border-divider overflow-hidden relative shadow-sm">
+                                    <Image
+                                      src={`https://static.mmrtr.shop/perks/${mainRuneId}.png`}
+                                      alt="Main Rune"
+                                      fill
+                                      sizes="24px"
+                                      className="object-cover"
+                                      unoptimized
+                                    />
+                                  </div>
+                                </GameTooltip>
                               )}
                               {subRuneStyleId > 0 && (
-                                <div className="w-6 h-6 bg-surface-4 rounded-full border border-divider overflow-hidden relative shadow-sm">
-                                  <Image
-                                    src={`https://static.mmrtr.shop/styles/${subRuneStyleId}.png`}
-                                    alt="Sub Rune Style"
-                                    fill
-                                    sizes="24px"
-                                    className="object-cover"
-                                    unoptimized
-                                  />
-                                </div>
+                                <GameTooltip type="rune" id={subRuneStyleId}>
+                                  <div className="w-6 h-6 bg-surface-4 rounded-full border border-divider overflow-hidden relative shadow-sm">
+                                    <Image
+                                      src={`https://static.mmrtr.shop/styles/${subRuneStyleId}.png`}
+                                      alt="Sub Rune Style"
+                                      fill
+                                      sizes="24px"
+                                      className="object-cover"
+                                      unoptimized
+                                    />
+                                  </div>
+                                </GameTooltip>
                               )}
                             </div>
                           </div>
@@ -815,32 +824,33 @@ export default function MatchHistory({
                       {/* 아이템 */}
                       <div className="grid grid-cols-7 items-center gap-1">
                         {items.slice(0, 6).map((itemId, idx) => (
-                          <div
-                            key={idx}
-                            className="w-7 h-7 bg-surface-4 rounded border border-divider/50 overflow-hidden relative shadow-sm"
-                          >
-                            <Image
-                              src={getItemImageUrl(itemId)}
-                              alt={`Item ${itemId}`}
-                              fill
-                              sizes="26px"
-                              className="object-cover"
-                              unoptimized
-                            />
-                          </div>
+                          <GameTooltip key={idx} type="item" id={itemId} disabled={itemId <= 0}>
+                            <div className="w-7 h-7 bg-surface-4 rounded border border-divider/50 overflow-hidden relative shadow-sm">
+                              <Image
+                                src={getItemImageUrl(itemId)}
+                                alt={`Item ${itemId}`}
+                                fill
+                                sizes="26px"
+                                className="object-cover"
+                                unoptimized
+                              />
+                            </div>
+                          </GameTooltip>
                         ))}
                         {/* 와드 슬롯 */}
                         {items[6] > 0 && (
-                          <div className="w-7 h-7 bg-surface-4 rounded-full border border-divider/50 overflow-hidden relative shadow-sm">
-                            <Image
-                              src={getItemImageUrl(items[6])}
-                              alt="Ward"
-                              fill
-                              sizes="26px"
-                              className="object-cover"
-                              unoptimized
-                            />
-                          </div>
+                          <GameTooltip type="item" id={items[6]}>
+                            <div className="w-7 h-7 bg-surface-4 rounded-full border border-divider/50 overflow-hidden relative shadow-sm">
+                              <Image
+                                src={getItemImageUrl(items[6])}
+                                alt="Ward"
+                                fill
+                                sizes="26px"
+                                className="object-cover"
+                                unoptimized
+                              />
+                            </div>
+                          </GameTooltip>
                         )}
                       </div>
                     </div>
@@ -910,29 +920,31 @@ export default function MatchHistory({
                   {/* 왼쪽: 챔프 + 스펠 + 룬 */}
                   <div className="flex items-center gap-1 shrink-0">
                     {/* 챔피언 아이콘 */}
-                    <div className="relative">
-                      <div className="w-10 h-10 bg-surface-4 rounded-lg overflow-hidden relative border border-divider/50 shadow-sm">
-                        {match.championIcon ? (
-                          <Image
-                            src={match.championIcon}
-                            alt={match.champion}
-                            fill
-                            sizes="40px"
-                            className="object-cover"
-                            unoptimized
-                          />
-                        ) : (
-                          <span className="text-lg flex items-center justify-center w-full h-full">
-                            🎮
-                          </span>
-                        )}
-                        {myData.champLevel > 0 && (
-                          <span className="absolute bottom-0 right-0 flex items-center justify-center rounded-tl bg-surface-1/90 text-[8px] font-bold text-on-surface px-1 py-0">
-                            {myData.champLevel}
-                          </span>
-                        )}
+                    <GameTooltip type="champion" id={match.champion}>
+                      <div className="relative">
+                        <div className="w-10 h-10 bg-surface-4 rounded-lg overflow-hidden relative border border-divider/50 shadow-sm">
+                          {match.championIcon ? (
+                            <Image
+                              src={match.championIcon}
+                              alt={match.champion}
+                              fill
+                              sizes="40px"
+                              className="object-cover"
+                              unoptimized
+                            />
+                          ) : (
+                            <span className="text-lg flex items-center justify-center w-full h-full">
+                              🎮
+                            </span>
+                          )}
+                          {myData.champLevel > 0 && (
+                            <span className="absolute bottom-0 right-0 flex items-center justify-center rounded-tl bg-surface-1/90 text-[8px] font-bold text-on-surface px-1 py-0">
+                              {myData.champLevel}
+                            </span>
+                          )}
+                        </div>
                       </div>
-                    </div>
+                    </GameTooltip>
                     {/* 소환사 주문 */}
                     <div className="flex flex-col gap-0.5">
                       {myData.summoner1Id > 0 && (
@@ -945,28 +957,32 @@ export default function MatchHistory({
                     {/* 룬 */}
                     <div className="flex flex-col gap-0.5">
                       {mainRuneId > 0 && (
-                        <div className="w-5 h-5 bg-surface-4 rounded-full border border-divider overflow-hidden relative shadow-sm">
-                          <Image
-                            src={`https://static.mmrtr.shop/perks/${mainRuneId}.png`}
-                            alt="Main Rune"
-                            fill
-                            sizes="20px"
-                            className="object-cover"
-                            unoptimized
-                          />
-                        </div>
+                        <GameTooltip type="rune" id={mainRuneId}>
+                          <div className="w-5 h-5 bg-surface-4 rounded-full border border-divider overflow-hidden relative shadow-sm">
+                            <Image
+                              src={`https://static.mmrtr.shop/perks/${mainRuneId}.png`}
+                              alt="Main Rune"
+                              fill
+                              sizes="20px"
+                              className="object-cover"
+                              unoptimized
+                            />
+                          </div>
+                        </GameTooltip>
                       )}
                       {subRuneStyleId > 0 && (
-                        <div className="w-5 h-5 bg-surface-4 rounded-full border border-divider overflow-hidden relative shadow-sm">
-                          <Image
-                            src={`https://static.mmrtr.shop/styles/${subRuneStyleId}.png`}
-                            alt="Sub Rune Style"
-                            fill
-                            sizes="20px"
-                            className="object-cover"
-                            unoptimized
-                          />
-                        </div>
+                        <GameTooltip type="rune" id={subRuneStyleId}>
+                          <div className="w-5 h-5 bg-surface-4 rounded-full border border-divider overflow-hidden relative shadow-sm">
+                            <Image
+                              src={`https://static.mmrtr.shop/styles/${subRuneStyleId}.png`}
+                              alt="Sub Rune Style"
+                              fill
+                              sizes="20px"
+                              className="object-cover"
+                              unoptimized
+                            />
+                          </div>
+                        </GameTooltip>
                       )}
                     </div>
                   </div>
@@ -992,31 +1008,32 @@ export default function MatchHistory({
                   {/* 오른쪽: 아이템 */}
                   <div className="grid grid-cols-4 gap-0.5 shrink-0">
                     {items.slice(0, 6).map((itemId, idx) => (
-                      <div
-                        key={idx}
-                        className="w-5 h-5 bg-surface-4 rounded border border-divider/50 overflow-hidden relative"
-                      >
-                        <Image
-                          src={getItemImageUrl(itemId)}
-                          alt={`Item ${itemId}`}
-                          fill
-                          sizes="20px"
-                          className="object-cover"
-                          unoptimized
-                        />
-                      </div>
+                      <GameTooltip key={idx} type="item" id={itemId} disabled={itemId <= 0}>
+                        <div className="w-5 h-5 bg-surface-4 rounded border border-divider/50 overflow-hidden relative">
+                          <Image
+                            src={getItemImageUrl(itemId)}
+                            alt={`Item ${itemId}`}
+                            fill
+                            sizes="20px"
+                            className="object-cover"
+                            unoptimized
+                          />
+                        </div>
+                      </GameTooltip>
                     ))}
                     {items[6] > 0 && (
-                      <div className="w-5 h-5 bg-surface-4 rounded-full border border-divider/50 overflow-hidden relative">
-                        <Image
-                          src={getItemImageUrl(items[6])}
-                          alt="Ward"
-                          fill
-                          sizes="20px"
-                          className="object-cover"
-                          unoptimized
-                        />
-                      </div>
+                      <GameTooltip type="item" id={items[6]}>
+                        <div className="w-5 h-5 bg-surface-4 rounded-full border border-divider/50 overflow-hidden relative">
+                          <Image
+                            src={getItemImageUrl(items[6])}
+                            alt="Ward"
+                            fill
+                            sizes="20px"
+                            className="object-cover"
+                            unoptimized
+                          />
+                        </div>
+                      </GameTooltip>
                     )}
                   </div>
                 </div>

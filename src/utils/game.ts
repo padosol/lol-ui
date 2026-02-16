@@ -26,6 +26,27 @@ async function loadSummonerData(): Promise<SummonerJson | null> {
 }
 
 /**
+ * 아이템 ID로 아이템 이름을 반환합니다 (동기 버전, 캐시된 데이터 사용).
+ * @param itemId 아이템 ID
+ * @returns 아이템 이름 (데이터 없으면 빈 문자열)
+ */
+export function getItemName(itemId: number): string {
+  if (!itemId || itemId === 0) {
+    return "";
+  }
+
+  const store = useGameDataStore.getState();
+  if (store.itemData) {
+    const item = store.itemData.data[String(itemId)];
+    if (item) {
+      return item.name;
+    }
+  }
+
+  return "";
+}
+
+/**
  * 아이템 ID로 이미지 URL을 생성합니다.
  * @param itemId 아이템 ID (0이면 빈 슬롯)
  * @returns 아이템 이미지 URL

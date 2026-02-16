@@ -1,5 +1,35 @@
 import { create } from "zustand";
 
+interface ChampionInfo {
+  attack: number;
+  defense: number;
+  magic: number;
+  difficulty: number;
+}
+
+interface ChampionStats {
+  hp: number;
+  hpperlevel: number;
+  mp: number;
+  mpperlevel: number;
+  movespeed: number;
+  armor: number;
+  armorperlevel: number;
+  spellblock: number;
+  spellblockperlevel: number;
+  attackrange: number;
+  hpregen: number;
+  hpregenperlevel: number;
+  mpregen: number;
+  mpregenperlevel: number;
+  crit: number;
+  critperlevel: number;
+  attackdamage: number;
+  attackdamageperlevel: number;
+  attackspeedperlevel: number;
+  attackspeed: number;
+}
+
 interface ChampionData {
   id: string;
   key: string;
@@ -8,6 +38,9 @@ interface ChampionData {
   image: {
     full: string;
   };
+  info?: ChampionInfo;
+  tags?: string[];
+  stats?: ChampionStats;
 }
 
 interface ChampionJson {
@@ -36,24 +69,66 @@ interface SummonerJson {
   };
 }
 
+interface ItemJsonData {
+  name: string;
+  description: string;
+  plaintext?: string;
+  image: {
+    full: string;
+    sprite?: string;
+    group?: string;
+    x?: number;
+    y?: number;
+    w?: number;
+    h?: number;
+  };
+  gold: {
+    base: number;
+    purchasable: boolean;
+    total: number;
+    sell: number;
+  };
+  tags: string[];
+  maps: { [key: string]: boolean };
+  stats?: { [key: string]: number };
+  into?: string[];
+  from?: string[];
+  colloq?: string;
+}
+
+interface ItemJson {
+  type: string;
+  version: string;
+  data: {
+    [key: string]: ItemJsonData;
+  };
+}
+
 interface GameDataState {
   championData: ChampionJson | null;
   summonerData: SummonerJson | null;
+  itemData: ItemJson | null;
   isLoadingChampion: boolean;
   isLoadingSummoner: boolean;
+  isLoadingItem: boolean;
   championLoadPromise: Promise<void> | null;
   summonerLoadPromise: Promise<void> | null;
+  itemLoadPromise: Promise<void> | null;
   loadChampionData: () => Promise<void>;
   loadSummonerData: () => Promise<void>;
+  loadItemData: () => Promise<void>;
 }
 
 export const useGameDataStore = create<GameDataState>((set, get) => ({
   championData: null,
   summonerData: null,
+  itemData: null,
   isLoadingChampion: false,
   isLoadingSummoner: false,
+  isLoadingItem: false,
   championLoadPromise: null,
   summonerLoadPromise: null,
+  itemLoadPromise: null,
 
   loadChampionData: async () => {
     const state = get();
@@ -112,8 +187,36 @@ export const useGameDataStore = create<GameDataState>((set, get) => ({
     set({ summonerLoadPromise: loadPromise });
     return loadPromise;
   },
+  loadItemData: async () => {
+    const state = get();
+
+    // 이미 로드되었으면 스킵
+    if (state.itemData) {
+      return;
+    }
+
+    // 이미 로딩 중이면 기존 Promise 반환
+    if (state.itemLoadPromise) {
+      return state.itemLoadPromise;
+    }
+
+    const loadPromise = (async () => {
+      set({ isLoadingItem: true });
+      try {
+        const response = await fetch("/data/item.json");
+        const data = (await response.json()) as ItemJson;
+        set({ itemData: data, isLoadingItem: false, itemLoadPromise: null });
+      } catch (error) {
+        console.error("Failed to load item data:", error);
+        set({ isLoadingItem: false, itemLoadPromise: null });
+      }
+    })();
+
+    set({ itemLoadPromise: loadPromise });
+    return loadPromise;
+  },
 }));
 
 // 타입 export
-export type { ChampionData, ChampionJson, SummonerSpellData, SummonerJson };
+export type { ChampionData, ChampionInfo, ChampionStats, ChampionJson, SummonerSpellData, SummonerJson, ItemJsonData, ItemJson };
 
