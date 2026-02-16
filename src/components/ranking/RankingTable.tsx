@@ -138,6 +138,7 @@ export default function RankingTable({ region, queueType }: RankingTableProps) {
                 <td className="px-4 py-4 whitespace-nowrap">
                   <Link
                     href={`/summoners/${region}/${player.gameName}-${player.tagLine}`}
+                    prefetch={false}
                     className={
                       player.currentRank === 1
                         ? "text-sm font-bold text-rank-top hover:text-rank-top/80 transition-colors"
