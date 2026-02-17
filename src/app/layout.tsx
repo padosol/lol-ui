@@ -1,6 +1,6 @@
 import { QueryProvider } from "@/providers/QueryProvider";
-import GameDataLoader from "@/components/GameDataLoader";
-import { ThemeProvider } from "@/components/ThemeProvider";
+import GameDataLoader from "@/components/providers/GameDataLoader";
+import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
