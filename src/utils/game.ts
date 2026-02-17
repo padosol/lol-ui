@@ -3,7 +3,7 @@
  */
 
 import { useGameDataStore, type SummonerJson } from "@/stores/useGameDataStore";
-import type { ItemData } from "@/types/api";
+import type { ItemData, ItemSeqEntry } from "@/types/api";
 
 const IMAGE_HOST = process.env.NEXT_PUBLIC_IMAGE_HOST || 'https://static.mmrtr.shop';
 
@@ -137,12 +137,17 @@ export function getRuneImageUrl(runeId: number): string {
  * @param item 아이템 객체 또는 배열
  * @returns 아이템 ID 배열 (최대 7개: 0-6 슬롯)
  */
-export function extractItemIds(item: ItemData | number[] | null | undefined): number[] {
+export function extractItemIds(item: ItemData | number[] | ItemSeqEntry[] | null | undefined): number[] {
   if (!item) return [0, 0, 0, 0, 0, 0, 0];
 
   // item이 배열인 경우
   if (Array.isArray(item)) {
-    return item.slice(0, 7).map((id) => id || 0);
+    // ItemSeqEntry[] 형식 감지
+    if (item.length > 0 && typeof item[0] === "object" && "itemId" in item[0]) {
+      return (item as ItemSeqEntry[]).slice(0, 7).map((e) => e.itemId || 0);
+    }
+    // 기존 number[] 처리
+    return (item as number[]).slice(0, 7).map((id) => id || 0);
   }
 
   // item이 객체인 경우 (item0, item1, ... 형식)

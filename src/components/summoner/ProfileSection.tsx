@@ -4,6 +4,7 @@ import {
   useRefreshSummonerData,
   useSummonerProfile,
 } from "@/hooks/useSummoner";
+import { useQueryClient } from "@tanstack/react-query";
 import { getSummonerRenewalStatus } from "@/lib/api/summoner";
 import type { SummonerProfile } from "@/types/api";
 import { getProfileIconImageUrl } from "@/utils/profile";
@@ -36,12 +37,16 @@ export default function ProfileSection({
     { initialData }
   );
 
+  const queryClient = useQueryClient();
   const { mutate: refresh, isPending: isRefreshing } = useRefreshSummonerData();
   const [isPolling, setIsPolling] = useState(false);
   const pollingIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const pollingStartTimeRef = useRef<number | null>(null);
   const [lastClickTime, setLastClickTime] = useState<number | null>(null);
-  const [remainingTime, setRemainingTime] = useState<number | null>(null);
+  const [cooldownInfo, setCooldownInfo] = useState<{
+    source: 'click' | 'revision';
+    remainingSeconds: number;
+  } | null>(null);
 
   // 컴포넌트 언마운트 시 폴링 정리
   useEffect(() => {
@@ -55,22 +60,20 @@ export default function ProfileSection({
 
   // 남은 시간 계산 및 업데이트
   useEffect(() => {
-    const updateRemainingTime = () => {
+    const updateCooldownInfo = () => {
       if (!profileData) {
-        setRemainingTime(null);
+        setCooldownInfo(null);
         return;
       }
 
       const now = Date.now();
-      let minRemaining = Infinity;
+      let clickRemaining = 0;
+      let revisionRemaining = 0;
 
       // 클릭 후 10초 제한 확인
       if (lastClickTime) {
         const elapsedSinceClick = now - lastClickTime;
-        const remainingFromClick = 10000 - elapsedSinceClick;
-        if (remainingFromClick > 0) {
-          minRemaining = Math.min(minRemaining, remainingFromClick);
-        }
+        clickRemaining = Math.max(0, 10000 - elapsedSinceClick);
       }
 
       // 갱신 완료 후 3분 제한 확인
@@ -79,24 +82,26 @@ export default function ProfileSection({
           profileData.lastRevisionDateTime
         ).getTime();
         const elapsedSinceRevision = now - lastRevisionTime;
-        const remainingFromRevision = 180000 - elapsedSinceRevision; // 3분 = 180000ms
-        if (remainingFromRevision > 0) {
-          minRemaining = Math.min(minRemaining, remainingFromRevision);
-        }
+        revisionRemaining = Math.max(0, 180000 - elapsedSinceRevision);
       }
 
-      if (minRemaining !== Infinity && minRemaining > 0) {
-        setRemainingTime(Math.ceil(minRemaining / 1000)); // 초 단위로 변환
+      const maxRemaining = Math.max(clickRemaining, revisionRemaining);
+
+      if (maxRemaining > 0) {
+        setCooldownInfo({
+          source: revisionRemaining >= clickRemaining ? 'revision' : 'click',
+          remainingSeconds: Math.ceil(maxRemaining / 1000),
+        });
       } else {
-        setRemainingTime(null);
+        setCooldownInfo(null);
       }
     };
 
     // 초기 업데이트
-    updateRemainingTime();
+    updateCooldownInfo();
 
     // 1초마다 업데이트
-    const interval = setInterval(updateRemainingTime, 1000);
+    const interval = setInterval(updateCooldownInfo, 1000);
 
     return () => clearInterval(interval);
   }, [profileData, lastClickTime]);
@@ -104,7 +109,7 @@ export default function ProfileSection({
   // 갱신 버튼 비활성화 여부 확인
   const isRefreshDisabled = () => {
     if (isRefreshing || isPolling) return true;
-    if (remainingTime !== null && remainingTime > 0) return true;
+    if (cooldownInfo !== null) return true;
     return false;
   };
 
@@ -113,9 +118,6 @@ export default function ProfileSection({
     if (isRefreshDisabled()) return;
 
     const platform = profileData.platform || region;
-
-    // 클릭 시간 기록
-    setLastClickTime(Date.now());
 
     // 갱신 요청
     refresh(
@@ -164,8 +166,8 @@ export default function ProfileSection({
                 response.status === "FAILED"
               ) {
                 stopPolling();
-                // 페이지 새로고침
-                window.location.reload();
+                setLastClickTime(Date.now());
+                queryClient.invalidateQueries();
                 return;
               }
               // PROGRESS가 아니면 폴링 중지
@@ -249,19 +251,25 @@ export default function ProfileSection({
                 <button
                   onClick={handleRefresh}
                   disabled={isRefreshDisabled()}
-                  className="flex items-center justify-center gap-1.5 px-3 py-1.5 bg-surface-8 hover:bg-surface-12 disabled:bg-surface-8 disabled:cursor-not-allowed cursor-pointer text-on-surface rounded-lg text-sm font-medium transition-colors w-fit"
+                  className={`flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors w-fit ${
+                    isRefreshDisabled()
+                      ? "bg-surface-4 text-on-surface-disabled opacity-60 cursor-not-allowed border border-divider"
+                      : "bg-primary/20 text-primary hover:bg-primary/30 border border-primary/30 cursor-pointer"
+                  }`}
                 >
                   <RefreshCw
                     className={`w-4 h-4 ${
                       isRefreshing || isPolling ? "animate-spin" : ""
                     }`}
                   />
-                  갱신
+                  {isRefreshing || isPolling ? "갱신 중..." : "갱신"}
                 </button>
-                {remainingTime !== null && remainingTime > 0 && (
-                  <span className="text-[10px] text-on-surface-medium whitespace-nowrap">
-                    {Math.floor(remainingTime / 60)}:
-                    {String(remainingTime % 60).padStart(2, "0")} 후 가능
+                {cooldownInfo && (
+                  <span className="inline-flex items-center gap-1.5 text-xs text-on-surface-medium whitespace-nowrap bg-surface-6 rounded-md border border-divider px-2 py-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-on-surface-medium animate-pulse" />
+                    {cooldownInfo.source === 'click'
+                      ? `${cooldownInfo.remainingSeconds}초 후 재시도`
+                      : `${Math.floor(cooldownInfo.remainingSeconds / 60)}:${String(cooldownInfo.remainingSeconds % 60).padStart(2, "0")} 후 갱신 가능`}
                   </span>
                 )}
               </div>

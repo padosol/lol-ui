@@ -65,6 +65,18 @@ export interface MatchDetail {
   };
 }
 
+export interface ItemSeqEntry {
+  itemId: number;
+  minute: number;
+  type: string;
+}
+
+export interface SkillSeqEntry {
+  skillSlot: number;
+  minute: number;
+  type: string;
+}
+
 export interface ParticipantData {
   summonerName: string;
   profileIcon: number;
@@ -118,8 +130,8 @@ export interface ParticipantData {
   playerAugment2: number;
   playerAugment3: number;
   playerAugment4: number;
-  itemSeq: number[] | null;
-  skillSeq: number[] | null;
+  itemSeq: ItemSeqEntry[] | null;
+  skillSeq: SkillSeqEntry[] | null;
 }
 
 export interface GameInfoData {
