@@ -13,33 +13,48 @@ export default function ItemBuildOrder({ itemSeq }: { itemSeq: ItemSeqEntry[] | 
     );
   }
 
+  // 인접한 같은 minute끼리 그룹화 (순서 보존)
+  const groups: ItemSeqEntry[][] = [];
+  for (const entry of itemSeq) {
+    const last = groups[groups.length - 1];
+    if (last && last[0].minute === entry.minute) {
+      last.push(entry);
+    } else {
+      groups.push([entry]);
+    }
+  }
+
   return (
-    <div className="flex flex-wrap items-center gap-0.5">
-      {itemSeq.map((entry, idx) => (
-        <div key={idx} className="flex items-center">
-          <GameTooltip type="item" id={entry.itemId} disabled={entry.itemId <= 0}>
-            <div className="w-6 h-6 bg-surface-4 rounded border border-divider/50 overflow-hidden relative shrink-0">
-              {entry.itemId > 0 ? (
-                <>
-                  <Image
-                    src={getItemImageUrl(entry.itemId)}
-                    alt={`Item ${entry.itemId}`}
-                    fill
-                    sizes="24px"
-                    className="object-cover"
-                    unoptimized
-                  />
-                  <span className="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-[7px] text-center leading-tight">
-                    {entry.minute}m
-                  </span>
-                </>
-              ) : (
-                <div className="w-full h-full bg-surface-4/50" />
-              )}
+    <div className="flex flex-wrap items-center gap-1">
+      {groups.map((group, groupIdx) => (
+        <div key={groupIdx} className="flex items-center">
+          <div className="flex flex-col items-center gap-0.5">
+            <span className="text-[8px] text-on-surface-medium leading-none">
+              {group[0].minute}m
+            </span>
+            <div className="flex items-center gap-0.5">
+              {group.map((entry, idx) => (
+                <GameTooltip key={idx} type="item" id={entry.itemId} disabled={entry.itemId <= 0}>
+                  <div className="w-6 h-6 bg-surface-4 rounded border border-divider/50 overflow-hidden relative shrink-0">
+                    {entry.itemId > 0 ? (
+                      <Image
+                        src={getItemImageUrl(entry.itemId)}
+                        alt={`Item ${entry.itemId}`}
+                        fill
+                        sizes="24px"
+                        className="object-cover"
+                        unoptimized
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-surface-4/50" />
+                    )}
+                  </div>
+                </GameTooltip>
+              ))}
             </div>
-          </GameTooltip>
-          {idx < itemSeq.length - 1 && (
-            <ChevronRight className="w-3 h-3 text-on-surface-medium/50 shrink-0" />
+          </div>
+          {groupIdx < groups.length - 1 && (
+            <ChevronRight className="w-3 h-3 text-on-surface-medium/50 shrink-0 ml-0.5" />
           )}
         </div>
       ))}

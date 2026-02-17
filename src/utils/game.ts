@@ -164,6 +164,16 @@ export function extractItemIds(item: ItemData | number[] | ItemSeqEntry[] | null
 }
 
 /**
+ * 챔피언 스킬 이미지 URL을 생성합니다.
+ * @param championName 챔피언 이름 (예: "Ahri")
+ * @param skillKey 스킬 키 ("Q" | "W" | "E" | "R")
+ * @returns 챔피언 스킬 이미지 URL
+ */
+export function getChampionSpellImageUrl(championName: string, skillKey: string): string {
+  return `${IMAGE_HOST}/spells/${championName}${skillKey}.png`;
+}
+
+/**
  * KDA 값에 따라 색상 클래스를 반환합니다.
  * @param kdaValue KDA 값 (문자열 또는 숫자)
  * @returns Tailwind CSS 색상 클래스

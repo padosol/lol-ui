@@ -41,95 +41,101 @@ export default function BuildTab({
 
   return (
     <div className="space-y-3">
-      {/* ─── 플레이어 선택 바 ─── */}
-      <div className="flex items-center gap-1 flex-wrap">
-        {/* 블루팀 */}
-        <div className="flex items-center gap-0.5">
-          {blueTeam.map((p) => {
-            const idx = allParticipants.findIndex(
-              (ap) => ap.participantId === p.participantId
-            );
-            const isSelected = idx === selectedIdx;
-            return (
-              <button
-                key={p.participantId}
-                onClick={() => setSelectedIdx(idx)}
-                className={`w-7 h-7 rounded overflow-hidden relative border-2 transition-all cursor-pointer ${isSelected
-                  ? "border-team-blue scale-110 z-10"
-                  : "border-transparent opacity-60 hover:opacity-100"
-                  }`}
-                title={p.riotIdGameName || p.summonerName}
-              >
-                <Image
-                  src={getChampionImageUrl(p.championName || "")}
-                  alt={p.championName || ""}
-                  fill
-                  sizes="28px"
-                  className="object-cover"
-                  unoptimized
-                />
-              </button>
-            );
-          })}
-        </div>
-
-        <div className="w-px h-5 bg-divider/50 mx-1" />
-
-        {/* 레드팀 */}
-        <div className="flex items-center gap-0.5">
-          {redTeam.map((p) => {
-            const idx = allParticipants.findIndex(
-              (ap) => ap.participantId === p.participantId
-            );
-            const isSelected = idx === selectedIdx;
-            return (
-              <button
-                key={p.participantId}
-                onClick={() => setSelectedIdx(idx)}
-                className={`w-7 h-7 rounded overflow-hidden relative border-2 transition-all cursor-pointer ${isSelected
-                  ? "border-loss scale-110 z-10"
-                  : "border-transparent opacity-60 hover:opacity-100"
-                  }`}
-                title={p.riotIdGameName || p.summonerName}
-              >
-                <Image
-                  src={getChampionImageUrl(p.championName || "")}
-                  alt={p.championName || ""}
-                  fill
-                  sizes="28px"
-                  className="object-cover"
-                  unoptimized
-                />
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* ─── 선택된 플레이어 정보 ─── */}
-      <div className="flex items-center gap-2">
-        <div className="w-8 h-8 rounded overflow-hidden relative bg-surface-8 shrink-0">
-          <Image
-            src={getChampionImageUrl(selected.championName || "")}
-            alt={selected.championName || ""}
-            fill
-            sizes="32px"
-            className="object-cover"
-            unoptimized
-          />
-        </div>
-        <div>
-          <div className="text-on-surface text-xs font-semibold">
-            {selected.riotIdGameName || selected.summonerName}
+      {/* ─── 유저 정보 + 챔피언 선택 바 ─── */}
+      <div className="rounded-lg border border-divider/50 p-3 flex items-center gap-3">
+        {/* 왼쪽: 선택된 플레이어 정보 */}
+        <div className="flex items-center gap-2 shrink-0">
+          <div className="w-8 h-8 rounded overflow-hidden relative bg-surface-8 shrink-0">
+            <Image
+              src={getChampionImageUrl(selected.championName || "")}
+              alt={selected.championName || ""}
+              fill
+              sizes="32px"
+              className="object-cover"
+              unoptimized
+            />
           </div>
-          <div className="text-on-surface-medium text-[10px]">
-            {selected.championName} &middot; Lv.{selected.champLevel}
+          <div>
+            <div className="text-on-surface text-xs font-semibold max-w-[120px] truncate">
+              {selected.riotIdGameName || selected.summonerName}
+            </div>
+            <div className="text-on-surface-medium text-[10px]">
+              {selected.championName} &middot; Lv.{selected.champLevel}
+            </div>
+          </div>
+        </div>
+
+        {/* 구분선 */}
+        <div className="w-px h-8 bg-divider/50" />
+
+        {/* 오른쪽: 챔피언 선택 바 (블루팀 | 레드팀) */}
+        <div className="flex items-center gap-1 flex-wrap ml-auto">
+          {/* 블루팀 */}
+          <div className="flex items-center gap-0.5">
+            {blueTeam.map((p) => {
+              const idx = allParticipants.findIndex(
+                (ap) => ap.participantId === p.participantId
+              );
+              const isSelected = idx === selectedIdx;
+              return (
+                <button
+                  key={p.participantId}
+                  onClick={() => setSelectedIdx(idx)}
+                  className={`w-8 h-8 rounded overflow-hidden relative border-2 transition-all cursor-pointer ${isSelected
+                    ? "border-team-blue scale-110 z-10"
+                    : "border-transparent opacity-60 hover:opacity-100"
+                    }`}
+                  title={p.riotIdGameName || p.summonerName}
+                >
+                  <Image
+                    src={getChampionImageUrl(p.championName || "")}
+                    alt={p.championName || ""}
+                    fill
+                    sizes="32px"
+                    className="object-cover"
+                    unoptimized
+                  />
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="w-px h-6 bg-divider/50 mx-1" />
+
+          {/* 레드팀 */}
+          <div className="flex items-center gap-0.5">
+            {redTeam.map((p) => {
+              const idx = allParticipants.findIndex(
+                (ap) => ap.participantId === p.participantId
+              );
+              const isSelected = idx === selectedIdx;
+              return (
+                <button
+                  key={p.participantId}
+                  onClick={() => setSelectedIdx(idx)}
+                  className={`w-8 h-8 rounded overflow-hidden relative border-2 transition-all cursor-pointer ${isSelected
+                    ? "border-loss scale-110 z-10"
+                    : "border-transparent opacity-60 hover:opacity-100"
+                    }`}
+                  title={p.riotIdGameName || p.summonerName}
+                >
+                  <Image
+                    src={getChampionImageUrl(p.championName || "")}
+                    alt={p.championName || ""}
+                    fill
+                    sizes="32px"
+                    className="object-cover"
+                    unoptimized
+                  />
+                </button>
+              );
+            })}
           </div>
         </div>
       </div>
 
       {/* ─── 아이템 빌드 순서 ─── */}
-      <div>
+      <div className="rounded-lg border border-divider/50 p-3">
         <div className="text-on-surface text-[11px] font-semibold mb-1.5">
           아이템 빌드 순서
         </div>
@@ -137,15 +143,15 @@ export default function BuildTab({
       </div>
 
       {/* ─── 스킬 순서 ─── */}
-      <div>
+      <div className="rounded-lg border border-divider/50 p-3">
         <div className="text-on-surface text-[11px] font-semibold mb-1.5">
           스킬 순서
         </div>
-        <SkillOrderGrid skillSeq={selected.skillSeq} />
+        <SkillOrderGrid skillSeq={selected.skillSeq} championName={selected.championName} />
       </div>
 
       {/* ─── 룬 세팅 ─── */}
-      <div>
+      <div className="rounded-lg border border-divider/50 p-3">
         <div className="text-on-surface text-[11px] font-semibold mb-1.5">
           룬
         </div>
