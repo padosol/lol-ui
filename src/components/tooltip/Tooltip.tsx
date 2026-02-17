@@ -12,6 +12,14 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 
+function assignRef(ref: unknown, node: HTMLElement | null) {
+  if (typeof ref === "function") {
+    ref(node);
+  } else if (ref && typeof ref === "object" && "current" in ref) {
+    (ref as { current: unknown }).current = node;
+  }
+}
+
 interface TooltipProps {
   content: ReactNode;
   children: ReactElement;
@@ -91,21 +99,23 @@ export default function Tooltip({ content, children, disabled }: TooltipProps) {
     };
   }, []);
 
+  const childRef = (children as { ref?: unknown }).ref;
+
+  const mergedRef = useCallback(
+    (node: HTMLElement | null) => {
+      triggerRef.current = node;
+      assignRef(childRef, node);
+    },
+    [childRef],
+  );
+
   if (!isValidElement(children)) return children;
 
   const childProps = children.props as Record<string, unknown>;
 
+  // eslint-disable-next-line react-hooks/refs -- ref callback is invoked by React after render, not during render
   const child = cloneElement(children, {
-    ref: (node: HTMLElement | null) => {
-      triggerRef.current = node;
-      // Preserve existing ref
-      const childRef = (children as { ref?: unknown }).ref;
-      if (typeof childRef === "function") {
-        childRef(node);
-      } else if (childRef && typeof childRef === "object" && "current" in childRef) {
-        (childRef as { current: unknown }).current = node;
-      }
-    },
+    ref: mergedRef,
     onMouseEnter: (e: React.MouseEvent) => {
       handleEnter();
       (childProps.onMouseEnter as ((e: React.MouseEvent) => void) | undefined)?.(e);
