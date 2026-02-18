@@ -41,8 +41,8 @@ export async function getChampionById(
     if (!data) {
       return null;
     }
-    const key = String(championId);
-    return data.data[key] || null;
+    const champion = Object.values(data.data).find(c => c.key === String(championId));
+    return champion || null;
   } catch (error) {
     console.error("Failed to load champion data:", error);
     return null;
@@ -62,12 +62,8 @@ export async function getChampionsByIds(
     if (!data) {
       return [];
     }
-    return championIds
-      .map((id) => {
-        const key = String(id);
-        return data.data[key] || null;
-      })
-      .filter((champion): champion is ChampionData => champion !== null);
+    const idSet = new Set(championIds.map(String));
+    return Object.values(data.data).filter(c => idSet.has(c.key));
   } catch (error) {
     console.error("Failed to load champion data:", error);
     return [];

@@ -30,6 +30,17 @@ interface ChampionStats {
   attackspeed: number;
 }
 
+interface ChampionSpellData {
+  id: string;
+  name: string;
+  description: string;
+  maxrank: number;
+  cooldownBurn: string;
+  costBurn: string;
+  resource: string;
+  image: { full: string };
+}
+
 interface ChampionData {
   id: string;
   key: string;
@@ -41,6 +52,8 @@ interface ChampionData {
   info?: ChampionInfo;
   tags?: string[];
   stats?: ChampionStats;
+  spells?: ChampionSpellData[];
+  passive?: { name: string; description: string; image: { full: string } };
 }
 
 interface ChampionJson {
@@ -146,7 +159,7 @@ export const useGameDataStore = create<GameDataState>((set, get) => ({
     const loadPromise = (async () => {
       set({ isLoadingChampion: true });
       try {
-        const response = await fetch("/data/champion.json");
+        const response = await fetch("/data/championFull.json");
         const data = (await response.json()) as ChampionJson;
         set({ championData: data, isLoadingChampion: false, championLoadPromise: null });
       } catch (error) {
@@ -218,5 +231,5 @@ export const useGameDataStore = create<GameDataState>((set, get) => ({
 }));
 
 // 타입 export
-export type { ChampionData, ChampionInfo, ChampionStats, ChampionJson, SummonerSpellData, SummonerJson, ItemJsonData, ItemJson };
+export type { ChampionData, ChampionInfo, ChampionStats, ChampionJson, ChampionSpellData, SummonerSpellData, SummonerJson, ItemJsonData, ItemJson };
 

@@ -56,7 +56,7 @@ export interface Match {
 
 // 매치 상세 정보 타입 (문서 기준)
 export interface MatchDetail {
-  myData: ParticipantData;
+  myData?: ParticipantData;
   gameInfoData: GameInfoData;
   participantData: ParticipantData[];
   teamInfoData: {
@@ -261,6 +261,12 @@ export interface ChampionRotationResponse {
 // 매치 ID 목록 응답 타입 (문서 기준)
 export interface MatchIdsResponse {
   content: string[];
+  hasNext: boolean;
+}
+
+// 소환사 매치 배치 조회 응답 타입
+export interface SummonerMatchesResponse {
+  content: MatchDetail[];
   hasNext: boolean;
 }
 

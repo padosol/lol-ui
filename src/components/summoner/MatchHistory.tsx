@@ -1,7 +1,6 @@
 "use client";
 
-import { useMatchIds } from "@/hooks/useSummoner";
-import { getMatchDetail } from "@/lib/api/match";
+import { useSummonerMatches } from "@/hooks/useSummoner";
 import type { Match, MatchDetail } from "@/types/api";
 import { getChampionImageUrl } from "@/utils/champion";
 import {
@@ -11,7 +10,6 @@ import {
   getSpellImageUrlAsync,
 } from "@/utils/game";
 import { getStyleImageUrl } from "@/utils/styles";
-import { useQueries } from "@tanstack/react-query";
 import GameTooltip from "@/components/tooltip/GameTooltip";
 import { ArrowUp, ChevronDown } from "lucide-react";
 import Image from "next/image";
@@ -72,14 +70,14 @@ export default function MatchHistory({
 }: MatchHistoryProps) {
   const rootRef = useRef<HTMLDivElement | null>(null);
   const scrollTargetRef = useRef<Window | HTMLElement | null>(null);
-  const [page, setPage] = useState(0);
-  const [accMatchIds, setAccMatchIds] = useState<string[]>([]);
+  const [page, setPage] = useState(1);
+  const [accMatchDetails, setAccMatchDetails] = useState<MatchDetail[]>([]);
   const [gameModeFilter, setGameModeFilter] = useState<GameModeFilter>("ALL");
   const [expandedMatchId, setExpandedMatchId] = useState<string | null>(null);
   const [showTopButton, setShowTopButton] = useState(false);
 
-  // 매치 ID 리스트 가져오기
-  const { data: matchIdsData, isLoading: isLoadingIds } = useMatchIds(
+  // 소환사 매치 배치 조회
+  const { data: matchesData, isLoading } = useSummonerMatches(
     puuid || "",
     undefined,
     page,
@@ -89,8 +87,8 @@ export default function MatchHistory({
   // puuid/region 변경 시 누적 데이터 초기화 - 의도적인 상태 리셋
   /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
-    setPage(0);
-    setAccMatchIds([]);
+    setPage(1);
+    setAccMatchDetails([]);
     setExpandedMatchId(null);
   }, [puuid, region]);
   /* eslint-enable react-hooks/set-state-in-effect */
@@ -98,22 +96,22 @@ export default function MatchHistory({
   // 페이지별 응답을 누적(append)해서 유지 - 외부 데이터 동기화
   /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
-    const newIds = matchIdsData?.content;
-    if (!newIds || newIds.length === 0) return;
+    const newDetails = matchesData?.content;
+    if (!newDetails || newDetails.length === 0) return;
 
-    setAccMatchIds((prev) => {
-      // 중복 방지 (안전장치)
+    setAccMatchDetails((prev) => {
       const next = [...prev];
-      const existing = new Set(prev);
-      for (const id of newIds) {
-        if (!existing.has(id)) {
-          existing.add(id);
-          next.push(id);
+      const existing = new Set(prev.map((d) => d.gameInfoData?.matchId));
+      for (const detail of newDetails) {
+        const matchId = detail.gameInfoData?.matchId;
+        if (matchId && !existing.has(matchId)) {
+          existing.add(matchId);
+          next.push(detail);
         }
       }
       return next;
     });
-  }, [matchIdsData]);
+  }, [matchesData]);
   /* eslint-enable react-hooks/set-state-in-effect */
 
   // 스크롤 위치에 따라 Top 버튼 표시/숨김
@@ -168,7 +166,7 @@ export default function MatchHistory({
     });
     return () =>
       (scrollTarget as HTMLElement).removeEventListener("scroll", onScroll);
-  }, [accMatchIds.length]);
+  }, [accMatchDetails.length]);
 
   const scrollToTop = useCallback(() => {
     const target = scrollTargetRef.current;
@@ -181,45 +179,18 @@ export default function MatchHistory({
     target.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
-  const matchIds = accMatchIds;
-
-  // 각 매치 ID에 대한 상세 정보를 가져오기 (useQueries 사용)
-  const matchDetailsQueriesConfig = useMemo(
-    () =>
-      matchIds.map((matchId) => ({
-        queryKey: ["match", "detail", matchId] as const,
-        queryFn: () => getMatchDetail(matchId),
-        enabled: !!matchId && !!puuid,
-        staleTime: 10 * 60 * 1000, // 10분간 캐시 유지
-      })),
-    [matchIds, puuid]
-  );
-
-  const matchDetailsQueries = useQueries({
-    queries: matchDetailsQueriesConfig,
-  });
-
-  const isLoadingDetails = matchDetailsQueries.some((q) => q.isLoading);
-  const isLoading = isLoadingIds || isLoadingDetails;
-
   // 모든 매치가 로딩되었는지 확인
-  const allMatchesLoaded = useMemo(() => {
-    if (matchDetailsQueries.length === 0) return false;
-    return matchDetailsQueries.every(
-      (q) => !q.isLoading && q.data !== undefined
-    );
-  }, [matchDetailsQueries]);
+  const allMatchesLoaded = accMatchDetails.length > 0 && !isLoading;
 
   // MatchDetail을 Match 타입으로 변환 (요약용)
   const allMatches = useMemo<Match[]>(() => {
-    return matchDetailsQueries
-      .map((query, index) => {
-        const detail = query.data;
-        if (!detail) return null;
-
-        const matchId = matchIds[index];
-        let myData = detail.myData;
+    return accMatchDetails
+      .map((detail) => {
         const gameInfo = detail.gameInfoData;
+        const matchId = gameInfo?.matchId;
+        if (!matchId) return null;
+
+        let myData = detail.myData;
 
         // myData가 없으면 participantData에서 현재 사용자 찾기
         if (!myData && detail.participantData && puuid) {
@@ -259,14 +230,10 @@ export default function MatchHistory({
         } as Match;
       })
       .filter((match): match is Match => match !== null);
-  }, [matchDetailsQueries, matchIds, puuid]);
+  }, [accMatchDetails, puuid]);
 
   // MatchDetail 리스트 (상세 정보용)
-  const matchDetails = useMemo(() => {
-    return matchDetailsQueries
-      .map((query) => query.data)
-      .filter((detail): detail is MatchDetail => detail !== undefined);
-  }, [matchDetailsQueries]);
+  const matchDetails = accMatchDetails;
 
   // 게임 모드 분류 함수들
   const isArenaMode = (gameMode: string, queueId?: number): boolean => {
@@ -348,13 +315,13 @@ export default function MatchHistory({
   }, [matchDetails, allMatches, filteredMatches]);
 
   const loadMoreMatches = useCallback(() => {
-    if (!isLoading && (matchIdsData?.hasNext || false)) {
+    if (!isLoading && (matchesData?.hasNext || false)) {
       setPage((prev) => prev + 1);
     }
-  }, [isLoading, matchIdsData?.hasNext]);
+  }, [isLoading, matchesData?.hasNext]);
 
   // 다음 페이지가 있는지 확인
-  const hasMore = matchIdsData?.hasNext || false;
+  const hasMore = matchesData?.hasNext || false;
 
   const formatDuration = (seconds: number) => {
     const mins = Math.floor(seconds / 60);

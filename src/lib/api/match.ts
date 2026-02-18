@@ -3,6 +3,7 @@ import type {
   MatchDetail,
   ChampionStat,
   MatchIdsResponse,
+  SummonerMatchesResponse,
 } from "@/types/api";
 import { apiClient } from "./client";
 
@@ -26,6 +27,34 @@ export async function getMatchIds(
     {
       params: {
         puuid,
+        ...(queueId !== undefined && { queueId }),
+        pageNo,
+        region,
+      },
+    }
+  );
+  return response.data.data;
+}
+
+/**
+ * 소환사 매치 배치 조회
+ * GET /api/v1/summoners/{puuid}/matches?queueId={queueId}&pageNo={pageNo}&region={region}
+ * @param puuid 조회할 유저의 PUUID
+ * @param queueId 큐 ID (선택)
+ * @param pageNo 페이지 번호 (1부터 시작)
+ * @param region 지역
+ * @returns 매치 상세 정보 목록과 다음 페이지 존재 여부
+ */
+export async function getSummonerMatches(
+  puuid: string,
+  queueId?: number,
+  pageNo: number = 1,
+  region: string = "kr"
+): Promise<SummonerMatchesResponse> {
+  const response = await apiClient.get<ApiResponse<SummonerMatchesResponse>>(
+    `/v1/summoners/${puuid}/matches`,
+    {
+      params: {
         ...(queueId !== undefined && { queueId }),
         pageNo,
         region,

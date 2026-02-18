@@ -3,6 +3,7 @@ import {
   getChampionRanking,
   getMatchDetail,
   getMatchIds,
+  getSummonerMatches,
 } from "@/lib/api/match";
 import { getSummonerProfile, renewSummoner } from "@/lib/api/summoner";
 import type {
@@ -10,6 +11,7 @@ import type {
   LeagueInfoResponse,
   MatchDetail,
   MatchIdsResponse,
+  SummonerMatchesResponse,
   SummonerProfile,
 } from "@/types/api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -50,6 +52,27 @@ export function useMatchIds(
   return useQuery<MatchIdsResponse, Error>({
     queryKey: ["match", "ids", puuid, queueId, pageNo, region],
     queryFn: () => getMatchIds(puuid, queueId, pageNo, region),
+    enabled: !!puuid,
+    staleTime: 2 * 60 * 1000, // 2분간 캐시 유지
+  });
+}
+
+/**
+ * 소환사 매치 배치 조회 훅
+ * @param puuid 조회할 유저의 PUUID
+ * @param queueId 큐 ID (선택)
+ * @param pageNo 페이지 번호 (1부터 시작)
+ * @param region 지역 (기본값: "kr")
+ */
+export function useSummonerMatches(
+  puuid: string,
+  queueId?: number,
+  pageNo: number = 1,
+  region: string = "kr"
+) {
+  return useQuery<SummonerMatchesResponse, Error>({
+    queryKey: ["summoner", "matches", puuid, queueId, pageNo, region],
+    queryFn: () => getSummonerMatches(puuid, queueId, pageNo, region),
     enabled: !!puuid,
     staleTime: 2 * 60 * 1000, // 2분간 캐시 유지
   });

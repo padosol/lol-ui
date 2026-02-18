@@ -1,3 +1,4 @@
+import GameTooltip from "@/components/tooltip/GameTooltip";
 import type { SkillSeqEntry } from "@/types/api";
 import { getChampionSpellImageUrl } from "@/utils/game";
 import Image from "next/image";
@@ -56,7 +57,7 @@ export default function SkillOrderGrid({ skillSeq, championName }: SkillOrderGri
           {SKILL_KEYS.map((skillKey, skillIdx) => {
             return (
             <div key={skillKey} className="contents">
-              <SkillLabel skillKey={skillKey} championName={championName} />
+              <SkillLabel skillKey={skillKey} skillIndex={skillIdx} championName={championName} />
 
               {Array.from({ length: 18 }, (_, levelIdx) => {
                 const isSkillUp =
@@ -91,30 +92,32 @@ export default function SkillOrderGrid({ skillSeq, championName }: SkillOrderGri
   );
 }
 
-function SkillLabel({ skillKey, championName }: { skillKey: string; championName?: string }) {
+function SkillLabel({ skillKey, skillIndex, championName }: { skillKey: string; skillIndex: number; championName?: string }) {
   const [imgError, setImgError] = useState(false);
 
-  if (championName && !imgError) {
-    return (
-      <div className="py-0.5 flex items-center justify-center">
-        <Image
-          src={getChampionSpellImageUrl(championName, skillKey)}
-          alt={skillKey}
-          width={20}
-          height={20}
-          className="rounded"
-          unoptimized
-          onError={() => setImgError(true)}
-        />
-      </div>
-    );
-  }
-
-  return (
+  const label = championName && !imgError ? (
+    <div className="py-0.5 flex items-center justify-center">
+      <Image
+        src={getChampionSpellImageUrl(championName, skillKey)}
+        alt={skillKey}
+        width={20}
+        height={20}
+        className="rounded"
+        unoptimized
+        onError={() => setImgError(true)}
+      />
+    </div>
+  ) : (
     <div
       className={`text-[10px] font-bold py-0.5 flex items-center justify-center ${SKILL_COLORS[skillKey].text}`}
     >
       {skillKey}
     </div>
+  );
+
+  return (
+    <GameTooltip type="championSpell" id={`${championName}:${skillIndex}`} disabled={!championName}>
+      {label}
+    </GameTooltip>
   );
 }
