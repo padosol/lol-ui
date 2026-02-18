@@ -8,6 +8,7 @@ interface AutocompleteDropdownProps {
   isLoading: boolean;
   onSelect: (item: SummonerAutocompleteItem) => void;
   dropdownRef: React.RefObject<HTMLDivElement | null>;
+  compact?: boolean;
 }
 
 export default function AutocompleteDropdown({
@@ -15,7 +16,79 @@ export default function AutocompleteDropdown({
   isLoading,
   onSelect,
   dropdownRef,
+  compact = false,
 }: AutocompleteDropdownProps) {
+  if (compact) {
+    return (
+      <div
+        ref={dropdownRef}
+        className="absolute top-full left-0 right-0 mt-0.5 bg-surface-4 border border-divider rounded-md shadow-lg z-50 max-h-60 overflow-y-auto"
+      >
+        {isLoading ? (
+          <div className="p-2 text-center text-on-surface-medium text-xs">
+            검색 중...
+          </div>
+        ) : results.length > 0 ? (
+          <div className="py-0.5">
+            {results.map((item, index) => {
+              const uniqueKey = item.tagLine
+                ? `${item.gameName}-${item.tagLine}-${index}`
+                : `${item.gameName}-${index}`;
+              return (
+                <button
+                  key={uniqueKey}
+                  onClick={() => onSelect(item)}
+                  className="w-full px-2.5 py-1.5 flex items-center gap-2 hover:bg-surface-8 transition-colors text-left cursor-pointer"
+                >
+                  <div className="w-6 h-6 bg-surface-8 rounded overflow-hidden relative shrink-0">
+                    {item.profileIconId ? (
+                      <Image
+                        src={getProfileIconImageUrl(item.profileIconId)}
+                        alt="Profile Icon"
+                        fill
+                        sizes="24px"
+                        className="object-cover"
+                        unoptimized
+                      />
+                    ) : (
+                      <span className="text-xs flex items-center justify-center w-full h-full text-on-surface-medium">
+                        ?
+                      </span>
+                    )}
+                  </div>
+                  <span className="text-xs text-on-surface font-medium truncate">
+                    {item.gameName}
+                    {item.tagLine && (
+                      <span className="text-on-surface-medium">
+                        #{item.tagLine}
+                      </span>
+                    )}
+                  </span>
+                  {item.tier && item.rank && getTierImageUrl(item.tier) && (
+                    <div className="w-5 h-5 relative shrink-0 ml-auto">
+                      <Image
+                        src={getTierImageUrl(item.tier)}
+                        alt={`${item.tier} ${item.rank}`}
+                        fill
+                        sizes="20px"
+                        className="object-contain"
+                        unoptimized
+                      />
+                    </div>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="p-2 text-center text-on-surface-medium text-xs">
+            검색 결과가 없습니다.
+          </div>
+        )}
+      </div>
+    );
+  }
+
   return (
     <div
       ref={dropdownRef}

@@ -84,6 +84,7 @@ export default function SearchBar({ variant = "full" }: SearchBarProps) {
             isLoading={isLoadingAutocomplete}
             onSelect={handleAutocompleteSelect}
             dropdownRef={autocompleteRef}
+            compact={isCompact}
           />
         )}
       </div>
