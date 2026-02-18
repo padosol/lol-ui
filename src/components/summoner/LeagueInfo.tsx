@@ -118,15 +118,15 @@ export default function LeagueInfo({
 
             <div className="flex items-center gap-4">
               {/* 티어 아이콘 */}
-              <div className="relative w-20 h-16 shrink-0">
-                <div className="w-20 h-16 bg-surface-4 rounded-lg overflow-hidden relative">
+              <div className="relative w-16 h-16 shrink-0">
+                <div className="w-16 h-16 bg-surface-4 rounded-lg overflow-hidden relative">
                   {getTierImageUrl(league.tier) ? (
                     <Image
                       src={getTierImageUrl(league.tier)}
                       alt={`${league.tier} 티어`}
                       fill
-                      sizes="80px"
-                      className="object-cover"
+                      sizes="64px"
+                      className="object-contain"
                       unoptimized
                     />
                   ) : (
