@@ -51,6 +51,7 @@ export interface Match {
   };
   gameDuration: number;
   gameDate: string;
+  gameTimestamp: number;
   items: number[];
 }
 

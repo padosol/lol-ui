@@ -1,6 +1,7 @@
 "use client";
 
 import type { Match } from "@/types/api";
+import ContributionGraph from "./ContributionGraph";
 import {
   ArcElement,
   BarElement,
@@ -55,6 +56,7 @@ export default function MatchSummary({ matches }: MatchSummaryProps) {
   const winLossChartOptions = {
     responsive: true,
     maintainAspectRatio: false,
+    animation: false as const,
     plugins: {
       legend: {
         display: false,
@@ -140,11 +142,18 @@ export default function MatchSummary({ matches }: MatchSummaryProps) {
   const positionChartOptions = {
     responsive: true,
     maintainAspectRatio: false,
+    animation: false as const,
+    onHover: (_event: any, _elements: any, chart: any) => {
+      chart.canvas.style.cursor = "default";
+    },
     plugins: {
       legend: {
         display: false,
       },
       tooltip: {
+        animation: {
+          duration: 100,
+        },
         callbacks: {
           label: function (context: TooltipItem<"bar">) {
             const value = context.parsed.y;
@@ -157,29 +166,18 @@ export default function MatchSummary({ matches }: MatchSummaryProps) {
     },
     scales: {
       y: {
+        display: false,
         beginAtZero: true,
-        ticks: {
-          stepSize: 1,
-          color: "rgba(255, 255, 255, 0.60)",
-        },
-        grid: {
-          color: "rgba(255, 255, 255, 0.12)",
-        },
       },
       x: {
-        ticks: {
-          display: false,
-        },
-        grid: {
-          display: false,
-        },
+        display: false,
       },
     },
   };
 
   return (
     <div className="bg-surface-1 rounded-lg p-2 mb-3 border border-divider">
-      <div className="grid grid-cols-1 md:grid-cols-7 gap-2">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-2">
         {/* 전적 요약 - 원차트 */}
         <div className="md:col-span-2 space-y-1">
           <div className="text-on-surface-medium text-xs mb-0.5">전적 요약</div>
@@ -261,7 +259,7 @@ export default function MatchSummary({ matches }: MatchSummaryProps) {
             <div className="h-24">
               <Bar data={positionChartData} options={positionChartOptions} />
             </div>
-            <div className="flex items-center justify-around mt-1 px-2">
+            <div className="flex items-center justify-around mt-1">
               {positions.map((pos, index) => {
                 const positionUpper = pos.position?.toUpperCase() || "";
                 const positionImageUrl = `https://static.mmrtr.shop/position/Position-${positionUpper}.png`;
@@ -280,6 +278,12 @@ export default function MatchSummary({ matches }: MatchSummaryProps) {
               })}
             </div>
           </div>
+        </div>
+
+        {/* 게임 활동 - 잔디 그래프 */}
+        <div className="md:col-span-5 space-y-1">
+          <div className="text-on-surface-medium text-xs mb-0.5">게임 활동</div>
+          <ContributionGraph matches={matches} />
         </div>
       </div>
     </div>

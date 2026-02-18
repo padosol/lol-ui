@@ -37,3 +37,27 @@ export function getPositionName(position: string): string {
   return positionMap[position.toUpperCase()] || position;
 }
 
+const POSITION_ORDER: Record<string, number> = {
+  TOP: 0,
+  JUNGLE: 1,
+  MIDDLE: 2,
+  MID: 2,
+  BOTTOM: 3,
+  ADC: 3,
+  UTILITY: 4,
+  SUPPORT: 4,
+};
+
+/**
+ * 참가자 배열을 포지션 순서(탑→정글→미드→봇→서포터)로 정렬합니다.
+ */
+export function sortByPosition<T extends { teamPosition: string | null }>(
+  participants: T[]
+): T[] {
+  return [...participants].sort((a, b) => {
+    const orderA = POSITION_ORDER[(a.teamPosition || '').toUpperCase()] ?? 99;
+    const orderB = POSITION_ORDER[(b.teamPosition || '').toUpperCase()] ?? 99;
+    return orderA - orderB;
+  });
+}
+

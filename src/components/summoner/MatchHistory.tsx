@@ -9,6 +9,7 @@ import {
   getKDAColorClass,
   getSpellImageUrlAsync,
 } from "@/utils/game";
+import { sortByPosition } from "@/utils/position";
 import { getStyleImageUrl } from "@/utils/styles";
 import GameTooltip from "@/components/tooltip/GameTooltip";
 import { ArrowUp, ChevronDown } from "lucide-react";
@@ -75,6 +76,7 @@ export default function MatchHistory({
   const [gameModeFilter, setGameModeFilter] = useState<GameModeFilter>("ALL");
   const [expandedMatchId, setExpandedMatchId] = useState<string | null>(null);
   const [showTopButton, setShowTopButton] = useState(false);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
 
   // 소환사 매치 배치 조회
   const { data: matchesData, isLoading } = useSummonerMatches(
@@ -90,6 +92,7 @@ export default function MatchHistory({
     setPage(1);
     setAccMatchDetails([]);
     setExpandedMatchId(null);
+    setIsLoadingMore(false);
   }, [puuid, region]);
   /* eslint-enable react-hooks/set-state-in-effect */
 
@@ -98,6 +101,7 @@ export default function MatchHistory({
   useEffect(() => {
     const newDetails = matchesData?.content;
     if (!newDetails || newDetails.length === 0) return;
+    setIsLoadingMore(false);
 
     setAccMatchDetails((prev) => {
       const next = [...prev];
@@ -226,6 +230,7 @@ export default function MatchHistory({
           },
           gameDuration,
           gameDate,
+          gameTimestamp: gameInfo.gameStartTimestamp || 0,
           items: extractItemIds(myData.item || myData.itemSeq),
         } as Match;
       })
@@ -315,10 +320,11 @@ export default function MatchHistory({
   }, [matchDetails, allMatches, filteredMatches]);
 
   const loadMoreMatches = useCallback(() => {
-    if (!isLoading && (matchesData?.hasNext || false)) {
+    if (!isLoading && !isLoadingMore && (matchesData?.hasNext || false)) {
+      setIsLoadingMore(true);
       setPage((prev) => prev + 1);
     }
-  }, [isLoading, matchesData?.hasNext]);
+  }, [isLoading, isLoadingMore, matchesData?.hasNext]);
 
   // 다음 페이지가 있는지 확인
   const hasMore = matchesData?.hasNext || false;
@@ -515,8 +521,8 @@ export default function MatchHistory({
                   detail.participantData?.filter((p) => p.teamId === 200) || [],
               };
 
-          const blueTeam = teams[100] || [];
-          const redTeam = teams[200] || [];
+          const blueTeam = sortByPosition(teams[100] || []);
+          const redTeam = sortByPosition(teams[200] || []);
 
           // CS 계산
           const totalCS =
@@ -1023,14 +1029,14 @@ export default function MatchHistory({
       </div>
 
       {/* 더 보기 버튼 */}
-      {hasMore && (
+      {(hasMore || isLoadingMore) && (
         <div className="mt-6 flex justify-center">
           <button
             onClick={loadMoreMatches}
-            disabled={isLoading}
+            disabled={isLoadingMore}
             className="px-8 py-3 bg-surface-8 hover:bg-surface-12 disabled:bg-surface-8 disabled:cursor-not-allowed cursor-pointer text-on-surface rounded-lg font-semibold transition-all shadow-lg shadow-surface-8/20 hover:shadow-surface-12/30 disabled:shadow-none"
           >
-            {isLoading ? (
+            {isLoadingMore ? (
               <span className="flex items-center gap-2">
                 <div className="w-4 h-4 border-2 border-on-surface-disabled border-t-on-surface rounded-full animate-spin"></div>
                 전적을 불러오는 중...
