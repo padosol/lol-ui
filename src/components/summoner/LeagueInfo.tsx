@@ -110,8 +110,8 @@ export default function LeagueInfo({
             key={index}
             className="bg-surface-8/50 rounded-lg p-4 border border-divider"
           >
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="text-on-surface font-semibold">
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="text-on-surface font-semibold text-sm">
                 {getQueueTypeName(league.leagueType)}
               </h3>
             </div>
@@ -119,14 +119,14 @@ export default function LeagueInfo({
             <div className="flex items-center gap-4">
               {/* 티어 아이콘 */}
               <div className="relative w-16 h-16 shrink-0">
-                <div className="w-16 h-16 bg-surface-4 rounded-lg overflow-hidden border-2 border-divider relative shadow-lg">
+                <div className="w-16 h-16 bg-surface-4 rounded-lg overflow-hidden relative">
                   {getTierImageUrl(league.tier) ? (
                     <Image
                       src={getTierImageUrl(league.tier)}
                       alt={`${league.tier} 티어`}
                       fill
                       sizes="64px"
-                      className="object-cover"
+                      className="object-contain"
                       unoptimized
                     />
                   ) : (
@@ -145,13 +145,13 @@ export default function LeagueInfo({
 
               {/* 랭크 정보 */}
               <div className="flex-1">
-                <div className="text-on-surface font-semibold text-lg mb-1">
+                <div className="text-on-surface font-semibold text-sm mb-0.5">
                   {league.tier} {league.rank}
                 </div>
-                <div className="text-on-surface-medium text-sm mb-2">
+                <div className="text-on-surface-medium text-xs mb-1.5">
                   {league.leaguePoints} LP
                 </div>
-                <div className="flex items-center gap-4 text-sm">
+                <div className="flex items-center gap-3 text-xs">
                   <div>
                     <span className="text-on-surface-medium">승률 </span>
                     <span className="text-on-surface font-semibold">
