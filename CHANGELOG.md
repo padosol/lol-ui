@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.7.0](https://github.com/padosol/lol-ui/compare/v1.6.0...v1.7.0) (2026-02-18)
+
+
+### Features
+
+* add contribution graph, position sorting, and UI refinements ([0a3f6b8](https://github.com/padosol/lol-ui/commit/0a3f6b8451a1f5d6dd071f675d74ffea4d3cb62f))
+* add match detail build tab with item/skill/rune breakdown ([b734f9e](https://github.com/padosol/lol-ui/commit/b734f9e89e374a5a623f28e0b8225d14b16d48f8))
+* add match detail build tab with item/skill/rune breakdown ([9c0fce5](https://github.com/padosol/lol-ui/commit/9c0fce5fa716ea58c319073ff13d97558805e227))
+* add reusable search bar to navigation for site-wide summoner search ([968b191](https://github.com/padosol/lol-ui/commit/968b191536a8c1c0b03bf0529c7e7db1801caed7))
+* enhance build tab with player info layout, skill icons, and item grouping ([9763994](https://github.com/padosol/lol-ui/commit/9763994335ec47a709931783128ab9c798b3dfb4))
+* migrate match history to batch API and enhance build tab UX ([065b616](https://github.com/padosol/lol-ui/commit/065b6169f8d4c32f3342484172c585f0797b971a))
+
+
+### Bug Fixes
+
+* resolve React Compiler lint errors in Tooltip component ([c175d58](https://github.com/padosol/lol-ui/commit/c175d58d6c8ba18efba980800a2216e16bc4e11a))
+
 ## [1.6.0](https://github.com/padosol/lol-ui/compare/v1.5.1...v1.6.0) (2026-02-16)
 
 
