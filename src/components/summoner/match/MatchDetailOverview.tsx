@@ -69,11 +69,11 @@ export default function MatchDetailOverview({
 
     return (
       <div className="space-y-1.5">
-        {displayTeams.map(({ team, placement }) => {
+        {displayTeams.map(({ team, placement }, index) => {
           const isMyTeam = team.some((p) => p.puuid === puuid);
           return (
             <div
-              key={placement}
+              key={placement ?? index}
               className={`p-1.5 rounded ${
                 isMyTeam
                   ? "bg-loss/10 border border-loss/50"

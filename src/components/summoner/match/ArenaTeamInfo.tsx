@@ -64,11 +64,11 @@ export default function ArenaTeamInfo({
     <div className="flex flex-col justify-between h-full w-full max-w-[200px]">
       {/* 상위 4개 팀 표시 */}
       <div className="flex flex-col justify-between h-full gap-0 w-full">
-        {displayTeams.map(({ team, placement }) => {
+        {displayTeams.map(({ team, placement }, index) => {
           const isMyTeam = team.some((p) => p.puuid === myPuuid);
           return (
             <div
-              key={placement}
+              key={placement ?? index}
               className={`py-0.5 rounded w-full ${
                 isMyTeam
                   ? "bg-loss/20 border border-loss/50"
