@@ -364,7 +364,7 @@ export default function MatchHistory({
     );
   }
 
-  if (isLoading && allMatches.length === 0) {
+  if (allMatches.length === 0 && (isLoading || (matchesData?.content?.length ?? 0) > 0)) {
     return (
       <div className="space-y-4">
         {showTitle && (
@@ -380,7 +380,7 @@ export default function MatchHistory({
     );
   }
 
-  if (allMatches.length === 0 && !isLoading) {
+  if (allMatches.length === 0 && !isLoading && !matchesData?.content?.length) {
     return (
       <div className="space-y-4">
         {showTitle && (
