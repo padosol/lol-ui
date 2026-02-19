@@ -30,23 +30,33 @@ export default function ArenaTeamInfo({
     const encodedName = encodeURIComponent(gameName);
     return `/summoners/${normalizedRegion}/${encodedName}`;
   };
-  // placement별로 그룹화 (아레나에서는 같은 placement가 같은 팀)
-  const placementGroups = participants.reduce((acc, p) => {
-    const placement = p.placement || 999;
-    if (!acc[placement]) acc[placement] = [];
-    acc[placement].push(p);
-    return acc;
-  }, {} as Record<number, ParticipantData[]>);
+  // placement가 유효한지 확인
+  const hasValidPlacement = participants.some(p => p.placement > 0);
 
-  // 1~4위 팀을 순서대로 표시
-  const displayTeams = [];
-  for (let i = 1; i <= 4; i++) {
-    const team = placementGroups[i];
-    if (team && team.length > 0) {
-      displayTeams.push({
-        team,
-        placement: i,
-      });
+  const displayTeams: { team: ParticipantData[]; placement: number | null }[] = [];
+
+  if (hasValidPlacement) {
+    // 기존 로직: placement별로 그룹화
+    const placementGroups = participants.reduce((acc, p) => {
+      const placement = p.placement || 999;
+      if (!acc[placement]) acc[placement] = [];
+      acc[placement].push(p);
+      return acc;
+    }, {} as Record<number, ParticipantData[]>);
+
+    for (let i = 1; i <= 4; i++) {
+      const team = placementGroups[i];
+      if (team && team.length > 0) {
+        displayTeams.push({ team, placement: i });
+      }
+    }
+  } else {
+    // 폴백: 순서대로 2명씩 묶어서 최대 4팀 표시
+    for (let i = 0; i < Math.min(participants.length, 8); i += 2) {
+      const team = participants.slice(i, i + 2);
+      if (team.length > 0) {
+        displayTeams.push({ team, placement: null });
+      }
     }
   }
 
@@ -73,7 +83,7 @@ export default function ArenaTeamInfo({
                       : "text-on-surface-medium"
                   }`}
                 >
-                  {placement}위
+                  {placement != null ? `${placement}위` : "-"}
                 </div>
                 {team.slice(0, 2).map((participant) => (
                   <div
