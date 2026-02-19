@@ -17,12 +17,14 @@ interface ProfileSectionProps {
   summonerName: string; // gameName 형식: "name-tagLine"
   region?: string;
   initialData?: SummonerProfile; // 서버에서 미리 가져온 초기 데이터 (SSR용)
+  onRefreshComplete?: () => void;
 }
 
 export default function ProfileSection({
   summonerName,
   region: propRegion,
   initialData,
+  onRefreshComplete,
 }: ProfileSectionProps) {
   // region이 prop으로 전달되지 않은 경우 파싱
   const parsed = propRegion
@@ -127,9 +129,11 @@ export default function ProfileSection({
       },
       {
         onSuccess: async (response) => {
-          // status가 PROGRESS일 경우에만 폴링 시작
+          // PROGRESS가 아니면 즉시 무효화 처리
           if (response.status !== "PROGRESS") {
-            // PROGRESS가 아니면 폴링하지 않음
+            setLastClickTime(Date.now());
+            queryClient.invalidateQueries();
+            onRefreshComplete?.();
             return;
           }
 
@@ -168,6 +172,7 @@ export default function ProfileSection({
                 stopPolling();
                 setLastClickTime(Date.now());
                 queryClient.invalidateQueries();
+                onRefreshComplete?.();
                 return;
               }
               // PROGRESS가 아니면 폴링 중지

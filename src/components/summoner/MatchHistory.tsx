@@ -11,6 +11,7 @@ import {
 } from "@/utils/game";
 import { sortByPosition } from "@/utils/position";
 import { getStyleImageUrl } from "@/utils/styles";
+import { getTierImageUrl, getTierName } from "@/utils/tier";
 import GameTooltip from "@/components/tooltip/GameTooltip";
 import { ArrowUp, ChevronDown } from "lucide-react";
 import Image from "next/image";
@@ -62,12 +63,14 @@ interface MatchHistoryProps {
   puuid?: string | null;
   region?: string;
   showTitle?: boolean;
+  refreshKey?: number;
 }
 
 export default function MatchHistory({
   puuid,
   region = "kr",
   showTitle = true,
+  refreshKey,
 }: MatchHistoryProps) {
   const rootRef = useRef<HTMLDivElement | null>(null);
   const scrollTargetRef = useRef<Window | HTMLElement | null>(null);
@@ -86,14 +89,14 @@ export default function MatchHistory({
     region
   );
 
-  // puuid/region 변경 시 누적 데이터 초기화 - 의도적인 상태 리셋
+  // puuid/region/refreshKey 변경 시 누적 데이터 초기화 - 의도적인 상태 리셋
   /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     setPage(1);
     setAccMatchDetails([]);
     setExpandedMatchId(null);
     setIsLoadingMore(false);
-  }, [puuid, region]);
+  }, [puuid, region, refreshKey]);
   /* eslint-enable react-hooks/set-state-in-effect */
 
   // 페이지별 응답을 누적(append)해서 유지 - 외부 데이터 동기화
@@ -308,9 +311,12 @@ export default function MatchHistory({
   // 필터링된 매치 상세 정보 (매치 ID로 매칭)
   const filteredMatchDetails = useMemo(() => {
     const filteredMatchIds = new Set(filteredMatches.map((m) => m.id));
+    const allMatchesMap = new Map(allMatches.map((m) => [m.id, m]));
     return matchDetails
-      .map((detail, index) => {
-        const match = allMatches[index];
+      .map((detail) => {
+        const matchId = detail.gameInfoData?.matchId;
+        if (!matchId) return null;
+        const match = allMatchesMap.get(matchId);
         if (!match || !filteredMatchIds.has(match.id)) return null;
         return { detail, match };
       })
@@ -361,7 +367,7 @@ export default function MatchHistory({
     );
   }
 
-  if (isLoading && allMatches.length === 0) {
+  if (allMatches.length === 0 && (isLoading || (matchesData?.content?.length ?? 0) > 0)) {
     return (
       <div className="space-y-4">
         {showTitle && (
@@ -377,7 +383,7 @@ export default function MatchHistory({
     );
   }
 
-  if (allMatches.length === 0 && !isLoading) {
+  if (allMatches.length === 0 && !isLoading && !matchesData?.content?.length) {
     return (
       <div className="space-y-4">
         {showTitle && (
@@ -613,7 +619,7 @@ export default function MatchHistory({
                     <div className="flex items-center gap-1">
                       <strong className={`text-base font-bold ${textColor}`}>
                         {isArena
-                          ? `${myData.placement || 999}위`
+                          ? (myData.placement > 0 ? `${myData.placement}위` : "???")
                           : match.result === "REMAKE"
                           ? "다시하기"
                           : match.result === "WIN"
@@ -790,6 +796,27 @@ export default function MatchHistory({
                           </span>
                         </div>
                       </div>
+
+                      {/* 평균 티어 */}
+                      {gameInfo?.averageTier != null && (
+                        <div className="flex flex-col items-center justify-start min-w-[40px] gap-0.5">
+                          <span className="text-[10px] text-on-surface-disabled">평균 티어</span>
+                          <div className="flex items-center gap-1">
+                            {getTierImageUrl(gameInfo.averageTier) && (
+                              <Image
+                                src={getTierImageUrl(gameInfo.averageTier)}
+                                alt={getTierName(gameInfo.averageTier)}
+                                width={36}
+                                height={36}
+                                className="w-9 h-9"
+                              />
+                            )}
+                            <span className="text-[11px] text-on-surface-medium font-medium">
+                              {getTierName(gameInfo.averageTier)}
+                            </span>
+                          </div>
+                        </div>
+                      )}
                     </div>
 
                     {/* 하단: 아이템 + 배지 */}
@@ -836,7 +863,7 @@ export default function MatchHistory({
                     <ArenaTeamInfo
                       participants={detail.participantData || []}
                       myPuuid={puuid}
-                      myPlacement={myData.placement || 999}
+                      myPlacement={myData.placement || 0}
                       region={region}
                     />
                   ) : (
@@ -866,7 +893,7 @@ export default function MatchHistory({
                   <div className="flex items-center gap-2">
                     <span className={`font-bold text-sm ${textColor}`}>
                       {isArena
-                        ? `${myData.placement || 999}위`
+                        ? (myData.placement > 0 ? `${myData.placement}위` : "???")
                         : match.result === "REMAKE"
                         ? "다시하기"
                         : match.result === "WIN"
@@ -969,12 +996,24 @@ export default function MatchHistory({
                       <span className="text-on-surface-disabled">/</span>
                       <span className="text-on-surface">{match.kda.assists}</span>
                     </div>
-                    <div className="text-[11px] font-medium">
+                    <div className="flex items-center gap-1 text-[11px] font-medium">
                       <span className={getKDAColorClass(calculateKDA(match.kda))}>
                         {calculateKDA(match.kda) === "perfect"
                           ? "perfect"
                           : `${calculateKDA(match.kda)}:1 평점`}
                       </span>
+                      {gameInfo?.averageTier != null && getTierImageUrl(gameInfo.averageTier) && (
+                        <span className="flex items-center gap-0.5 text-on-surface-medium">
+                          <Image
+                            src={getTierImageUrl(gameInfo.averageTier)}
+                            alt={getTierName(gameInfo.averageTier)}
+                            width={20}
+                            height={20}
+                            className="w-5 h-5"
+                          />
+                          <span className="text-[10px]">{getTierName(gameInfo.averageTier)}</span>
+                        </span>
+                      )}
                     </div>
                   </div>
 

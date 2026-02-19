@@ -14,7 +14,7 @@ import type {
   SummonerMatchesResponse,
   SummonerProfile,
 } from "@/types/api";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 /**
  * 소환사 프로필 정보 조회 훅
@@ -134,16 +134,8 @@ export function useLeagueInfo(
  * 소환사 데이터 갱신 뮤테이션 훅
  */
 export function useRefreshSummonerData() {
-  const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: ({ platform, puuid }: { platform: string; puuid: string }) =>
       renewSummoner(platform, puuid),
-    onSuccess: (_, { puuid }) => {
-      // 갱신 후 관련 쿼리 무효화하여 자동 재조회
-      queryClient.invalidateQueries({
-        queryKey: ["summoner", puuid],
-      });
-    },
   });
 }
