@@ -149,6 +149,7 @@ export interface GameInfoData {
   queueId: number;
   tournamentCode: string | null;
   matchId: string | null;
+  averageTier: string;
 }
 
 export interface TeamInfo {

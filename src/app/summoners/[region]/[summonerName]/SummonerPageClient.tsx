@@ -6,6 +6,7 @@ import Navigation from "@/components/layout/Navigation";
 import ProfileSection from "@/components/summoner/ProfileSection";
 import ProfileTabs from "@/components/summoner/ProfileTabs";
 import type { LeagueInfoResponse, SummonerProfile } from "@/types/api";
+import { useCallback, useState } from "react";
 
 interface SummonerPageClientProps {
   profileData: SummonerProfile;
@@ -20,6 +21,12 @@ export default function SummonerPageClient({
   gameName,
   region,
 }: SummonerPageClientProps) {
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  const handleRefreshComplete = useCallback(() => {
+    setRefreshKey((prev) => prev + 1);
+  }, []);
+
   return (
     <div className="min-h-screen bg-surface flex flex-col">
       <Header />
@@ -29,12 +36,14 @@ export default function SummonerPageClient({
           summonerName={gameName}
           region={region}
           initialData={profileData}
+          onRefreshComplete={handleRefreshComplete}
         />
         <ProfileTabs
           summonerName={gameName}
           puuid={profileData.puuid}
           region={region}
           initialLeagueData={leagueData || undefined}
+          refreshKey={refreshKey}
         />
       </main>
       <Footer />
