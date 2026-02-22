@@ -607,9 +607,9 @@ export default function MatchHistory({
               onClick={() => setExpandedMatchId(isExpanded ? null : match.id)}
             >
               {/* 데스크톱 레이아웃 (md 이상) */}
-              <div className="hidden md:grid grid-cols-[120px_1fr_200px_30px] bg-surface-1/50 backdrop-blur-sm w-full">
+              <div className="hidden md:grid grid-cols-[90px_1fr_80px_200px_30px] bg-surface-1/50 backdrop-blur-sm w-full">
                 {/* 1. 게임 정보 섹션 */}
-                <div className="flex flex-col items-start justify-start p-3 text-xs shrink-0 h-full gap-4">
+                <div className="flex flex-col items-start justify-start p-2 text-xs shrink-0 h-full gap-3">
                   <div className="flex flex-col items-start gap-0.5">
                     <span className={`font-bold text-sm ${textColor}`}>
                       {gameModeName}
@@ -620,7 +620,7 @@ export default function MatchHistory({
                   </div>
                   <div className="flex flex-col items-start gap-0.5">
                     <div className="flex items-center gap-1">
-                      <strong className={`text-base font-bold ${textColor}`}>
+                      <strong className={`text-sm font-bold ${textColor}`}>
                         {isArena
                           ? (myData.placement > 0 ? `${myData.placement}위` : "???")
                           : match.result === "REMAKE"
@@ -800,26 +800,6 @@ export default function MatchHistory({
                         </div>
                       </div>
 
-                      {/* 평균 티어 */}
-                      {gameInfo?.averageTier != null && (
-                        <div className="flex flex-col items-center justify-start min-w-[40px] gap-0.5">
-                          <span className="text-[10px] text-on-surface-disabled">평균 티어</span>
-                          <div className="flex items-center gap-1">
-                            {getTierImageUrl(gameInfo.averageTier) && (
-                              <Image
-                                src={getTierImageUrl(gameInfo.averageTier)}
-                                alt={getTierName(gameInfo.averageTier)}
-                                width={36}
-                                height={36}
-                                className="w-9 h-9"
-                              />
-                            )}
-                            <span className="text-[11px] text-on-surface-medium font-medium">
-                              {getTierName(gameInfo.averageTier)}
-                            </span>
-                          </div>
-                        </div>
-                      )}
                     </div>
 
                     {/* 하단: 아이템 + 배지 */}
@@ -860,7 +840,33 @@ export default function MatchHistory({
                   </div>
                 </div>
 
-                {/* 3. 팀 정보 섹션 */}
+                {/* 3. 평균 티어 섹션 */}
+                <div className="flex flex-col items-center justify-center py-2">
+                  {gameInfo?.averageTier != null ? (
+                    <div className="flex flex-col items-center gap-0.5">
+                      <span className="text-[10px] text-on-surface-disabled">평균</span>
+                      {getTierImageUrl(gameInfo.averageTier) && (
+                        <Image
+                          src={getTierImageUrl(gameInfo.averageTier)}
+                          alt={getTierName(gameInfo.averageTier)}
+                          width={32}
+                          height={32}
+                          className="w-8 h-8"
+                        />
+                      )}
+                      <span className="text-[10px] text-on-surface-medium font-medium leading-tight text-center">
+                        {getTierName(gameInfo.averageTier)}
+                      </span>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col items-center gap-0.5">
+                      <span className="text-[10px] text-on-surface-disabled">평균</span>
+                      <span className="text-[10px] text-on-surface-disabled">-</span>
+                    </div>
+                  )}
+                </div>
+
+                {/* 4. 팀 정보 섹션 */}
                 <div className="py-1 px-1.5 w-full shrink-0 flex flex-col items-end max-w-[200px] overflow-hidden">
                   {isArena ? (
                     <ArenaTeamInfo
@@ -879,7 +885,7 @@ export default function MatchHistory({
                   )}
                 </div>
 
-                {/* 4. 화살표 섹션 */}
+                {/* 5. 화살표 섹션 */}
                 <div className="flex items-end justify-center p-2">
                   <ChevronDown
                     className={`w-5 h-5 text-on-surface-medium transition-transform ${
