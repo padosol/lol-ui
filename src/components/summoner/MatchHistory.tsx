@@ -1,6 +1,7 @@
 "use client";
 
 import { useSummonerMatches } from "@/hooks/useSummoner";
+import { useQueryClient } from "@tanstack/react-query";
 import type { Match, MatchDetail } from "@/types/api";
 import { getChampionImageUrl } from "@/utils/champion";
 import {
@@ -72,6 +73,7 @@ export default function MatchHistory({
   showTitle = true,
   refreshKey,
 }: MatchHistoryProps) {
+  const queryClient = useQueryClient();
   const rootRef = useRef<HTMLDivElement | null>(null);
   const scrollTargetRef = useRef<Window | HTMLElement | null>(null);
   const [page, setPage] = useState(1);
@@ -96,15 +98,16 @@ export default function MatchHistory({
     setAccMatchDetails([]);
     setExpandedMatchId(null);
     setIsLoadingMore(false);
-  }, [puuid, region, refreshKey]);
+    queryClient.resetQueries({ queryKey: ["summoner", "matches", puuid] });
+  }, [puuid, region, refreshKey, queryClient]);
   /* eslint-enable react-hooks/set-state-in-effect */
 
   // 페이지별 응답을 누적(append)해서 유지 - 외부 데이터 동기화
   /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
+    setIsLoadingMore(false);
     const newDetails = matchesData?.content;
     if (!newDetails || newDetails.length === 0) return;
-    setIsLoadingMore(false);
 
     setAccMatchDetails((prev) => {
       const next = [...prev];
