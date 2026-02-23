@@ -29,40 +29,51 @@ export default function MatchDetailOverview({
   puuid,
 }: MatchDetailOverviewProps) {
   if (isArena) {
-    const placementGroups = (detail.participantData || []).reduce((acc, p) => {
-      const placement = p.placement || 999;
-      if (!acc[placement]) acc[placement] = [];
-      acc[placement].push(p);
-      return acc;
-    }, {} as Record<number, typeof detail.participantData>);
+    const participants = detail.participantData || [];
+    const hasValidPlacement = participants.some(p => p.placement > 0);
 
-    const displayTeams = [];
-    for (let i = 1; i <= 8; i++) {
-      const team = placementGroups[i];
-      if (team && team.length > 0) {
-        displayTeams.push({
-          team,
-          placement: i,
-        });
+    const displayTeams: { team: ParticipantData[]; placement: number | null }[] = [];
+
+    if (hasValidPlacement) {
+      // 기존 로직: placement별로 그룹화
+      const placementGroups = participants.reduce((acc, p) => {
+        const placement = p.placement || 999;
+        if (!acc[placement]) acc[placement] = [];
+        acc[placement].push(p);
+        return acc;
+      }, {} as Record<number, ParticipantData[]>);
+
+      for (let i = 1; i <= 8; i++) {
+        const team = placementGroups[i];
+        if (team && team.length > 0) {
+          displayTeams.push({ team, placement: i });
+        }
+      }
+    } else {
+      // 폴백: 순서대로 2명씩 묶어서 표시
+      for (let i = 0; i < participants.length; i += 2) {
+        const team = participants.slice(i, i + 2);
+        if (team.length > 0) {
+          displayTeams.push({ team, placement: null });
+        }
       }
     }
 
     // 아레나 모드 전체 참가자의 최대 피해량 및 받은 피해량 계산
-    const allParticipants = detail.participantData || [];
     const maxDamageArena = Math.max(
-      ...allParticipants.map((p) => p.totalDamageDealtToChampions || 0)
+      ...participants.map((p) => p.totalDamageDealtToChampions || 0)
     );
     const maxDamageTakenArena = Math.max(
-      ...allParticipants.map((p) => p.totalDamageDealtToChampions || 0) // 일단 피해량 데이터 사용
+      ...participants.map((p) => p.totalDamageTaken || 0)
     );
 
     return (
       <div className="space-y-1.5">
-        {displayTeams.map(({ team, placement }) => {
+        {displayTeams.map(({ team, placement }, index) => {
           const isMyTeam = team.some((p) => p.puuid === puuid);
           return (
             <div
-              key={placement}
+              key={placement ?? index}
               className={`p-1.5 rounded ${
                 isMyTeam
                   ? "bg-loss/10 border border-loss/50"
@@ -70,7 +81,7 @@ export default function MatchDetailOverview({
               }`}
             >
               <div className="text-on-surface text-[11px] font-semibold mb-1">
-                {placement}위
+                {placement != null ? `${placement}위` : "-"}
               </div>
               <div className="grid grid-cols-2 gap-1">
                 {team.map((participant) => {
@@ -89,7 +100,7 @@ export default function MatchDetailOverview({
                   const isMe = participant.puuid === puuid;
                   const damage = participant.totalDamageDealtToChampions || 0;
                   const damageTaken =
-                    participant.totalDamageDealtToChampions || 0; // 일단 피해량 데이터 사용
+                    participant.totalDamageTaken || 0;
                   const damagePercentage =
                     maxDamageArena > 0 ? (damage / maxDamageArena) * 100 : 0;
                   const damageTakenPercentage =
@@ -172,36 +183,18 @@ export default function MatchDetailOverview({
                       </div>
                       {/* 하단: 피해량 막대바 */}
                       <div className="flex gap-1.5">
-                        {/* 피해량 막대 */}
-                        <div className="flex items-center gap-1.5 flex-1">
-                          <div className="text-on-surface-medium text-[9px] w-6 shrink-0">
-                            피해
-                          </div>
-                          <div className="flex-1 h-2.5 bg-surface-8/50 rounded-full overflow-hidden">
-                            <div
-                              className="h-full bg-warning/70 rounded-full transition-all"
-                              style={{ width: `${damagePercentage}%` }}
-                            />
-                          </div>
-                          <div className="text-warning text-[9px] w-10 text-right shrink-0">
-                            {(damage / 1000).toFixed(1)}k
-                          </div>
-                        </div>
-                        {/* 받은 피해량 막대 */}
-                        <div className="flex items-center gap-1.5 flex-1">
-                          <div className="text-on-surface-medium text-[9px] w-6 shrink-0">
-                            피해
-                          </div>
-                          <div className="flex-1 h-2.5 bg-surface-8/50 rounded-full overflow-hidden">
-                            <div
-                              className="h-full bg-team-blue/70 rounded-full transition-all"
-                              style={{ width: `${damageTakenPercentage}%` }}
-                            />
-                          </div>
-                          <div className="text-team-blue text-[9px] w-10 text-right shrink-0">
-                            {(damageTaken / 1000).toFixed(1)}k
-                          </div>
-                        </div>
+                        <DamageBar
+                          label="피해"
+                          percentage={damagePercentage}
+                          value={`${(damage / 1000).toFixed(1)}k`}
+                          color="orange"
+                        />
+                        <DamageBar
+                          label="받은 피해"
+                          percentage={damageTakenPercentage}
+                          value={`${(damageTaken / 1000).toFixed(1)}k`}
+                          color="blue"
+                        />
                       </div>
                     </div>
                   );

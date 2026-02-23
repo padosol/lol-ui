@@ -311,9 +311,12 @@ export default function MatchHistory({
   // 필터링된 매치 상세 정보 (매치 ID로 매칭)
   const filteredMatchDetails = useMemo(() => {
     const filteredMatchIds = new Set(filteredMatches.map((m) => m.id));
+    const allMatchesMap = new Map(allMatches.map((m) => [m.id, m]));
     return matchDetails
-      .map((detail, index) => {
-        const match = allMatches[index];
+      .map((detail) => {
+        const matchId = detail.gameInfoData?.matchId;
+        if (!matchId) return null;
+        const match = allMatchesMap.get(matchId);
         if (!match || !filteredMatchIds.has(match.id)) return null;
         return { detail, match };
       })
@@ -364,7 +367,7 @@ export default function MatchHistory({
     );
   }
 
-  if (isLoading && allMatches.length === 0) {
+  if (allMatches.length === 0 && (isLoading || (matchesData?.content?.length ?? 0) > 0)) {
     return (
       <div className="space-y-4">
         {showTitle && (
@@ -380,7 +383,7 @@ export default function MatchHistory({
     );
   }
 
-  if (allMatches.length === 0 && !isLoading) {
+  if (allMatches.length === 0 && !isLoading && !matchesData?.content?.length) {
     return (
       <div className="space-y-4">
         {showTitle && (
@@ -616,7 +619,7 @@ export default function MatchHistory({
                     <div className="flex items-center gap-1">
                       <strong className={`text-base font-bold ${textColor}`}>
                         {isArena
-                          ? `${myData.placement || 999}위`
+                          ? (myData.placement > 0 ? `${myData.placement}위` : "???")
                           : match.result === "REMAKE"
                           ? "다시하기"
                           : match.result === "WIN"
@@ -860,7 +863,7 @@ export default function MatchHistory({
                     <ArenaTeamInfo
                       participants={detail.participantData || []}
                       myPuuid={puuid}
-                      myPlacement={myData.placement || 999}
+                      myPlacement={myData.placement || 0}
                       region={region}
                     />
                   ) : (
@@ -890,7 +893,7 @@ export default function MatchHistory({
                   <div className="flex items-center gap-2">
                     <span className={`font-bold text-sm ${textColor}`}>
                       {isArena
-                        ? `${myData.placement || 999}위`
+                        ? (myData.placement > 0 ? `${myData.placement}위` : "???")
                         : match.result === "REMAKE"
                         ? "다시하기"
                         : match.result === "WIN"
