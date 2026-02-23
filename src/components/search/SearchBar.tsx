@@ -34,7 +34,7 @@ export default function SearchBar({ variant = "full" }: SearchBarProps) {
     <form
       onSubmit={handleSearch}
       className={`flex gap-0 items-stretch ${
-        isCompact ? "w-full max-w-md" : "w-full"
+        isCompact ? "w-full max-w-xl" : "w-full"
       }`}
     >
       <RegionSelector
@@ -84,6 +84,7 @@ export default function SearchBar({ variant = "full" }: SearchBarProps) {
             isLoading={isLoadingAutocomplete}
             onSelect={handleAutocompleteSelect}
             dropdownRef={autocompleteRef}
+            compact={isCompact}
           />
         )}
       </div>

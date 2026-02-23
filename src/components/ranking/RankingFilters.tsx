@@ -2,7 +2,9 @@
 
 import { useTierCutoffs } from "@/hooks/useRanking";
 import { AVAILABLE_REGIONS, type RegionValue } from "@/stores/useRegionStore";
+import { getTierColor, getTierImageUrl } from "@/utils/tier";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 interface RankingFiltersProps {
@@ -94,8 +96,8 @@ export default function RankingFilters({
 
   return (
     <div className="bg-surface-4 rounded-lg p-4 mb-6">
-      <div className="grid grid-cols-3 gap-4">
-        {/* 1섹션: 지역, 랭킹 타입 */}
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+        {/* 필터 섹션: 지역, 랭킹 타입 */}
         <div className="flex gap-4">
           <div className="w-32">
             <label className="block text-sm font-medium text-on-surface mb-2">
@@ -208,66 +210,65 @@ export default function RankingFilters({
           </div>
         </div>
 
-        {/* 2섹션: 비워둠 */}
-        <div></div>
-
-        {/* 3섹션: 챌린저/그랜드마스터 정보 */}
-        <div className="flex gap-3 justify-end">
+        {/* 커트라인 카드 섹션 */}
+        <div className="flex gap-3">
           {isLoading ? (
             <>
-              <div className="bg-surface-8 rounded-md p-3 w-40 animate-pulse">
-                <div className="h-4 bg-surface-12 rounded w-16 mb-2"></div>
-                <div className="h-4 bg-surface-12 rounded w-24 mb-1"></div>
-                <div className="h-4 bg-surface-12 rounded w-20"></div>
-              </div>
-              <div className="bg-surface-8 rounded-md p-3 w-40 animate-pulse">
-                <div className="h-4 bg-surface-12 rounded w-20 mb-2"></div>
-                <div className="h-4 bg-surface-12 rounded w-24 mb-1"></div>
-                <div className="h-4 bg-surface-12 rounded w-20"></div>
-              </div>
+              {[1, 2].map((i) => (
+                <div key={i} className="bg-surface-8 border border-divider rounded-lg overflow-hidden animate-pulse">
+                  <div className="h-0.5 bg-surface-12" />
+                  <div className="p-3 flex items-center gap-3">
+                    <div className="w-10 h-10 bg-surface-12 rounded-full shrink-0" />
+                    <div className="space-y-1.5">
+                      <div className="h-3.5 bg-surface-12 rounded w-16" />
+                      <div className="h-4 bg-surface-12 rounded w-14" />
+                      <div className="h-3 bg-surface-12 rounded w-12" />
+                    </div>
+                  </div>
+                </div>
+              ))}
             </>
           ) : isError ? (
-            <div className="bg-surface-8 rounded-md p-3 text-sm text-on-surface-medium">
+            <div className="bg-surface-8 rounded-lg p-3 text-sm text-on-surface-medium">
               커트라인 정보를 불러올 수 없습니다
             </div>
           ) : (
             <>
-              <div className="bg-surface-8 rounded-md p-3 w-40">
-                <div className="text-sm font-medium text-on-surface-medium mb-1">챌린저</div>
-                <div className="text-sm text-on-surface flex items-center">
-                  커트라인:{" "}
-                  <span className="font-semibold text-on-surface">
-                    {challengerData?.minLeaguePoints ?? "-"} LP
-                  </span>
-                  {getLpChangeDisplay(challengerData?.lpChange)}
-                </div>
-                {challengerData?.userCount !== undefined && (
-                  <div className="text-sm text-on-surface">
-                    인원:{" "}
-                    <span className="font-semibold text-on-surface">
-                      {challengerData.userCount}명
-                    </span>
+              {[
+                { tier: "CHALLENGER", label: "챌린저", data: challengerData },
+                { tier: "GRANDMASTER", label: "그랜드마스터", data: grandmasterData },
+              ].map(({ tier, label, data }) => (
+                <div
+                  key={tier}
+                  className="bg-surface-8 border border-divider rounded-lg overflow-hidden"
+                >
+                  <div className={`h-0.5 bg-gradient-to-r ${getTierColor(tier)}`} />
+                  <div className="p-3 flex items-center gap-3">
+                    <Image
+                      src={getTierImageUrl(tier)}
+                      alt={label}
+                      width={40}
+                      height={40}
+                      className="shrink-0"
+                    />
+                    <div>
+                      <div className="text-xs text-on-surface-medium">{label}</div>
+                      <div className="flex items-center">
+                        <span className="text-base font-bold text-on-surface">
+                          {data?.minLeaguePoints ?? "-"}
+                        </span>
+                        <span className="text-xs text-on-surface-medium ml-1">LP</span>
+                        {getLpChangeDisplay(data?.lpChange)}
+                      </div>
+                      {data?.userCount !== undefined && (
+                        <div className="text-xs text-on-surface-medium">
+                          {data.userCount.toLocaleString()}명
+                        </div>
+                      )}
+                    </div>
                   </div>
-                )}
-              </div>
-              <div className="bg-surface-8 rounded-md p-3 w-40">
-                <div className="text-sm font-medium text-on-surface-medium mb-1">그랜드마스터</div>
-                <div className="text-sm text-on-surface flex items-center">
-                  커트라인:{" "}
-                  <span className="font-semibold text-on-surface">
-                    {grandmasterData?.minLeaguePoints ?? "-"} LP
-                  </span>
-                  {getLpChangeDisplay(grandmasterData?.lpChange)}
                 </div>
-                {grandmasterData?.userCount !== undefined && (
-                  <div className="text-sm text-on-surface">
-                    인원:{" "}
-                    <span className="font-semibold text-on-surface">
-                      {grandmasterData.userCount}명
-                    </span>
-                  </div>
-                )}
-              </div>
+              ))}
             </>
           )}
         </div>
