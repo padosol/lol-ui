@@ -46,9 +46,9 @@ export default function ProfileSection({
   const pollingStartTimeRef = useRef<number | null>(null);
   const [lastClickTime, setLastClickTime] = useState<number | null>(null);
   const [cooldownInfo, setCooldownInfo] = useState<{
-    source: 'click' | 'revision';
     remainingSeconds: number;
   } | null>(null);
+  const [refreshError, setRefreshError] = useState<string | null>(null);
 
   // 컴포넌트 언마운트 시 폴링 정리
   useEffect(() => {
@@ -60,53 +60,35 @@ export default function ProfileSection({
     };
   }, []);
 
-  // 남은 시간 계산 및 업데이트
+  // 클릭 쿨다운 (10초) 계산
   useEffect(() => {
     const updateCooldownInfo = () => {
-      if (!profileData) {
+      if (!lastClickTime) {
         setCooldownInfo(null);
         return;
       }
 
-      const now = Date.now();
-      let clickRemaining = 0;
-      let revisionRemaining = 0;
+      const elapsed = Date.now() - lastClickTime;
+      const remaining = Math.max(0, 10000 - elapsed);
 
-      // 클릭 후 10초 제한 확인
-      if (lastClickTime) {
-        const elapsedSinceClick = now - lastClickTime;
-        clickRemaining = Math.max(0, 10000 - elapsedSinceClick);
-      }
-
-      // 갱신 완료 후 3분 제한 확인
-      if (profileData.lastRevisionDateTime) {
-        const lastRevisionTime = new Date(
-          profileData.lastRevisionDateTime
-        ).getTime();
-        const elapsedSinceRevision = now - lastRevisionTime;
-        revisionRemaining = Math.max(0, 180000 - elapsedSinceRevision);
-      }
-
-      const maxRemaining = Math.max(clickRemaining, revisionRemaining);
-
-      if (maxRemaining > 0) {
-        setCooldownInfo({
-          source: revisionRemaining >= clickRemaining ? 'revision' : 'click',
-          remainingSeconds: Math.ceil(maxRemaining / 1000),
-        });
+      if (remaining > 0) {
+        setCooldownInfo({ remainingSeconds: Math.ceil(remaining / 1000) });
       } else {
         setCooldownInfo(null);
       }
     };
 
-    // 초기 업데이트
     updateCooldownInfo();
-
-    // 1초마다 업데이트
     const interval = setInterval(updateCooldownInfo, 1000);
-
     return () => clearInterval(interval);
-  }, [profileData, lastClickTime]);
+  }, [lastClickTime]);
+
+  // 에러 메시지 5초 후 자동 소멸
+  useEffect(() => {
+    if (!refreshError) return;
+    const timer = setTimeout(() => setRefreshError(null), 5000);
+    return () => clearTimeout(timer);
+  }, [refreshError]);
 
   // 갱신 버튼 비활성화 여부 확인
   const isRefreshDisabled = () => {
@@ -129,69 +111,79 @@ export default function ProfileSection({
       },
       {
         onSuccess: async (response) => {
-          // PROGRESS가 아니면 즉시 무효화 처리
-          if (response.status !== "PROGRESS") {
-            setLastClickTime(Date.now());
-            queryClient.invalidateQueries();
-            onRefreshComplete?.();
+          // FAILED → 쿨다운 (3분 미만 재요청)
+          if (response.status === "FAILED") {
+            setRefreshError("잠시 후 다시 시도해주세요");
             return;
           }
 
-          // 폴링 시작
-          setIsPolling(true);
-          pollingStartTimeRef.current = Date.now();
+          // SUCCESS → 갱신 진행중, 폴링 시작
+          if (response.status === "SUCCESS") {
+            setIsPolling(true);
+            pollingStartTimeRef.current = Date.now();
 
-          const stopPolling = () => {
-            if (pollingIntervalRef.current) {
-              clearInterval(pollingIntervalRef.current);
-              pollingIntervalRef.current = null;
-            }
-            setIsPolling(false);
-            pollingStartTimeRef.current = null;
-          };
+            const stopPolling = () => {
+              if (pollingIntervalRef.current) {
+                clearInterval(pollingIntervalRef.current);
+                pollingIntervalRef.current = null;
+              }
+              setIsPolling(false);
+              pollingStartTimeRef.current = null;
+            };
 
-          const pollStatus = async () => {
-            // 최대 10초 경과 확인
-            const elapsed = Date.now() - (pollingStartTimeRef.current || 0);
-            if (elapsed >= 10000) {
-              stopPolling();
-              return;
-            }
-
-            try {
-              const response = await getSummonerRenewalStatus(
-                profileData.puuid
-              );
-
-              console.log(response);
-              // SUCCESS나 FAILED면 폴링 중지
-              if (
-                response.status === "SUCCESS" ||
-                response.status === "FAILED"
-              ) {
+            const pollStatus = async () => {
+              // 최대 10초 경과 확인
+              const elapsed =
+                Date.now() - (pollingStartTimeRef.current || 0);
+              if (elapsed >= 10000) {
                 stopPolling();
                 setLastClickTime(Date.now());
                 queryClient.invalidateQueries();
                 onRefreshComplete?.();
                 return;
               }
-              // PROGRESS가 아니면 폴링 중지
-              if (response.status !== "PROGRESS") {
-                stopPolling();
-                return;
-              }
-            } catch (error) {
-              console.error("갱신 상태 확인 중 오류:", error);
-              stopPolling();
-            }
-          };
 
-          // 0.2초 후 첫 번째 폴링 시작
-          setTimeout(async () => {
-            await pollStatus();
-            // 이후 1초마다 폴링 (최대 10초)
-            pollingIntervalRef.current = setInterval(pollStatus, 1000);
-          }, 200);
+              try {
+                const statusResponse = await getSummonerRenewalStatus(
+                  profileData.puuid
+                );
+
+                // SUCCESS나 FAILED면 폴링 중지 → 데이터 갱신
+                if (
+                  statusResponse.status === "SUCCESS" ||
+                  statusResponse.status === "FAILED"
+                ) {
+                  stopPolling();
+                  setLastClickTime(Date.now());
+                  queryClient.invalidateQueries();
+                  onRefreshComplete?.();
+                  return;
+                }
+              } catch (error) {
+                console.error("갱신 상태 확인 중 오류:", error);
+                stopPolling();
+              }
+            };
+
+            // 0.2초 후 첫 번째 폴링 시작
+            setTimeout(async () => {
+              await pollStatus();
+              // 첫 폴링에서 이미 완료된 경우 interval 생성 방지
+              if (pollingStartTimeRef.current !== null) {
+                pollingIntervalRef.current = setInterval(pollStatus, 1000);
+              }
+            }, 200);
+
+            return;
+          }
+
+          // 기타 상태 → 즉시 완료 처리
+          setLastClickTime(Date.now());
+          queryClient.invalidateQueries();
+          onRefreshComplete?.();
+        },
+        onError: () => {
+          setRefreshError("갱신 요청에 실패했습니다");
         },
       }
     );
@@ -272,9 +264,12 @@ export default function ProfileSection({
                 {cooldownInfo && (
                   <span className="inline-flex items-center gap-1.5 text-xs text-on-surface-medium whitespace-nowrap bg-surface-6 rounded-md border border-divider px-2 py-1">
                     <span className="w-1.5 h-1.5 rounded-full bg-on-surface-medium animate-pulse" />
-                    {cooldownInfo.source === 'click'
-                      ? `${cooldownInfo.remainingSeconds}초 후 재시도`
-                      : `${Math.floor(cooldownInfo.remainingSeconds / 60)}:${String(cooldownInfo.remainingSeconds % 60).padStart(2, "0")} 후 갱신 가능`}
+                    {`${cooldownInfo.remainingSeconds}초 후 재시도`}
+                  </span>
+                )}
+                {refreshError && (
+                  <span className="inline-flex items-center gap-1.5 text-xs text-error whitespace-nowrap">
+                    {refreshError}
                   </span>
                 )}
               </div>
