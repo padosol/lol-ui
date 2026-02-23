@@ -611,7 +611,7 @@ export default function MatchHistory({
               className={`group relative flex flex-col w-full border-l-4 ${borderColor} ${bgColor} rounded-lg overflow-hidden transition-all hover:shadow-lg ${shadowColor}`}
             >
               {/* 데스크톱 레이아웃 (md 이상) */}
-              <div className="hidden md:grid grid-cols-[90px_260px_1fr_200px_30px] bg-surface-1/50 backdrop-blur-sm w-full">
+              <div className="hidden md:grid grid-cols-[90px_250px_90px_1fr_30px] bg-surface-1/50 backdrop-blur-sm w-full">
                 {/* 1. 게임 정보 섹션 */}
                 <div className="flex flex-col items-start justify-start p-2 text-xs shrink-0 h-full gap-3">
                   <div className="flex flex-col items-start gap-0.5">
