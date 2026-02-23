@@ -597,14 +597,18 @@ export default function MatchHistory({
             : match.result === "WIN"
             ? "hover:shadow-win/10"
             : "hover:shadow-loss/10";
+          const arrowBgColor = isRemake
+            ? "bg-surface-8 hover:bg-surface-12"
+            : match.result === "WIN"
+            ? "bg-win/10 hover:bg-win/20"
+            : "bg-loss/10 hover:bg-loss/20";
 
           const isExpanded = expandedMatchId === match.id;
 
           return (
             <div
               key={match.id}
-              className={`group relative flex flex-col w-full border-l-4 ${borderColor} ${bgColor} rounded-lg overflow-hidden transition-all hover:shadow-lg ${shadowColor} cursor-pointer`}
-              onClick={() => setExpandedMatchId(isExpanded ? null : match.id)}
+              className={`group relative flex flex-col w-full border-l-4 ${borderColor} ${bgColor} rounded-lg overflow-hidden transition-all hover:shadow-lg ${shadowColor}`}
             >
               {/* 데스크톱 레이아웃 (md 이상) */}
               <div className="hidden md:grid grid-cols-[90px_1fr_80px_200px_30px] bg-surface-1/50 backdrop-blur-sm w-full">
@@ -886,7 +890,10 @@ export default function MatchHistory({
                 </div>
 
                 {/* 5. 화살표 섹션 */}
-                <div className="flex items-end justify-center p-2">
+                <div
+                  className={`flex items-end justify-center p-2 cursor-pointer ${arrowBgColor} transition-colors`}
+                  onClick={() => setExpandedMatchId(isExpanded ? null : match.id)}
+                >
                   <ChevronDown
                     className={`w-5 h-5 text-on-surface-medium transition-transform ${
                       isExpanded ? "rotate-180" : ""
@@ -914,7 +921,10 @@ export default function MatchHistory({
                       {formatDuration(match.gameDuration)}
                     </span>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div
+                    className={`flex items-center gap-2 cursor-pointer ${arrowBgColor} rounded px-1.5 py-0.5 transition-colors`}
+                    onClick={() => setExpandedMatchId(isExpanded ? null : match.id)}
+                  >
                     <span className="text-on-surface-medium text-xs">{match.gameDate}</span>
                     <ChevronDown
                       className={`w-4 h-4 text-on-surface-medium transition-transform ${
