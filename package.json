@@ -1,6 +1,6 @@
 {
   "name": "lol-ui-next",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "private": true,
   "packageManager": "pnpm@10.12.1",
   "scripts": {
