@@ -179,9 +179,9 @@ export default function MatchSummary({ matches }: MatchSummaryProps) {
     <div className="bg-surface-1 rounded-lg p-2 mb-3 border border-divider">
       <div className="grid grid-cols-1 md:grid-cols-[2.5fr_4fr_2.5fr_4.5fr] gap-2">
         {/* 전적 요약 - 원차트 */}
-        <div className="space-y-1 min-w-0">
+        <div className="flex flex-col min-w-0">
           <div className="text-on-surface-medium text-xs mb-0.5">전적 요약</div>
-          <div className="flex flex-col items-center gap-1.5">
+          <div className="flex flex-col items-center gap-1.5 mt-auto">
             <div className="relative w-20 h-20">
               <Doughnut data={winLossChartData} options={winLossChartOptions} />
               <div className="absolute inset-0 flex flex-col items-center justify-center">
@@ -212,9 +212,9 @@ export default function MatchSummary({ matches }: MatchSummaryProps) {
         </div>
 
         {/* 주요 챔피언 - Row 형태 */}
-        <div className="space-y-1 min-w-0">
+        <div className="flex flex-col min-w-0">
           <div className="text-on-surface-medium text-xs mb-0.5">주요 챔피언</div>
-          <div className="space-y-1">
+          <div className="space-y-1 mt-auto">
             {topChampions.map((champ, index) => (
               <div
                 key={index}
@@ -253,9 +253,9 @@ export default function MatchSummary({ matches }: MatchSummaryProps) {
         </div>
 
         {/* 포지션 - 막대차트 */}
-        <div className="space-y-1 min-w-0">
+        <div className="flex flex-col min-w-0">
           <div className="text-on-surface-medium text-xs mb-0.5">포지션</div>
-          <div className="relative">
+          <div className="relative mt-auto">
             <div className="h-24">
               <Bar data={positionChartData} options={positionChartOptions} />
             </div>
