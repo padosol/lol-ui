@@ -611,7 +611,7 @@ export default function MatchHistory({
               className={`group relative flex flex-col w-full border-l-4 ${borderColor} ${bgColor} rounded-lg overflow-hidden transition-all hover:shadow-lg ${shadowColor}`}
             >
               {/* 데스크톱 레이아웃 (md 이상) */}
-              <div className="hidden md:grid grid-cols-[90px_1fr_80px_200px_30px] bg-surface-1/50 backdrop-blur-sm w-full">
+              <div className="hidden md:grid grid-cols-[90px_260px_1fr_200px_30px] bg-surface-1/50 backdrop-blur-sm w-full">
                 {/* 1. 게임 정보 섹션 */}
                 <div className="flex flex-col items-start justify-start p-2 text-xs shrink-0 h-full gap-3">
                   <div className="flex flex-col items-start gap-0.5">
@@ -845,7 +845,7 @@ export default function MatchHistory({
                 </div>
 
                 {/* 3. 평균 티어 섹션 */}
-                <div className="flex flex-col items-center justify-center py-2">
+                <div className="flex flex-col items-center justify-start py-2 w-[80px]">
                   {gameInfo?.averageTier != null ? (
                     <div className="flex flex-col items-center gap-0.5">
                       <span className="text-[10px] text-on-surface-disabled">평균</span>
@@ -868,6 +868,16 @@ export default function MatchHistory({
                       <span className="text-[10px] text-on-surface-disabled">-</span>
                     </div>
                   )}
+                  {/* 멀티킬 배지 - 가장 높은 등급만 표시 */}
+                  {myData.pentaKills > 0 ? (
+                    <span className="px-1.5 py-0.5 rounded-full bg-red-500/20 text-red-400 text-[9px] font-bold leading-none mt-1">Penta</span>
+                  ) : myData.quadraKills > 0 ? (
+                    <span className="px-1.5 py-0.5 rounded-full bg-purple-500/20 text-purple-400 text-[9px] font-bold leading-none mt-1">Quadra</span>
+                  ) : myData.tripleKills > 0 ? (
+                    <span className="px-1.5 py-0.5 rounded-full bg-green-500/20 text-green-400 text-[9px] font-bold leading-none mt-1">Triple</span>
+                  ) : myData.doubleKills > 0 ? (
+                    <span className="px-1.5 py-0.5 rounded-full bg-blue-500/20 text-blue-400 text-[9px] font-bold leading-none mt-1">Double</span>
+                  ) : null}
                 </div>
 
                 {/* 4. 팀 정보 섹션 */}
