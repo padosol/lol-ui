@@ -92,8 +92,14 @@ export default function MatchHistory({
   );
 
   // puuid/region/refreshKey 변경 시 누적 데이터 초기화 - 의도적인 상태 리셋
+  // 최초 마운트 시에는 useSummonerMatches의 자동 fetch와 중복되지 않도록 건너뜀
+  const isFirstMount = useRef(true);
   /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
+    if (isFirstMount.current) {
+      isFirstMount.current = false;
+      return;
+    }
     setPage(1);
     setAccMatchDetails([]);
     setExpandedMatchId(null);
