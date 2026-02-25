@@ -17,7 +17,7 @@ import { useSeasonStore } from "@/stores/useSeasonStore";
 import type { PositionType } from "@/types/championStats";
 import { POSITION_ORDER } from "@/utils/position";
 import { ChevronDown } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 const TIER_OPTIONS = [
   { value: "MASTER", label: "마스터" },
@@ -31,6 +31,25 @@ export default function ChampionStatsPageClient() {
     useState<PositionType>("TOP");
   const [selectedTier, setSelectedTier] = useState("MASTER");
   const [selectedPatch, setSelectedPatch] = useState("");
+
+  const [tierOpen, setTierOpen] = useState(false);
+  const [patchOpen, setPatchOpen] = useState(false);
+  const tierRef = useRef<HTMLDivElement>(null);
+  const patchRef = useRef<HTMLDivElement>(null);
+
+  const handleClickOutside = useCallback((e: MouseEvent) => {
+    if (tierRef.current && !tierRef.current.contains(e.target as Node)) {
+      setTierOpen(false);
+    }
+    if (patchRef.current && !patchRef.current.contains(e.target as Node)) {
+      setPatchOpen(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [handleClickOutside]);
 
   const seasons = useSeasonStore((s) => s.seasons);
   const region = useRegionStore((s) => s.region);
@@ -118,38 +137,94 @@ export default function ChampionStatsPageClient() {
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2">
                 <span className="text-sm text-on-surface-medium">티어</span>
-                <div className="relative">
-                  <select
-                    value={selectedTier}
-                    onChange={(e) => setSelectedTier(e.target.value)}
-                    className="appearance-none bg-surface-1 border border-divider rounded-lg px-3 py-1.5 pr-8 text-sm text-on-surface focus:outline-none focus:border-primary cursor-pointer"
+                <div ref={tierRef} className="relative">
+                  <button
+                    type="button"
+                    onClick={() => setTierOpen((v) => !v)}
+                    className="bg-surface-4 hover:bg-surface-8 border border-divider rounded-lg px-3 py-1.5 pr-8 text-sm font-medium text-on-surface cursor-pointer focus:outline-none min-w-[130px] text-left"
+                    aria-haspopup="listbox"
+                    aria-expanded={tierOpen}
                   >
-                    {TIER_OPTIONS.map((opt) => (
-                      <option key={opt.value} value={opt.value}>
-                        {opt.label}
-                      </option>
-                    ))}
-                  </select>
-                  <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-on-surface-medium pointer-events-none" />
+                    {TIER_OPTIONS.find((o) => o.value === selectedTier)?.label}
+                    <ChevronDown
+                      className={`absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-on-surface-medium transition-transform ${tierOpen ? "rotate-180" : ""}`}
+                    />
+                  </button>
+                  {tierOpen && (
+                    <div className="absolute top-full left-0 mt-1 w-full bg-surface-4 border border-divider rounded-lg shadow-lg z-50 overflow-hidden">
+                      <div className="py-1" role="listbox" aria-label="티어 선택">
+                        {TIER_OPTIONS.map((opt) => {
+                          const selected = opt.value === selectedTier;
+                          return (
+                            <button
+                              key={opt.value}
+                              type="button"
+                              onClick={() => {
+                                setSelectedTier(opt.value);
+                                setTierOpen(false);
+                              }}
+                              className={`w-full px-3 py-1.5 text-left text-sm transition-colors cursor-pointer ${
+                                selected
+                                  ? "bg-surface-8 text-on-surface font-medium"
+                                  : "text-on-surface hover:bg-surface-8"
+                              }`}
+                              role="option"
+                              aria-selected={selected}
+                            >
+                              {opt.label}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
 
               {latestPatches.length > 0 && (
                 <div className="flex items-center gap-2">
                   <span className="text-sm text-on-surface-medium">패치</span>
-                  <div className="relative">
-                    <select
-                      value={activePatch}
-                      onChange={(e) => setSelectedPatch(e.target.value)}
-                      className="appearance-none bg-surface-1 border border-divider rounded-lg px-3 py-1.5 pr-8 text-sm text-on-surface focus:outline-none focus:border-primary cursor-pointer"
+                  <div ref={patchRef} className="relative">
+                    <button
+                      type="button"
+                      onClick={() => setPatchOpen((v) => !v)}
+                      className="bg-surface-4 hover:bg-surface-8 border border-divider rounded-lg px-3 py-1.5 pr-8 text-sm font-medium text-on-surface cursor-pointer focus:outline-none min-w-[80px] text-left"
+                      aria-haspopup="listbox"
+                      aria-expanded={patchOpen}
                     >
-                      {latestPatches.map((patch) => (
-                        <option key={patch} value={patch}>
-                          {patch}
-                        </option>
-                      ))}
-                    </select>
-                    <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-on-surface-medium pointer-events-none" />
+                      {activePatch}
+                      <ChevronDown
+                        className={`absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-on-surface-medium transition-transform ${patchOpen ? "rotate-180" : ""}`}
+                      />
+                    </button>
+                    {patchOpen && (
+                      <div className="absolute top-full left-0 mt-1 w-full bg-surface-4 border border-divider rounded-lg shadow-lg z-50 overflow-hidden">
+                        <div className="py-1" role="listbox" aria-label="패치 선택">
+                          {latestPatches.map((patch) => {
+                            const selected = patch === activePatch;
+                            return (
+                              <button
+                                key={patch}
+                                type="button"
+                                onClick={() => {
+                                  setSelectedPatch(patch);
+                                  setPatchOpen(false);
+                                }}
+                                className={`w-full px-3 py-1.5 text-left text-sm transition-colors cursor-pointer ${
+                                  selected
+                                    ? "bg-surface-8 text-on-surface font-medium"
+                                    : "text-on-surface hover:bg-surface-8"
+                                }`}
+                                role="option"
+                                aria-selected={selected}
+                              >
+                                {patch}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               )}
