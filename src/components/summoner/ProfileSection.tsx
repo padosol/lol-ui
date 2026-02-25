@@ -8,6 +8,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { getSummonerRenewalStatus } from "@/lib/api/summoner";
 import type { SummonerProfile } from "@/types/api";
 import { getProfileIconImageUrl } from "@/utils/profile";
+import dayjs from "dayjs";
 import { parseSummonerName } from "@/utils/summoner";
 import { RefreshCw } from "lucide-react";
 import Image from "next/image";
@@ -48,6 +49,8 @@ export default function ProfileSection({
     remainingSeconds: number;
   } | null>(null);
   const [refreshError, setRefreshError] = useState<string | null>(null);
+  const [elapsedText, setElapsedText] = useState<string | null>(null);
+  const [cooldownReady, setCooldownReady] = useState(false);
 
   // 컴포넌트 언마운트 시 폴링 정리
   useEffect(() => {
@@ -62,12 +65,15 @@ export default function ProfileSection({
   // 쿨다운 (2분) 계산 - 서버의 lastRevisionDateTime 기준
   useEffect(() => {
     const updateCooldownInfo = () => {
-      if (!profileData?.lastRevisionDateTime) {
+      if (!profileData?.lastRevisionClickDateTime) {
         setCooldownInfo(null);
+        setElapsedText(null);
+        if (!cooldownReady) setCooldownReady(true);
         return;
       }
 
-      const lastRevisionTime = new Date(profileData.lastRevisionDateTime).getTime();
+      const raw = profileData.lastRevisionClickDateTime;
+      const lastRevisionTime = dayjs(raw.replace(' ', 'T') + '+09:00').valueOf();
       const elapsed = Date.now() - lastRevisionTime;
       const remaining = Math.max(0, 120000 - elapsed);
 
@@ -76,12 +82,31 @@ export default function ProfileSection({
       } else {
         setCooldownInfo(null);
       }
+
+      // 상대 시간 텍스트 계산
+      const elapsedMinutes = Math.floor(elapsed / 60000);
+      const elapsedHours = Math.floor(elapsed / 3600000);
+      const elapsedDays = Math.floor(elapsed / 86400000);
+
+      let timeText: string;
+      if (elapsedMinutes < 1) {
+        timeText = '1분 미만';
+      } else if (elapsedMinutes < 60) {
+        timeText = `${elapsedMinutes}분 전`;
+      } else if (elapsedHours < 24) {
+        timeText = `${elapsedHours}시간 전`;
+      } else {
+        timeText = `${elapsedDays}일 전`;
+      }
+
+      setElapsedText(timeText);
+      if (!cooldownReady) setCooldownReady(true);
     };
 
     updateCooldownInfo();
     const interval = setInterval(updateCooldownInfo, 1000);
     return () => clearInterval(interval);
-  }, [profileData?.lastRevisionDateTime]);
+  }, [profileData?.lastRevisionClickDateTime]);
 
   // 에러 메시지 5초 후 자동 소멸
   useEffect(() => {
@@ -92,6 +117,7 @@ export default function ProfileSection({
 
   // 갱신 버튼 비활성화 여부 확인
   const isRefreshDisabled = () => {
+    if (!cooldownReady) return true;
     if (isRefreshing || isPolling) return true;
     if (cooldownInfo !== null) return true;
     return false;
@@ -245,14 +271,14 @@ export default function ProfileSection({
                 <button
                   onClick={handleRefresh}
                   disabled={isRefreshDisabled()}
-                  className={`flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors w-fit ${
+                  className={`flex items-center justify-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium transition-colors min-w-[56px] ${
                     isRefreshDisabled()
                       ? "bg-surface-4 text-on-surface-disabled opacity-60 cursor-not-allowed border border-divider"
                       : "bg-primary/20 text-primary hover:bg-primary/30 border border-primary/30 cursor-pointer"
                   }`}
                 >
                   <RefreshCw
-                    className={`w-4 h-4 ${
+                    className={`w-3.5 h-3.5 ${
                       isRefreshing || isPolling ? "animate-spin" : ""
                     }`}
                   />
@@ -264,6 +290,11 @@ export default function ProfileSection({
                     {cooldownInfo.remainingSeconds >= 60
                       ? `${Math.floor(cooldownInfo.remainingSeconds / 60)}분 ${cooldownInfo.remainingSeconds % 60}초 후 재시도`
                       : `${cooldownInfo.remainingSeconds}초 후 재시도`}
+                  </span>
+                )}
+                {!cooldownInfo && !isRefreshing && !isPolling && elapsedText && (
+                  <span className="text-xs text-on-surface-medium">
+                    마지막 갱신: {elapsedText}
                   </span>
                 )}
                 {refreshError && (

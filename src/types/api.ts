@@ -14,6 +14,7 @@ export interface SummonerProfile {
   tagLine: string;
   platform: string | null;
   lastRevisionDateTime: string | null;
+  lastRevisionClickDateTime: string | null;
   point: number | null;
   tier: string | null;
   rank: string | null;

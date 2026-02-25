@@ -44,6 +44,8 @@ export async function getSummonerProfile(
   const response = await client.get<ApiResponse<SummonerProfile>>(
     `/v1/summoners/${region}/${encodeURIComponent(gameName)}`
   );
+
+  console.log(response)
   return response.data.data;
 }
 
