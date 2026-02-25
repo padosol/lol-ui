@@ -26,7 +26,10 @@ export default function Navigation() {
         <div className="flex items-center justify-between h-10 gap-4">
           <div className="flex items-center h-full gap-6 shrink-0">
             {navItems.map((item) => {
-              const isActive = pathname === item.href;
+              const isActive =
+                item.href === "/"
+                  ? pathname === "/"
+                  : pathname === item.href || pathname.startsWith(item.href + "/");
               return (
                 <Link
                   key={item.href}
