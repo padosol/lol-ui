@@ -15,7 +15,7 @@ export default function Navigation() {
 
   const navItems = [
     { label: "홈", href: "/" },
-    { label: "챔피언통계", href: "/champion-stats" },
+    { label: "챔피언 통계", href: "/champion-stats" },
     { label: "랭킹", href: "/leaderboards" },
     { label: "패치노트", href: "/patch-notes" },
   ];
@@ -23,7 +23,7 @@ export default function Navigation() {
   return (
     <nav className="sticky top-0 z-50 bg-surface-1 border-b border-divider">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-10 gap-4">
+        <div className="flex items-center justify-between h-[50px] gap-4">
           <div className="flex items-center h-full gap-6 shrink-0">
             {navItems.map((item) => {
               const isActive =
@@ -34,11 +34,10 @@ export default function Navigation() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`h-full flex items-center font-medium text-sm transition-colors border-b-2 ${
-                    isActive
+                  className={`h-full flex items-center font-medium text-sm transition-colors border-b-2 ${isActive
                       ? "text-primary border-primary"
                       : "text-on-surface-medium hover:text-primary border-transparent"
-                  }`}
+                    }`}
                 >
                   {item.label}
                 </Link>
@@ -73,11 +72,10 @@ export default function Navigation() {
             {isLoggedIn && (
               <Link
                 href="/mypage"
-                className={`h-full flex items-center font-medium text-sm transition-colors border-b-2 shrink-0 ${
-                  pathname === "/mypage"
+                className={`h-full flex items-center font-medium text-sm transition-colors border-b-2 shrink-0 ${pathname === "/mypage"
                     ? "text-primary border-primary"
                     : "text-on-surface-medium hover:text-primary border-transparent"
-                }`}
+                  }`}
               >
                 마이페이지
               </Link>

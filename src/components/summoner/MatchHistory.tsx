@@ -445,51 +445,46 @@ export default function MatchHistory({
       <div className="flex gap-1 mb-4 bg-surface-2/50 rounded-lg p-1 border border-divider/50 overflow-x-auto">
         <button
           onClick={() => setGameModeFilter("ALL")}
-          className={`px-4 py-2 text-sm font-medium transition-all whitespace-nowrap rounded-md cursor-pointer ${
-            gameModeFilter === "ALL"
-              ? "text-on-surface bg-surface-8 shadow-lg shadow-surface-8/20"
-              : "text-on-surface-medium hover:text-on-surface hover:bg-surface-8/50"
-          }`}
+          className={`px-4 py-2 text-sm font-medium transition-all whitespace-nowrap rounded-md cursor-pointer ${gameModeFilter === "ALL"
+            ? "text-on-surface bg-surface-8 shadow-lg shadow-surface-8/20"
+            : "text-on-surface-medium hover:text-on-surface hover:bg-surface-8/50"
+            }`}
         >
           전체
         </button>
         <button
           onClick={() => setGameModeFilter("RANKED")}
-          className={`px-4 py-2 text-sm font-medium transition-all whitespace-nowrap rounded-md cursor-pointer ${
-            gameModeFilter === "RANKED"
-              ? "text-on-surface bg-surface-8 shadow-lg shadow-surface-8/20"
-              : "text-on-surface-medium hover:text-on-surface hover:bg-surface-8/50"
-          }`}
+          className={`px-4 py-2 text-sm font-medium transition-all whitespace-nowrap rounded-md cursor-pointer ${gameModeFilter === "RANKED"
+            ? "text-on-surface bg-surface-8 shadow-lg shadow-surface-8/20"
+            : "text-on-surface-medium hover:text-on-surface hover:bg-surface-8/50"
+            }`}
         >
           랭크
         </button>
         <button
           onClick={() => setGameModeFilter("FLEX")}
-          className={`px-4 py-2 text-sm font-medium transition-all whitespace-nowrap rounded-md cursor-pointer ${
-            gameModeFilter === "FLEX"
-              ? "text-on-surface bg-surface-8 shadow-lg shadow-surface-8/20"
-              : "text-on-surface-medium hover:text-on-surface hover:bg-surface-8/50"
-          }`}
+          className={`px-4 py-2 text-sm font-medium transition-all whitespace-nowrap rounded-md cursor-pointer ${gameModeFilter === "FLEX"
+            ? "text-on-surface bg-surface-8 shadow-lg shadow-surface-8/20"
+            : "text-on-surface-medium hover:text-on-surface hover:bg-surface-8/50"
+            }`}
         >
           자유랭크
         </button>
         <button
           onClick={() => setGameModeFilter("NORMAL")}
-          className={`px-4 py-2 text-sm font-medium transition-all whitespace-nowrap rounded-md cursor-pointer ${
-            gameModeFilter === "NORMAL"
-              ? "text-on-surface bg-surface-8 shadow-lg shadow-surface-8/20"
-              : "text-on-surface-medium hover:text-on-surface hover:bg-surface-8/50"
-          }`}
+          className={`px-4 py-2 text-sm font-medium transition-all whitespace-nowrap rounded-md cursor-pointer ${gameModeFilter === "NORMAL"
+            ? "text-on-surface bg-surface-8 shadow-lg shadow-surface-8/20"
+            : "text-on-surface-medium hover:text-on-surface hover:bg-surface-8/50"
+            }`}
         >
           일반
         </button>
         <button
           onClick={() => setGameModeFilter("ARENA")}
-          className={`px-4 py-2 text-sm font-medium transition-all whitespace-nowrap rounded-md cursor-pointer ${
-            gameModeFilter === "ARENA"
-              ? "text-on-surface bg-surface-8 shadow-lg shadow-surface-8/20"
-              : "text-on-surface-medium hover:text-on-surface hover:bg-surface-8/50"
-          }`}
+          className={`px-4 py-2 text-sm font-medium transition-all whitespace-nowrap rounded-md cursor-pointer ${gameModeFilter === "ARENA"
+            ? "text-on-surface bg-surface-8 shadow-lg shadow-surface-8/20"
+            : "text-on-surface-medium hover:text-on-surface hover:bg-surface-8/50"
+            }`}
         >
           아레나
         </button>
@@ -524,17 +519,17 @@ export default function MatchHistory({
           // 아레나 모드는 팀 구조가 다름 (2명씩 팀)
           const teams = isArena
             ? detail.participantData?.reduce((acc, p) => {
-                const teamKey = p.teamId || 0;
-                if (!acc[teamKey]) acc[teamKey] = [];
-                acc[teamKey].push(p);
-                return acc;
-              }, {} as Record<number, typeof detail.participantData>)
+              const teamKey = p.teamId || 0;
+              if (!acc[teamKey]) acc[teamKey] = [];
+              acc[teamKey].push(p);
+              return acc;
+            }, {} as Record<number, typeof detail.participantData>)
             : {
-                100:
-                  detail.participantData?.filter((p) => p.teamId === 100) || [],
-                200:
-                  detail.participantData?.filter((p) => p.teamId === 200) || [],
-              };
+              100:
+                detail.participantData?.filter((p) => p.teamId === 100) || [],
+              200:
+                detail.participantData?.filter((p) => p.teamId === 200) || [],
+            };
 
           const blueTeam = sortByPosition(teams[100] || []);
           const redTeam = sortByPosition(teams[200] || []);
@@ -586,28 +581,28 @@ export default function MatchHistory({
           const borderColor = isRemake
             ? "border-on-surface-disabled"
             : match.result === "WIN"
-            ? "border-win"
-            : "border-loss";
+              ? "border-win"
+              : "border-loss";
           const bgColor = isRemake
             ? "bg-surface-8/50"
             : match.result === "WIN"
-            ? "bg-win/10"
-            : "bg-loss/10";
+              ? "bg-win/10"
+              : "bg-loss/10";
           const textColor = isRemake
             ? "text-on-surface-disabled"
             : match.result === "WIN"
-            ? "text-win"
-            : "text-loss";
+              ? "text-win"
+              : "text-loss";
           const shadowColor = isRemake
             ? "hover:shadow-surface-8/10"
             : match.result === "WIN"
-            ? "hover:shadow-win/10"
-            : "hover:shadow-loss/10";
+              ? "hover:shadow-win/10"
+              : "hover:shadow-loss/10";
           const arrowBgColor = isRemake
             ? "bg-surface-8 hover:bg-surface-12"
             : match.result === "WIN"
-            ? "bg-win/10 hover:bg-win/20"
-            : "bg-loss/10 hover:bg-loss/20";
+              ? "bg-win/10 hover:bg-win/20"
+              : "bg-loss/10 hover:bg-loss/20";
 
           const isExpanded = expandedMatchId === match.id;
 
@@ -619,7 +614,7 @@ export default function MatchHistory({
               {/* 데스크톱 레이아웃 (md 이상) */}
               <div className="hidden md:grid grid-cols-[90px_250px_90px_1fr_30px] bg-surface-1/50 backdrop-blur-sm w-full">
                 {/* 1. 게임 정보 섹션 */}
-                <div className="flex flex-col items-start justify-start p-2 text-xs shrink-0 h-full gap-3">
+                <div className="flex flex-col items-start justify-between p-2 text-xs shrink-0 h-full gap-3">
                   <div className="flex flex-col items-start gap-0.5">
                     <span className={`font-bold text-sm ${textColor}`}>
                       {gameModeName}
@@ -634,10 +629,10 @@ export default function MatchHistory({
                         {isArena
                           ? (myData.placement > 0 ? `${myData.placement}위` : "???")
                           : match.result === "REMAKE"
-                          ? "다시하기"
-                          : match.result === "WIN"
-                          ? "승리"
-                          : "패배"}
+                            ? "다시하기"
+                            : match.result === "WIN"
+                              ? "승리"
+                              : "패배"}
                       </strong>
                     </div>
                     <span className="text-on-surface-medium text-xs">
@@ -911,9 +906,8 @@ export default function MatchHistory({
                   onClick={() => setExpandedMatchId(isExpanded ? null : match.id)}
                 >
                   <ChevronDown
-                    className={`w-5 h-5 text-on-surface-medium transition-transform ${
-                      isExpanded ? "rotate-180" : ""
-                    }`}
+                    className={`w-5 h-5 text-on-surface-medium transition-transform ${isExpanded ? "rotate-180" : ""
+                      }`}
                   />
                 </div>
               </div>
@@ -927,10 +921,10 @@ export default function MatchHistory({
                       {isArena
                         ? (myData.placement > 0 ? `${myData.placement}위` : "???")
                         : match.result === "REMAKE"
-                        ? "다시하기"
-                        : match.result === "WIN"
-                        ? "승리"
-                        : "패배"}
+                          ? "다시하기"
+                          : match.result === "WIN"
+                            ? "승리"
+                            : "패배"}
                     </span>
                     <span className={`text-xs ${textColor}`}>{gameModeName}</span>
                     <span className="text-on-surface-medium text-xs">
@@ -943,9 +937,8 @@ export default function MatchHistory({
                   >
                     <span className="text-on-surface-medium text-xs">{match.gameDate}</span>
                     <ChevronDown
-                      className={`w-4 h-4 text-on-surface-medium transition-transform ${
-                        isExpanded ? "rotate-180" : ""
-                      }`}
+                      className={`w-4 h-4 text-on-surface-medium transition-transform ${isExpanded ? "rotate-180" : ""
+                        }`}
                     />
                   </div>
                 </div>

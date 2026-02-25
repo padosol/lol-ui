@@ -11,7 +11,7 @@ export default function Header() {
       {/* 상단 헤더 */}
       <div className="bg-[#272727] border-b border-divider">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-[50px] text-sm">
+          <div className="flex items-center justify-between h-[40px] text-sm">
             <div className="flex items-center gap-4">
               <button className="text-white/60 hover:text-white/87">
                 리그 오브 레전드

@@ -50,34 +50,31 @@ export default function ChampionStatsOverview({
 
   // 탭 헤더 렌더링
   const renderTabHeader = () => (
-    <div className="mb-3">
-      <div className="flex items-center justify-between mb-2">
-        <h2 className="text-sm font-semibold text-on-surface">모스트 5</h2>
-      </div>
-      <div className="flex gap-1 bg-surface-6/50 p-1 rounded-lg">
-        {queueTabs.map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() => setActiveQueue(tab.id)}
-            className={`px-3 py-1.5 text-sm rounded-md transition-colors cursor-pointer ${
-              activeQueue === tab.id
-                ? "bg-surface-1 text-on-surface font-semibold"
-                : "text-on-surface-medium hover:text-on-surface"
-            }`}
-          >
-            {tab.label}
-          </button>
-        ))}
-      </div>
+    <div className="flex gap-1 bg-surface-6/50 p-2">
+      {queueTabs.map((tab) => (
+        <button
+          key={tab.id}
+          onClick={() => setActiveQueue(tab.id)}
+          className={`px-3 py-1.5 text-sm rounded-md transition-colors cursor-pointer ${
+            activeQueue === tab.id
+              ? "bg-surface-1 text-on-surface font-semibold"
+              : "text-on-surface-medium hover:text-on-surface"
+          }`}
+        >
+          {tab.label}
+        </button>
+      ))}
     </div>
   );
 
   if (isLoading) {
     return (
-      <div className="border border-divider rounded-lg p-4">
+      <div className="border border-divider rounded-lg overflow-hidden">
         {showTitle && renderTabHeader()}
-        <div className="flex items-center justify-center py-12">
-          <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+        <div className="p-3">
+          <div className="flex items-center justify-center py-12">
+            <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+          </div>
         </div>
       </div>
     );
@@ -85,10 +82,12 @@ export default function ChampionStatsOverview({
 
   if (!puuid) {
     return (
-      <div className="border border-divider rounded-lg p-4">
+      <div className="border border-divider rounded-lg overflow-hidden">
         {showTitle && renderTabHeader()}
-        <div className="text-center py-12 text-on-surface-medium">
-          소환사 정보가 필요합니다.
+        <div className="p-3">
+          <div className="text-center py-12 text-on-surface-medium">
+            소환사 정보가 필요합니다.
+          </div>
         </div>
       </div>
     );
@@ -96,10 +95,12 @@ export default function ChampionStatsOverview({
 
   if (displayedStats.length === 0 && !isLoading) {
     return (
-      <div className="border border-divider rounded-lg p-4">
+      <div className="border border-divider rounded-lg overflow-hidden">
         {showTitle && renderTabHeader()}
-        <div className="text-center text-on-surface-medium border border-divider rounded-lg py-4">
-          {activeQueue === "solo" ? "솔로랭크" : "자유 랭크"} 챔피언 통계 데이터가 없습니다.
+        <div className="p-3">
+          <div className="text-center text-on-surface-medium border border-divider rounded-lg py-4">
+            {activeQueue === "solo" ? "솔로랭크" : "자유 랭크"} 챔피언 통계 데이터가 없습니다.
+          </div>
         </div>
       </div>
     );
@@ -112,9 +113,9 @@ export default function ChampionStatsOverview({
   };
 
   return (
-    <div className="border border-divider rounded-lg p-4">
+    <div className="border border-divider rounded-lg overflow-hidden">
       {showTitle && renderTabHeader()}
-      <div className="space-y-2">
+      <div className="p-3 space-y-2">
         {displayedStats.map((champion, index) => {
           const winRate = calcWinRateCeil2(champion.win, champion.playCount);
           const kdaValue = calculateKDA(
