@@ -104,28 +104,28 @@ export default function LeagueInfo({
       {showTitle && (
         <h2 className="text-xl font-bold text-on-surface mb-4">리그 정보</h2>
       )}
-      <div className="space-y-4">
+      <div className="space-y-2">
         {leagues.map((league, index) => (
           <div
             key={index}
-            className="bg-surface-8/50 rounded-lg p-4 border border-divider"
+            className="bg-surface-8/50 rounded-lg p-3 border border-divider"
           >
-            <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center justify-between mb-1">
               <h3 className="text-on-surface font-semibold text-sm">
                 {getQueueTypeName(league.leagueType)}
               </h3>
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3">
               {/* 티어 아이콘 */}
-              <div className="relative w-16 h-16 shrink-0">
-                <div className="w-16 h-16 bg-surface-4 rounded-lg overflow-hidden relative">
+              <div className="relative w-12 h-12 shrink-0">
+                <div className="w-12 h-12 bg-surface-4 rounded-lg overflow-hidden relative">
                   {getTierImageUrl(league.tier) ? (
                     <Image
                       src={getTierImageUrl(league.tier)}
                       alt={`${league.tier} 티어`}
                       fill
-                      sizes="64px"
+                      sizes="48px"
                       className="object-contain"
                       unoptimized
                     />
@@ -148,7 +148,7 @@ export default function LeagueInfo({
                 <div className="text-on-surface font-semibold text-sm mb-0.5">
                   {league.tier} {league.rank}
                 </div>
-                <div className="text-on-surface-medium text-xs mb-1.5">
+                <div className="text-on-surface-medium text-xs mb-0.5">
                   {league.leaguePoints} LP
                 </div>
                 <div className="flex items-center gap-3 text-xs">

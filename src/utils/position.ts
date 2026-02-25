@@ -15,7 +15,7 @@ export function getPositionImageUrl(position: string): string {
   }
   // 포지션 이름을 대문자로 변환
   const normalizedPosition = position.toUpperCase();
-  return `${IMAGE_HOST}/position/${normalizedPosition}.png`;
+  return `${IMAGE_HOST}/position/Position-${normalizedPosition}.png`;
 }
 
 /**
@@ -37,7 +37,7 @@ export function getPositionName(position: string): string {
   return positionMap[position.toUpperCase()] || position;
 }
 
-const POSITION_ORDER: Record<string, number> = {
+export const POSITION_ORDER: Record<string, number> = {
   TOP: 0,
   JUNGLE: 1,
   MIDDLE: 2,

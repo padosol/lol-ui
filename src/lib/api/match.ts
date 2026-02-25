@@ -1,5 +1,6 @@
 import type {
   ApiResponse,
+  DailyMatchCount,
   MatchDetail,
   ChampionStat,
   MatchIdsResponse,
@@ -9,7 +10,7 @@ import { apiClient } from "./client";
 
 /**
  * 게임 아이디 리스트 조회
- * GET /api/v1/matches/matchIds?puuid={puuid}&queueId={queueId}&pageNo={pageNo}&region={region}
+ * GET /api/v1/{region}/matches/matchIds?puuid={puuid}&queueId={queueId}&pageNo={pageNo}
  * @param puuid 조회할 유저의 PUUID
  * @param queueId 큐 ID (e.g., 420:솔로랭크, 430:일반, 450:칼바람)
  * @param pageNo 페이지 번호 (0부터 시작)
@@ -23,13 +24,12 @@ export async function getMatchIds(
   region: string = "kr"
 ): Promise<MatchIdsResponse> {
   const response = await apiClient.get<ApiResponse<MatchIdsResponse>>(
-    `/v1/matches/matchIds`,
+    `/v1/${region}/matches/matchIds`,
     {
       params: {
         puuid,
         ...(queueId !== undefined && { queueId }),
         pageNo,
-        region,
       },
     }
   );
@@ -38,7 +38,7 @@ export async function getMatchIds(
 
 /**
  * 소환사 매치 배치 조회
- * GET /api/v1/summoners/{puuid}/matches?queueId={queueId}&pageNo={pageNo}&region={region}
+ * GET /api/v1/{region}/summoners/{puuid}/matches?queueId={queueId}&pageNo={pageNo}
  * @param puuid 조회할 유저의 PUUID
  * @param queueId 큐 ID (선택)
  * @param pageNo 페이지 번호 (1부터 시작)
@@ -52,12 +52,11 @@ export async function getSummonerMatches(
   region: string = "kr"
 ): Promise<SummonerMatchesResponse> {
   const response = await apiClient.get<ApiResponse<SummonerMatchesResponse>>(
-    `/v1/summoners/${puuid}/matches`,
+    `/v1/${region}/summoners/${puuid}/matches`,
     {
       params: {
         ...(queueId !== undefined && { queueId }),
         pageNo,
-        region,
       },
     }
   );
@@ -73,6 +72,33 @@ export async function getSummonerMatches(
 export async function getMatchDetail(matchId: string): Promise<MatchDetail> {
   const response = await apiClient.get<ApiResponse<MatchDetail>>(
     `/v1/matches/${matchId}`
+  );
+  return response.data.data;
+}
+
+/**
+ * 일별 매치 수 조회
+ * GET /api/v1/{region}/summoners/{puuid}/matches/daily-count?season={season}&queueId={queueId}
+ * @param region 지역
+ * @param puuid 소환사 PUUID
+ * @param season 시즌
+ * @param queueId 큐 ID (선택)
+ * @returns 일별 매치 수 배열
+ */
+export async function getDailyMatchCount(
+  region: string,
+  puuid: string,
+  season: string,
+  queueId?: number
+): Promise<DailyMatchCount[]> {
+  const response = await apiClient.get<ApiResponse<DailyMatchCount[]>>(
+    `/v1/${region}/summoners/${puuid}/matches/daily-count`,
+    {
+      params: {
+        season,
+        ...(queueId !== undefined && { queueId }),
+      },
+    }
   );
   return response.data.data;
 }
