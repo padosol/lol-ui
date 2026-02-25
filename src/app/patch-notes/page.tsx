@@ -1,15 +1,16 @@
-import type { Metadata } from "next";
-import PatchNotesClient from "./PatchNotesClient";
+import { getPatchVersions } from "@/lib/api/patchnotes";
+import { redirect } from "next/navigation";
 
-export const metadata: Metadata = {
-  title: "패치노트 | METAPICK",
-  description: "리그 오브 레전드 패치노트 요약 - 챔피언, 아이템, 시스템 변경사항을 한눈에 확인하세요",
-  openGraph: {
-    title: "패치노트 | METAPICK",
-    description: "리그 오브 레전드 패치노트 요약 - 챔피언, 아이템, 시스템 변경사항을 한눈에 확인하세요",
-  },
-};
+export default async function PatchNotesPage() {
+  const patches = await getPatchVersions();
 
-export default function PatchNotesPage() {
-  return <PatchNotesClient />;
+  if (patches.length > 0) {
+    redirect(`/patch-notes/${patches[0].versionId}`);
+  }
+
+  return (
+    <div className="min-h-screen bg-surface flex items-center justify-center">
+      <p className="text-on-surface-medium">패치노트가 없습니다.</p>
+    </div>
+  );
 }

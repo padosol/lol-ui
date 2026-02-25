@@ -41,7 +41,7 @@ export default function HomePatchNotes() {
           {patches.map((patch) => (
             <Link
               key={patch.versionId}
-              href={`/patch-notes?version=${patch.versionId}`}
+              href={`/patch-notes/${patch.versionId}`}
               className="block w-full text-left p-3 rounded-lg bg-surface-2 hover:bg-surface-4 border-l-4 border-transparent hover:border-primary transition-all"
             >
               <span className="font-bold text-lg text-on-surface">
