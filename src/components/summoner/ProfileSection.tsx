@@ -44,7 +44,6 @@ export default function ProfileSection({
   const [isPolling, setIsPolling] = useState(false);
   const pollingIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const pollingStartTimeRef = useRef<number | null>(null);
-  const [lastClickTime, setLastClickTime] = useState<number | null>(null);
   const [cooldownInfo, setCooldownInfo] = useState<{
     remainingSeconds: number;
   } | null>(null);
@@ -60,16 +59,17 @@ export default function ProfileSection({
     };
   }, []);
 
-  // 클릭 쿨다운 (10초) 계산
+  // 쿨다운 (2분) 계산 - 서버의 lastRevisionDateTime 기준
   useEffect(() => {
     const updateCooldownInfo = () => {
-      if (!lastClickTime) {
+      if (!profileData?.lastRevisionDateTime) {
         setCooldownInfo(null);
         return;
       }
 
-      const elapsed = Date.now() - lastClickTime;
-      const remaining = Math.max(0, 10000 - elapsed);
+      const lastRevisionTime = new Date(profileData.lastRevisionDateTime).getTime();
+      const elapsed = Date.now() - lastRevisionTime;
+      const remaining = Math.max(0, 120000 - elapsed);
 
       if (remaining > 0) {
         setCooldownInfo({ remainingSeconds: Math.ceil(remaining / 1000) });
@@ -81,7 +81,7 @@ export default function ProfileSection({
     updateCooldownInfo();
     const interval = setInterval(updateCooldownInfo, 1000);
     return () => clearInterval(interval);
-  }, [lastClickTime]);
+  }, [profileData?.lastRevisionDateTime]);
 
   // 에러 메시지 5초 후 자동 소멸
   useEffect(() => {
@@ -137,7 +137,6 @@ export default function ProfileSection({
                 Date.now() - (pollingStartTimeRef.current || 0);
               if (elapsed >= 10000) {
                 stopPolling();
-                setLastClickTime(Date.now());
                 queryClient.invalidateQueries();
                 onRefreshComplete?.();
                 return;
@@ -154,7 +153,6 @@ export default function ProfileSection({
                   statusResponse.status === "FAILED"
                 ) {
                   stopPolling();
-                  setLastClickTime(Date.now());
                   queryClient.invalidateQueries();
                   onRefreshComplete?.();
                   return;
@@ -178,7 +176,6 @@ export default function ProfileSection({
           }
 
           // 기타 상태 → 즉시 완료 처리
-          setLastClickTime(Date.now());
           queryClient.invalidateQueries();
           onRefreshComplete?.();
         },
@@ -264,7 +261,9 @@ export default function ProfileSection({
                 {cooldownInfo && (
                   <span className="inline-flex items-center gap-1.5 text-xs text-on-surface-medium whitespace-nowrap bg-surface-6 rounded-md border border-divider px-2 py-1">
                     <span className="w-1.5 h-1.5 rounded-full bg-on-surface-medium animate-pulse" />
-                    {`${cooldownInfo.remainingSeconds}초 후 재시도`}
+                    {cooldownInfo.remainingSeconds >= 60
+                      ? `${Math.floor(cooldownInfo.remainingSeconds / 60)}분 ${cooldownInfo.remainingSeconds % 60}초 후 재시도`
+                      : `${cooldownInfo.remainingSeconds}초 후 재시도`}
                   </span>
                 )}
                 {refreshError && (
