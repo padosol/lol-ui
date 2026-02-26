@@ -61,13 +61,13 @@ export function useMatchIds(
  * 소환사 매치 배치 조회 훅
  * @param puuid 조회할 유저의 PUUID
  * @param queueId 큐 ID (선택)
- * @param pageNo 페이지 번호 (1부터 시작)
+ * @param pageNo 페이지 번호 (0부터 시작)
  * @param region 지역 (기본값: "kr")
  */
 export function useSummonerMatches(
   puuid: string,
   queueId?: number,
-  pageNo: number = 1,
+  pageNo: number = 0,
   region: string = "kr"
 ) {
   return useQuery<SummonerMatchesResponse, Error>({
