@@ -44,3 +44,23 @@ jobs:
 
       - name: Build
         run: pnpm build
+
+  notify:
+    name: Slack Notification
+    runs-on: ubuntu-latest
+    needs: [lint, build]
+    if: always()
+    steps:
+      - name: Notify Slack
+        uses: slackapi/slack-github-action@v2.1.0
+        with:
+          method: chat.postMessage
+          token: ${{ secrets.SLACK_BOT_TOKEN }}
+          payload: |
+            channel: ${{ secrets.SLACK_CHANNEL_ID }}
+            text: "${{ contains(needs.*.result, 'failure') && '❌ CI 실패' || '✅ CI 성공' }}: ${{ github.repository }}"
+            blocks:
+              - type: "section"
+                text:
+                  type: "mrkdwn"
+                  text: "${{ contains(needs.*.result, 'failure') && '❌ *CI 실패*' || '✅ *CI 성공*' }}\n*Repo:* ${{ github.repository }}\n*Branch:* ${{ github.head_ref || github.ref_name }}\n*PR:* <${{ github.event.pull_request.html_url || format('{0}/{1}/commit/{2}', github.server_url, github.repository, github.sha) }}|링크>\n*Author:* ${{ github.actor }}\n*Lint:* ${{ needs.lint.result }}\n*Build:* ${{ needs.build.result }}"
