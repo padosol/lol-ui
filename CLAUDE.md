@@ -32,7 +32,9 @@ npx playwright test tests/error-check.spec.ts
 
 - **Framework**: Next.js 16 (App Router) + React 19
 - **Language**: TypeScript (strict mode)
-- **Styling**: Tailwind CSS v4
+- **Styling**: Tailwind CSS v4 (`@tailwindcss/postcss`) + CSS custom properties 테마 (`globals.css`)
+  - Material Design 다크 테마 기반, elevation 표면색 시스템
+  - LOL 특화 시맨틱 색상: `--md-win`, `--md-loss`, `--md-team-blue`, `--md-team-red` 등
 - **State Management**: Zustand (stores/)
 - **Data Fetching**: TanStack Query (React Query)
 - **Form**: React Hook Form + Zod
@@ -72,6 +74,11 @@ Component → useSummoner hook (React Query) → API functions (lib/api/) → Ba
    - `QueryProvider`: React Query 클라이언트 제공
    - `GameDataLoader`: 앱 시작 시 게임 데이터 미리 로드
 
+5. **SSR Pattern**
+   - 서버 페이지: `async function Page()` + `generateMetadata()`
+   - 클라이언트 위임: 서버 페이지 → `*PageClient.tsx` ("use client") 패턴
+   - SSR 페이지: patch-notes, leaderboards / CSR 페이지: champion-stats, summoners
+
 ### Path Alias
 
 `@/*` → `./src/*` (tsconfig.json에 설정됨)
@@ -82,9 +89,38 @@ Component → useSummoner hook (React Query) → API functions (lib/api/) → Ba
 
 이미지 호스트: `static.mmrtr.shop` (next.config.ts에 설정됨)
 
+**Dual API Client**:
+- `src/lib/api/client.ts`: 브라우저용 (`NEXT_PUBLIC_API_URL`)
+- `src/lib/api/server-client.ts`: 서버용 (`API_URL_INTERNAL` → Docker 내부 네트워크)
+
+## Routes
+
+- `/` - 홈 (소환사 검색)
+- `/summoners/[region]/[summonerName]` - 소환사 프로필
+- `/champion-stats` - 챔피언 통계 (CSR)
+- `/leaderboards` - 랭킹 (SSR → Client)
+- `/patch-notes` - 패치노트 목록 (SSR)
+- `/patch-notes/[versionId]` - 패치노트 상세 (SSR)
+
+## Directory Structure
+
+- `src/lib/server/` - 서버 전용 유틸 (SSR 데이터 로딩)
+- `src/lib/transforms/` - API 데이터 → 컴포넌트용 변환
+- `src/utils/` - 클라이언트 유틸 (champion, game, tier, position 등)
+- `src/constants/` - 상수 (runes 등)
+- `src/stores/` - Zustand stores (gameData, auth, region, season, theme)
+- `src/lib/logger.ts` - 커스텀 로거 (`[METAPICK] [LEVEL] [TIMESTAMP]` 형식, dev에서만 info 출력)
+- `docs/patch/` - 크롤링된 패치노트 HTML/JSON 캐시
+
 ## Type Definitions
 
 모든 API 타입은 `src/types/api.ts`에 정의:
 
 - `ApiResponse<T>`: API 응답 래퍼
 - `SummonerProfile`, `MatchDetail`, `ChampionStat`, `LeagueData` 등
+
+## Deployment
+
+- `output: "standalone"` (Docker 컨테이너 배포)
+- Turbopack 사용 (개발 모드)
+- `API_URL_INTERNAL`: 서버 전용 환경변수 (Docker 내부 네트워크 URL)

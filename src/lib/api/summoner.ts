@@ -9,7 +9,7 @@ import { apiClient } from "./client";
 
 /**
  * 유저 검색 (자동완성)
- * GET /api/v1/summoners/autocomplete?q={query}&region={region}
+ * GET /api/v1/{region}/summoners/autocomplete?q={query}
  * @param query 검색어
  * @param region 검색할 지역 (기본값: "kr")
  * @returns 소환사 자동완성 목록
@@ -19,11 +19,10 @@ export async function searchSummonerAutocomplete(
   region: string = "kr"
 ): Promise<SummonerAutocompleteItem[]> {
   const response = await apiClient.get<ApiResponse<SummonerAutocompleteItem[]>>(
-    `/v1/summoners/autocomplete`,
+    `/v1/${region}/summoners/autocomplete`,
     {
       params: {
         q: query,
-        region,
       },
     }
   );
@@ -45,12 +44,14 @@ export async function getSummonerProfile(
   const response = await client.get<ApiResponse<SummonerProfile>>(
     `/v1/summoners/${region}/${encodeURIComponent(gameName)}`
   );
+
+  console.log(response)
   return response.data.data;
 }
 
 /**
  * 유저 갱신
- * GET /api/summoners/renewal/{platform}/{puuid}
+ * GET /api/v1/{platform}/summoners/{puuid}/renewal
  * @param platform 플랫폼(지역)
  * @param puuid 소환사 고유 PUUID
  * @returns 갱신 요청 결과
@@ -60,7 +61,7 @@ export async function renewSummoner(
   puuid: string
 ): Promise<SummonerRenewalResponse> {
   const response = await apiClient.get<ApiResponse<SummonerRenewalResponse>>(
-    `/summoners/renewal/${platform}/${puuid}`
+    `/v1/${platform}/summoners/${puuid}/renewal`
   );
   return response.data.data;
 }

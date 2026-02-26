@@ -7,35 +7,29 @@ import { getPatchVersions } from "@/lib/api/patchnotes";
 import { fetchPatchNoteServer } from "@/lib/server/patchnotes";
 import type { Metadata } from "next";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const patches = await getPatchVersions();
-  const versionId = patches.length > 0 ? patches[0].versionId : "";
-  const title = versionId
-    ? `리그오브레전드 패치노트 ${versionId}`
-    : "리그오브레전드 패치노트";
-  const description = versionId
-    ? `리그 오브 레전드 패치 ${versionId} 변경사항 - 챔피언, 아이템, 시스템 변경사항을 한눈에 확인하세요`
-    : "리그 오브 레전드 패치 변경사항을 확인하세요";
+interface Props {
+  params: Promise<{ versionId: string }>;
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { versionId } = await params;
+  const title = `리그오브레전드 패치노트 ${versionId}`;
   return {
     title,
-    description,
-    openGraph: { title, description },
+    description: `리그 오브 레전드 패치 ${versionId} 변경사항 - 챔피언, 아이템, 시스템 변경사항을 한눈에 확인하세요`,
+    openGraph: {
+      title,
+      description: `리그 오브 레전드 패치 ${versionId} 변경사항 - 챔피언, 아이템, 시스템 변경사항을 한눈에 확인하세요`,
+    },
   };
 }
 
-export default async function PatchNotesPage() {
-  const patches = await getPatchVersions();
-
-  if (patches.length === 0) {
-    return (
-      <div className="min-h-screen bg-surface flex items-center justify-center">
-        <p className="text-on-surface-medium">패치노트가 없습니다.</p>
-      </div>
-    );
-  }
-
-  const latestVersionId = patches[0].versionId;
-  const patchNote = await fetchPatchNoteServer(latestVersionId);
+export default async function PatchNotePage({ params }: Props) {
+  const { versionId } = await params;
+  const [patchNote, patches] = await Promise.all([
+    fetchPatchNoteServer(versionId),
+    getPatchVersions(),
+  ]);
 
   return (
     <div className="min-h-screen bg-surface">
@@ -55,7 +49,7 @@ export default async function PatchNotesPage() {
               <div className="max-h-[calc(100vh-200px)] overflow-y-auto pr-2">
                 <PatchList
                   patches={patches}
-                  selectedVersion={latestVersionId}
+                  selectedVersion={versionId}
                 />
               </div>
             </div>

@@ -14,6 +14,7 @@ export interface SummonerProfile {
   tagLine: string;
   platform: string | null;
   lastRevisionDateTime: string | null;
+  lastRevisionClickDateTime: string | null;
   point: number | null;
   tier: string | null;
   rank: string | null;
@@ -313,3 +314,16 @@ export interface TierCutoff {
 
 // 티어 커트오프 응답 (배열)
 export type TierCutoffResponse = TierCutoff[];
+
+// 일별 매치 수 타입
+export interface DailyMatchCount {
+  gameDate: string;
+  gameCount: number;
+}
+
+// 시즌 타입
+export interface Season {
+  seasonValue: number;
+  seasonName: string;
+  patchVersions: string[];
+}

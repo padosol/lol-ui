@@ -53,7 +53,7 @@ export default function ContributionGraph({ matches }: ContributionGraphProps) {
     // 주 단위로 셀 생성
     const weeksArr: { date: Date; count: number; key: string }[][] = [];
     const monthLabelsArr: { label: string; weekIndex: number }[] = [];
-    let currentDate = new Date(startDate);
+    const currentDate = new Date(startDate);
     let lastMonth = -1;
 
     while (currentDate <= today) {

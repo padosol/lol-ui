@@ -1,6 +1,5 @@
 "use client";
 
-import { useSuspensePatchNote } from "@/hooks/usePatchNotes";
 import type {
   AramChanges as AramChangesType,
   ArenaChanges as ArenaChangesType,
@@ -58,11 +57,10 @@ const TAB_CONFIGS: TabConfig[] = [
 ];
 
 interface PatchContentInnerProps {
-  version: string;
+  patchNote: PatchNoteExtended;
 }
 
-export default function PatchContentInner({ version }: PatchContentInnerProps) {
-  const { data: patchNote } = useSuspensePatchNote(version);
+export default function PatchContentInner({ patchNote }: PatchContentInnerProps) {
   const [activeTab, setActiveTab] = useState<TabType>("rift");
 
   // 날짜 포맷팅

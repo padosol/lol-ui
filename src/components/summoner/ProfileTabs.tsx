@@ -75,11 +75,11 @@ export default function ProfileTabs({
             </div>
 
             {/* 데스크톱: 기존 3컬럼 그리드 유지 */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <div className="lg:col-span-2">
+            <div className="grid grid-cols-1 lg:grid-cols-[660px_1fr] gap-6">
+              <div>
                 <MatchHistory puuid={puuid} showTitle={false} refreshKey={refreshKey} />
               </div>
-              <div className="hidden lg:block lg:col-span-1 space-y-6">
+              <div className="hidden lg:block space-y-6">
                 <LeagueInfo
                   puuid={puuid}
                   showTitle={false}
