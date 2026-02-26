@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.9.0](https://github.com/padosol/lol-ui/compare/v1.8.0...v1.9.0) (2026-02-26)
+
+
+### Features
+
+* CI 완료 시 Slack 알림 추가 ([1b015e3](https://github.com/padosol/lol-ui/commit/1b015e3001c855e3fba4ef8f7eb9b75377052efb))
+* CI 완료 시 Slack 알림 추가 ([eb77047](https://github.com/padosol/lol-ui/commit/eb77047977428e3ecc14cbe760a02d0da0942767))
+* UI 레이아웃 개선 및 랭킹 페이지 SSR 전환 ([385ebdc](https://github.com/padosol/lol-ui/commit/385ebdcc97cb5760b37d7264ade730476643ec84))
+
+
+### Bug Fixes
+
+* Claude Code Review 워크플로우 제거 및 ESLint 에러 수정 ([ac43e6d](https://github.com/padosol/lol-ui/commit/ac43e6d2c0a8eb9eaff9e1fc19c583ff139641c7))
+* getSummonerMatches pageNo를 0-based로 변경 ([3a66673](https://github.com/padosol/lol-ui/commit/3a666733db7a894ae7d402da145a48849af51f06))
+* getSummonerMatches pageNo를 0-based로 변경 ([9068267](https://github.com/padosol/lol-ui/commit/90682674072f556d3870e67a6be815b6fd730ce9))
+
 ## [1.8.0](https://github.com/padosol/lol-ui/compare/v1.7.0...v1.8.0) (2026-02-23)
 
 
