@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.8.0](https://github.com/padosol/lol-ui/compare/v1.7.0...v1.8.0) (2026-02-23)
+
+
+### Features
+
+* add dynamic SEO metadata for summoner profile pages ([24b307d](https://github.com/padosol/lol-ui/commit/24b307dd68fb14ac1311eb892bb09b6d3bfa5024))
+
+
+### Bug Fixes
+
+* make navigation sticky and widen compact search bar ([c156937](https://github.com/padosol/lol-ui/commit/c156937e7be2377616cbd67398f8240b16d2ad58))
+* prevent empty state flash during match data loading ([41cf1e3](https://github.com/padosol/lol-ui/commit/41cf1e34c466a06a3d17ae7ee87d9c01cd5e2504))
+
 ## [1.7.0](https://github.com/padosol/lol-ui/compare/v1.6.0...v1.7.0) (2026-02-18)
 
 
