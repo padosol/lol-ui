@@ -76,7 +76,7 @@ export default function MatchHistory({
   const queryClient = useQueryClient();
   const rootRef = useRef<HTMLDivElement | null>(null);
   const scrollTargetRef = useRef<Window | HTMLElement | null>(null);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const [accMatchDetails, setAccMatchDetails] = useState<MatchDetail[]>([]);
   const [gameModeFilter, setGameModeFilter] = useState<GameModeFilter>("ALL");
   const [expandedMatchId, setExpandedMatchId] = useState<string | null>(null);
