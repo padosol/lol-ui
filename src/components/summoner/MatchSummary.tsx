@@ -11,6 +11,9 @@ import {
   LinearScale,
   Title,
   Tooltip,
+  type ChartEvent,
+  type ActiveElement,
+  type Chart,
   type TooltipItem,
 } from "chart.js";
 import Image from "next/image";
@@ -143,7 +146,7 @@ export default function MatchSummary({ matches }: MatchSummaryProps) {
     responsive: true,
     maintainAspectRatio: false,
     animation: false as const,
-    onHover: (_event: any, _elements: any, chart: any) => {
+    onHover: (_event: ChartEvent, _elements: ActiveElement[], chart: Chart) => {
       chart.canvas.style.cursor = "default";
     },
     plugins: {

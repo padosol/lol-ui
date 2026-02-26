@@ -11,8 +11,6 @@ interface MatchupStatsProps {
 }
 
 export default function MatchupStats({ data }: MatchupStatsProps) {
-  if (data.length === 0) return null;
-
   const bestMatchups = useMemo(
     () =>
       [...data]
@@ -28,6 +26,8 @@ export default function MatchupStats({ data }: MatchupStatsProps) {
         .sort((a, b) => a.totalWinRate - b.totalWinRate),
     [data]
   );
+
+  if (data.length === 0) return null;
 
   return (
     <div className="bg-surface-1 rounded-lg border border-divider p-5">

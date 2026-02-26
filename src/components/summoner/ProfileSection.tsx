@@ -106,7 +106,7 @@ export default function ProfileSection({
     updateCooldownInfo();
     const interval = setInterval(updateCooldownInfo, 1000);
     return () => clearInterval(interval);
-  }, [profileData?.lastRevisionClickDateTime]);
+  }, [profileData?.lastRevisionClickDateTime, cooldownReady]);
 
   // 에러 메시지 5초 후 자동 소멸
   useEffect(() => {

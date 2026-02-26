@@ -92,20 +92,17 @@ export default function ChampionStatsPageClient() {
       );
   }, [data]);
 
-  // 선택 포지션 자동 보정
-  useEffect(() => {
-    if (
-      availablePositions.length > 0 &&
-      !availablePositions.includes(selectedPosition)
-    ) {
-      setSelectedPosition(availablePositions[0]);
-    }
-  }, [availablePositions, selectedPosition]);
+  // 선택 포지션 자동 보정 (유효하지 않으면 첫 번째 포지션 사용)
+  const effectivePosition =
+    availablePositions.length > 0 &&
+    !availablePositions.includes(selectedPosition)
+      ? availablePositions[0]
+      : selectedPosition;
 
   // 포지션별 통계
   const positionStats = useMemo(
-    () => data?.stats.find((s) => s.teamPosition === selectedPosition),
-    [data, selectedPosition]
+    () => data?.stats.find((s) => s.teamPosition === effectivePosition),
+    [data, effectivePosition]
   );
 
   return (
@@ -232,7 +229,7 @@ export default function ChampionStatsPageClient() {
 
             <PositionTabs
               positions={availablePositions}
-              selectedPosition={selectedPosition}
+              selectedPosition={effectivePosition}
               onSelectPosition={setSelectedPosition}
               stats={data?.stats ?? []}
             />
