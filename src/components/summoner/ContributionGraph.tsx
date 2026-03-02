@@ -1,11 +1,13 @@
 "use client";
 
 import Tooltip from "@/components/tooltip/Tooltip";
-import type { Match } from "@/types/api";
+import type { DailyMatchCount } from "@/types/api";
+import { Loader2 } from "lucide-react";
 import { useMemo } from "react";
 
 interface ContributionGraphProps {
-  matches: Match[];
+  dailyCounts: DailyMatchCount[];
+  isLoading?: boolean;
 }
 
 const DAY_LABELS = ["", "월", "", "수", "", "금", ""];
@@ -22,26 +24,19 @@ function getColorClass(count: number): string {
   return "bg-primary/90";
 }
 
-export default function ContributionGraph({ matches }: ContributionGraphProps) {
+export default function ContributionGraph({ dailyCounts, isLoading }: ContributionGraphProps) {
   const { weeks, monthLabels } = useMemo(() => {
-    if (matches.length === 0) return { weeks: [], monthLabels: [] };
+    if (dailyCounts.length === 0) return { weeks: [], monthLabels: [] };
 
-    // 날짜별 게임 횟수 Map 생성
+    // API 데이터에서 날짜별 게임 횟수 Map 생성
     const countByDate = new Map<string, number>();
-    for (const match of matches) {
-      if (!match.gameTimestamp) continue;
-      const date = new Date(match.gameTimestamp);
-      const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
-      countByDate.set(key, (countByDate.get(key) || 0) + 1);
+    for (const entry of dailyCounts) {
+      countByDate.set(entry.gameDate, entry.gameCount);
     }
 
-    // 가장 오래된 매치 날짜 ~ 오늘까지 범위 계산
-    const timestamps = matches
-      .map((m) => m.gameTimestamp)
-      .filter((t) => t > 0);
-    if (timestamps.length === 0) return { weeks: [], monthLabels: [] };
-
-    const minTimestamp = Math.min(...timestamps);
+    // API 데이터의 min/max 날짜에서 범위 계산
+    const dates = dailyCounts.map((d) => new Date(d.gameDate).getTime());
+    const minTimestamp = Math.min(...dates);
     const startDate = new Date(minTimestamp);
     startDate.setHours(0, 0, 0, 0);
     // 해당 주의 일요일로 맞춤
@@ -84,7 +79,15 @@ export default function ContributionGraph({ matches }: ContributionGraphProps) {
     }
 
     return { weeks: weeksArr, monthLabels: monthLabelsArr };
-  }, [matches]);
+  }, [dailyCounts]);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-24">
+        <Loader2 className="w-5 h-5 text-on-surface-medium animate-spin" />
+      </div>
+    );
+  }
 
   if (weeks.length === 0) return null;
 

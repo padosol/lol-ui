@@ -1,0 +1,44 @@
+{
+    "400": {
+        "map": "Summoner's Rift",
+        "description": "5v5 Draft Pick games",
+        "descriptionKo": "일반게임(교차선택)",
+        "notes": null
+    },
+    "420": {
+        "map": "Summoner's Rift",
+        "description": "5v5 Ranked Solo games",
+        "descriptionKo": "솔로 랭크",
+        "notes": null
+    },
+    "430": {
+        "map": "Summoner's Rift",
+        "description": "5v5 Blind Pick games",
+        "descriptionKo": "일반게임(비공개선택)",
+        "notes": null
+    },
+    "440": {
+        "map": "Summoner's Rift",
+        "description": "5v5 Ranked Flex games",
+        "descriptionKo": "자유 랭크",
+        "notes": null
+    },
+    "450": {
+        "map": "Howling Abyss",
+        "description": "5v5 ARAM games",
+        "descriptionKo": "무작위 총력전",
+        "notes": null
+    },
+    "490": {
+        "map": "Summoner's Rift",
+        "description": "Normal (Quickplay)",
+        "descriptionKo": "일반 (빠른 대전)",
+        "notes": null
+    },
+    "1700": {
+        "map": "Rings of Wrath",
+        "description": "Arena",
+        "descriptionKo": "아레나",
+        "notes": null
+    }
+}

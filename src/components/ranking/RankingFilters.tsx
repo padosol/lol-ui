@@ -15,8 +15,8 @@ interface RankingFiltersProps {
 }
 
 const queueTypes = [
-  { value: "solo", label: "솔로랭크" },
-  { value: "flex", label: "자유랭크" },
+  { value: "solo", label: "솔로 랭크" },
+  { value: "flex", label: "자유 랭크" },
 ];
 
 // queueType을 API queue 파라미터로 변환
@@ -118,9 +118,8 @@ export default function RankingFilters({
                   </span>
                 </span>
                 <ChevronDown
-                  className={`w-4 h-4 text-on-surface-medium transition-transform ${
-                    isRegionOpen ? "rotate-180" : ""
-                  }`}
+                  className={`w-4 h-4 text-on-surface-medium transition-transform ${isRegionOpen ? "rotate-180" : ""
+                    }`}
                 />
               </button>
 
@@ -137,11 +136,10 @@ export default function RankingFilters({
                             onRegionChange(r.value);
                             setIsRegionOpen(false);
                           }}
-                          className={`w-full px-3 py-1.5 text-left text-sm transition-colors cursor-pointer ${
-                            selected
+                          className={`w-full px-3 py-1.5 text-left text-sm transition-colors cursor-pointer ${selected
                               ? "bg-surface-8 text-on-surface"
                               : "text-on-surface hover:bg-surface-8"
-                          }`}
+                            }`}
                           role="option"
                           aria-selected={selected}
                         >
@@ -172,9 +170,8 @@ export default function RankingFilters({
               >
                 <span className="text-sm">{selectedQueueTypeLabel}</span>
                 <ChevronDown
-                  className={`w-4 h-4 text-on-surface-medium transition-transform ${
-                    isQueueTypeOpen ? "rotate-180" : ""
-                  }`}
+                  className={`w-4 h-4 text-on-surface-medium transition-transform ${isQueueTypeOpen ? "rotate-180" : ""
+                    }`}
                 />
               </button>
 
@@ -191,11 +188,10 @@ export default function RankingFilters({
                             onQueueTypeChange(q.value);
                             setIsQueueTypeOpen(false);
                           }}
-                          className={`w-full px-3 py-1.5 text-left text-sm transition-colors cursor-pointer ${
-                            selected
+                          className={`w-full px-3 py-1.5 text-left text-sm transition-colors cursor-pointer ${selected
                               ? "bg-surface-8 text-on-surface"
                               : "text-on-surface hover:bg-surface-8"
-                          }`}
+                            }`}
                           role="option"
                           aria-selected={selected}
                         >

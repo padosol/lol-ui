@@ -21,7 +21,7 @@ interface ChampionStatsOverviewProps {
 }
 
 const queueTabs: { id: QueueTabType; label: string }[] = [
-  { id: "solo", label: "솔로랭크" },
+  { id: "solo", label: "솔로 랭크" },
   { id: "flex", label: "자유 랭크" },
 ];
 
@@ -59,11 +59,10 @@ export default function ChampionStatsOverview({
         <button
           key={tab.id}
           onClick={() => setActiveQueue(tab.id)}
-          className={`px-3 py-1.5 text-sm rounded-md transition-colors cursor-pointer ${
-            activeQueue === tab.id
-              ? "bg-surface-1 text-on-surface font-semibold"
-              : "text-on-surface-medium hover:text-on-surface"
-          }`}
+          className={`px-3 py-1.5 text-sm rounded-md transition-colors cursor-pointer ${activeQueue === tab.id
+            ? "bg-surface-1 text-on-surface font-semibold"
+            : "text-on-surface-medium hover:text-on-surface"
+            }`}
         >
           {tab.label}
         </button>
@@ -103,7 +102,7 @@ export default function ChampionStatsOverview({
         {showTitle && renderTabHeader()}
         <div className="p-3">
           <div className="text-center text-on-surface-medium border border-divider rounded-lg py-4">
-            {activeQueue === "solo" ? "솔로랭크" : "자유 랭크"} 챔피언 통계 데이터가 없습니다.
+            {activeQueue === "solo" ? "솔로 랭크" : "자유 랭크"} 챔피언 통계 데이터가 없습니다.
           </div>
         </div>
       </div>
