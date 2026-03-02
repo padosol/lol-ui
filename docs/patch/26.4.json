@@ -1,0 +1,612 @@
+{
+  "version": "26.4",
+  "rift": {
+    "champions": [
+      {
+        "targetName": "암베사",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "Q - 교활한 휩쓸기 / 파멸의 일격 몬스터 대상 추가 피해량", "before": "150", "after": "125" }
+        ]
+      },
+      {
+        "targetName": "애니",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          { "statName": "Q - 붕괴 기본 피해량", "before": "80/120/160/200/240", "after": "80/125/170/215/260" },
+          { "statName": "E - 용암 방패 재사용 대기시간", "before": "12/11.5/11/10.5/10초", "after": "10초" }
+        ]
+      },
+      {
+        "targetName": "아펠리오스",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "기본 지속 효과 - 암살자와 예언자 추가 공격력", "before": "5/10/15/20/25/30", "after": "4/8/12/16/20/24" }
+        ]
+      },
+      {
+        "targetName": "브랜드",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          { "statName": "기본 지속 효과 - 불길 몬스터 대상 피해량", "before": "265%", "after": "270%" },
+          { "statName": "에픽 몬스터를 제외한 몬스터 대상 최대 피해량", "before": "40", "after": "50" }
+        ]
+      },
+      {
+        "targetName": "브라움",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "R - 빙하 균열 기본 피해량", "before": "150/300/450", "after": "150/250/350" },
+          { "statName": "R - 빙하 균열 재사용 대기시간", "before": "120/100/80초", "after": "130/115/100초" }
+        ]
+      },
+      {
+        "targetName": "카밀",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          { "statName": "E - 갈고리 발사 공격 속도 조건", "before": "적 챔피언 충돌 시 공격 속도 획득", "after": "지형 도약 후 적 챔피언 충돌 없이도 공격 속도 획득" }
+        ]
+      },
+      {
+        "targetName": "다리우스",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          { "statName": "기본 지속 효과 - 과다출혈 몬스터 대상 피해량", "before": "2x", "after": "2.5x" }
+        ]
+      },
+      {
+        "targetName": "피즈",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          { "statName": "W - 심해석 삼지창 몬스터 대상 추가 피해량", "before": "60", "after": "90" }
+        ]
+      },
+      {
+        "targetName": "그레이브즈",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          { "statName": "E - 빨리 뽑기 중첩당 방어력", "before": "4/7/10/13/16", "after": "7/10/13/16/19" },
+          { "statName": "E - 빨리 뽑기 중첩당 마법 저항력", "before": "2/3.5/5/6.5/8", "after": "3.5/5/6.5/8/9.5" }
+        ]
+      },
+      {
+        "targetName": "그웬",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "Q - 싹둑싹둑! 가위질 1회당 기본 피해량", "before": "10/15/20/25/30", "after": "10/13.5/17/20.5/24" },
+          { "statName": "Q - 싹둑싹둑! 미니언 대상 피해량 계수", "before": "0.75x", "after": "0.8x" },
+          { "statName": "R - 바느질 바늘 1개당 기본 피해량", "before": "35/65/95", "after": "30/50/70" }
+        ]
+      },
+      {
+        "targetName": "흐웨이",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          { "statName": "WW - 반사의 웅덩이 최대 보호막 흡수량", "before": "100/125/150/175/200", "after": "100/140/180/220/260" },
+          { "statName": "WW - 반사의 웅덩이 아군 대상 보호막 흡수량 계수", "before": "75%", "after": "85%" },
+          { "statName": "R - 절망의 소용돌이 재사용 대기시간", "before": "140/115/80", "after": "120/100/80" }
+        ]
+      },
+      {
+        "targetName": "일라오이",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          { "statName": "기본 지속 효과 - 고대신의 예언자 촉수 기본 피해량", "before": "9~180 (레벨에 따라)", "after": "9~200 (레벨에 따라)" }
+        ]
+      },
+      {
+        "targetName": "징크스",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "방어력 증가량", "before": "4.7", "after": "4.2" }
+        ]
+      },
+      {
+        "targetName": "카사딘",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "체력 증가량", "before": "119", "after": "113" },
+          { "statName": "E - 힘의 파동 둔화율", "before": "50/60/70/80/90%", "after": "50/55/60/65/70%" }
+        ]
+      },
+      {
+        "targetName": "케일",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "Q - 광휘의 일격 기본 피해량", "before": "60/100/140/180/220", "after": "60/90/120/150/180" }
+        ]
+      },
+      {
+        "targetName": "케넨",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "R - 날카로운 소용돌이 재사용 대기시간", "before": "120/100/80초", "after": "120초" }
+        ]
+      },
+      {
+        "targetName": "리 신",
+        "type": "champion",
+        "direction": "adjust",
+        "changes": [
+          { "statName": "W - 강철의 의지 흡혈 효과", "before": "생명력 흡수와 주문 흡혈 획득. W2 사용 중 강타 시 체력 미회복", "after": "미니언, 정글 몬스터, 챔피언에게 적용되는 모든 피해 흡혈 획득" }
+        ]
+      },
+      {
+        "targetName": "럭스",
+        "type": "champion",
+        "direction": "adjust",
+        "changes": [
+          { "statName": "기본 마나", "before": "480", "after": "440" },
+          { "statName": "기본 마나 재생", "before": "7", "after": "9" },
+          { "statName": "Q - 빛의 속박 재사용 대기시간", "before": "11/10.5/10/9.5/9초", "after": "10초" },
+          { "statName": "W - 프리즘 보호막 재사용 대기시간", "before": "14/13/12/11/10초", "after": "12/11.5/11/10.5/10초" }
+        ]
+      },
+      {
+        "targetName": "마오카이",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          { "statName": "Q - 덤불 주먹 몬스터 대상 추가 피해량", "before": "120/130/140/150/160", "after": "140/150/160/170/180" }
+        ]
+      },
+      {
+        "targetName": "나피리",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "기본 체력 재생", "before": "7.5", "after": "6" },
+          { "statName": "체력 재생 증가량", "before": "0.7", "after": "0.6" },
+          { "statName": "Q - 다르킨 단검 마나 소모량", "before": "55/60/65/70/75", "after": "50/60/70/80/90" },
+          { "statName": "E - 적출 마나 소모량", "before": "35", "after": "40" }
+        ]
+      },
+      {
+        "targetName": "키아나",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "체력 증가량", "before": "121", "after": "115" }
+        ]
+      },
+      {
+        "targetName": "렝가",
+        "type": "champion",
+        "direction": "adjust",
+        "changes": [
+          { "statName": "Q - 포악함 피해량", "before": "30/60/90/120/150 (+총공격력의 100/103.75/107.5/111.25/115%)", "after": "20/55/90/125/160 (+총공격력의 105%)" },
+          { "statName": "Q - 포악함 야성 피해량", "before": "30~235 (레벨에 따라) (+총공격력의 130%)", "after": "35~240 (레벨에 따라) (+총공격력의 120%)" }
+        ]
+      },
+      {
+        "targetName": "럼블",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "기본 체력", "before": "655", "after": "640" },
+          { "statName": "R - 이퀄라이저 미사일 최대 피해량", "before": "700/1,050/1,400", "after": "600/1,000/1,400" }
+        ]
+      },
+      {
+        "targetName": "라이즈",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          { "statName": "R - 공간 왜곡 순간이동 범위", "before": "차원문 범위 내 챔피언만 순간이동", "after": "가장자리에서 바깥쪽으로 움직이는 챔피언도 함께 순간이동" }
+        ]
+      },
+      {
+        "targetName": "사미라",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          { "statName": "Q - 천부적 재능 생명력 흡수 효율", "before": "80%", "after": "100%" },
+          { "statName": "R - 지옥불 난사 생명력 흡수 효율", "before": "80%", "after": "100%" }
+        ]
+      },
+      {
+        "targetName": "세나",
+        "type": "champion",
+        "direction": "adjust",
+        "changes": [
+          { "statName": "Q - 꿰뚫는 어둠 피해량", "before": "30/60/90/120/150 (+추가 공격력의 40%)", "after": "30/55/80/105/130 (+추가 공격력의 60%)" },
+          { "statName": "W - 마지막 포옹 피해량", "before": "70/115/160/205/250 (+추가 공격력의 70%)", "after": "70/110/150/190/230 (+추가 공격력의 90%)" }
+        ]
+      },
+      {
+        "targetName": "스웨인",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "W - 제국의 눈 둔화율", "before": "50/55/60/65/70%", "after": "50% (모든 스킬 레벨에서)" },
+          { "statName": "R - 악의 승천 초당 피해량 계수", "before": "주문력의 5%", "after": "주문력의 4%" },
+          { "statName": "R - 악의 승천 악의 불길 피해량 계수", "before": "주문력의 50%", "after": "주문력의 40%" },
+          { "statName": "R - 악의 승천 악의 불길 둔화율", "before": "75%", "after": "50%" }
+        ]
+      },
+      {
+        "targetName": "신드라",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "W - 의지의 힘 기본 피해량", "before": "70/105/140/175/210", "after": "70/100/130/160/190" },
+          { "statName": "R - 풀려난 힘 기본 피해량", "before": "90/130/170", "after": "80/120/160" }
+        ]
+      },
+      {
+        "targetName": "티모",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          { "statName": "E - 맹독 다트 몬스터 대상 피해량", "before": "145%", "after": "160%" }
+        ]
+      },
+      {
+        "targetName": "트위치",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "체력 증가량", "before": "104", "after": "98" },
+          { "statName": "방어력 증가량", "before": "4.2", "after": "4" }
+        ]
+      },
+      {
+        "targetName": "우디르",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          { "statName": "Q - 야생 발톱 적중 시 기본 추가 피해량", "before": "5/11/17/23/29/35", "after": "5/13/21/29/37/45" },
+          { "statName": "W - 강철 갑옷 기본 보호막 흡수량", "before": "45/60/75/90/105/120", "after": "45/65/85/105/125/145" }
+        ]
+      },
+      {
+        "targetName": "자야",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          { "statName": "Q - 깃털 연타 마나 소모량", "before": "50", "after": "35" },
+          { "statName": "W - 죽음의 깃 재사용 대기시간", "before": "20/19/18/17/16초", "after": "18/17/16/15/14초" },
+          { "statName": "E - 깃부르미 마나 소모량", "before": "30", "after": "20" }
+        ]
+      },
+      {
+        "targetName": "자크",
+        "type": "champion",
+        "direction": "adjust",
+        "changes": [
+          { "statName": "Q - 탄성 주먹 적중 1회당 피해량", "before": "40/55/70/85/100 (+주문력의 30%) (+자크 최대 체력의 3%)", "after": "60/90/120/150/180 (+주문력의 30%) (+자크 추가 체력의 3%)" },
+          { "statName": "R - 바운스! 최초 기본 피해량", "before": "140/210/280", "after": "120/190/260" },
+          { "statName": "R - 바운스! 최대 기본 피해량", "before": "350/525/700", "after": "300/475/650" }
+        ]
+      }
+    ],
+    "items": [
+      {
+        "targetName": "마법광학 장치 C44",
+        "type": "item",
+        "direction": "adjust",
+        "changes": [
+          { "statName": "최대 추가 피해량 적용 거리", "before": "600", "after": "500" },
+          { "statName": "처치 관여 시 공격 사거리 증가 효과 지속시간", "before": "6초", "after": "8초" }
+        ]
+      }
+    ],
+    "systems": [
+      {
+        "targetName": "소환사 주문의 모든 피해 흡혈 효과 (강타/점화)",
+        "type": "system",
+        "direction": "adjust",
+        "changes": [
+          { "statName": "모든 피해 흡혈 적용", "before": "강타/점화 피해에 적용", "after": "강타/점화 피해에 미적용" }
+        ]
+      }
+    ]
+  },
+  "arena": {
+    "champions": [
+      {
+        "targetName": "판테온",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "W - 방호의 도약 재사용 대기시간", "before": "13~9초", "after": "15~11초" }
+        ]
+      },
+      {
+        "targetName": "아리",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "W - 여우불 아레나 전용 계수", "before": "적용", "after": "삭제" },
+          { "statName": "W - 여우불 기본 피해량", "before": "70/95/120/145/170", "after": "40/60/80/100/120" },
+          { "statName": "W - 여우불 이동 속도", "before": "50%", "after": "40%" }
+        ]
+      },
+      {
+        "targetName": "마오카이",
+        "type": "champion",
+        "direction": "adjust",
+        "changes": [
+          { "statName": "Q - 덤불 주먹 아레나 피해량 계수", "before": "적용", "after": "삭제" },
+          { "statName": "Q - 덤불 주먹 피해량", "before": "40~160", "after": "75~255" },
+          { "statName": "W - 뒤틀린 전진 아레나 재사용 대기시간 계수", "before": "적용", "after": "삭제" },
+          { "statName": "W - 뒤틀린 전진 재사용 대기시간", "before": "14~10초", "after": "15~11초" }
+        ]
+      },
+      {
+        "targetName": "룰루",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          { "statName": "기본 지속 효과 - 요정 친구 픽스 주문력 계수", "before": "5%", "after": "7.5%" },
+          { "statName": "E - 도와줘, 픽스! 주문력 계수", "before": "50%", "after": "60%" }
+        ]
+      },
+      {
+        "targetName": "크산테",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          { "statName": "기본 지속 효과 - 불굴의 본능 체력 비례 피해량", "before": "1~2%", "after": "2~3%" },
+          { "statName": "R - 총공세 사용 중 최대 체력 비례 물리 피해량", "before": "1%", "after": "1.5%" }
+        ]
+      },
+      {
+        "targetName": "브라움",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          { "statName": "R - 빙하 균열 기본 피해량", "before": "150~450", "after": "200~600" },
+          { "statName": "R - 빙하 균열 이동 속도", "before": "40~60", "after": "50~70" }
+        ]
+      }
+    ],
+    "items": [
+      {
+        "targetName": "마법광학 장치 C44",
+        "type": "item",
+        "direction": "buff",
+        "changes": [
+          { "statName": "처치 관여 시 공격 사거리 증가량", "before": "100", "after": "150" },
+          { "statName": "추가 공격 사거리 지속시간", "before": "6초", "after": "10초" }
+        ]
+      },
+      {
+        "targetName": "지옥불 손도끼",
+        "type": "item",
+        "direction": "adjust",
+        "changes": [
+          { "statName": "기본 현재 체력 비례 피해량", "before": "15%", "after": "7%" },
+          { "statName": "최대 체력 차이에 따른 효과 증폭 계수", "before": "250%", "after": "300%" }
+        ]
+      }
+    ],
+    "systems": [
+      {
+        "targetName": "대장장이 신의 의식",
+        "type": "augment",
+        "direction": "buff",
+        "changes": [
+          { "statName": "아이템 능력치 증가량", "before": "15%", "after": "30%" }
+        ]
+      }
+    ]
+  },
+  "aram": {
+    "champions": [
+      {
+        "targetName": "자헨",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "입히는 피해량", "before": "100%", "after": "95%" },
+          { "statName": "받는 피해량", "before": "100%", "after": "105%" }
+        ]
+      }
+    ],
+    "items": [],
+    "augments": [
+      {
+        "targetName": "증강 세트 패널 표시 지연 시간",
+        "type": "system",
+        "direction": "buff",
+        "changes": [
+          { "statName": "표시 지연 시간", "before": "0.75초", "after": "0.1초" }
+        ]
+      },
+      {
+        "targetName": "진척도 트랙 4레벨 보상",
+        "type": "system",
+        "direction": "adjust",
+        "changes": [
+          { "statName": "4레벨 보상", "before": "시작 골드 300", "after": "금빛 새로고침" }
+        ]
+      },
+      {
+        "targetName": "포로 발사기",
+        "type": "augment",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "획득 제한", "before": "제한 없음", "after": "팀당 1명" },
+          { "statName": "포로 중첩 시간", "before": "-", "after": "증가" }
+        ]
+      },
+      {
+        "targetName": "컵케이크 조심해!",
+        "type": "augment",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "잡을 경우 둔화율", "before": "50%", "after": "25%" },
+          { "statName": "체력 회복 1,000당 골드", "before": "200골드", "after": "150골드" },
+          { "statName": "잃은 체력 비례 체력 회복량", "before": "20~50%", "after": "5~15%" }
+        ]
+      },
+      {
+        "targetName": "어깨 위의 악마",
+        "type": "augment",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "주변에 적 존재 시 체력 흡수", "before": "7.5%", "after": "5%" },
+          { "statName": "추가 고정 피해량", "before": "20%", "after": "15%" }
+        ]
+      },
+      {
+        "targetName": "질주하는 악마",
+        "type": "augment",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "이동 속도 획득", "before": "350, 2초에 걸쳐 사라짐", "after": "200, 1초에 걸쳐 사라짐" }
+        ]
+      },
+      {
+        "targetName": "확보된 킬",
+        "type": "augment",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "체력이 낮은 적에게 접근 시 추가 이동 속도", "before": "100%", "after": "60%" }
+        ]
+      },
+      {
+        "targetName": "골드는 비를 타고 세트",
+        "type": "set",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "골드 보상", "before": "30/50/100%", "after": "15/30/50%" }
+        ]
+      },
+      {
+        "targetName": "대마법사 세트",
+        "type": "set",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "돌려받는 재사용 대기시간", "before": "40%", "after": "30%" }
+        ]
+      },
+      {
+        "targetName": "죽음의 종소리 세트",
+        "type": "set",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "부활 대기시간 감소", "before": "40%", "after": "25%" }
+        ]
+      },
+      {
+        "targetName": "붉은 봉투",
+        "type": "augment",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "봉투 1개당 골드", "before": "10~18골드에서 25~58골드", "after": "8~15골드에서 22~46골드" }
+        ]
+      },
+      {
+        "targetName": "후원",
+        "type": "augment",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "골드", "before": "2,500골드", "after": "1,750골드" }
+        ]
+      },
+      {
+        "targetName": "능력치!",
+        "type": "augment",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "획득하는 능력치 모루 개수", "before": "3개", "after": "2개" }
+        ]
+      },
+      {
+        "targetName": "능력치 더하기 능력치!",
+        "type": "augment",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "획득하는 능력치 모루 개수", "before": "4개", "after": "3개" }
+        ]
+      },
+      {
+        "targetName": "능력치 더하기 능력치 더하기 능력치!",
+        "type": "augment",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "획득하는 능력치 모루 개수", "before": "5개", "after": "4개" }
+        ]
+      },
+      {
+        "targetName": "축소 엔진",
+        "type": "augment",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "중첩 1회당 스킬 가속", "before": "10", "after": "8" },
+          { "statName": "중첩 1회당 이동 속도", "before": "2%", "after": "1%" }
+        ]
+      },
+      {
+        "targetName": "흡혈병",
+        "type": "augment",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "모든 피해 흡혈", "before": "30%", "after": "25%" }
+        ]
+      },
+      {
+        "targetName": "프리즘 능력치 모루",
+        "type": "anvil",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "근접 챔피언 모든 피해 흡혈", "before": "25%", "after": "20%" },
+          { "statName": "원거리 챔피언 모든 피해 흡혈", "before": "12.5%", "after": "10%" }
+        ]
+      },
+      {
+        "targetName": "남작의 도움",
+        "type": "augment",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "적응형 능력치", "before": "33%", "after": "25%" }
+        ]
+      },
+      {
+        "targetName": "폭죽 세트",
+        "type": "set",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "(2) 미사일 피해량", "before": "40%", "after": "25%" },
+          { "statName": "(4) 미사일 피해량", "before": "80%", "after": "50%" }
+        ]
+      },
+      {
+        "targetName": "삐뽀삐뽀 세트",
+        "type": "set",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "세트 추가 체력 회복 효과", "before": "15/25/35%", "after": "10/20/30%" },
+          { "statName": "세트 추가 이동 속도", "before": "40/50/60%", "after": "30/40/50%" }
+        ]
+      },
+      {
+        "targetName": "도박꾼 세트",
+        "type": "set",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "(3) 골드 또는 프리즘 모루 등장 확률 증가", "before": "50%", "after": "20%" },
+          { "statName": "(5) 골드 또는 프리즘 모루 등장 확률 증가", "before": "100%", "after": "50%" }
+        ]
+      }
+    ]
+  }
+}

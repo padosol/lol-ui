@@ -7,9 +7,7 @@ interface SpellTooltipContentProps {
 }
 
 export default function SpellTooltipContent({ spellId }: SpellTooltipContentProps) {
-  const summonerData = useGameDataStore((state) => state.summonerData);
-
-  const spell = summonerData?.data?.[String(spellId)];
+  const spell = useGameDataStore((state) => state.getSpellByNumericId(spellId));
 
   if (!spell) {
     return (

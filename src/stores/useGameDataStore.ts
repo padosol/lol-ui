@@ -117,31 +117,64 @@ interface ItemJson {
   };
 }
 
+interface RuneReforgedRune {
+  id: number;
+  key: string;
+  icon: string;
+  name: string;
+  shortDesc: string;
+  longDesc: string;
+}
+
+interface RuneReforgedSlot {
+  runes: RuneReforgedRune[];
+}
+
+interface RuneReforgedTree {
+  id: number;
+  key: string;
+  icon: string;
+  name: string;
+  slots: RuneReforgedSlot[];
+}
+
+type RuneReforgedData = RuneReforgedTree[];
+
 interface GameDataState {
   championData: ChampionJson | null;
   summonerData: SummonerJson | null;
   itemData: ItemJson | null;
+  runeData: RuneReforgedData | null;
   isLoadingChampion: boolean;
   isLoadingSummoner: boolean;
   isLoadingItem: boolean;
+  isLoadingRune: boolean;
   championLoadPromise: Promise<void> | null;
   summonerLoadPromise: Promise<void> | null;
   itemLoadPromise: Promise<void> | null;
+  runeLoadPromise: Promise<void> | null;
   loadChampionData: () => Promise<void>;
   loadSummonerData: () => Promise<void>;
   loadItemData: () => Promise<void>;
+  loadRuneData: () => Promise<void>;
+  getSpellByNumericId: (id: number) => SummonerSpellData | undefined;
+  getRuneById: (id: number) => RuneReforgedRune | undefined;
+  getRuneTreeById: (id: number) => RuneReforgedTree | undefined;
 }
 
 export const useGameDataStore = create<GameDataState>((set, get) => ({
   championData: null,
   summonerData: null,
   itemData: null,
+  runeData: null,
   isLoadingChampion: false,
   isLoadingSummoner: false,
   isLoadingItem: false,
+  isLoadingRune: false,
   championLoadPromise: null,
   summonerLoadPromise: null,
   itemLoadPromise: null,
+  runeLoadPromise: null,
 
   loadChampionData: async () => {
     const state = get();
@@ -228,8 +261,62 @@ export const useGameDataStore = create<GameDataState>((set, get) => ({
     set({ itemLoadPromise: loadPromise });
     return loadPromise;
   },
+
+  loadRuneData: async () => {
+    const state = get();
+
+    // 이미 로드되었으면 스킵
+    if (state.runeData) {
+      return;
+    }
+
+    // 이미 로딩 중이면 기존 Promise 반환
+    if (state.runeLoadPromise) {
+      return state.runeLoadPromise;
+    }
+
+    const loadPromise = (async () => {
+      set({ isLoadingRune: true });
+      try {
+        const response = await fetch("/data/runesReforged.json");
+        const data = (await response.json()) as RuneReforgedData;
+        set({ runeData: data, isLoadingRune: false, runeLoadPromise: null });
+      } catch (error) {
+        console.error("Failed to load rune data:", error);
+        set({ isLoadingRune: false, runeLoadPromise: null });
+      }
+    })();
+
+    set({ runeLoadPromise: loadPromise });
+    return loadPromise;
+  },
+
+  getSpellByNumericId: (id: number) => {
+    const { summonerData } = get();
+    if (!summonerData) return undefined;
+    const key = String(id);
+    return Object.values(summonerData.data).find((s) => s.key === key);
+  },
+
+  getRuneById: (id: number) => {
+    const { runeData } = get();
+    if (!runeData) return undefined;
+    for (const tree of runeData) {
+      for (const slot of tree.slots) {
+        const rune = slot.runes.find((r) => r.id === id);
+        if (rune) return rune;
+      }
+    }
+    return undefined;
+  },
+
+  getRuneTreeById: (id: number) => {
+    const { runeData } = get();
+    if (!runeData) return undefined;
+    return runeData.find((tree) => tree.id === id);
+  },
 }));
 
 // 타입 export
-export type { ChampionData, ChampionInfo, ChampionStats, ChampionJson, ChampionSpellData, SummonerSpellData, SummonerJson, ItemJsonData, ItemJson };
+export type { ChampionData, ChampionInfo, ChampionStats, ChampionJson, ChampionSpellData, SummonerSpellData, SummonerJson, ItemJsonData, ItemJson, RuneReforgedRune, RuneReforgedSlot, RuneReforgedTree, RuneReforgedData };
 

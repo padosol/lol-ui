@@ -7,6 +7,7 @@ import { getChampionImageUrl } from "@/utils/champion";
 import { getChampionNameByEnglishName } from "@/utils/champion";
 import { calcWinRateCeil2, getWinRateTextClass } from "@/utils/championStats";
 import { getKDAColorClass } from "@/utils/game";
+import { useSeasonStore } from "@/stores/useSeasonStore";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
@@ -26,16 +27,19 @@ const queueTabs: { id: QueueTabType; label: string }[] = [
 
 export default function ChampionStatsOverview({
   puuid,
-  season = "26",
+  season,
   showTitle = true,
   limit = 5,
 }: ChampionStatsOverviewProps) {
+  const latestSeasonValue = useSeasonStore((s) => s.getLatestSeasonValue());
+  const effectiveSeason = season ?? latestSeasonValue ?? "";
+
   const [activeQueue, setActiveQueue] = useState<QueueTabType>("solo");
   const queueId = activeQueue === "solo" ? 420 : 440;
 
   const { data: championStats = [], isLoading } = useChampionRanking(
     puuid || "",
-    season,
+    effectiveSeason,
     queueId
   );
 

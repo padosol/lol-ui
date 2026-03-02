@@ -155,7 +155,7 @@ export default function BuildTab({
         <div className="text-on-surface text-[11px] font-semibold mb-1.5">
           룬
         </div>
-        <RuneSetup style={selected.style} />
+        <RuneSetup style={selected.style} statValue={selected.statValue} />
       </div>
     </div>
   );

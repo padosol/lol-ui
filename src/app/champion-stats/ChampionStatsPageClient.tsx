@@ -51,17 +51,11 @@ export default function ChampionStatsPageClient() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [handleClickOutside]);
 
-  const seasons = useSeasonStore((s) => s.seasons);
+  const getLatestSeason = useSeasonStore((s) => s.getLatestSeason);
   const region = useRegionStore((s) => s.region);
   const championData = useGameDataStore((s) => s.championData);
 
-  // 최신 시즌만 추출
-  const latestSeason = useMemo(() => {
-    if (seasons.length === 0) return null;
-    return seasons.reduce((latest, s) =>
-      s.seasonValue > latest.seasonValue ? s : latest
-    );
-  }, [seasons]);
+  const latestSeason = getLatestSeason();
 
   const latestPatches = latestSeason?.patchVersions ?? [];
 
