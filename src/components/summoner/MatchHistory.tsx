@@ -1,6 +1,7 @@
 "use client";
 
-import { useSummonerMatches } from "@/hooks/useSummoner";
+import { useDailyMatchCount, useSummonerMatches } from "@/hooks/useSummoner";
+import { useSeasonStore } from "@/stores/useSeasonStore";
 import { useQueryClient } from "@tanstack/react-query";
 import type { Match, MatchDetail } from "@/types/api";
 import { getChampionImageUrl } from "@/utils/champion";
@@ -89,6 +90,15 @@ export default function MatchHistory({
     undefined,
     page,
     region
+  );
+
+  // 날짜별 매치 수 조회 (잔디 그래프용)
+  const seasons = useSeasonStore((s) => s.seasons);
+  const latestSeasonValue = seasons.length > 0 ? String(seasons[0].seasonValue) : "";
+  const { data: dailyMatchCounts } = useDailyMatchCount(
+    region,
+    puuid || "",
+    latestSeasonValue
   );
 
   // puuid/region/refreshKey 변경 시 누적 데이터 초기화 - 의도적인 상태 리셋
@@ -491,7 +501,7 @@ export default function MatchHistory({
       </div>
 
       {/* 매치 요약 */}
-      <MatchSummary matches={allMatchesLoaded ? filteredMatches : []} />
+      <MatchSummary matches={allMatchesLoaded ? filteredMatches : []} dailyMatchCounts={dailyMatchCounts} />
 
       <div className="space-y-3">
         {filteredMatchDetails.map(({ detail, match }) => {

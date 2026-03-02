@@ -1,6 +1,6 @@
 "use client";
 
-import type { Match } from "@/types/api";
+import type { DailyMatchCount, Match } from "@/types/api";
 import ContributionGraph from "./ContributionGraph";
 import {
   ArcElement,
@@ -31,9 +31,10 @@ ChartJS.register(
 
 interface MatchSummaryProps {
   matches: Match[];
+  dailyMatchCounts?: DailyMatchCount[];
 }
 
-export default function MatchSummary({ matches }: MatchSummaryProps) {
+export default function MatchSummary({ matches, dailyMatchCounts }: MatchSummaryProps) {
   if (matches.length === 0) {
     return null;
   }
@@ -286,7 +287,7 @@ export default function MatchSummary({ matches }: MatchSummaryProps) {
         {/* 게임 활동 - 잔디 그래프 */}
         <div className="space-y-1 min-w-0">
           <div className="text-on-surface-medium text-xs mb-0.5">게임 활동</div>
-          <ContributionGraph matches={matches} />
+          <ContributionGraph dailyMatchCounts={dailyMatchCounts || []} />
         </div>
       </div>
     </div>
