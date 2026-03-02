@@ -83,19 +83,17 @@ export default function SkillTreeStats({
     <div className="bg-surface-1 rounded-lg border border-divider p-5">
       <h3 className="text-base font-bold text-on-surface mb-4">스킬 트리</h3>
 
-      {/* 스킬 마스터 순서 */}
-      <div className="mb-5">
-        <h4 className="text-sm font-medium text-on-surface-medium mb-2">
-          스킬 마스터 순서
-        </h4>
-        <div className="space-y-2">
-          {data.map((build, i) => {
-            const masterOrder = computeMasterOrder(build.skillOrder15);
-            return (
-              <div
-                key={i}
-                className="flex items-center gap-3 bg-surface rounded-lg px-3 py-2"
-              >
+      <div className="space-y-2">
+        {data.map((build, i) => {
+          const masterOrder = computeMasterOrder(build.skillOrder15);
+          const sequence = toSlotSequence(build.skillOrder15);
+          return (
+            <div
+              key={i}
+              className="grid grid-cols-[1fr_3fr] gap-3 bg-surface rounded-lg p-3"
+            >
+              {/* 좌측: 스킬 마스터 순서 + 승률/게임수 */}
+              <div className="flex flex-col justify-center gap-1.5">
                 <div className="flex items-center gap-1">
                   {masterOrder.map((skill, j) => (
                     <div key={j} className="flex items-center">
@@ -114,7 +112,7 @@ export default function SkillTreeStats({
                     </div>
                   ))}
                 </div>
-                <div className="flex items-center gap-4 ml-auto text-xs">
+                <div className="flex items-center gap-3 text-xs">
                   <span>
                     <span className="text-on-surface-medium">승률 </span>
                     <span
@@ -130,44 +128,15 @@ export default function SkillTreeStats({
                   </span>
                 </div>
               </div>
-            );
-          })}
-        </div>
-      </div>
 
-      {/* 레벨별 스킬 순서 */}
-      <div>
-        <h4 className="text-sm font-medium text-on-surface-medium mb-2">
-          레벨별 스킬 순서
-        </h4>
-        <div className="space-y-3">
-          {data.map((build, i) => {
-            const sequence = toSlotSequence(build.skillOrder15);
-            return (
-              <div key={i} className="bg-surface rounded-lg p-3">
-                <div className="flex items-center gap-4 mb-2 text-xs">
-                  <span>
-                    <span className="text-on-surface-medium">승률 </span>
-                    <span
-                      className={`font-medium ${
-                        build.totalWinRate >= 50 ? "text-win" : "text-loss"
-                      }`}
-                    >
-                      {build.totalWinRate.toFixed(1)}%
-                    </span>
-                  </span>
-                  <span className="text-on-surface-medium">
-                    {build.totalGames.toLocaleString()}게임
-                  </span>
-                </div>
-                <SkillGrid
-                  sequence={sequence}
-                  championName={championName}
-                />
-              </div>
-            );
-          })}
-        </div>
+              {/* 우측: 레벨별 스킬 순서 그리드 */}
+              <SkillGrid
+                sequence={sequence}
+                championName={championName}
+              />
+            </div>
+          );
+        })}
       </div>
     </div>
   );
@@ -180,15 +149,15 @@ function SkillGrid({
   sequence: number[];
   championName: string;
 }) {
-  const maxLevel = Math.min(sequence.length, 18);
+  const maxLevel = Math.min(sequence.length, 15);
 
   return (
     <div className="overflow-x-auto">
-      <div className="min-w-[360px]">
-        <div className="grid grid-cols-[24px_repeat(18,1fr)] gap-px text-center">
+      <div className="min-w-[300px]">
+        <div className="grid grid-cols-[24px_repeat(15,1fr)] gap-px text-center">
           {/* 헤더 */}
           <div className="text-[9px] text-on-surface-medium" />
-          {Array.from({ length: 18 }, (_, i) => (
+          {Array.from({ length: 15 }, (_, i) => (
             <div key={i} className="text-[9px] text-on-surface-medium py-0.5">
               {i + 1}
             </div>
@@ -202,7 +171,7 @@ function SkillGrid({
                 skillIndex={skillIdx}
                 championName={championName}
               />
-              {Array.from({ length: 18 }, (_, levelIdx) => {
+              {Array.from({ length: 15 }, (_, levelIdx) => {
                 const isSkillUp =
                   levelIdx < maxLevel &&
                   sequence[levelIdx] === skillIdx + 1;

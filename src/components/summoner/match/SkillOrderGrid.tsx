@@ -1,6 +1,6 @@
 import GameTooltip from "@/components/tooltip/GameTooltip";
+import { useGameDataStore } from "@/stores/useGameDataStore";
 import type { SkillSeqEntry } from "@/types/api";
-import { getChampionSpellImageUrl } from "@/utils/game";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -56,34 +56,34 @@ export default function SkillOrderGrid({ skillSeq, championName }: SkillOrderGri
           {/* Q/W/E/R 각 행 */}
           {SKILL_KEYS.map((skillKey, skillIdx) => {
             return (
-            <div key={skillKey} className="contents">
-              <SkillLabel skillKey={skillKey} skillIndex={skillIdx} championName={championName} />
+              <div key={skillKey} className="contents">
+                <SkillLabel skillKey={skillKey} skillIndex={skillIdx} championName={championName} />
 
-              {Array.from({ length: 18 }, (_, levelIdx) => {
-                const isSkillUp =
-                  levelIdx < maxLevel &&
-                  skillSeq[levelIdx].skillSlot === SKILL_NUMBERS[skillIdx];
-                const data = levelIdx < maxLevel ? levelData[levelIdx] : null;
-                const isMaster = isSkillUp && data && data.count === SKILL_MAX_LEVELS[skillIdx];
-                const cellClass = isSkillUp
-                  ? isMaster
-                    ? SKILL_COLORS[skillKey].master
-                    : SKILL_COLORS[skillKey].bg
-                  : "bg-surface-4/30";
-                return (
-                  <div
-                    key={levelIdx}
-                    className={`h-5 rounded-sm flex items-center justify-center ${cellClass}`}
-                  >
-                    {isSkillUp && data && (
-                      <span className={`text-[9px] font-bold ${isMaster ? "text-white" : ""}`}>
-                        {isMaster ? "M" : data.count}
-                      </span>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
+                {Array.from({ length: 18 }, (_, levelIdx) => {
+                  const isSkillUp =
+                    levelIdx < maxLevel &&
+                    skillSeq[levelIdx].skillSlot === SKILL_NUMBERS[skillIdx];
+                  const data = levelIdx < maxLevel ? levelData[levelIdx] : null;
+                  const isMaster = isSkillUp && data && data.count === SKILL_MAX_LEVELS[skillIdx];
+                  const cellClass = isSkillUp
+                    ? isMaster
+                      ? SKILL_COLORS[skillKey].master
+                      : SKILL_COLORS[skillKey].bg
+                    : "bg-surface-4/30";
+                  return (
+                    <div
+                      key={levelIdx}
+                      className={`h-5 rounded-sm flex items-center justify-center ${cellClass}`}
+                    >
+                      {isSkillUp && data && (
+                        <span className={`text-[9px] font-bold ${isMaster ? "text-white" : ""}`}>
+                          {isMaster ? "M" : data.count}
+                        </span>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
             );
           })}
         </div>
@@ -92,13 +92,21 @@ export default function SkillOrderGrid({ skillSeq, championName }: SkillOrderGri
   );
 }
 
+const IMAGE_HOST = process.env.NEXT_PUBLIC_IMAGE_HOST || 'https://static.mmrtr.shop';
+
 function SkillLabel({ skillKey, skillIndex, championName }: { skillKey: string; skillIndex: number; championName?: string }) {
   const [imgError, setImgError] = useState(false);
+  const championData = useGameDataStore((state) => state.championData);
 
-  const label = championName && !imgError ? (
+  const spell = championData?.data?.[championName ?? '']?.spells?.[skillIndex];
+  const spellImageUrl = spell?.image?.full
+    ? `${IMAGE_HOST}/spells/${spell.image.full}`
+    : null;
+
+  const label = championName && spellImageUrl && !imgError ? (
     <div className="py-0.5 flex items-center justify-center">
       <Image
-        src={getChampionSpellImageUrl(championName, skillKey)}
+        src={spellImageUrl}
         alt={skillKey}
         width={20}
         height={20}

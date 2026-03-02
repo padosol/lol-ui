@@ -2,8 +2,18 @@
  * 게임 아이템, 스펠, 룬 이미지 URL 생성 유틸리티
  */
 
-import { useGameDataStore, type SummonerJson } from "@/stores/useGameDataStore";
+import { useGameDataStore, type SummonerJson, type SummonerSpellData } from "@/stores/useGameDataStore";
 import type { ItemData, ItemSeqEntry } from "@/types/api";
+
+/**
+ * 숫자 spellId로 소환사 주문 데이터를 찾습니다.
+ * summoner.json의 키는 스펠 이름(예: "SummonerFlash")이고,
+ * 숫자 ID는 각 엔트리의 key 필드(예: "4")에 저장되어 있으므로 역방향 조회합니다.
+ */
+function findSpellByNumericId(data: SummonerJson, spellId: number): SummonerSpellData | undefined {
+  const id = String(spellId);
+  return Object.values(data.data).find((s) => s.key === id);
+}
 
 const IMAGE_HOST = process.env.NEXT_PUBLIC_IMAGE_HOST || 'https://static.mmrtr.shop';
 
@@ -70,8 +80,7 @@ export async function getSpellImageUrlAsync(spellId: number): Promise<string> {
     if (!data) {
       return `${IMAGE_HOST}/spells/${spellId}.png`;
     }
-    const key = String(spellId);
-    const spell = data.data[key];
+    const spell = findSpellByNumericId(data, spellId);
 
     if (spell && spell.id) {
       return `${IMAGE_HOST}/spells/${spell.id}.png`;
@@ -99,8 +108,7 @@ export function getSpellImageUrl(spellId: number): string {
   // zustand store에서 데이터 가져오기
   const store = useGameDataStore.getState();
   if (store.summonerData) {
-    const key = String(spellId);
-    const spell = store.summonerData.data[key];
+    const spell = findSpellByNumericId(store.summonerData, spellId);
     if (spell && spell.id) {
       return `${IMAGE_HOST}/spells/${spell.id}.png`;
     }

@@ -134,10 +134,13 @@ export interface ParticipantData {
   playerAugment4: number;
   itemSeq: ItemSeqEntry[] | null;
   skillSeq: SkillSeqEntry[] | null;
+  tier?: string | null;
+  tierRank?: string | null;
+  absolutePoints?: number;
 }
 
 export interface GameInfoData {
-  dateVersion: string | null;
+  dataVersion: string | null;
   gameCreation: number;
   gameDuration: number;
   gameEndTimestamp: number;
@@ -150,7 +153,8 @@ export interface GameInfoData {
   queueId: number;
   tournamentCode: string | null;
   matchId: string | null;
-  averageTier: string;
+  averageTier: string | null;
+  averageRank: string | null;
 }
 
 export interface TeamInfo {
@@ -177,15 +181,15 @@ export interface ChampionStat {
 
   // results
   win: number;
-  losses?: number;
-  winRate?: number;
+  losses: number;
+  winRate: number;
 
   // advanced stats (docs)
-  damagePerMinute?: number;
-  kda?: number;
-  laneMinionsFirst10Minutes?: number;
-  damageTakenOnTeamPercentage?: number;
-  goldPerMinute?: number;
+  damagePerMinute: number;
+  kda: number;
+  laneMinionsFirst10Minutes: number;
+  damageTakenOnTeamPercentage: number;
+  goldPerMinute: number;
 
   // UI legacy fields (some screens still render these)
   cs?: number | null;
@@ -244,9 +248,20 @@ export interface RuneStyleEntry {
 
 export interface RuneStyle {
   styles: RuneStyleEntry[];
+  // Format B
   primaryRuneId?: number;
   primaryRuneIds?: number[];
   secondaryRuneId?: number;
+  secondaryRuneIds?: number[];
+  // Format C
+  primaryStyleId?: number;
+  primaryPerk0?: number;
+  primaryPerk1?: number;
+  primaryPerk2?: number;
+  primaryPerk3?: number;
+  subStyleId?: number;
+  subPerk0?: number;
+  subPerk1?: number;
 }
 
 // 스탯 값 타입
@@ -305,11 +320,11 @@ export interface TierCutoff {
   id: number;
   queue: "RANKED_SOLO_5x5" | "RANKED_FLEX_SR";
   tier: "CHALLENGER" | "GRANDMASTER";
-  region: string;
+  platformId: string;
   minLeaguePoints: number;
   updatedAt: string;
-  lpChange?: number; // LP 변동값
-  userCount?: number; // 유저 수
+  lpChange: number;
+  userCount: number;
 }
 
 // 티어 커트오프 응답 (배열)

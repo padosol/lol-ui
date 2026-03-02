@@ -8,7 +8,7 @@ import { useSeasonStore } from "@/stores/useSeasonStore";
  * 앱 시작 시 champion, summoner, item 데이터를 미리 로드하는 컴포넌트
  */
 export default function GameDataLoader() {
-  const { loadChampionData, loadSummonerData, loadItemData } = useGameDataStore();
+  const { loadChampionData, loadSummonerData, loadItemData, loadRuneData } = useGameDataStore();
   const { loadSeasons } = useSeasonStore();
 
   useEffect(() => {
@@ -16,8 +16,9 @@ export default function GameDataLoader() {
     loadChampionData();
     loadSummonerData();
     loadItemData();
+    loadRuneData();
     loadSeasons();
-  }, [loadChampionData, loadSummonerData, loadItemData, loadSeasons]);
+  }, [loadChampionData, loadSummonerData, loadItemData, loadRuneData, loadSeasons]);
 
   return null; // UI를 렌더링하지 않음
 }

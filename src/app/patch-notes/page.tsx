@@ -7,6 +7,8 @@ import { getPatchVersions } from "@/lib/api/patchnotes";
 import { fetchPatchNoteServer } from "@/lib/server/patchnotes";
 import type { Metadata } from "next";
 
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata(): Promise<Metadata> {
   const patches = await getPatchVersions();
   const versionId = patches.length > 0 ? patches[0].versionId : "";

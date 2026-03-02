@@ -100,7 +100,7 @@ export default function MatchHistory({
       isFirstMount.current = false;
       return;
     }
-    setPage(1);
+    setPage(0);
     setAccMatchDetails([]);
     setExpandedMatchId(null);
     setIsLoadingMore(false);

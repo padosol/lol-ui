@@ -7,12 +7,27 @@ interface SeasonState {
   isLoading: boolean;
   loadPromise: Promise<void> | null;
   loadSeasons: () => Promise<void>;
+  getLatestSeason: () => Season | null;
+  getLatestSeasonValue: () => string | undefined;
 }
 
 export const useSeasonStore = create<SeasonState>((set, get) => ({
   seasons: [],
   isLoading: false,
   loadPromise: null,
+
+  getLatestSeason: () => {
+    const { seasons } = get();
+    if (seasons.length === 0) return null;
+    return seasons.reduce((latest, s) =>
+      s.seasonValue > latest.seasonValue ? s : latest
+    );
+  },
+
+  getLatestSeasonValue: () => {
+    const latest = get().getLatestSeason();
+    return latest ? String(latest.seasonValue) : undefined;
+  },
 
   loadSeasons: async () => {
     const state = get();

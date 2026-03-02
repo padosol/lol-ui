@@ -8,6 +8,7 @@ import {
   getChampionNameByEnglishName,
 } from "@/utils/champion";
 import Image from "next/image";
+import { useSeasonStore } from "@/stores/useSeasonStore";
 import { useEffect, useMemo, useState } from "react";
 
 interface ChampionStatsProps {
@@ -30,13 +31,16 @@ type SortDirection = "asc" | "desc";
 
 export default function ChampionStats({
   puuid,
-  season = "26",
+  season,
   showTitle = true,
   limit,
 }: ChampionStatsProps) {
+  const latestSeasonValue = useSeasonStore((s) => s.getLatestSeasonValue());
+  const effectiveSeason = season ?? latestSeasonValue ?? "";
+
   const { data: championStats = [], isLoading } = useChampionRanking(
     puuid || "",
-    season,
+    effectiveSeason,
     420
   );
 
