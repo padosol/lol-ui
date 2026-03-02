@@ -1,6 +1,7 @@
 "use client";
 
-import { useSummonerMatches } from "@/hooks/useSummoner";
+import { useDailyMatchCount, useSummonerMatches } from "@/hooks/useSummoner";
+import { useSeasonStore } from "@/stores/useSeasonStore";
 import { useQueryClient } from "@tanstack/react-query";
 import type { Match, MatchDetail } from "@/types/api";
 import { getChampionImageUrl } from "@/utils/champion";
@@ -8,9 +9,11 @@ import {
   extractItemIds,
   getItemImageUrl,
   getKDAColorClass,
+  getPerkImageUrl,
   getSpellImageUrlAsync,
 } from "@/utils/game";
 import { sortByPosition } from "@/utils/position";
+import { normalizeRunes, parseRuneStyle } from "@/utils/rune";
 import { getStyleImageUrl } from "@/utils/styles";
 import { getTierImageUrl, getTierName } from "@/utils/tier";
 import GameTooltip from "@/components/tooltip/GameTooltip";
@@ -22,7 +25,7 @@ import MatchDetailInfo from "./match/MatchDetailInfo";
 import TeamInfo from "./match/TeamInfo";
 import MatchSummary from "./MatchSummary";
 
-type GameModeFilter = "ALL" | "RANKED" | "FLEX" | "NORMAL" | "ARENA";
+type GameModeFilter = "ALL" | "RANKED" | "FLEX" | "NORMAL" | "ARENA" | "ARAM";
 
 // 소환사 주문 이미지 컴포넌트 (비동기 로드)
 function SummonerSpellImage({ spellId, small }: { spellId: number; small?: boolean }) {
@@ -60,6 +63,35 @@ function SummonerSpellImage({ spellId, small }: { spellId: number; small?: boole
   );
 }
 
+// 룬 이미지 컴포넌트 (소환사 주문과 동일한 스타일)
+function RuneImage({ runeId, imageUrl, small }: { runeId: number; imageUrl: string; small?: boolean }) {
+  const sizeClass = small ? "w-6 h-6" : "w-7 h-7";
+  const imgSize = small ? 24 : 28;
+
+  if (!imageUrl) {
+    return null;
+  }
+
+  return (
+    <GameTooltip type="rune" id={runeId}>
+      <div className={`${sizeClass} bg-surface-4 rounded border border-divider/50 overflow-hidden relative shadow-sm flex items-center justify-center`}>
+        <Image
+          src={imageUrl}
+          alt={`Rune ${runeId}`}
+          width={imgSize}
+          height={imgSize}
+          className="object-cover"
+          unoptimized
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            target.style.display = "none";
+          }}
+        />
+      </div>
+    </GameTooltip>
+  );
+}
+
 interface MatchHistoryProps {
   puuid?: string | null;
   region?: string;
@@ -83,10 +115,28 @@ export default function MatchHistory({
   const [showTopButton, setShowTopButton] = useState(false);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
 
+  // 날짜별 게임수 조회
+  const latestSeasonValue = useSeasonStore((s) => s.getLatestSeasonValue());
+
+  const filterQueueId = useMemo(() => {
+    switch (gameModeFilter) {
+      case "RANKED": return 420;
+      case "FLEX": return 440;
+      case "NORMAL": return 430;
+      case "ARENA": return 1700;
+      case "ARAM": return 450;
+      default: return undefined;
+    }
+  }, [gameModeFilter]);
+
+  const { data: dailyCounts = [], isLoading: isDailyCountLoading } = useDailyMatchCount(
+    region, puuid || "", latestSeasonValue ?? "", filterQueueId
+  );
+
   // 소환사 매치 배치 조회
   const { data: matchesData, isLoading } = useSummonerMatches(
     puuid || "",
-    undefined,
+    filterQueueId,
     page,
     region
   );
@@ -106,6 +156,16 @@ export default function MatchHistory({
     setIsLoadingMore(false);
     queryClient.resetQueries({ queryKey: ["summoner", "matches", puuid] });
   }, [puuid, region, refreshKey, queryClient]);
+  /* eslint-enable react-hooks/set-state-in-effect */
+
+  // gameModeFilter 변경 시 누적 데이터 초기화 - API에서 새 queueId로 재조회
+  /* eslint-disable react-hooks/set-state-in-effect */
+  useEffect(() => {
+    setPage(0);
+    setAccMatchDetails([]);
+    setExpandedMatchId(null);
+    setIsLoadingMore(false);
+  }, [gameModeFilter]);
   /* eslint-enable react-hooks/set-state-in-effect */
 
   // 페이지별 응답을 누적(append)해서 유지 - 외부 데이터 동기화
@@ -252,87 +312,21 @@ export default function MatchHistory({
   // MatchDetail 리스트 (상세 정보용)
   const matchDetails = accMatchDetails;
 
-  // 게임 모드 분류 함수들
-  const isArenaMode = (gameMode: string, queueId?: number): boolean => {
-    const arenaModes = ["ARENA", "CHERRY", "TFT"];
-    const arenaQueueIds = [1700, 1710]; // 아레나 큐 ID
-    return (
-      arenaModes.some((mode) => gameMode.toUpperCase().includes(mode)) ||
-      (queueId !== undefined && arenaQueueIds.includes(queueId))
-    );
-  };
-
-  const isRankedMode = (queueId?: number): boolean => {
-    // 솔로랭크 큐 ID
-    const rankedQueueIds = [420]; // RANKED_SOLO_5x5
-    return queueId !== undefined && rankedQueueIds.includes(queueId);
-  };
-
-  const isFlexMode = (queueId?: number): boolean => {
-    // 자유랭크 큐 ID
-    const flexQueueIds = [440]; // RANKED_FLEX_SR
-    return queueId !== undefined && flexQueueIds.includes(queueId);
-  };
-
-  const isNormalMode = (gameMode: string, queueId?: number): boolean => {
-    // 일반 게임 큐 ID
-    const normalQueueIds = [400, 430]; // NORMAL_5v5_DRAFT, NORMAL_5v5_BLIND
-    const normalModes = ["NORMAL", "CLASSIC"];
-    return (
-      (queueId !== undefined && normalQueueIds.includes(queueId)) ||
-      normalModes.some((mode) => gameMode.toUpperCase().includes(mode))
-    );
-  };
-
-  // 필터링된 매치들
-  const filteredMatches = useMemo(() => {
-    if (gameModeFilter === "ALL") return allMatches;
-    return allMatches.filter((match) => {
-      const detail = matchDetails.find((d) => {
-        const matchId = match.id;
-        return d.gameInfoData?.matchId === matchId;
-      });
-      if (!detail) return false;
-      const gameMode = detail.gameInfoData?.gameMode || "";
-      const queueId = detail.gameInfoData?.queueId;
-
-      switch (gameModeFilter) {
-        case "RANKED":
-          return isRankedMode(queueId);
-        case "FLEX":
-          return isFlexMode(queueId);
-        case "NORMAL":
-          // 일반 모드는 queueId를 우선 확인하고, 랭크/자유랭크는 제외
-          return (
-            !isRankedMode(queueId) &&
-            !isFlexMode(queueId) &&
-            !isArenaMode(gameMode, queueId) &&
-            isNormalMode(gameMode, queueId)
-          );
-        case "ARENA":
-          return isArenaMode(gameMode, queueId);
-        default:
-          return true;
-      }
-    });
-  }, [allMatches, matchDetails, gameModeFilter]);
-
-  // 필터링된 매치 상세 정보 (매치 ID로 매칭)
+  // 매치 상세 정보 (매치 ID로 매칭)
   const filteredMatchDetails = useMemo(() => {
-    const filteredMatchIds = new Set(filteredMatches.map((m) => m.id));
     const allMatchesMap = new Map(allMatches.map((m) => [m.id, m]));
     return matchDetails
       .map((detail) => {
         const matchId = detail.gameInfoData?.matchId;
         if (!matchId) return null;
         const match = allMatchesMap.get(matchId);
-        if (!match || !filteredMatchIds.has(match.id)) return null;
+        if (!match) return null;
         return { detail, match };
       })
       .filter(
         (item): item is { detail: MatchDetail; match: Match } => item !== null
       );
-  }, [matchDetails, allMatches, filteredMatches]);
+  }, [matchDetails, allMatches]);
 
   const loadMoreMatches = useCallback(() => {
     if (!isLoading && !isLoadingMore && (matchesData?.hasNext || false)) {
@@ -376,52 +370,20 @@ export default function MatchHistory({
     );
   }
 
-  if (allMatches.length === 0 && (isLoading || (matchesData?.content?.length ?? 0) > 0)) {
-    return (
-      <div className="space-y-4">
-        {showTitle && (
-          <h2 className="text-2xl font-bold text-on-surface mb-2">최근 전적</h2>
-        )}
-        <div className="bg-surface-4/50 rounded-lg border border-divider/50 p-12 flex items-center justify-center">
-          <div className="flex flex-col items-center gap-3">
-            <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-            <div className="text-on-surface-medium text-sm">전적을 불러오는 중...</div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (allMatches.length === 0 && !isLoading && !matchesData?.content?.length) {
-    return (
-      <div className="space-y-4">
-        {showTitle && (
-          <h2 className="text-2xl font-bold text-on-surface mb-2">최근 전적</h2>
-        )}
-        <div className="bg-surface-4/50 rounded-lg border border-divider/50 p-12 text-center">
-          <div className="text-on-surface-medium text-lg">전적 데이터가 없습니다.</div>
-        </div>
-      </div>
-    );
-  }
-
   // 게임 모드 이름 변환
   const getGameModeName = (gameMode: string, queueId?: number): string => {
-    if (isArenaMode(gameMode, queueId)) {
-      return "아레나";
-    }
-
-    // queueId를 우선적으로 확인하여 정확한 모드 구분
     if (queueId !== undefined) {
-      if (isRankedMode(queueId)) {
-        return "랭크";
-      }
-      if (isFlexMode(queueId)) {
-        return "자유랭크";
-      }
-      if (isNormalMode(gameMode, queueId)) {
-        return "일반";
-      }
+      const queueMap: Record<number, string> = {
+        420: "랭크",
+        440: "자유랭크",
+        400: "일반",
+        430: "일반",
+        450: "무작위 총력전",
+        100: "무작위 총력전",
+        1700: "아레나",
+        1710: "아레나",
+      };
+      if (queueMap[queueId]) return queueMap[queueId];
     }
 
     const modeMap: Record<string, string> = {
@@ -430,6 +392,8 @@ export default function MatchHistory({
       ARAM: "무작위 총력전",
       URF: "U.R.F.",
       TFT: "전략적 팀 전투",
+      ARENA: "아레나",
+      CHERRY: "아레나",
       SWIFTPLAY: "신속",
     };
     return modeMap[gameMode] || gameMode;
@@ -459,7 +423,7 @@ export default function MatchHistory({
             : "text-on-surface-medium hover:text-on-surface hover:bg-surface-8/50"
             }`}
         >
-          랭크
+          솔로랭크
         </button>
         <button
           onClick={() => setGameModeFilter("FLEX")}
@@ -488,11 +452,36 @@ export default function MatchHistory({
         >
           아레나
         </button>
+        <button
+          onClick={() => setGameModeFilter("ARAM")}
+          className={`px-4 py-2 text-sm font-medium transition-all whitespace-nowrap rounded-md cursor-pointer ${gameModeFilter === "ARAM"
+            ? "text-on-surface bg-surface-8 shadow-lg shadow-surface-8/20"
+            : "text-on-surface-medium hover:text-on-surface hover:bg-surface-8/50"
+            }`}
+        >
+          무작위총력전
+        </button>
       </div>
 
       {/* 매치 요약 */}
-      <MatchSummary matches={allMatchesLoaded ? filteredMatches : []} />
+      <MatchSummary
+        matches={allMatchesLoaded ? allMatches : []}
+        dailyCounts={dailyCounts}
+        isDailyCountLoading={isDailyCountLoading}
+      />
 
+      {allMatches.length === 0 && (isLoading || (matchesData?.content?.length ?? 0) > 0) ? (
+        <div className="bg-surface-4/50 rounded-lg border border-divider/50 p-12 flex items-center justify-center">
+          <div className="flex flex-col items-center gap-3">
+            <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+            <div className="text-on-surface-medium text-sm">전적을 불러오는 중...</div>
+          </div>
+        </div>
+      ) : allMatches.length === 0 && !isLoading && !matchesData?.content?.length ? (
+        <div className="bg-surface-4/50 rounded-lg border border-divider/50 p-12 text-center">
+          <div className="text-on-surface-medium text-lg">전적 데이터가 없습니다.</div>
+        </div>
+      ) : (
       <div className="space-y-3">
         {filteredMatchDetails.map(({ detail, match }) => {
           if (!match || !detail) return null;
@@ -507,10 +496,11 @@ export default function MatchHistory({
 
           const items = extractItemIds(myData.item || myData.itemSeq);
           const gameInfo = detail.gameInfoData;
-          const isArena = isArenaMode(
-            gameInfo?.gameMode || "",
-            gameInfo?.queueId
-          );
+          const arenaQueueIds = [1700, 1710];
+          const arenaModes = ["ARENA", "CHERRY", "TFT"];
+          const isArena =
+            (gameInfo?.queueId !== undefined && arenaQueueIds.includes(gameInfo.queueId)) ||
+            arenaModes.some((mode) => (gameInfo?.gameMode || "").toUpperCase().includes(mode));
           const gameModeName = getGameModeName(
             gameInfo?.gameMode || "",
             gameInfo?.queueId
@@ -543,38 +533,10 @@ export default function MatchHistory({
               ? (totalCS / (match.gameDuration / 60)).toFixed(1)
               : "0.0";
 
-          // 룬 및 스펠 정보 추출 (style 객체에서)
-          let mainRuneId = 0;
-          let subRuneStyleId = 0;
-          let primaryRuneId = 0;
-          let secondaryRuneId = 0;
-          if (myData.style) {
-            try {
-              const style =
-                typeof myData.style === "string"
-                  ? JSON.parse(myData.style)
-                  : myData.style;
-              if (style?.styles && Array.isArray(style.styles)) {
-                // 메인 룬 (첫 번째 스타일의 첫 번째 선택 룬)
-                if (style.styles[0]?.selections?.[0]?.perk) {
-                  mainRuneId = style.styles[0].selections[0].perk;
-                }
-                // 서브 룬 스타일 (두 번째 스타일)
-                if (style.styles[1]?.style) {
-                  subRuneStyleId = style.styles[1].style;
-                }
-              }
-              // 스펠 ID 추출
-              if (style?.primaryRuneId) {
-                primaryRuneId = style.primaryRuneIds[0];
-              }
-              if (style?.secondaryRuneId) {
-                secondaryRuneId = style.secondaryRuneId;
-              }
-            } catch {
-              // 파싱 실패 시 무시
-            }
-          }
+          // 룬 정보 추출 (style 객체에서)
+          const parsedRunes = normalizeRunes(parseRuneStyle(myData.style));
+          const mainRuneId = parsedRunes?.primaryRunes[0] ?? 0;
+          const subRuneStyleId = parsedRunes?.secondaryTreeId ?? 0;
 
           // 승리/패배/다시하기에 따른 색상 변수 (Material Design 2)
           const isRemake = match.result === "REMAKE";
@@ -676,7 +638,7 @@ export default function MatchHistory({
                             </div>
                           </GameTooltip>
 
-                          {/* 소환사 주문 + 스펠 + 룬 */}
+                          {/* 소환사 주문 + 룬 */}
                           <div className="flex flex-row gap-1 items-start">
                             {/* 소환사 주문 */}
                             <div className="flex flex-col gap-1">
@@ -691,82 +653,19 @@ export default function MatchHistory({
                                 />
                               )}
                             </div>
-                            {/* 스펠 */}
-                            <div className="flex flex-col gap-1">
-                              {primaryRuneId > 0 &&
-                                (() => {
-                                  const spellUrl =
-                                    getStyleImageUrl(primaryRuneId);
-                                  return spellUrl ? (
-                                    <div className="w-7 h-7 bg-surface-4 rounded border border-divider overflow-hidden relative shadow-sm flex items-center justify-center">
-                                      <Image
-                                        src={spellUrl}
-                                        alt="Spell 1"
-                                        width={28}
-                                        height={28}
-                                        className="object-cover"
-                                        unoptimized
-                                        onError={(e) => {
-                                          const target =
-                                            e.target as HTMLImageElement;
-                                          target.style.display = "none";
-                                        }}
-                                      />
-                                    </div>
-                                  ) : null;
-                                })()}
-                              {secondaryRuneId > 0 &&
-                                (() => {
-                                  const spellUrl =
-                                    getStyleImageUrl(secondaryRuneId);
-                                  return spellUrl ? (
-                                    <div className="w-7 h-7 bg-surface-4 rounded border border-divider overflow-hidden relative shadow-sm flex items-center justify-center">
-                                      <Image
-                                        src={spellUrl}
-                                        alt="Spell 2"
-                                        width={20}
-                                        height={20}
-                                        className="object-cover"
-                                        unoptimized
-                                        onError={(e) => {
-                                          const target =
-                                            e.target as HTMLImageElement;
-                                          target.style.display = "none";
-                                        }}
-                                      />
-                                    </div>
-                                  ) : null;
-                                })()}
-                            </div>
                             {/* 룬 */}
                             <div className="flex flex-col gap-1">
                               {mainRuneId > 0 && (
-                                <GameTooltip type="rune" id={mainRuneId}>
-                                  <div className="w-6 h-6 bg-surface-4 rounded-full border border-divider overflow-hidden relative shadow-sm">
-                                    <Image
-                                      src={`https://static.mmrtr.shop/perks/${mainRuneId}.png`}
-                                      alt="Main Rune"
-                                      fill
-                                      sizes="24px"
-                                      className="object-cover"
-                                      unoptimized
-                                    />
-                                  </div>
-                                </GameTooltip>
+                                <RuneImage
+                                  runeId={mainRuneId}
+                                  imageUrl={getPerkImageUrl(mainRuneId)}
+                                />
                               )}
                               {subRuneStyleId > 0 && (
-                                <GameTooltip type="rune" id={subRuneStyleId}>
-                                  <div className="w-6 h-6 bg-surface-4 rounded-full border border-divider overflow-hidden relative shadow-sm">
-                                    <Image
-                                      src={`https://static.mmrtr.shop/styles/${subRuneStyleId}.png`}
-                                      alt="Sub Rune Style"
-                                      fill
-                                      sizes="24px"
-                                      className="object-cover"
-                                      unoptimized
-                                    />
-                                  </div>
-                                </GameTooltip>
+                                <RuneImage
+                                  runeId={subRuneStyleId}
+                                  imageUrl={getStyleImageUrl(subRuneStyleId)}
+                                />
                               )}
                             </div>
                           </div>
@@ -985,32 +884,18 @@ export default function MatchHistory({
                     {/* 룬 */}
                     <div className="flex flex-col gap-0.5">
                       {mainRuneId > 0 && (
-                        <GameTooltip type="rune" id={mainRuneId}>
-                          <div className="w-5 h-5 bg-surface-4 rounded-full border border-divider overflow-hidden relative shadow-sm">
-                            <Image
-                              src={`https://static.mmrtr.shop/perks/${mainRuneId}.png`}
-                              alt="Main Rune"
-                              fill
-                              sizes="20px"
-                              className="object-cover"
-                              unoptimized
-                            />
-                          </div>
-                        </GameTooltip>
+                        <RuneImage
+                          runeId={mainRuneId}
+                          imageUrl={getPerkImageUrl(mainRuneId)}
+                          small
+                        />
                       )}
                       {subRuneStyleId > 0 && (
-                        <GameTooltip type="rune" id={subRuneStyleId}>
-                          <div className="w-5 h-5 bg-surface-4 rounded-full border border-divider overflow-hidden relative shadow-sm">
-                            <Image
-                              src={`https://static.mmrtr.shop/styles/${subRuneStyleId}.png`}
-                              alt="Sub Rune Style"
-                              fill
-                              sizes="20px"
-                              className="object-cover"
-                              unoptimized
-                            />
-                          </div>
-                        </GameTooltip>
+                        <RuneImage
+                          runeId={subRuneStyleId}
+                          imageUrl={getStyleImageUrl(subRuneStyleId)}
+                          small
+                        />
                       )}
                     </div>
                   </div>
@@ -1094,6 +979,7 @@ export default function MatchHistory({
           );
         })}
       </div>
+      )}
 
       {/* 더 보기 버튼 */}
       {(hasMore || isLoadingMore) && (

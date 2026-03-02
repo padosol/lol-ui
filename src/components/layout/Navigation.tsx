@@ -15,7 +15,7 @@ export default function Navigation() {
 
   const navItems = [
     { label: "홈", href: "/" },
-    { label: "챔피언 통계", href: "/champion-stats" },
+    { label: "챔피언 분석", href: "/champion-stats" },
     { label: "랭킹", href: "/leaderboards" },
     { label: "패치노트", href: "/patch-notes" },
   ];
@@ -35,8 +35,8 @@ export default function Navigation() {
                   key={item.href}
                   href={item.href}
                   className={`h-full flex items-center font-medium text-sm transition-colors border-b-2 ${isActive
-                      ? "text-primary border-primary"
-                      : "text-on-surface-medium hover:text-primary border-transparent"
+                    ? "text-primary border-primary"
+                    : "text-on-surface-medium hover:text-primary border-transparent"
                     }`}
                 >
                   {item.label}
@@ -73,8 +73,8 @@ export default function Navigation() {
               <Link
                 href="/mypage"
                 className={`h-full flex items-center font-medium text-sm transition-colors border-b-2 shrink-0 ${pathname === "/mypage"
-                    ? "text-primary border-primary"
-                    : "text-on-surface-medium hover:text-primary border-transparent"
+                  ? "text-primary border-primary"
+                  : "text-on-surface-medium hover:text-primary border-transparent"
                   }`}
               >
                 마이페이지

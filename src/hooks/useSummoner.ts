@@ -1,6 +1,7 @@
 import { getLeagueByPuuid } from "@/lib/api/league";
 import {
   getChampionRanking,
+  getDailyMatchCount,
   getMatchDetail,
   getMatchIds,
   getSummonerMatches,
@@ -8,6 +9,7 @@ import {
 import { getSummonerProfile, renewSummoner } from "@/lib/api/summoner";
 import type {
   ChampionStat,
+  DailyMatchCount,
   LeagueInfoResponse,
   MatchDetail,
   MatchIdsResponse,
@@ -127,6 +129,27 @@ export function useLeagueInfo(
     enabled: !!puuid,
     staleTime: 5 * 60 * 1000, // 5분간 캐시 유지
     initialData: options?.initialData,
+  });
+}
+
+/**
+ * 일별 매치 수 조회 훅
+ * @param region 지역
+ * @param puuid 소환사 PUUID
+ * @param season 시즌
+ * @param queueId 큐 ID (선택)
+ */
+export function useDailyMatchCount(
+  region: string,
+  puuid: string,
+  season: string,
+  queueId?: number
+) {
+  return useQuery<DailyMatchCount[], Error>({
+    queryKey: ["daily-match-count", region, puuid, season, queueId],
+    queryFn: () => getDailyMatchCount(region, puuid, season, queueId),
+    enabled: !!puuid && !!season,
+    staleTime: 5 * 60 * 1000,
   });
 }
 

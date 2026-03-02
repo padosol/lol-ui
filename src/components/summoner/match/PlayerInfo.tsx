@@ -4,8 +4,10 @@ import GameTooltip from "@/components/tooltip/GameTooltip";
 import {
   getItemImageUrl,
   getKDAColorClass,
+  getPerkImageUrl,
   getSpellImageUrl,
 } from "@/utils/game";
+import { getStyleImageUrl } from "@/utils/styles";
 import { getPositionName } from "@/utils/position";
 import Image from "next/image";
 
@@ -23,6 +25,8 @@ interface PlayerInfoProps {
     assists: number;
   };
   kdaRating: string;
+  mainRuneId?: number;
+  subRuneStyleId?: number;
   isArena?: boolean;
 }
 
@@ -36,6 +40,8 @@ export default function PlayerInfo({
   items,
   kda,
   kdaRating,
+  mainRuneId,
+  subRuneStyleId,
   isArena = false,
 }: PlayerInfoProps) {
   return (
@@ -106,9 +112,38 @@ export default function PlayerInfo({
             </div>
           </GameTooltip>
         )}
-        {/* 룬은 style에서 추출 필요 (추후 구현) */}
-        <div className="w-7 h-7 bg-surface-8 rounded"></div>
-        <div className="w-7 h-7 bg-surface-8 rounded"></div>
+        {mainRuneId && mainRuneId > 0 ? (
+          <GameTooltip type="rune" id={mainRuneId}>
+            <div className="w-7 h-7 bg-surface-8 rounded overflow-hidden relative">
+              <Image
+                src={getPerkImageUrl(mainRuneId)}
+                alt="Main Rune"
+                fill
+                sizes="28px"
+                className="object-cover"
+                unoptimized
+              />
+            </div>
+          </GameTooltip>
+        ) : (
+          <div className="w-7 h-7 bg-surface-8 rounded"></div>
+        )}
+        {subRuneStyleId && subRuneStyleId > 0 ? (
+          <GameTooltip type="rune" id={subRuneStyleId}>
+            <div className="w-7 h-7 bg-surface-8 rounded overflow-hidden relative">
+              <Image
+                src={getStyleImageUrl(subRuneStyleId)}
+                alt="Sub Rune Style"
+                fill
+                sizes="28px"
+                className="object-cover"
+                unoptimized
+              />
+            </div>
+          </GameTooltip>
+        ) : (
+          <div className="w-7 h-7 bg-surface-8 rounded"></div>
+        )}
       </div>
 
       {/* KDA (일반 모드에서만 표시) */}

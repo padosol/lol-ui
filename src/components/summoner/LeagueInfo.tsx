@@ -96,7 +96,7 @@ export default function LeagueInfo({
   };
 
   const getQueueTypeName = (leagueType: string) => {
-    return leagueType === "RANKED_SOLO_5x5" ? "솔로랭크" : "자유 랭크";
+    return leagueType === "RANKED_SOLO_5x5" ? "솔로 랭크" : "자유 랭크";
   };
 
   return (
