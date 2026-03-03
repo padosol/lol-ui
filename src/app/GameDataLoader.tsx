@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useGameDataStore } from "./useGameDataStore";
+import { useGameDataStore } from "@/shared/model/game-data";
 import { useSeasonStore } from "@/entities/season";
 
 export default function GameDataLoader() {

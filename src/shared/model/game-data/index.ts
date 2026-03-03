@@ -1,5 +1,4 @@
 export { useGameDataStore } from "./useGameDataStore";
-export { default as GameDataLoader } from "./GameDataLoader";
 export type {
   ChampionData,
   ChampionInfo,

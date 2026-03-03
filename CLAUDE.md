@@ -93,7 +93,7 @@ Component → React Query hook (entities/*/model/) → API functions (entities/*
 5. **Layout Structure**
    - `QueryProvider`: React Query 클라이언트 제공 (`src/shared/providers/QueryProvider.tsx`)
    - `ThemeProvider`: 테마 관리 (`src/shared/providers/ThemeProvider.tsx`)
-   - `GameDataLoader`: 앱 시작 시 게임 데이터 미리 로드 (`src/shared/model/game-data/GameDataLoader.tsx`)
+   - `GameDataLoader`: 앱 시작 시 게임 데이터 미리 로드 (`src/app/GameDataLoader.tsx`)
 
 6. **SSR Pattern**
    - 서버 페이지: `src/app/` 내 `async function Page()` + `generateMetadata()`
