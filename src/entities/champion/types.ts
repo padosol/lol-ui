@@ -6,6 +6,8 @@ export interface ChampionRotationResponse {
 
 export type PositionType = "TOP" | "JUNGLE" | "MID" | "ADC" | "SUPPORT";
 
+export type ApiPositionType = "TOP" | "JUNGLE" | "MIDDLE" | "BOTTOM" | "UTILITY";
+
 export interface MatchupData {
   opponentChampionId: number;
   totalGames: number;
@@ -38,7 +40,7 @@ export interface SkillBuildData {
 }
 
 export interface ChampionPositionStats {
-  teamPosition: string;
+  teamPosition: ApiPositionType;
   winRate: number;
   totalCount: number;
   matchups: MatchupData[];
@@ -51,9 +53,6 @@ export interface ChampionStatsResponse {
   tier: string;
   stats: ChampionPositionStats[];
 }
-
-// 포지션별 챔피언 게임수 API 타입
-export type ApiPositionType = "TOP" | "JUNGLE" | "MIDDLE" | "BOTTOM" | "UTILITY";
 
 export interface PositionChampionEntry {
   championId: number;

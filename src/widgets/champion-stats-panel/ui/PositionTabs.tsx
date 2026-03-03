@@ -2,15 +2,15 @@
 
 import type {
   ChampionPositionStats,
-  PositionType,
+  ApiPositionType,
 } from "@/entities/champion";
 import { getPositionImageUrl, getPositionName } from "@/shared/lib/position";
 import Image from "next/image";
 
 interface PositionTabsProps {
-  positions: PositionType[];
-  selectedPosition: PositionType;
-  onSelectPosition: (position: PositionType) => void;
+  positions: ApiPositionType[];
+  selectedPosition: ApiPositionType;
+  onSelectPosition: (position: ApiPositionType) => void;
   stats: ChampionPositionStats[];
 }
 
@@ -28,6 +28,7 @@ export default function PositionTabs({
         return (
           <button
             key={pos}
+            type="button"
             onClick={() => onSelectPosition(pos)}
             className={`flex items-center gap-1.5 px-4 py-2 text-sm font-medium transition-colors border-b-2 ${
               isActive

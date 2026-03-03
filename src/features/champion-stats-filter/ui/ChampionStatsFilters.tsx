@@ -69,7 +69,7 @@ export default function ChampionStatsFilters({
             aria-haspopup="listbox"
             aria-expanded={tierOpen}
           >
-            {TIER_OPTIONS.find((o) => o.value === selectedTier)?.label}
+            {TIER_OPTIONS.find((o) => o.value === selectedTier)?.label ?? selectedTier}
             <ChevronDown
               className={`absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-on-surface-medium transition-transform ${tierOpen ? "rotate-180" : ""}`}
             />

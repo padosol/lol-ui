@@ -12,5 +12,8 @@ export async function getChampionStats(
     `/v1/${region}/champion-stats`,
     { params: { championId, patch, ...(tier && { tier }) } }
   );
+  if (response.data.result === "FAIL") {
+    throw new Error(response.data.errorMessage || "챔피언 통계 조회에 실패했습니다.");
+  }
   return response.data.data;
 }
