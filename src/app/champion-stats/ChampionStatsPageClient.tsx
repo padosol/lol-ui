@@ -1,21 +1,20 @@
 "use client";
 
-import ChampionListSidebar from "@/components/champion-stats/ChampionListSidebar";
-import ChampionOverview from "@/components/champion-stats/ChampionOverview";
-import ItemBuildStats from "@/components/champion-stats/ItemBuildStats";
-import MatchupStats from "@/components/champion-stats/MatchupStats";
-import PositionTabs from "@/components/champion-stats/PositionTabs";
-import RuneStats from "@/components/champion-stats/RuneStats";
-import SkillTreeStats from "@/components/champion-stats/SkillTreeStats";
-import Footer from "@/components/layout/Footer";
-import Header from "@/components/layout/Header";
-import Navigation from "@/components/layout/Navigation";
-import { useChampionStats } from "@/hooks/useChampionStats";
-import { useGameDataStore } from "@/stores/useGameDataStore";
-import { useRegionStore } from "@/stores/useRegionStore";
-import { useSeasonStore } from "@/stores/useSeasonStore";
-import type { PositionType } from "@/types/championStats";
-import { POSITION_ORDER } from "@/utils/position";
+import {
+  ChampionListSidebar,
+  ChampionOverview,
+  ItemBuildStats,
+  MatchupStats,
+  PositionTabs,
+  RuneStats,
+  SkillTreeStats,
+} from "@/widgets/champion-stats-panel";
+import { Header, Navigation, Footer } from "@/widgets/layout";
+import { useChampionStats, type PositionType } from "@/entities/champion";
+import { useGameDataStore } from "@/shared/model/game-data";
+import { useRegionStore } from "@/features/region-select";
+import { useSeasonStore } from "@/entities/season";
+import { POSITION_ORDER } from "@/shared/lib/position";
 import { ChevronDown } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 

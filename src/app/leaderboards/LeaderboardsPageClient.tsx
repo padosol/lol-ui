@@ -1,11 +1,9 @@
 "use client";
 
-import Footer from "@/components/layout/Footer";
-import Header from "@/components/layout/Header";
-import Navigation from "@/components/layout/Navigation";
-import RankingFilters from "@/components/ranking/RankingFilters";
-import RankingTable from "@/components/ranking/RankingTable";
-import { useRegionStore } from "@/stores/useRegionStore";
+import { Header, Navigation, Footer } from "@/widgets/layout";
+import { RankingFilters } from "@/features/ranking-filter";
+import { RankingTable } from "@/widgets/ranking";
+import { useRegionStore } from "@/features/region-select";
 import { useState } from "react";
 
 export default function LeaderboardsPageClient() {

@@ -1,10 +1,7 @@
-import Footer from "@/components/layout/Footer";
-import Header from "@/components/layout/Header";
-import Navigation from "@/components/layout/Navigation";
-import PatchContentInner from "@/components/patchnotes/PatchContentInner";
-import PatchList from "@/components/patchnotes/PatchList";
-import { getPatchVersions } from "@/lib/api/patchnotes";
-import { fetchPatchNoteServer } from "@/lib/server/patchnotes";
+import { Header, Navigation, Footer } from "@/widgets/layout";
+import { PatchContentInner, PatchList } from "@/widgets/patch-content";
+import { getPatchVersions } from "@/entities/patch-note";
+import { fetchPatchNoteServer } from "@/entities/patch-note/lib/serverPatchnotes";
 import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
