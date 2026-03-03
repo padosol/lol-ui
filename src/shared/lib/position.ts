@@ -4,8 +4,7 @@ export function getPositionImageUrl(position: string): string {
   if (!position || position === "UNKNOWN") {
     return "";
   }
-  const normalizedPosition = position.toUpperCase();
-  return `${IMAGE_HOST}/position/Position-${normalizedPosition}.png`;
+  return `${IMAGE_HOST}/position/Position-${position.toUpperCase()}.png`;
 }
 
 export function getPositionName(position: string): string {
@@ -17,6 +16,7 @@ export function getPositionName(position: string): string {
     ADC: "원딜",
     BOTTOM: "원딜",
     SUPPORT: "서포터",
+    UTILITY: "서포터",
     UNKNOWN: "알 수 없음",
   };
   return positionMap[position.toUpperCase()] || position;

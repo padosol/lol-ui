@@ -4,16 +4,19 @@ import { useGameDataStore } from "@/shared/model/game-data";
 import { getChampionImageUrl, getChampionNameByEnglishName } from "@/entities/champion";
 import { Search } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useMemo, useState } from "react";
 
 interface ChampionListSidebarProps {
-  selectedChampionId: string;
-  onSelectChampion: (id: string) => void;
+  tier: string;
+  patch: string;
+  platformId: string;
 }
 
 export default function ChampionListSidebar({
-  selectedChampionId,
-  onSelectChampion,
+  tier,
+  patch,
+  platformId,
 }: ChampionListSidebarProps) {
   const championData = useGameDataStore((s) => s.championData);
   const [search, setSearch] = useState("");
@@ -50,33 +53,26 @@ export default function ChampionListSidebar({
       </div>
 
       {/* 챔피언 목록 */}
-      <div className="max-h-[calc(100vh-280px)] overflow-y-auto space-y-0.5">
-        {filtered.map((champ) => {
-          const isSelected = champ.id === selectedChampionId;
-          return (
-            <button
-              key={champ.id}
-              onClick={() => onSelectChampion(champ.id)}
-              className={`w-full flex items-center gap-2 px-2 py-1.5 rounded text-left text-sm transition-colors ${
-                isSelected
-                  ? "bg-primary/10 border-l-2 border-primary text-on-surface"
-                  : "text-on-surface-medium hover:bg-surface-4 hover:text-on-surface border-l-2 border-transparent"
-              }`}
-            >
-              <Image
-                src={getChampionImageUrl(champ.id)}
-                alt={champ.name}
-                width={32}
-                height={32}
-                className="rounded"
-                unoptimized
-              />
-              <span className="truncate">
-                {getChampionNameByEnglishName(champ.id)}
-              </span>
-            </button>
-          );
-        })}
+      <div className="max-h-[calc(100vh-280px)] overflow-y-auto grid grid-cols-3 gap-1.5">
+        {filtered.map((champ) => (
+          <Link
+            key={champ.id}
+            href={`/champion-stats/${champ.id}?tier=${tier}&patch=${patch}&platformId=${platformId}`}
+            className="flex flex-col items-center gap-1 p-1.5 rounded transition-colors text-on-surface-medium hover:bg-surface-4 hover:text-on-surface"
+          >
+            <Image
+              src={getChampionImageUrl(champ.id)}
+              alt={champ.name}
+              width={40}
+              height={40}
+              className="rounded"
+              unoptimized
+            />
+            <span className="w-full truncate text-center text-xs">
+              {getChampionNameByEnglishName(champ.id)}
+            </span>
+          </Link>
+        ))}
         {filtered.length === 0 && (
           <p className="text-center text-on-surface-medium text-sm py-4">
             검색 결과 없음
