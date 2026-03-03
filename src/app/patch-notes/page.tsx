@@ -40,29 +40,31 @@ export default async function PatchNotesPage() {
     <div className="min-h-screen bg-surface">
       <Header />
       <Navigation />
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold text-on-surface mb-2">패치노트</h1>
-          <p className="text-on-surface-medium">
-            리그 오브 레전드 패치 변경사항을 확인하세요
-          </p>
-        </div>
+      <main className="max-w-[1080px] mx-auto py-8 px-4">
+        <div className="max-w-[1024px]">
+          <div className="mb-6">
+            <h1 className="text-3xl font-bold text-on-surface mb-2">패치노트</h1>
+            <p className="text-on-surface-medium">
+              리그 오브 레전드 패치 변경사항을 확인하세요
+            </p>
+          </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-          <aside className="lg:col-span-1">
-            <div className="sticky top-4">
-              <div className="max-h-[calc(100vh-200px)] overflow-y-auto pr-2">
-                <PatchList
-                  patches={patches}
-                  selectedVersion={latestVersionId}
-                />
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <aside className="lg:col-span-1">
+              <div className="sticky top-4">
+                <div className="max-h-[calc(100vh-200px)] overflow-y-auto pr-2">
+                  <PatchList
+                    patches={patches}
+                    selectedVersion={latestVersionId}
+                  />
+                </div>
               </div>
-            </div>
-          </aside>
+            </aside>
 
-          <section className="lg:col-span-3">
-            <PatchContentInner patchNote={patchNote} />
-          </section>
+            <section className="lg:col-span-3">
+              <PatchContentInner patchNote={patchNote} />
+            </section>
+          </div>
         </div>
       </main>
       <Footer />

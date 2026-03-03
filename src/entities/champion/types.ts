@@ -51,3 +51,16 @@ export interface ChampionStatsResponse {
   tier: string;
   stats: ChampionPositionStats[];
 }
+
+// 포지션별 챔피언 게임수 API 타입
+export type ApiPositionType = "TOP" | "JUNGLE" | "MIDDLE" | "BOTTOM" | "UTILITY";
+
+export interface PositionChampionEntry {
+  championId: number;
+  totalGames: number;
+}
+
+export interface PositionChampionStats {
+  teamPosition: ApiPositionType;
+  champions: PositionChampionEntry[];
+}

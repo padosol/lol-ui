@@ -1,1 +1,1 @@
-// champion-stats-filter feature - model will be extracted when needed
+export { default as ChampionStatsFilters } from "./ui/ChampionStatsFilters";
