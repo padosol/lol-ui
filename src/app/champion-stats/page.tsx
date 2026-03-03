@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import ChampionStatsPageClient from "./ChampionStatsPageClient";
+import { ChampionStatsPageClient } from "@/views/champion-stats";
 
 export const metadata: Metadata = {
   title: "챔피언 분석 - METAPICK",

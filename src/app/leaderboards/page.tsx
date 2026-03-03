@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import LeaderboardsPageClient from "./LeaderboardsPageClient";
+import { LeaderboardsPageClient } from "@/views/leaderboards";
 
 export const metadata: Metadata = {
   title: "랭킹, 천상계 커트라인 | METAPICK.ME",

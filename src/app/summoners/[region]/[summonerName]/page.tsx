@@ -6,7 +6,7 @@ import { getProfileIconImageUrl } from "@/shared/lib/profile";
 import { normalizeRegion, parseSummonerName } from "@/entities/summoner";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import SummonerPageClient from "./SummonerPageClient";
+import { SummonerPageClient } from "@/views/summoner";
 
 interface PageProps {
   params: Promise<{
