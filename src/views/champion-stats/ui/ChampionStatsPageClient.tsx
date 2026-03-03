@@ -21,7 +21,7 @@ export default function ChampionStatsPageClient() {
   const latestPatches = latestSeason?.patchVersions ?? [];
   const activePatch = selectedPatch || latestPatches[0] || "";
 
-  const { data, isLoading } = useChampionPositionStats(
+  const { data, isLoading, isError } = useChampionPositionStats(
     selectedPlatform,
     activePatch,
     selectedTier
@@ -80,6 +80,10 @@ export default function ChampionStatsPageClient() {
               {isLoading ? (
                 <div className="flex items-center justify-center py-20">
                   <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                </div>
+              ) : isError ? (
+                <div className="text-center py-20 text-loss">
+                  통계 데이터를 불러오는 중 오류가 발생했습니다.
                 </div>
               ) : (
                 <ChampionGameCountTable

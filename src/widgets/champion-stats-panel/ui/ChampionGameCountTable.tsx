@@ -83,12 +83,9 @@ export default function ChampionGameCountTable({
             const info = championMap.get(entry.championId);
             const championName = info?.name ?? `Champion ${entry.championId}`;
             const championId = info?.id ?? "";
-            return (
-              <Link
-                key={entry.championId}
-                href={`/champion-stats/${championId}?tier=${tier}&patch=${patch}&platformId=${platformId}`}
-                className="grid grid-cols-[60px_1fr_120px] items-center px-4 py-2.5 hover:bg-surface-4 transition-colors border-b border-divider last:border-b-0"
-              >
+
+            const content = (
+              <>
                 <span className="text-center text-sm text-on-surface-medium">
                   {index + 1}
                 </span>
@@ -110,6 +107,27 @@ export default function ChampionGameCountTable({
                 <span className="text-right text-sm text-on-surface">
                   {entry.totalGames.toLocaleString()}
                 </span>
+              </>
+            );
+
+            if (!championId) {
+              return (
+                <div
+                  key={entry.championId}
+                  className="grid grid-cols-[60px_1fr_120px] items-center px-4 py-2.5 border-b border-divider last:border-b-0"
+                >
+                  {content}
+                </div>
+              );
+            }
+
+            return (
+              <Link
+                key={entry.championId}
+                href={`/champion-stats/${championId}?tier=${tier}&patch=${patch}&platformId=${platformId}`}
+                className="grid grid-cols-[60px_1fr_120px] items-center px-4 py-2.5 hover:bg-surface-4 transition-colors border-b border-divider last:border-b-0"
+              >
+                {content}
               </Link>
             );
           })

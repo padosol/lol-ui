@@ -33,7 +33,7 @@ function SummonerSpellImage({ spellId, small }: { spellId: number; small?: boole
 
   useEffect(() => {
     if (spellId > 0) {
-      getSpellImageUrlAsync(spellId).then(setImageUrl);
+      getSpellImageUrlAsync(spellId).then(setImageUrl).catch(() => {});
     }
   }, [spellId]);
 
