@@ -1,0 +1,187 @@
+"use client";
+
+import { useChampionRanking } from "@/entities/match";
+import { useGameDataStore } from "@/shared/model/game-data";
+import { GameTooltip } from "@/shared/ui/tooltip";
+import { getChampionImageUrl, getChampionNameByEnglishName } from "@/entities/champion";
+import { calcWinRateCeil2, getWinRateTextClass } from "@/entities/champion";
+import { getKDAColorClass } from "@/shared/lib/game";
+import { useSeasonStore } from "@/entities/season";
+import Image from "next/image";
+import { useEffect, useState } from "react";
+
+type QueueTabType = "solo" | "flex";
+
+interface ChampionStatsOverviewProps {
+  puuid?: string | null;
+  season?: string;
+  showTitle?: boolean;
+  limit?: number;
+}
+
+const queueTabs: { id: QueueTabType; label: string }[] = [
+  { id: "solo", label: "솔로 랭크" },
+  { id: "flex", label: "자유 랭크" },
+];
+
+export default function ChampionStatsOverview({
+  puuid,
+  season,
+  showTitle = true,
+  limit = 5,
+}: ChampionStatsOverviewProps) {
+  const latestSeasonValue = useSeasonStore((s) => s.getLatestSeasonValue());
+  const effectiveSeason = season ?? latestSeasonValue ?? "";
+
+  const [activeQueue, setActiveQueue] = useState<QueueTabType>("solo");
+  const queueId = activeQueue === "solo" ? 420 : 440;
+
+  const { data: championStats = [], isLoading } = useChampionRanking(
+    puuid || "",
+    effectiveSeason,
+    queueId
+  );
+
+  // champion.json 데이터 로드 (zustand store 사용)
+  const loadChampionData = useGameDataStore((state) => state.loadChampionData);
+  useEffect(() => {
+    loadChampionData();
+  }, [loadChampionData]);
+
+  // limit이 있으면 제한
+  const displayedStats = limit ? championStats.slice(0, limit) : championStats;
+
+  // 탭 헤더 렌더링
+  const renderTabHeader = () => (
+    <div className="flex gap-1 bg-surface-6/50 p-2">
+      {queueTabs.map((tab) => (
+        <button
+          key={tab.id}
+          onClick={() => setActiveQueue(tab.id)}
+          className={`px-3 py-1.5 text-sm rounded-md transition-colors cursor-pointer ${activeQueue === tab.id
+            ? "bg-surface-1 text-on-surface font-semibold"
+            : "text-on-surface-medium hover:text-on-surface"
+            }`}
+        >
+          {tab.label}
+        </button>
+      ))}
+    </div>
+  );
+
+  if (isLoading) {
+    return (
+      <div className="border border-divider rounded-lg overflow-hidden">
+        {showTitle && renderTabHeader()}
+        <div className="p-3">
+          <div className="flex items-center justify-center py-12">
+            <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!puuid) {
+    return (
+      <div className="border border-divider rounded-lg overflow-hidden">
+        {showTitle && renderTabHeader()}
+        <div className="p-3">
+          <div className="text-center py-12 text-on-surface-medium">
+            소환사 정보가 필요합니다.
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (displayedStats.length === 0 && !isLoading) {
+    return (
+      <div className="border border-divider rounded-lg overflow-hidden">
+        {showTitle && renderTabHeader()}
+        <div className="p-3">
+          <div className="text-center text-on-surface-medium border border-divider rounded-lg py-4">
+            {activeQueue === "solo" ? "솔로 랭크" : "자유 랭크"} 챔피언 통계 데이터가 없습니다.
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // KDA 계산
+  const calculateKDA = (kills: number, deaths: number, assists: number) => {
+    if (deaths === 0) return "perfect";
+    return ((kills + assists) / deaths).toFixed(2);
+  };
+
+  return (
+    <div className="border border-divider rounded-lg overflow-hidden">
+      {showTitle && renderTabHeader()}
+      <div className="p-3 space-y-2">
+        {displayedStats.map((champion, index) => {
+          const winRate = calcWinRateCeil2(champion.win, champion.playCount);
+          const kdaValue = calculateKDA(
+            champion.kills,
+            champion.deaths,
+            champion.assists
+          );
+          const kda = kdaValue === "perfect" ? "perfect" : parseFloat(kdaValue);
+          const championNameKo = getChampionNameByEnglishName(
+            champion.championName
+          );
+
+          return (
+            <div
+              key={champion.championId || index}
+              className="flex items-center gap-1.5 p-1.5 bg-surface-8/50 rounded-lg hover:bg-surface-8 transition-colors border border-divider"
+            >
+              {/* 챔피언 아이콘 */}
+              <GameTooltip type="champion" id={champion.championName}>
+                <div className="w-8 h-8 bg-surface-6 rounded-lg flex items-center justify-center overflow-hidden relative">
+                  <Image
+                    src={getChampionImageUrl(champion.championName)}
+                    alt={champion.championName}
+                    fill
+                    sizes="32px"
+                    className="object-cover"
+                    unoptimized
+                  />
+                </div>
+              </GameTooltip>
+
+              {/* 통계 정보 */}
+              <div className="flex-1 min-w-0">
+                {/* 1줄: 좌(챔피언명) / 우(승률) */}
+                <div className="flex items-center justify-between gap-3">
+                  <div className="text-on-surface font-semibold text-xs leading-tight truncate">
+                    {championNameKo}
+                  </div>
+                  <div
+                    className={`shrink-0 text-xs font-semibold leading-tight ${getWinRateTextClass(
+                      winRate
+                    )}`}
+                  >
+                    {winRate.toFixed(2)}%
+                  </div>
+                </div>
+
+                {/* 2줄: 좌(KDA) / 우(게임 수) */}
+                <div className="flex items-center justify-between gap-3 mt-1.5 leading-tight">
+                  <div className="text-on-surface-disabled text-[11px]">
+                    KDA{" "}
+                    <span className={getKDAColorClass(kda)}>
+                      {kda === "perfect" ? "perfect" : kda.toFixed(2)}
+                    </span>
+                  </div>
+                  <div className="shrink-0 text-on-surface-medium text-xs">
+                    {champion.playCount}게임
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}

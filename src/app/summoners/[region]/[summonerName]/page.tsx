@@ -1,9 +1,9 @@
-import { getLeagueByPuuid } from "@/lib/api/league";
-import { serverApiClient } from "@/lib/api/server-client";
-import { getSummonerProfile } from "@/lib/api/summoner";
-import { logger } from "@/lib/logger";
-import { getProfileIconImageUrl } from "@/utils/profile";
-import { normalizeRegion, parseSummonerName } from "@/utils/summoner";
+import { getLeagueByPuuid } from "@/entities/league";
+import { serverApiClient } from "@/shared/api/server-client";
+import { getSummonerProfile } from "@/entities/summoner";
+import { logger } from "@/shared/lib/logger";
+import { getProfileIconImageUrl } from "@/shared/lib/profile";
+import { normalizeRegion, parseSummonerName } from "@/entities/summoner";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import SummonerPageClient from "./SummonerPageClient";

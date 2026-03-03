@@ -1,11 +1,9 @@
 "use client";
 
-import Footer from "@/components/layout/Footer";
-import Header from "@/components/layout/Header";
-import Navigation from "@/components/layout/Navigation";
-import ProfileSection from "@/components/summoner/ProfileSection";
-import ProfileTabs from "@/components/summoner/ProfileTabs";
-import type { LeagueInfoResponse, SummonerProfile } from "@/types/api";
+import { Header, Navigation, Footer } from "@/widgets/layout";
+import { ProfileSection, ProfileTabs } from "@/widgets/summoner-profile";
+import type { SummonerProfile } from "@/entities/summoner";
+import type { LeagueInfoResponse } from "@/entities/league";
 import { useCallback, useState } from "react";
 
 interface SummonerPageClientProps {

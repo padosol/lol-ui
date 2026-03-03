@@ -1,15 +1,13 @@
 "use client";
 
-import Footer from "@/components/layout/Footer";
-import Header from "@/components/layout/Header";
-import Navigation from "@/components/layout/Navigation";
-import SummonerNotFound from "@/components/summoner/SummonerNotFound";
+import { Header, Navigation, Footer } from "@/widgets/layout";
+import { SummonerNotFound } from "@/widgets/summoner-profile";
 import { useParams } from "next/navigation";
 
 export default function NotFoundPage() {
   const params = useParams();
-  const region = params.region as string;
-  const rawSummonerName = params.summonerName as string;
+  const region = (params?.region as string) ?? "";
+  const rawSummonerName = (params?.summonerName as string) ?? "";
 
   // URL 디코딩
   const decodedSummonerName = decodeURIComponent(rawSummonerName);

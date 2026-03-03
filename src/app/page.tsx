@@ -1,9 +1,6 @@
-import Header from "@/components/layout/Header";
-import Navigation from "@/components/layout/Navigation";
-import LogoSearchSection from "@/components/home/LogoSearchSection";
-import DesktopAppSection from "@/components/home/DesktopAppSection";
-import HomePatchNotes from "@/components/home/HomePatchNotes";
-import Footer from "@/components/layout/Footer";
+import { Header, Navigation, Footer } from "@/widgets/layout";
+import { LogoSearchSection } from "@/features/summoner-search";
+import { DesktopAppSection, HomePatchNotes } from "@/widgets/home-sections";
 
 export default function Home() {
   return (
