@@ -40,9 +40,7 @@ export default function ChampionStatsTable({
     return map;
   }, [championData]);
 
-  const filtered = useMemo(() => {
-    return [...champions].sort((a, b) => b.pickRate - a.pickRate);
-  }, [champions]);
+  const filtered = champions;
 
   return (
     <div className="bg-surface-2 border border-divider rounded-xl overflow-hidden">
