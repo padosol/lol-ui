@@ -475,7 +475,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#ChampionStats-API">ChampionStats API</a>
 <ul class="sectlevel2">
 <li><a href="#champion-stats-get">챔피언 통계 조회</a></li>
-<li><a href="#champion-stats-positions">포지션별 챔피언 게임수 조회</a></li>
+<li><a href="#champion-stats-positions">포지션별 챔피언 승률/픽률/밴률 조회</a></li>
 </ul>
 </li>
 <li><a href="#Rank-API">Rank API</a>
@@ -689,8 +689,8 @@ Content-Length: 359
     "gameName" : "hide on bush",
     "tagLine" : "KR1",
     "platform" : null,
-    "lastRevisionDateTime" : "2026-03-03T23:17:52.334134122",
-    "lastRevisionClickDateTime" : "2026-03-03T23:17:52.334134122"
+    "lastRevisionDateTime" : "2026-03-05T00:48:17.163285155",
+    "lastRevisionClickDateTime" : "2026-03-05T00:48:17.163285155"
   },
   "errorMessage" : null
 }</code></pre>
@@ -2661,7 +2661,7 @@ Content-Length: 966
 </div>
 </div>
 <div class="sect2">
-<h3 id="champion-stats-positions"><a class="link" href="#champion-stats-positions">포지션별 챔피언 게임수 조회</a></h3>
+<h3 id="champion-stats-positions"><a class="link" href="#champion-stats-positions">포지션별 챔피언 승률/픽률/밴률 조회</a></h3>
 <div class="sect3">
 <h4 id="_http_request_11"><a class="link" href="#_http_request_11">HTTP Request</a></h4>
 <div class="listingblock">
@@ -2719,7 +2719,7 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 363
+Content-Length: 561
 
 {
   "result" : "SUCCESS",
@@ -2727,16 +2727,25 @@ Content-Length: 363
     "teamPosition" : "TOP",
     "champions" : [ {
       "championId" : 266,
-      "totalGames" : 1500
+      "winRate" : 0.52,
+      "pickRate" : 0.08,
+      "banRate" : 0.05,
+      "tier" : "OP"
     }, {
       "championId" : 122,
-      "totalGames" : 1200
+      "winRate" : 0.48,
+      "pickRate" : 0.06,
+      "banRate" : 0.03,
+      "tier" : "3"
     } ]
   }, {
     "teamPosition" : "JUNGLE",
     "champions" : [ {
       "championId" : 64,
-      "totalGames" : 2000
+      "winRate" : 0.51,
+      "pickRate" : 0.1,
+      "banRate" : 0.07,
+      "tier" : "1"
     } ]
   } ],
   "errorMessage" : null
@@ -2770,7 +2779,7 @@ Content-Length: 363
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[]</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">포지션별 챔피언 게임수 목록</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">포지션별 챔피언 통계 목록</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].teamPosition</code></p></td>
@@ -2788,9 +2797,24 @@ Content-Length: 363
 <td class="tableblock halign-left valign-top"><p class="tableblock">챔피언 ID</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].champions[].totalGames</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].champions[].winRate</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">총 게임 수</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">승률</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].champions[].pickRate</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">픽률</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].champions[].banRate</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">밴률</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].champions[].tier</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">METAPICK 티어 (OP, 1, 2, 3, 4, 5)</p></td>
 </tr>
 </tbody>
 </table>

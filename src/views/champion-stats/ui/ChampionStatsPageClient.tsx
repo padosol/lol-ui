@@ -3,7 +3,7 @@
 import {
   ChampionListSidebar,
   PositionTabsList,
-  ChampionGameCountTable,
+  ChampionStatsTable,
 } from "@/widgets/champion-stats-panel";
 import { Header, Navigation, Footer } from "@/widgets/layout";
 import { useChampionPositionStats, type ApiPositionType } from "@/entities/champion";
@@ -37,21 +37,21 @@ export default function ChampionStatsPageClient() {
     <div className="min-h-screen bg-surface">
       <Header />
       <Navigation />
-      <main className="py-8 px-4">
-        <div className="max-w-[1080px] mx-auto">
+      <main className="max-w-[1080px] mx-auto py-8 px-4">
+        <div className="max-w-[1024px] mx-auto">
           <div className="mb-6">
             <h1 className="text-3xl font-bold text-on-surface mb-2">
               챔피언 분석
             </h1>
             <p className="text-on-surface-medium">
-              포지션별 챔피언 게임수를 확인하고, 챔피언을 클릭하여 상세 통계를 확인하세요
+              포지션별 챔피언 승률, 픽률, 밴률을 확인하고, 챔피언을 클릭하여 상세 통계를 확인하세요
             </p>
           </div>
 
-          <div className="lg:grid lg:grid-cols-[280px_1fr] lg:gap-6">
+          <div className="lg:grid lg:grid-cols-2 lg:gap-6">
             {/* 좌측 사이드바 - 데스크톱만 표시 */}
             <div className="hidden lg:block">
-              <div className="sticky top-4">
+              <div>
                 <ChampionListSidebar
                   tier={selectedTier}
                   patch={activePatch}
@@ -86,7 +86,7 @@ export default function ChampionStatsPageClient() {
                   통계 데이터를 불러오는 중 오류가 발생했습니다.
                 </div>
               ) : (
-                <ChampionGameCountTable
+                <ChampionStatsTable
                   champions={currentPositionChampions}
                   tier={selectedTier}
                   patch={activePatch}
