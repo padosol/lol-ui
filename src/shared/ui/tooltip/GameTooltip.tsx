@@ -5,11 +5,12 @@ import ChampionTooltipContent from "./ChampionTooltipContent";
 import ItemTooltipContent from "./ItemTooltipContent";
 import RuneTooltipContent from "./RuneTooltipContent";
 import ChampionSpellTooltipContent from "./ChampionSpellTooltipContent";
+import ChampionPassiveTooltipContent from "./ChampionPassiveTooltipContent";
 import SpellTooltipContent from "./SpellTooltipContent";
 import Tooltip from "./Tooltip";
 
 interface GameTooltipProps {
-  type: "item" | "champion" | "rune" | "spell" | "championSpell";
+  type: "item" | "champion" | "rune" | "spell" | "championSpell" | "championPassive";
   id: number | string;
   disabled?: boolean;
   children: ReactElement;
@@ -37,6 +38,9 @@ export default function GameTooltip({ type, id, disabled, children }: GameToolti
       content = <ChampionSpellTooltipContent championName={championName} skillIndex={parseInt(skillIndexStr, 10)} />;
       break;
     }
+    case "championPassive":
+      content = <ChampionPassiveTooltipContent championName={String(id)} />;
+      break;
   }
 
   return (

@@ -76,7 +76,7 @@ export default function ChampionStatsFilters({
           </button>
           {tierOpen && (
             <div className="absolute top-full left-0 mt-1 w-full bg-surface-4 border border-divider rounded-lg shadow-lg z-50 overflow-hidden">
-              <div className="py-1" role="listbox" aria-label="티어 선택">
+              <div className="py-1 max-h-[320px] overflow-y-auto" role="listbox" aria-label="티어 선택">
                 {TIER_OPTIONS.map((opt) => {
                   const selected = opt.value === selectedTier;
                   return (

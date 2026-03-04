@@ -56,7 +56,10 @@ export interface ChampionStatsResponse {
 
 export interface PositionChampionEntry {
   championId: number;
-  totalGames: number;
+  tier: string;
+  winRate: number;
+  pickRate: number;
+  banRate: number;
 }
 
 export interface PositionChampionStats {
