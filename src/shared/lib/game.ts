@@ -116,6 +116,10 @@ export function getChampionSpellImageUrl(championName: string, skillKey: string)
   return `${IMAGE_HOST}/spells/${championName}${skillKey}.png`;
 }
 
+export function getChampionPassiveImageUrl(passiveImageFull: string): string {
+  return `${IMAGE_HOST}/passive/${passiveImageFull}`;
+}
+
 export function getKDAColorClass(kdaValue: string | number): string {
   if (
     kdaValue === "perfect" ||

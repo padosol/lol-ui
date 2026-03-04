@@ -24,10 +24,6 @@ export default function PositionTabsList({
     <div className="flex border-b border-divider">
       {ALL_POSITIONS.map((pos) => {
         const isActive = pos === selectedPosition;
-        const posData = data.find((d) => d.teamPosition === pos);
-        const totalGames = posData
-          ? posData.champions.reduce((sum, c) => sum + c.totalGames, 0)
-          : 0;
         return (
           <button
             key={pos}
@@ -48,11 +44,6 @@ export default function PositionTabsList({
               className={isActive ? "opacity-100" : "opacity-60"}
             />
             <span className="hidden sm:inline">{getPositionName(pos)}</span>
-            {totalGames > 0 && (
-              <span className="text-xs text-on-surface-medium">
-                {totalGames.toLocaleString()}게임
-              </span>
-            )}
           </button>
         );
       })}
