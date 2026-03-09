@@ -40,10 +40,10 @@ interface SkillTreeStatsProps {
 }
 
 /**
- * skillOrder15 문자열에서 각 스킬(Q/W/E)이 5회 도달하는 순서를 계산하여 마스터 순서 도출
+ * skillBuild 문자열에서 각 스킬(Q/W/E)이 5회 도달하는 순서를 계산하여 마스터 순서 도출
  */
-function computeMasterOrder(skillOrder15: string): string[] {
-  const skills = skillOrder15.split(",");
+function computeMasterOrder(skillBuild: string): string[] {
+  const skills = skillBuild.split(",");
   const counts: Record<string, number> = { Q: 0, W: 0, E: 0 };
   const masterOrder: string[] = [];
 
@@ -66,11 +66,11 @@ function computeMasterOrder(skillOrder15: string): string[] {
 }
 
 /**
- * skillOrder15 문자열을 slot 번호 배열로 변환 (Q=1, W=2, E=3, R=4)
+ * skillBuild 문자열을 slot 번호 배열로 변환 (Q=1, W=2, E=3, R=4)
  */
-function toSlotSequence(skillOrder15: string): number[] {
+function toSlotSequence(skillBuild: string): number[] {
   const map: Record<string, number> = { Q: 1, W: 2, E: 3, R: 4 };
-  return skillOrder15.split(",").map((s) => map[s] || 0);
+  return skillBuild.split(",").map((s) => map[s] || 0);
 }
 
 export default function SkillTreeStats({
@@ -85,8 +85,8 @@ export default function SkillTreeStats({
 
       <div className="space-y-2">
         {data.map((build, i) => {
-          const masterOrder = computeMasterOrder(build.skillOrder15);
-          const sequence = toSlotSequence(build.skillOrder15);
+          const masterOrder = computeMasterOrder(build.skillBuild);
+          const sequence = toSlotSequence(build.skillBuild);
           return (
             <div
               key={i}
@@ -117,14 +117,14 @@ export default function SkillTreeStats({
                     <span className="text-on-surface-medium">승률 </span>
                     <span
                       className={`font-medium ${
-                        build.totalWinRate >= 50 ? "text-win" : "text-loss"
+                        build.winRate * 100 >= 50 ? "text-win" : "text-loss"
                       }`}
                     >
-                      {build.totalWinRate.toFixed(1)}%
+                      {(build.winRate * 100).toFixed(1)}%
                     </span>
                   </span>
                   <span className="text-on-surface-medium">
-                    {build.totalGames.toLocaleString()}게임
+                    {build.games.toLocaleString()}게임
                   </span>
                 </div>
               </div>

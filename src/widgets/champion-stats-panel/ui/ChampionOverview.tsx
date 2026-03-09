@@ -100,16 +100,16 @@ export default function ChampionOverview({
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
         <StatCard
           label="승률"
-          value={`${data.winRate.toFixed(1)}%`}
-          valueClass={data.winRate >= 50 ? "text-win" : "text-loss"}
+          value={`${(data.winRate * 100).toFixed(1)}%`}
+          valueClass={data.winRate >= 0.5 ? "text-win" : "text-loss"}
         />
         <StatCard
           label="승리"
-          value={Math.round(data.totalCount * data.winRate / 100).toLocaleString()}
+          value={Math.round(data.totalGames * data.winRate).toLocaleString()}
         />
         <StatCard
           label="게임수"
-          value={data.totalCount.toLocaleString()}
+          value={data.totalGames.toLocaleString()}
         />
       </div>
     </div>

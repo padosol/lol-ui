@@ -16,7 +16,6 @@ import {
 } from "@/entities/champion";
 import { useGameDataStore } from "@/shared/model/game-data";
 import { useSeasonStore } from "@/entities/season";
-import { POSITION_ORDER } from "@/shared/lib/position";
 import { ChampionStatsFilters } from "@/features/champion-stats-filter";
 import { useMemo, useState } from "react";
 
@@ -57,27 +56,8 @@ export default function ChampionStatsDetailPageClient({
     championKey,
     activePatch,
     selectedTier,
-    selectedPlatform
-  );
-
-  const availablePositions = useMemo(() => {
-    if (!data?.stats) return [];
-    return data.stats
-      .map((s) => s.teamPosition)
-      .sort(
-        (a, b) => (POSITION_ORDER[a] ?? 99) - (POSITION_ORDER[b] ?? 99)
-      );
-  }, [data]);
-
-  const effectivePosition =
-    availablePositions.length > 0 &&
-    !availablePositions.includes(selectedPosition)
-      ? availablePositions[0]
-      : selectedPosition;
-
-  const positionStats = useMemo(
-    () => data?.stats.find((s) => s.teamPosition === effectivePosition),
-    [data, effectivePosition]
+    selectedPlatform,
+    selectedPosition
   );
 
   return (
@@ -113,10 +93,8 @@ export default function ChampionStatsDetailPageClient({
           />
 
           <PositionTabs
-            positions={availablePositions}
-            selectedPosition={effectivePosition}
+            selectedPosition={selectedPosition}
             onSelectPosition={setSelectedPosition}
-            stats={data?.stats ?? []}
           />
 
           {isLoading ? (
@@ -127,28 +105,20 @@ export default function ChampionStatsDetailPageClient({
             <div className="text-center py-20 text-loss">
               통계 데이터를 불러오는 중 오류가 발생했습니다.
             </div>
-          ) : data ? (
+          ) : data?.stats ? (
             <>
-              {positionStats ? (
-                <>
-                  <ChampionOverview
-                    data={positionStats}
-                    tier={data.tier}
-                    championId={championId}
-                  />
-                  <ItemBuildStats data={positionStats.itemBuilds} />
-                  <RuneStats data={positionStats.runeBuilds} />
-                  <SkillTreeStats
-                    data={positionStats.skillBuilds}
-                    championName={championId}
-                  />
-                  <MatchupStats data={positionStats.matchups} />
-                </>
-              ) : (
-                <div className="text-center py-20 text-on-surface-medium">
-                  선택한 포지션의 통계 데이터가 없습니다.
-                </div>
-              )}
+              <ChampionOverview
+                data={data.stats}
+                tier={data.tier}
+                championId={championId}
+              />
+              <ItemBuildStats data={data.stats.itemBuilds} startItemBuilds={data.stats.startItemBuilds} />
+              <RuneStats data={data.stats.runeBuilds} />
+              <SkillTreeStats
+                data={data.stats.skillBuilds}
+                championName={championId}
+              />
+              <MatchupStats data={data.stats.matchups ?? []} />
             </>
           ) : activePatch ? (
             <div className="text-center py-20 text-on-surface-medium">

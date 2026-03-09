@@ -16,42 +16,75 @@ export interface MatchupData {
 }
 
 export interface ItemBuildData {
-  itemsSorted: string; // "3078,3053,3065"
-  totalGames: number;
-  totalWins: number;
-  totalWinRate: number;
+  itemBuild: string; // "3078,3053,3065"
+  games: number;
+  winRate: number;
+  pickRate: number;
+}
+
+export interface StartItemBuildData {
+  startItems: string; // "1054,2003"
+  games: number;
+  winRate: number;
+  pickRate: number;
 }
 
 export interface RuneBuildData {
   primaryStyleId: number;
-  primaryPerkIds: string; // "8010,9111,9104,8299"
   subStyleId: number;
-  subPerkIds: string; // "8446,8451"
-  totalGames: number;
-  totalWins: number;
-  totalWinRate: number;
+  primaryPerk0: number;
+  primaryPerk1: number;
+  primaryPerk2: number;
+  primaryPerk3: number;
+  subPerk0: number;
+  subPerk1: number;
+  statPerkDefense: number;
+  statPerkFlex: number;
+  statPerkOffense: number;
+  games: number;
+  winRate: number;
+  pickRate: number;
 }
 
 export interface SkillBuildData {
-  skillOrder15: string; // "Q,E,W,Q,Q,R,Q,E,Q,E,R,E,E,W,W"
-  totalGames: number;
-  totalWins: number;
-  totalWinRate: number;
+  skillBuild: string; // "Q,E,W,Q,Q,R,Q,E,Q,E,R,E,E,W,W"
+  games: number;
+  winRate: number;
+  pickRate: number;
+}
+
+export interface SpellStatsData {
+  summoner1Id: number;
+  summoner2Id: number;
+  games: number;
+  winRate: number;
+  pickRate: number;
+}
+
+export interface ItemStatByOrder {
+  itemId: number;
+  itemName: string;
+  games: number;
+  winRate: number;
+  pickRate: number;
 }
 
 export interface ChampionPositionStats {
   teamPosition: ApiPositionType;
   winRate: number;
-  totalCount: number;
+  totalGames: number;
   matchups: MatchupData[];
   itemBuilds: ItemBuildData[];
+  startItemBuilds: StartItemBuildData[];
   runeBuilds: RuneBuildData[];
   skillBuilds: SkillBuildData[];
+  spellStats: SpellStatsData[];
+  itemStatsByOrder: Record<string, ItemStatByOrder[]>;
 }
 
 export interface ChampionStatsResponse {
   tier: string;
-  stats: ChampionPositionStats[];
+  stats: ChampionPositionStats;
 }
 
 export interface PositionChampionEntry {

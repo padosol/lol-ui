@@ -8,7 +8,8 @@ export { getChampionById, getChampionsByIds, getChampionImageUrl, getChampionNam
 export { WIN_RATE_COLOR_CLASSES, getWinRateTextClass, calcWinRateCeil2 } from "./lib/championStatsUtils";
 export type {
   ChampionRotationResponse, PositionType, MatchupData,
-  ItemBuildData, RuneBuildData, SkillBuildData,
+  ItemBuildData, StartItemBuildData, RuneBuildData, SkillBuildData,
+  SpellStatsData, ItemStatByOrder,
   ChampionPositionStats, ChampionStatsResponse,
   ApiPositionType, PositionChampionEntry, PositionChampionStats,
 } from "./types";

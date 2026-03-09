@@ -14,7 +14,8 @@ export default function MatchupStats({ data }: MatchupStatsProps) {
   const bestMatchups = useMemo(
     () =>
       [...data]
-        .filter((m) => m.totalWinRate >= 50)
+        .filter((m) => m.totalWinRate != null && m.totalGames != null && m.opponentChampionId != null)
+        .filter((m) => m.totalWinRate >= 0.5)
         .sort((a, b) => b.totalWinRate - a.totalWinRate),
     [data]
   );
@@ -22,12 +23,13 @@ export default function MatchupStats({ data }: MatchupStatsProps) {
   const worstMatchups = useMemo(
     () =>
       [...data]
-        .filter((m) => m.totalWinRate < 50)
+        .filter((m) => m.totalWinRate != null && m.totalGames != null && m.opponentChampionId != null)
+        .filter((m) => m.totalWinRate < 0.5)
         .sort((a, b) => a.totalWinRate - b.totalWinRate),
     [data]
   );
 
-  if (data.length === 0) return null;
+  if (!data || data.length === 0) return null;
 
   return (
     <div className="bg-surface-1 rounded-lg border border-divider p-5">
@@ -100,13 +102,13 @@ function MatchupColumn({
                     className={`h-full rounded-full ${
                       type === "best" ? "bg-win" : "bg-loss"
                     }`}
-                    style={{ width: `${entry.totalWinRate}%` }}
+                    style={{ width: `${entry.totalWinRate * 100}%` }}
                   />
                 </div>
                 <span
                   className={`text-xs font-medium w-12 text-right ${colorClass}`}
                 >
-                  {entry.totalWinRate.toFixed(1)}%
+                  {(entry.totalWinRate * 100).toFixed(1)}%
                 </span>
               </div>
 

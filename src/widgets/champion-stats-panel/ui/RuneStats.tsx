@@ -32,17 +32,26 @@ function RunePageRow({
   build: RuneBuildData;
   index: number;
 }) {
-  const primaryPerkIds = build.primaryPerkIds
-    .split(",")
-    .map(Number)
-    .filter(Boolean);
-  const subPerkIds = build.subPerkIds.split(",").map(Number).filter(Boolean);
+  const primaryPerkIds = [
+    build.primaryPerk0,
+    build.primaryPerk1,
+    build.primaryPerk2,
+    build.primaryPerk3,
+  ];
+  const subPerkIds = [build.subPerk0, build.subPerk1];
+  const statPerks = [
+    build.statPerkOffense,
+    build.statPerkFlex,
+    build.statPerkDefense,
+  ].filter(Boolean);
 
   const primaryTreeName =
     RUNE_TREE_NAMES[build.primaryStyleId] ||
     `트리 ${build.primaryStyleId}`;
   const secondaryTreeName =
     RUNE_TREE_NAMES[build.subStyleId] || `트리 ${build.subStyleId}`;
+
+  const winRatePercent = build.winRate * 100;
 
   return (
     <div className="flex items-center gap-4 bg-surface rounded-lg px-4 py-3">
@@ -90,20 +99,47 @@ function RunePageRow({
         ))}
       </div>
 
-      {/* 승률/게임수 */}
+      {/* 스탯 룬 */}
+      {statPerks.length > 0 && (
+        <>
+          <div className="w-px h-8 bg-divider" />
+          <div className="flex items-center gap-1">
+            {statPerks.map((perkId, i) => (
+              <GameTooltip key={i} type="rune" id={perkId}>
+                <Image
+                  src={getPerkImageUrl(perkId)}
+                  alt={`stat-${perkId}`}
+                  width={20}
+                  height={20}
+                  className="rounded-full"
+                  unoptimized
+                />
+              </GameTooltip>
+            ))}
+          </div>
+        </>
+      )}
+
+      {/* 승률/픽률/게임수 */}
       <div className="flex items-center gap-4 ml-auto text-xs">
         <span>
           <span className="text-on-surface-medium">승률 </span>
           <span
             className={`font-medium ${
-              build.totalWinRate >= 50 ? "text-win" : "text-loss"
+              winRatePercent >= 50 ? "text-win" : "text-loss"
             }`}
           >
-            {build.totalWinRate.toFixed(1)}%
+            {winRatePercent.toFixed(1)}%
+          </span>
+        </span>
+        <span>
+          <span className="text-on-surface-medium">픽률 </span>
+          <span className="font-medium text-on-surface">
+            {(build.pickRate * 100).toFixed(1)}%
           </span>
         </span>
         <span className="text-on-surface-medium">
-          {build.totalGames.toLocaleString()}게임
+          {build.games.toLocaleString()}게임
         </span>
       </div>
     </div>
