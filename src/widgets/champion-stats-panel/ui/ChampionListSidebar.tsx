@@ -53,6 +53,7 @@ export default function ChampionListSidebar({
       <div className="grid grid-cols-5 gap-1.5">
         {champions.map((champ) => (
           <Link
+            prefetch={false}
             key={champ.id}
             href={`/champion-stats/${champ.id}?tier=${tier}&patch=${patch}&platformId=${platformId}`}
             className="flex flex-col items-center gap-1 p-1.5 rounded transition-colors text-on-surface-medium hover:bg-surface-4 hover:text-on-surface"
