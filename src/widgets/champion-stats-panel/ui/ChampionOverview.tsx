@@ -1,10 +1,15 @@
 "use client";
 
+import { useState } from "react";
 import type { ChampionPositionStats } from "@/entities/champion";
 import {
   getChampionImageUrl,
   getChampionNameByEnglishName,
 } from "@/entities/champion";
+import { getChampionPassiveImageUrl } from "@/shared/lib/game";
+import { IMAGE_HOST } from "@/shared/config/image";
+import { GameTooltip } from "@/shared/ui/tooltip";
+import { useGameDataStore } from "@/shared/model/game-data";
 import Image from "next/image";
 
 const TIER_COLORS: Record<string, string> = {
@@ -15,6 +20,8 @@ const TIER_COLORS: Record<string, string> = {
   "4": "bg-blue-500 text-white",
   "5": "bg-gray-500 text-white",
 };
+
+const SKILL_KEYS = ["Q", "W", "E", "R"] as const;
 
 interface ChampionOverviewProps {
   data: ChampionPositionStats;
@@ -27,6 +34,9 @@ export default function ChampionOverview({
   tier,
   championId,
 }: ChampionOverviewProps) {
+  const championData = useGameDataStore((s) => s.championData);
+  const champion = championData?.data[championId];
+
   return (
     <div className="bg-surface-1 rounded-lg border border-divider p-5">
       <div className="flex items-center gap-4 mb-5">
@@ -51,6 +61,39 @@ export default function ChampionOverview({
               {tier === "OP" ? "OP" : `Tier ${tier}`}
             </span>
           </div>
+          <div className="flex items-center gap-1.5 mt-2">
+            {champion?.passive && (
+              <GameTooltip type="championPassive" id={championId}>
+                <div>
+                  <SkillIcon
+                    src={getChampionPassiveImageUrl(champion.passive.image.full)}
+                    label="P"
+                    alt={champion.passive.name}
+                  />
+                </div>
+              </GameTooltip>
+            )}
+            {SKILL_KEYS.map((key, index) => (
+              <GameTooltip
+                key={key}
+                type="championSpell"
+                id={`${championId}:${index}`}
+                disabled={!champion}
+              >
+                <div>
+                  <SkillIcon
+                    src={
+                      champion?.spells?.[index]?.image.full
+                        ? `${IMAGE_HOST}/spells/${champion.spells[index].image.full}`
+                        : `${IMAGE_HOST}/spells/${championId}${key}.png`
+                    }
+                    label={key}
+                    alt={champion?.spells?.[index]?.name ?? `${championId} ${key}`}
+                  />
+                </div>
+              </GameTooltip>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -70,6 +113,38 @@ export default function ChampionOverview({
         />
       </div>
     </div>
+  );
+}
+
+function SkillIcon({
+  src,
+  label,
+  alt,
+}: {
+  src: string;
+  label: string;
+  alt: string;
+}) {
+  const [imgError, setImgError] = useState(false);
+
+  if (imgError) {
+    return (
+      <div className="w-7 h-7 rounded bg-surface flex items-center justify-center text-[10px] font-bold text-on-surface-medium">
+        {label}
+      </div>
+    );
+  }
+
+  return (
+    <Image
+      src={src}
+      alt={alt}
+      width={28}
+      height={28}
+      className="rounded"
+      unoptimized
+      onError={() => setImgError(true)}
+    />
   );
 }
 
