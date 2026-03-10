@@ -1,5 +1,37 @@
 # Changelog
 
+## [1.9.0](https://github.com/padosol/lol-ui/compare/v1.8.0...v1.9.0) (2026-03-10)
+
+
+### Features
+
+* CI 완료 시 Slack 알림 추가 ([1b015e3](https://github.com/padosol/lol-ui/commit/1b015e3001c855e3fba4ef8f7eb9b75377052efb))
+* CI 완료 시 Slack 알림 추가 ([eb77047](https://github.com/padosol/lol-ui/commit/eb77047977428e3ecc14cbe760a02d0da0942767))
+* UI 레이아웃 개선 및 랭킹 페이지 SSR 전환 ([385ebdc](https://github.com/padosol/lol-ui/commit/385ebdcc97cb5760b37d7264ade730476643ec84))
+* 룬 시스템 전면 개선 및 패치 26.4 데이터 업데이트 ([1ef6d18](https://github.com/padosol/lol-ui/commit/1ef6d18e227096b526dec4d511939ab0fbc79eaf))
+* 룬 시스템 전면 개선 및 패치 26.4 데이터 업데이트 ([03cc6be](https://github.com/padosol/lol-ui/commit/03cc6be1737c148c7708a7243e1bb57556c9542e))
+* 매치 필터링 서버사이드 전환, 룬 유틸 추출 및 UI 개선 ([6817581](https://github.com/padosol/lol-ui/commit/68175819a7b74da590d6a29b5841d8517d83c90c))
+* 매치 필터링 서버사이드 전환, 룬 유틸 추출 및 UI 개선 ([4cb6bc0](https://github.com/padosol/lol-ui/commit/4cb6bc083651fe7abea31d5339d0ae76d1647b32))
+* 스킬트리 마스터 순서에 챔피언 스킬 이미지 추가 ([2c05d54](https://github.com/padosol/lol-ui/commit/2c05d542b73fe6b6003cb2a4caef44c6480655ce))
+* 챔피언 상세 통계 페이지 추가 및 포지션별 통계 기능 ([b778add](https://github.com/padosol/lol-ui/commit/b778add18ad9e478ca10ee2649f9997c3c10a862))
+* 챔피언 상세 통계 페이지 추가 및 포지션별 통계 기능 구현 ([41e8460](https://github.com/padosol/lol-ui/commit/41e8460bf2663bb698fb4c90f6fe893215b73765))
+* 챔피언 통계 API 스키마 변경 대응 및 포지션 필터 서버 위임 ([c6975d1](https://github.com/padosol/lol-ui/commit/c6975d1fa23c1d69621c50b232c17a085e65c54a))
+* 챔피언 통계 위젯 UI 개선 및 스킬트리 레이아웃 변경 ([d0fa4c0](https://github.com/padosol/lol-ui/commit/d0fa4c0b6126b859c859a323578de3c2ab19522c))
+* 챔피언 포지션별 승률/픽률/밴률/티어 통계 테이블 개선 ([18a6796](https://github.com/padosol/lol-ui/commit/18a6796397835129ee5324e2446a4e5d4276efcb))
+* 챔피언 포지션별 승률/픽률/밴률/티어 통계 테이블로 개선 ([2218439](https://github.com/padosol/lol-ui/commit/2218439ca2b514b76bdc7bdf1d006264ab70656c))
+
+
+### Bug Fixes
+
+* Claude Code Review 워크플로우 제거 및 ESLint 에러 수정 ([ac43e6d](https://github.com/padosol/lol-ui/commit/ac43e6d2c0a8eb9eaff9e1fc19c583ff139641c7))
+* GameDataLoader에 시즌 데이터 로딩 추가 ([68b8839](https://github.com/padosol/lol-ui/commit/68b88397243a87ff7df765a21d4b1dbed50b7cab))
+* GameDataLoader에 시즌 데이터 로딩 추가 및 FSD 페이지 컴포넌트 분리 ([869df98](https://github.com/padosol/lol-ui/commit/869df980ee937e95fcf9a42e6284c61cced07225))
+* getSummonerMatches pageNo를 0-based로 변경 ([3a66673](https://github.com/padosol/lol-ui/commit/3a666733db7a894ae7d402da145a48849af51f06))
+* getSummonerMatches pageNo를 0-based로 변경 ([9068267](https://github.com/padosol/lol-ui/commit/90682674072f556d3870e67a6be815b6fd730ce9))
+* 챔피언 통계 테이블 프론트엔드 정렬 제거, 백엔드 순서 유지 ([7872591](https://github.com/padosol/lol-ui/commit/787259140fd3f4457a9cbf1930505ece47f4fa32))
+* 챔피언 통계 페이지 코드 리뷰 이슈 수정 ([8725d9f](https://github.com/padosol/lol-ui/commit/8725d9f4f5bf92e1dca31f60315c57ab8d9b9c81))
+* 챔피언 통계 페이지 코드 리뷰 이슈 수정 ([f23b8c4](https://github.com/padosol/lol-ui/commit/f23b8c42e5152a2fa3d838cf25d3d162aa51ca80))
+
 ## [1.8.0](https://github.com/padosol/lol-ui/compare/v1.7.0...v1.8.0) (2026-02-23)
 
 
