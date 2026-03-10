@@ -17,51 +17,53 @@ export default function ItemBuildStats({ data, startItemBuilds }: ItemBuildStats
     <div className="bg-surface-1 rounded-lg border border-divider p-5">
       <h3 className="text-base font-bold text-on-surface mb-4">아이템 빌드</h3>
 
-      {startItemBuilds && startItemBuilds.length > 0 && (
-        <div className="mb-4">
-          <h4 className="text-sm font-medium text-on-surface-medium mb-2">시작 아이템</h4>
-          <div className="space-y-2">
-            {startItemBuilds.map((build, i) => {
-              const itemIds = build.startItems
-                .split(",")
-                .map(Number)
-                .filter(Boolean);
-              return (
-                <BuildRow
-                  key={i}
-                  itemIds={itemIds}
-                  winRate={build.winRate}
-                  games={build.games}
-                  pickRate={build.pickRate}
-                />
-              );
-            })}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {startItemBuilds && startItemBuilds.length > 0 && (
+          <div>
+            <h4 className="text-sm font-medium text-on-surface-medium mb-2">시작 아이템</h4>
+            <div className="space-y-2">
+              {startItemBuilds.map((build, i) => {
+                const itemIds = build.startItems
+                  .split(",")
+                  .map(Number)
+                  .filter(Boolean);
+                return (
+                  <BuildRow
+                    key={i}
+                    itemIds={itemIds}
+                    winRate={build.winRate}
+                    games={build.games}
+                    pickRate={build.pickRate}
+                  />
+                );
+              })}
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {data.length > 0 && (
-        <div>
-          <h4 className="text-sm font-medium text-on-surface-medium mb-2">코어 빌드</h4>
-          <div className="space-y-2">
-            {data.map((build, i) => {
-              const itemIds = build.itemBuild
-                .split(",")
-                .map(Number)
-                .filter(Boolean);
-              return (
-                <BuildRow
-                  key={i}
-                  itemIds={itemIds}
-                  winRate={build.winRate}
-                  games={build.games}
-                  pickRate={build.pickRate}
-                />
-              );
-            })}
+        {data.length > 0 && (
+          <div>
+            <h4 className="text-sm font-medium text-on-surface-medium mb-2">코어 빌드</h4>
+            <div className="space-y-2">
+              {data.map((build, i) => {
+                const itemIds = build.itemBuild
+                  .split(",")
+                  .map(Number)
+                  .filter(Boolean);
+                return (
+                  <BuildRow
+                    key={i}
+                    itemIds={itemIds}
+                    winRate={build.winRate}
+                    games={build.games}
+                    pickRate={build.pickRate}
+                  />
+                );
+              })}
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }

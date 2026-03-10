@@ -9,15 +9,19 @@ const ALL_POSITIONS: ApiPositionType[] = ["TOP", "JUNGLE", "MIDDLE", "BOTTOM", "
 interface PositionTabsProps {
   selectedPosition: ApiPositionType;
   onSelectPosition: (position: ApiPositionType) => void;
+  availablePositions?: ApiPositionType[];
 }
 
 export default function PositionTabs({
   selectedPosition,
   onSelectPosition,
+  availablePositions,
 }: PositionTabsProps) {
+  const positions = availablePositions ?? ALL_POSITIONS;
+
   return (
     <div className="flex border-b border-divider">
-      {ALL_POSITIONS.map((pos) => {
+      {positions.map((pos) => {
         const isActive = pos === selectedPosition;
         return (
           <button

@@ -32,7 +32,7 @@ export default function ChampionStatsDetailPageClient({
   initialPatch,
   initialPlatformId,
 }: ChampionStatsDetailPageClientProps) {
-  const [selectedPosition, setSelectedPosition] = useState<ApiPositionType>("TOP");
+  const [selectedPosition, setSelectedPosition] = useState<ApiPositionType | null>(null);
   const [selectedTier, setSelectedTier] = useState(initialTier || "CHALLENGER");
   const [selectedPatch, setSelectedPatch] = useState(initialPatch || "");
   const [selectedPlatform, setSelectedPlatform] = useState(initialPlatformId || "kr");
@@ -56,9 +56,28 @@ export default function ChampionStatsDetailPageClient({
     championKey,
     activePatch,
     selectedTier,
-    selectedPlatform,
-    selectedPosition
+    selectedPlatform
   );
+
+  // 사용 가능한 포지션 목록 추출
+  const availablePositions = useMemo(() => {
+    if (!data?.positions) return [];
+    return data.positions.map((p) => p.teamPosition);
+  }, [data]);
+
+  // 유효한 포지션 계산: 선택된 포지션이 없거나 목록에 없으면 첫 번째 포지션으로 fallback
+  const effectivePosition = useMemo(() => {
+    if (selectedPosition && availablePositions.includes(selectedPosition)) {
+      return selectedPosition;
+    }
+    return availablePositions[0] ?? null;
+  }, [availablePositions, selectedPosition]);
+
+  // 현재 포지션의 통계 데이터
+  const currentPositionStats = useMemo(() => {
+    if (!data?.positions || data.positions.length === 0 || !effectivePosition) return null;
+    return data.positions.find((p) => p.teamPosition === effectivePosition) ?? data.positions[0];
+  }, [data, effectivePosition]);
 
   return (
     <div className="min-h-screen bg-surface">
@@ -93,8 +112,9 @@ export default function ChampionStatsDetailPageClient({
           />
 
           <PositionTabs
-            selectedPosition={selectedPosition}
+            selectedPosition={effectivePosition ?? "TOP"}
             onSelectPosition={setSelectedPosition}
+            availablePositions={availablePositions.length > 0 ? availablePositions : undefined}
           />
 
           {isLoading ? (
@@ -105,20 +125,22 @@ export default function ChampionStatsDetailPageClient({
             <div className="text-center py-20 text-loss">
               통계 데이터를 불러오는 중 오류가 발생했습니다.
             </div>
-          ) : data?.stats ? (
+          ) : currentPositionStats ? (
             <>
-              <ChampionOverview
-                data={data.stats}
-                tier={data.tier}
-                championId={championId}
-              />
-              <ItemBuildStats data={data.stats.itemBuilds} startItemBuilds={data.stats.startItemBuilds} />
-              <RuneStats data={data.stats.runeBuilds} />
-              <SkillTreeStats
-                data={data.stats.skillBuilds}
-                championName={championId}
-              />
-              <MatchupStats data={data.stats.matchups ?? []} />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <ChampionOverview
+                  data={currentPositionStats}
+                  tier={data!.tier}
+                  championId={championId}
+                />
+                <SkillTreeStats
+                  data={currentPositionStats.skillBuilds.slice(0, 1)}
+                  championName={championId}
+                />
+              </div>
+              <ItemBuildStats data={currentPositionStats.itemBuilds} startItemBuilds={currentPositionStats.startItemBuilds} />
+              <RuneStats data={currentPositionStats.runeBuilds} />
+              <MatchupStats data={currentPositionStats.matchups ?? []} />
             </>
           ) : activePatch ? (
             <div className="text-center py-20 text-on-surface-medium">

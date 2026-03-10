@@ -39,7 +39,9 @@ export default function ChampionOverview({
 
   return (
     <div className="bg-surface-1 rounded-lg border border-divider p-5">
-      <div className="flex items-center gap-4 mb-5">
+      <div className="grid grid-cols-[1fr_auto] gap-4">
+      <div className="flex flex-col gap-3">
+      <div className="flex items-center gap-4">
         <Image
           src={getChampionImageUrl(championId)}
           alt={championId}
@@ -96,8 +98,9 @@ export default function ChampionOverview({
           </div>
         </div>
       </div>
+      </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+      <div className="flex flex-col gap-2">
         <StatCard
           label="승률"
           value={`${(data.winRate * 100).toFixed(1)}%`}
@@ -111,6 +114,7 @@ export default function ChampionOverview({
           label="게임수"
           value={data.totalGames.toLocaleString()}
         />
+      </div>
       </div>
     </div>
   );
@@ -158,9 +162,9 @@ function StatCard({
   valueClass?: string;
 }) {
   return (
-    <div className="bg-surface rounded-lg p-4 text-center">
-      <p className="text-on-surface-medium text-xs mb-1">{label}</p>
-      <p className={`text-lg font-bold ${valueClass}`}>{value}</p>
+    <div className="bg-surface rounded-lg px-3 py-2 flex items-center justify-between gap-3 min-w-[120px]">
+      <span className="text-on-surface-medium text-xs">{label}</span>
+      <span className={`text-sm font-bold ${valueClass}`}>{value}</span>
     </div>
   );
 }

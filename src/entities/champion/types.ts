@@ -10,9 +10,9 @@ export type ApiPositionType = "TOP" | "JUNGLE" | "MIDDLE" | "BOTTOM" | "UTILITY"
 
 export interface MatchupData {
   opponentChampionId: number;
-  totalGames: number;
-  totalWins: number;
-  totalWinRate: number;
+  games: number;
+  winRate: number;
+  pickRate: number;
 }
 
 export interface ItemBuildData {
@@ -84,7 +84,7 @@ export interface ChampionPositionStats {
 
 export interface ChampionStatsResponse {
   tier: string;
-  stats: ChampionPositionStats;
+  positions: ChampionPositionStats[];
 }
 
 export interface PositionChampionEntry {
