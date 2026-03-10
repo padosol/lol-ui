@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.10.0](https://github.com/padosol/lol-ui/compare/v1.9.0...v1.10.0) (2026-03-10)
+
+
+### Features
+
+* Google AdSense 메타 태그 추가 ([6603b0b](https://github.com/padosol/lol-ui/commit/6603b0bbf21a17e10c08f1deb4934bad7d8b7879))
+* Google AdSense 사이트 소유권 확인용 메타 태그 추가 ([8026660](https://github.com/padosol/lol-ui/commit/8026660bcb96251847e46bf344508c0a66e9f70d))
+* Google Search Console 소유권 확인 메타 태그 추가 ([af1fc3a](https://github.com/padosol/lol-ui/commit/af1fc3a472359af0c8beb0839373971967aa264b))
+* Google Search Console 소유권 확인용 메타 태그 추가 ([06db50a](https://github.com/padosol/lol-ui/commit/06db50aa49a07bcc4070b23485e1665eca418f20))
+* 챔피언 통계 UI 개선, 패치 direction 판단 기준 변경 및 26.5 데이터 수정 ([7f11e7e](https://github.com/padosol/lol-ui/commit/7f11e7eea2863d753f2d6b5f12fce4e867588218))
+* 패치 크롤러에 url, date 메타데이터 추출 기능 추가 ([30af0ee](https://github.com/padosol/lol-ui/commit/30af0ee0b7b4679d93f419a39b01ba33acc7f5ca))
+
 ## [1.9.0](https://github.com/padosol/lol-ui/compare/v1.8.0...v1.9.0) (2026-03-10)
 
 
