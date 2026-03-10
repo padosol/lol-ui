@@ -1,0 +1,165 @@
+{
+  "version": "26.5",
+  "url": "https://www.leagueoflegends.com/ko-kr/news/game-updates/league-of-legends-patch-26-5-notes/",
+  "date": "2026-03-03",
+  "rift": {
+    "champions": [
+      {
+        "targetName": "아칼리",
+        "type": "champion",
+        "direction": "adjust",
+        "changes": [
+          { "statName": "W - 은신 상태 돌입 시간", "before": "1/0.9/0.825/0.725/0.625초 (게임 시간 0/8/11/20/30분)", "after": "1/0.9/0.825/0.725/0.625초 (1/7/10/13/16레벨에서)" }
+        ]
+      },
+      {
+        "targetName": "아지르",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "체력 증가량", "before": "119", "after": "108" }
+        ]
+      },
+      {
+        "targetName": "가렌",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          { "statName": "Q - 이동 속도 지속시간", "before": "1/1.65/2.3/2.95/3.6초", "after": "1.4/1.95/2.5/3.05/3.6초" },
+          { "statName": "E - 회전당 피해량", "before": "4/7/10/13/16 (+공격력의 38/41/44/47/50%)", "after": "4/7/10/13/16 (+공격력의 40/43/46/49/52%)" }
+        ]
+      },
+      {
+        "targetName": "카직스",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "이동 속도", "before": "350", "after": "345" },
+          { "statName": "Q - 추가 공격력", "before": "+110% (고립 대상 231%)", "after": "+105% (고립 대상 220.5%)" }
+        ]
+      },
+      {
+        "targetName": "리 신",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          { "statName": "Q - 기본 피해량", "before": "60/90/120/150/180", "after": "65/95/125/155/185" }
+        ]
+      },
+      {
+        "targetName": "릴리아",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          { "statName": "패시브 - 몬스터 대상 체력 회복 추가 주문력 계수", "before": "9%", "after": "15%" },
+          { "statName": "Q - 추가 주문력 계수", "before": "30%", "after": "35%" },
+          { "statName": "R - 기본 피해량", "before": "100/150/200", "after": "150/200/250" },
+          { "statName": "R - 주문력 계수", "before": "45%", "after": "40%" },
+          { "statName": "R - 재사용 대기시간", "before": "150/130/110초", "after": "140/120/100초" }
+        ]
+      },
+      {
+        "targetName": "멜",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          { "statName": "패시브 - 미니언 대상 피해량 계수", "before": "0.6x", "after": "0.5x" },
+          { "statName": "Q - 투사체당 기본 피해량", "before": "5/6/7/8/9", "after": "5/7/9/11/13" },
+          { "statName": "Q - 기본 피해량 합계", "before": "90/132/176/222/270", "after": "90/145/200/255/310" },
+          { "statName": "R - 최초 기본 피해량", "before": "100/150/200", "after": "125/200/275" }
+        ]
+      },
+      {
+        "targetName": "니코",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "W - 재사용 대기시간 시작 시점", "before": "사용 시점", "after": "분신이 사라진 시점" },
+          { "statName": "W - Ctrl+5 단축키", "before": "분신에게 농담 표현 출력 가능", "after": "사용 불가" }
+        ]
+      },
+      {
+        "targetName": "녹턴",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          { "statName": "패시브 - 재사용 대기시간", "before": "13초", "after": "12초" },
+          { "statName": "Q - 추가 이동 속도", "before": "15/20/25/30/35%", "after": "20/25/30/35/40%" }
+        ]
+      },
+      {
+        "targetName": "오리아나",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "Q - 재사용 대기시간", "before": "6/5.25/4.5/3.75/3초", "after": "7/6/5/4/3초" }
+        ]
+      },
+      {
+        "targetName": "사미라",
+        "type": "champion",
+        "direction": "adjust",
+        "changes": [
+          { "statName": "Q - 근거리/원거리 판정 로직", "before": "단순 양쪽 유닛 확인", "after": "거리 기반 다중 확인으로 개선" },
+          { "statName": "Q - 패시브 사용 중 오발동", "before": "패시브 도중 Q 사용 시 쿨다운 소모", "after": "수정됨" },
+          { "statName": "Q - 저속 이동 회피 방지", "before": "느린 이동으로도 범위 밖 회피 가능", "after": "반대쪽 이동 시 총 형태 Q 사용" }
+        ]
+      },
+      {
+        "targetName": "탈리야",
+        "type": "champion",
+        "direction": "adjust",
+        "changes": [
+          { "statName": "Q - 기본 피해량", "before": "55/72.5/90/107.5/125", "after": "50/67.5/85/102.5/120" },
+          { "statName": "Q - 몬스터 대상 추가 피해량", "before": "20/25/30/35/40", "after": "23/28/33/38/43" }
+        ]
+      },
+      {
+        "targetName": "바루스",
+        "type": "champion",
+        "direction": "adjust",
+        "changes": [
+          { "statName": "Q - 최대 피해량", "before": "80/160/240/320/400 (+추가 공격력의 130/140/150/160/170%)", "after": "80/150/220/290/360 (+추가 공격력의 150%)" },
+          { "statName": "W - 적중 시 피해량", "before": "8/17/26/35/44 (+주문력의 25%)", "after": "8/17/26/35/44 (+주문력의 25%) (+추가 공격력의 15%)" }
+        ]
+      },
+      {
+        "targetName": "볼리베어",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          { "statName": "Q - 추가 물리 피해량", "before": "+140%", "after": "+160%" },
+          { "statName": "W - 마나 소모량", "before": "30/35/40/45/50", "after": "20/25/30/35/40" },
+          { "statName": "W - 상처 추가 피해량", "before": "+추가 공격력 100당 15%", "after": "+추가 공격력 100당 25%" },
+          { "statName": "E - 마나 소모량", "before": "60", "after": "50" }
+        ]
+      }
+    ],
+    "items": [
+      {
+        "targetName": "오만",
+        "type": "item",
+        "direction": "buff",
+        "changes": [
+          { "statName": "조합 가격", "before": "950골드", "after": "750골드" },
+          { "statName": "총가격", "before": "3,000골드", "after": "2,800골드" }
+        ]
+      },
+      {
+        "targetName": "강철의 솔라리 펜던트",
+        "type": "item",
+        "direction": "buff",
+        "changes": [
+          { "statName": "보호막", "before": "200~360, 1레벨 이후 레벨에 따라", "after": "290~360, 8레벨 이후 레벨에 따라" },
+          { "statName": "실질적 보호막 (8~18레벨에서)", "before": "265~360", "after": "290~360" }
+        ]
+      }
+    ],
+    "systems": []
+  },
+  "arena": {
+    "champions": [],
+    "items": [],
+    "systems": []
+  }
+}

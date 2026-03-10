@@ -13,6 +13,9 @@ const geistSans = Geist({
 export const metadata: Metadata = {
   title: "롤, 전적 검색, 메타픽, 라이엇 | METAPICK.ME",
   description: "Search Riot ID and Tagline for Stats",
+  other: {
+    "google-adsense-account": "ca-pub-1999181347503274",
+  },
 };
 
 export default function RootLayout({

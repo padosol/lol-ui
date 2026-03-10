@@ -13,8 +13,6 @@ interface IngameTabProps {
 export default function IngameTab({ region, puuid }: IngameTabProps) {
   const { data, isLoading, error, refetch } = useActiveGame(region, puuid);
 
-  console.log(data)
-
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-12">
