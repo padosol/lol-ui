@@ -1,49 +1,34 @@
 "use client";
 
-import { GameTooltip } from "@/shared/ui/tooltip";
-import type { SkillBuildData } from "@/entities/champion";
-import { getChampionSpellImageUrl } from "@/shared/lib/game";
-import Image from "next/image";
 import { useState } from "react";
+import Image from "next/image";
+import type { SkillBuildData } from "@/entities/champion";
+import { useGameDataStore } from "@/shared/model/game-data";
+import { IMAGE_HOST } from "@/shared/config/image";
 
-const SKILL_KEYS = ["Q", "W", "E", "R"] as const;
-const SKILL_COLORS: Record<
-  string,
-  { bg: string; text: string; master: string }
-> = {
-  Q: {
-    bg: "bg-stat-mid text-white",
-    text: "text-stat-mid",
-    master: "bg-stat-mid ring-1 ring-white/30 text-white",
-  },
-  W: {
-    bg: "bg-secondary text-white",
-    text: "text-secondary",
-    master: "bg-secondary ring-1 ring-white/30 text-white",
-  },
-  E: {
-    bg: "bg-primary text-white",
-    text: "text-primary",
-    master: "bg-primary ring-1 ring-white/30 text-white",
-  },
-  R: {
-    bg: "bg-gold text-surface",
-    text: "text-gold",
-    master: "bg-gold ring-1 ring-white/30 text-surface",
-  },
+const SLOT_TO_SKILL: Record<string, string> = {
+  "1": "Q", "2": "W", "3": "E", "4": "R",
+  Q: "Q", W: "W", E: "E", R: "R",
 };
-const SKILL_MAX_LEVELS = [5, 5, 5, 3];
+
+const SKILL_COLORS: Record<string, string> = {
+  Q: "bg-stat-mid text-white",
+  W: "bg-secondary text-white",
+  E: "bg-primary text-white",
+  R: "bg-gold text-surface",
+};
+
+function normalizeSkills(skillBuild: string): string[] {
+  return skillBuild.split(",").map((s) => SLOT_TO_SKILL[s] ?? s);
+}
 
 interface SkillTreeStatsProps {
   data: SkillBuildData[];
   championName: string;
 }
 
-/**
- * skillOrder15 문자열에서 각 스킬(Q/W/E)이 5회 도달하는 순서를 계산하여 마스터 순서 도출
- */
-function computeMasterOrder(skillOrder15: string): string[] {
-  const skills = skillOrder15.split(",");
+function computeMasterOrder(skillBuild: string): string[] {
+  const skills = normalizeSkills(skillBuild);
   const counts: Record<string, number> = { Q: 0, W: 0, E: 0 };
   const masterOrder: string[] = [];
 
@@ -57,7 +42,6 @@ function computeMasterOrder(skillOrder15: string): string[] {
     }
   }
 
-  // 5회에 못 미친 스킬도 추가
   for (const s of ["Q", "W", "E"]) {
     if (!masterOrder.includes(s)) masterOrder.push(s);
   }
@@ -65,18 +49,12 @@ function computeMasterOrder(skillOrder15: string): string[] {
   return masterOrder;
 }
 
-/**
- * skillOrder15 문자열을 slot 번호 배열로 변환 (Q=1, W=2, E=3, R=4)
- */
-function toSlotSequence(skillOrder15: string): number[] {
-  const map: Record<string, number> = { Q: 1, W: 2, E: 3, R: 4 };
-  return skillOrder15.split(",").map((s) => map[s] || 0);
-}
-
 export default function SkillTreeStats({
   data,
   championName,
 }: SkillTreeStatsProps) {
+  const championData = useGameDataStore((s) => s.championData);
+  const champion = championData?.data[championName];
   if (data.length === 0) return null;
 
   return (
@@ -85,25 +63,22 @@ export default function SkillTreeStats({
 
       <div className="space-y-2">
         {data.map((build, i) => {
-          const masterOrder = computeMasterOrder(build.skillOrder15);
-          const sequence = toSlotSequence(build.skillOrder15);
+          const masterOrder = computeMasterOrder(build.skillBuild);
+          const sequence = normalizeSkills(build.skillBuild);
+          const winRatePercent = build.winRate * 100;
+
           return (
-            <div
-              key={i}
-              className="grid grid-cols-[1fr_3fr] gap-3 bg-surface rounded-lg p-3"
-            >
-              {/* 좌측: 스킬 마스터 순서 + 승률/게임수 */}
-              <div className="flex flex-col justify-center gap-1.5">
+            <div key={i} className="bg-surface rounded-lg p-3">
+              {/* 마스터 순서 + 승률/게임수 */}
+              <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-1">
                   {masterOrder.map((skill, j) => (
                     <div key={j} className="flex items-center">
-                      <span
-                        className={`px-2 py-0.5 text-xs font-bold rounded ${
-                          SKILL_COLORS[skill]?.bg || ""
-                        }`}
-                      >
-                        {skill}
-                      </span>
+                      <SkillIcon
+                        champion={champion}
+                        championName={championName}
+                        skillKey={skill}
+                      />
                       {j < masterOrder.length - 1 && (
                         <span className="mx-1 text-on-surface-medium text-xs">
                           &gt;
@@ -116,24 +91,28 @@ export default function SkillTreeStats({
                   <span>
                     <span className="text-on-surface-medium">승률 </span>
                     <span
-                      className={`font-medium ${
-                        build.totalWinRate >= 50 ? "text-win" : "text-loss"
-                      }`}
+                      className={`font-medium ${winRatePercent >= 50 ? "text-win" : "text-loss"}`}
                     >
-                      {build.totalWinRate.toFixed(1)}%
+                      {winRatePercent.toFixed(1)}%
                     </span>
                   </span>
                   <span className="text-on-surface-medium">
-                    {build.totalGames.toLocaleString()}게임
+                    {build.games.toLocaleString()}게임
                   </span>
                 </div>
               </div>
 
-              {/* 우측: 레벨별 스킬 순서 그리드 */}
-              <SkillGrid
-                sequence={sequence}
-                championName={championName}
-              />
+              {/* 스킬 시퀀스 */}
+              <div className="flex flex-wrap gap-0.5">
+                {sequence.map((skill, idx) => (
+                  <span
+                    key={idx}
+                    className={`w-5 h-5 rounded-sm flex items-center justify-center text-[10px] font-bold ${SKILL_COLORS[skill] ?? "bg-surface-4 text-on-surface-medium"}`}
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
             </div>
           );
         })}
@@ -142,114 +121,44 @@ export default function SkillTreeStats({
   );
 }
 
-function SkillGrid({
-  sequence,
+const SKILL_KEY_TO_INDEX: Record<string, number> = { Q: 0, W: 1, E: 2, R: 3 };
+
+function SkillIcon({
+  champion,
   championName,
-}: {
-  sequence: number[];
-  championName: string;
-}) {
-  const maxLevel = Math.min(sequence.length, 15);
-
-  return (
-    <div className="overflow-x-auto">
-      <div className="min-w-[300px]">
-        <div className="grid grid-cols-[24px_repeat(15,1fr)] gap-px text-center">
-          {/* 헤더 */}
-          <div className="text-[9px] text-on-surface-medium" />
-          {Array.from({ length: 15 }, (_, i) => (
-            <div key={i} className="text-[9px] text-on-surface-medium py-0.5">
-              {i + 1}
-            </div>
-          ))}
-
-          {/* Q/W/E/R 행 */}
-          {SKILL_KEYS.map((skillKey, skillIdx) => (
-            <div key={skillKey} className="contents">
-              <SkillLabel
-                skillKey={skillKey}
-                skillIndex={skillIdx}
-                championName={championName}
-              />
-              {Array.from({ length: 15 }, (_, levelIdx) => {
-                const isSkillUp =
-                  levelIdx < maxLevel &&
-                  sequence[levelIdx] === skillIdx + 1;
-                let count = 0;
-                for (let l = 0; l <= levelIdx && l < maxLevel; l++) {
-                  if (sequence[l] === skillIdx + 1) count++;
-                }
-                const isMaster =
-                  isSkillUp && count === SKILL_MAX_LEVELS[skillIdx];
-                const cellClass = isSkillUp
-                  ? isMaster
-                    ? SKILL_COLORS[skillKey].master
-                    : SKILL_COLORS[skillKey].bg
-                  : "bg-surface-4/30";
-                return (
-                  <div
-                    key={levelIdx}
-                    className={`h-5 rounded-sm flex items-center justify-center ${cellClass}`}
-                  >
-                    {isSkillUp && (
-                      <span
-                        className={`text-[9px] font-bold ${
-                          isMaster ? "text-white" : ""
-                        }`}
-                      >
-                        {isMaster ? "M" : count}
-                      </span>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function SkillLabel({
   skillKey,
-  skillIndex,
-  championName,
 }: {
-  skillKey: string;
-  skillIndex: number;
+  champion: { spells?: { image: { full: string }; name: string }[] } | undefined;
   championName: string;
+  skillKey: string;
 }) {
   const [imgError, setImgError] = useState(false);
+  const index = SKILL_KEY_TO_INDEX[skillKey];
+  const spell = champion?.spells?.[index];
 
-  const label =
-    championName && !imgError ? (
-      <div className="py-0.5 flex items-center justify-center">
-        <Image
-          src={getChampionSpellImageUrl(championName, skillKey)}
-          alt={skillKey}
-          width={20}
-          height={20}
-          className="rounded"
-          unoptimized
-          onError={() => setImgError(true)}
-        />
-      </div>
-    ) : (
-      <div
-        className={`text-[10px] font-bold py-0.5 flex items-center justify-center ${SKILL_COLORS[skillKey].text}`}
+  if (imgError) {
+    return (
+      <span
+        className={`w-6 h-6 rounded flex items-center justify-center text-[10px] font-bold ${SKILL_COLORS[skillKey] ?? "bg-surface-4 text-on-surface-medium"}`}
       >
         {skillKey}
-      </div>
+      </span>
     );
+  }
+
+  const src = spell?.image.full
+    ? `${IMAGE_HOST}/spells/${spell.image.full}`
+    : `${IMAGE_HOST}/spells/${championName}${skillKey}.png`;
 
   return (
-    <GameTooltip
-      type="championSpell"
-      id={`${championName}:${skillIndex}`}
-      disabled={!championName}
-    >
-      {label}
-    </GameTooltip>
+    <Image
+      src={src}
+      alt={spell?.name ?? `${championName} ${skillKey}`}
+      width={24}
+      height={24}
+      className="rounded"
+      unoptimized
+      onError={() => setImgError(true)}
+    />
   );
 }

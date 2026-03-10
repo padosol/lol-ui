@@ -14,20 +14,22 @@ export default function MatchupStats({ data }: MatchupStatsProps) {
   const bestMatchups = useMemo(
     () =>
       [...data]
-        .filter((m) => m.totalWinRate >= 50)
-        .sort((a, b) => b.totalWinRate - a.totalWinRate),
+        .filter((m) => m.winRate != null && m.games != null && m.opponentChampionId != null)
+        .filter((m) => m.winRate >= 0.5)
+        .sort((a, b) => b.winRate - a.winRate),
     [data]
   );
 
   const worstMatchups = useMemo(
     () =>
       [...data]
-        .filter((m) => m.totalWinRate < 50)
-        .sort((a, b) => a.totalWinRate - b.totalWinRate),
+        .filter((m) => m.winRate != null && m.games != null && m.opponentChampionId != null)
+        .filter((m) => m.winRate < 0.5)
+        .sort((a, b) => a.winRate - b.winRate),
     [data]
   );
 
-  if (data.length === 0) return null;
+  if (!data || data.length === 0) return null;
 
   return (
     <div className="bg-surface-1 rounded-lg border border-divider p-5">
@@ -60,15 +62,19 @@ function MatchupColumn({
   const championData = useGameDataStore((s) => s.championData);
   const colorClass = type === "best" ? "text-win" : "text-loss";
 
-  // opponentChampionId (숫자) → 챔피언 영문명 역매핑
+  // key(숫자 문자열) → { id, name } 역매핑 (O(1) 조회용)
+  const championByKey = useMemo(() => {
+    if (!championData?.data) return new Map<string, { id: string; name: string }>();
+    const map = new Map<string, { id: string; name: string }>();
+    for (const c of Object.values(championData.data)) {
+      map.set(c.key, { id: c.id, name: c.name });
+    }
+    return map;
+  }, [championData]);
+
   const getChampionInfo = (opponentId: number) => {
-    if (!championData?.data) return { id: String(opponentId), name: String(opponentId) };
-    const champ = Object.values(championData.data).find(
-      (c) => c.key === String(opponentId)
-    );
-    return champ
-      ? { id: champ.id, name: champ.name }
-      : { id: String(opponentId), name: String(opponentId) };
+    const fallback = { id: String(opponentId), name: String(opponentId) };
+    return championByKey.get(String(opponentId)) ?? fallback;
   };
 
   return (
@@ -100,18 +106,18 @@ function MatchupColumn({
                     className={`h-full rounded-full ${
                       type === "best" ? "bg-win" : "bg-loss"
                     }`}
-                    style={{ width: `${entry.totalWinRate}%` }}
+                    style={{ width: `${entry.winRate * 100}%` }}
                   />
                 </div>
                 <span
                   className={`text-xs font-medium w-12 text-right ${colorClass}`}
                 >
-                  {entry.totalWinRate.toFixed(1)}%
+                  {(entry.winRate * 100).toFixed(1)}%
                 </span>
               </div>
 
               <span className="text-xs text-on-surface-medium w-14 text-right">
-                {entry.totalGames.toLocaleString()}게임
+                {entry.games.toLocaleString()}게임
               </span>
             </div>
           );

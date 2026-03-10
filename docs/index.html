@@ -689,8 +689,8 @@ Content-Length: 359
     "gameName" : "hide on bush",
     "tagLine" : "KR1",
     "platform" : null,
-    "lastRevisionDateTime" : "2026-03-05T00:48:17.163285155",
-    "lastRevisionClickDateTime" : "2026-03-05T00:48:17.163285155"
+    "lastRevisionDateTime" : "2026-03-09T13:17:11.587842346",
+    "lastRevisionClickDateTime" : "2026-03-09T13:17:11.587842346"
   },
   "errorMessage" : null
 }</code></pre>
@@ -2449,43 +2449,72 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 966
+Content-Length: 1645
 
 {
   "result" : "SUCCESS",
   "data" : {
     "tier" : "EMERALD",
-    "stats" : [ {
+    "positions" : [ {
       "teamPosition" : "TOP",
-      "winRate" : 55.0,
-      "totalCount" : 1500,
+      "winRate" : 0.55,
+      "totalGames" : 1500,
       "matchups" : [ {
         "opponentChampionId" : 86,
-        "totalGames" : 200,
-        "totalWins" : 110,
-        "totalWinRate" : 55.0
-      } ],
-      "itemBuilds" : [ {
-        "itemsSorted" : "3078,3053,3065",
-        "totalGames" : 300,
-        "totalWins" : 170,
-        "totalWinRate" : 56.67
+        "games" : 200,
+        "winRate" : 0.55,
+        "pickRate" : 0.4
       } ],
       "runeBuilds" : [ {
         "primaryStyleId" : 8000,
-        "primaryPerkIds" : "8010,9111,9104,8299",
         "subStyleId" : 8400,
-        "subPerkIds" : "8446,8451",
-        "totalGames" : 250,
-        "totalWins" : 140,
-        "totalWinRate" : 56.0
+        "primaryPerk0" : 8010,
+        "primaryPerk1" : 9111,
+        "primaryPerk2" : 9104,
+        "primaryPerk3" : 8299,
+        "subPerk0" : 8446,
+        "subPerk1" : 8451,
+        "statPerkDefense" : 5002,
+        "statPerkFlex" : 5008,
+        "statPerkOffense" : 5005,
+        "games" : 250,
+        "winRate" : 0.56,
+        "pickRate" : 0.5
+      } ],
+      "spellStats" : [ {
+        "summoner1Id" : 4,
+        "summoner2Id" : 14,
+        "games" : 800,
+        "winRate" : 0.52,
+        "pickRate" : 0.8
       } ],
       "skillBuilds" : [ {
-        "skillOrder15" : "Q,E,W,Q,Q,R,Q,E,Q,E,R,E,E,W,W",
-        "totalGames" : 400,
-        "totalWins" : 220,
-        "totalWinRate" : 55.0
-      } ]
+        "skillBuild" : "Q,E,W,Q,Q,R,Q,E,Q,E,R,E,E,W,W",
+        "games" : 400,
+        "winRate" : 0.55,
+        "pickRate" : 0.4
+      } ],
+      "startItemBuilds" : [ {
+        "startItems" : "1054,2003",
+        "games" : 600,
+        "winRate" : 0.51,
+        "pickRate" : 0.6
+      } ],
+      "itemBuilds" : [ {
+        "itemBuild" : "3078,3053,3065",
+        "games" : 300,
+        "winRate" : 0.5667,
+        "pickRate" : 0.3
+      } ],
+      "itemStatsByOrder" : {
+        "1" : [ {
+          "itemId" : 3078,
+          "itemName" : "Trinity Force",
+          "games" : 500,
+          "winRate" : 0.55,
+          "pickRate" : 0.5
+        } ]
+      }
     } ]
   },
   "errorMessage" : null
@@ -2522,139 +2551,264 @@ Content-Length: 966
 <td class="tableblock halign-left valign-top"><p class="tableblock">티어 (e.g., EMERALD)</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.stats[]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[]</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">포지션별 통계 목록</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.stats[].teamPosition</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].teamPosition</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">포지션</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.stats[].winRate</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].winRate</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">승률</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.stats[].totalCount</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].totalGames</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">총 게임 수</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.stats[].matchups[]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].matchups[]</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">상대 챔피언별 매치업 목록</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.stats[].matchups[].opponentChampionId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].matchups[].opponentChampionId</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">상대 챔피언 ID</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.stats[].matchups[].totalGames</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].matchups[].games</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">총 게임 수</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">게임 수</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.stats[].matchups[].totalWins</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">총 승리 수</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.stats[].matchups[].totalWinRate</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].matchups[].winRate</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">승률</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.stats[].itemBuilds[]</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">아이템 빌드 목록</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.stats[].itemBuilds[].itemsSorted</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">아이템 빌드 (정렬된 ID)</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.stats[].itemBuilds[].totalGames</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].matchups[].pickRate</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">총 게임 수</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">대면 비율</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.stats[].itemBuilds[].totalWins</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">총 승리 수</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.stats[].itemBuilds[].totalWinRate</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">승률</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.stats[].runeBuilds[]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].runeBuilds[]</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">룬 빌드 목록</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.stats[].runeBuilds[].primaryStyleId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].runeBuilds[].primaryStyleId</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">주 룬 스타일 ID</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.stats[].runeBuilds[].primaryPerkIds</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">주 룬 ID 목록</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.stats[].runeBuilds[].subStyleId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].runeBuilds[].subStyleId</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">보조 룬 스타일 ID</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.stats[].runeBuilds[].subPerkIds</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">보조 룬 ID 목록</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.stats[].runeBuilds[].totalGames</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].runeBuilds[].primaryPerk0</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">총 게임 수</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">주 룬 키스톤</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.stats[].runeBuilds[].totalWins</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].runeBuilds[].primaryPerk1</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">총 승리 수</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">주 룬 슬롯 1</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.stats[].runeBuilds[].totalWinRate</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].runeBuilds[].primaryPerk2</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">주 룬 슬롯 2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].runeBuilds[].primaryPerk3</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">주 룬 슬롯 3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].runeBuilds[].subPerk0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">보조 룬 슬롯 0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].runeBuilds[].subPerk1</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">보조 룬 슬롯 1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].runeBuilds[].statPerkDefense</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">방어 스탯 룬</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].runeBuilds[].statPerkFlex</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">유연 스탯 룬</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].runeBuilds[].statPerkOffense</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">공격 스탯 룬</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].runeBuilds[].games</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">게임 수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].runeBuilds[].winRate</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">승률</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.stats[].skillBuilds[]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].runeBuilds[].pickRate</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">픽률</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].spellStats[]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">소환사 주문 조합 목록</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].spellStats[].summoner1Id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">소환사 주문 1 ID</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].spellStats[].summoner2Id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">소환사 주문 2 ID</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].spellStats[].games</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">게임 수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].spellStats[].winRate</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">승률</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].spellStats[].pickRate</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">픽률</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].skillBuilds[]</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">스킬 빌드 목록</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.stats[].skillBuilds[].skillOrder15</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].skillBuilds[].skillBuild</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">15레벨까지 스킬 순서</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">스킬 빌드 순서</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.stats[].skillBuilds[].totalGames</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].skillBuilds[].games</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">총 게임 수</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">게임 수</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.stats[].skillBuilds[].totalWins</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">총 승리 수</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.stats[].skillBuilds[].totalWinRate</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].skillBuilds[].winRate</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">승률</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].skillBuilds[].pickRate</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">픽률</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].startItemBuilds[]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">시작 아이템 빌드 목록</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].startItemBuilds[].startItems</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">시작 아이템 ID 목록</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].startItemBuilds[].games</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">게임 수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].startItemBuilds[].winRate</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">승률</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].startItemBuilds[].pickRate</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">픽률</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].itemBuilds[]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3코어 아이템 빌드 목록</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].itemBuilds[].itemBuild</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">아이템 빌드 순서</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].itemBuilds[].games</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">게임 수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].itemBuilds[].winRate</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">승률</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].itemBuilds[].pickRate</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">픽률</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].itemStatsByOrder</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">코어 순서별 완성 아이템 통계 (키: 1, 2, 3)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].itemStatsByOrder.1[]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1코어 아이템 통계</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].itemStatsByOrder.1[].itemId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">아이템 ID</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].itemStatsByOrder.1[].itemName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">아이템 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].itemStatsByOrder.1[].games</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">게임 수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].itemStatsByOrder.1[].winRate</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">승률</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.positions[].itemStatsByOrder.1[].pickRate</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">픽률</p></td>
 </tr>
 </tbody>
 </table>

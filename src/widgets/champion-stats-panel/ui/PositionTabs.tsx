@@ -1,30 +1,28 @@
 "use client";
 
-import type {
-  ChampionPositionStats,
-  ApiPositionType,
-} from "@/entities/champion";
+import type { ApiPositionType } from "@/entities/champion";
 import { getPositionImageUrl, getPositionName } from "@/shared/lib/position";
 import Image from "next/image";
 
+const ALL_POSITIONS: ApiPositionType[] = ["TOP", "JUNGLE", "MIDDLE", "BOTTOM", "UTILITY"];
+
 interface PositionTabsProps {
-  positions: ApiPositionType[];
   selectedPosition: ApiPositionType;
   onSelectPosition: (position: ApiPositionType) => void;
-  stats: ChampionPositionStats[];
+  availablePositions?: ApiPositionType[];
 }
 
 export default function PositionTabs({
-  positions,
   selectedPosition,
   onSelectPosition,
-  stats,
+  availablePositions,
 }: PositionTabsProps) {
+  const positions = availablePositions ?? ALL_POSITIONS;
+
   return (
     <div className="flex border-b border-divider">
       {positions.map((pos) => {
         const isActive = pos === selectedPosition;
-        const posStats = stats.find((s) => s.teamPosition === pos);
         return (
           <button
             key={pos}
@@ -45,20 +43,6 @@ export default function PositionTabs({
               className={isActive ? "opacity-100" : "opacity-60"}
             />
             <span className="hidden sm:inline">{getPositionName(pos)}</span>
-            {posStats && (
-              <>
-                <span className="text-xs text-on-surface-medium">
-                  {posStats.totalCount.toLocaleString()}게임
-                </span>
-                <span
-                  className={`text-xs font-semibold ${
-                    posStats.winRate >= 50 ? "text-win" : "text-loss"
-                  }`}
-                >
-                  {posStats.winRate.toFixed(1)}%
-                </span>
-              </>
-            )}
           </button>
         );
       })}
