@@ -11,7 +11,8 @@ export default function Navigation() {
   const pathname = usePathname() ?? "/";
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const isHome = pathname === "/";
-  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
+  const isSummonerPage = pathname.startsWith("/summoners/");
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(isSummonerPage);
 
   const navItems = [
     { label: "홈", href: "/" },
