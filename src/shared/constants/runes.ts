@@ -154,10 +154,10 @@ export const STAT_PERK_NAMES: Record<number, string> = {
   5001: "체력",
 };
 
-export const STAT_PERK_ROWS: { label: string; perks: number[] }[] = [
-  { label: "공격", perks: [5008, 5005, 5007] },
-  { label: "유연", perks: [5008, 5002, 5003] },
-  { label: "방어", perks: [5001, 5002, 5003] },
+export const STAT_PERK_ROWS: { perks: number[] }[] = [
+  { perks: [5008, 5005, 5007] },
+  { perks: [5008, 5010, 5003] },
+  { perks: [5011, 5013, 5001] },
 ];
 
 export const STAT_PERK_ROW_KEYS = ["offense", "flex", "defense"] as const;

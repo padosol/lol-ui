@@ -10,12 +10,12 @@ import {
   getItemImageUrl,
   getKDAColorClass,
   getPerkImageUrl,
-  getSpellImageUrlAsync,
 } from "@/shared/lib/game";
 import { sortByPosition } from "@/shared/lib/position";
 import { normalizeRunes, parseRuneStyle } from "@/shared/lib/rune";
 import { getStyleImageUrl } from "@/shared/lib/styles";
 import { getTierImageUrl, getTierName } from "@/shared/lib/tier";
+import { SummonerSpellImage, RuneImage } from "@/shared/ui/game";
 import { GameTooltip } from "@/shared/ui/tooltip";
 import { ArrowUp, ChevronDown } from "lucide-react";
 import Image from "next/image";
@@ -24,71 +24,6 @@ import { ArenaTeamInfo, MatchDetailInfo, TeamInfo } from "@/widgets/match-detail
 import MatchSummary from "./MatchSummary";
 
 type GameModeFilter = "ALL" | "RANKED" | "FLEX" | "NORMAL" | "ARENA" | "ARAM";
-
-// 소환사 주문 이미지 컴포넌트 (비동기 로드)
-function SummonerSpellImage({ spellId, small }: { spellId: number; small?: boolean }) {
-  const [imageUrl, setImageUrl] = useState<string>("");
-  const sizeClass = small ? "w-6 h-6" : "w-7 h-7";
-  const imgSize = small ? 24 : 28;
-
-  useEffect(() => {
-    if (spellId > 0) {
-      getSpellImageUrlAsync(spellId).then(setImageUrl).catch(() => {});
-    }
-  }, [spellId]);
-
-  if (!imageUrl) {
-    return null;
-  }
-
-  return (
-    <GameTooltip type="spell" id={spellId}>
-      <div className={`${sizeClass} bg-surface-4 rounded border border-divider/50 overflow-hidden relative shadow-sm flex items-center justify-center`}>
-        <Image
-          src={imageUrl}
-          alt={`Summoner ${spellId}`}
-          width={imgSize}
-          height={imgSize}
-          className="object-cover"
-          unoptimized
-          onError={(e) => {
-            const target = e.target as HTMLImageElement;
-            target.style.display = "none";
-          }}
-        />
-      </div>
-    </GameTooltip>
-  );
-}
-
-// 룬 이미지 컴포넌트 (소환사 주문과 동일한 스타일)
-function RuneImage({ runeId, imageUrl, small }: { runeId: number; imageUrl: string; small?: boolean }) {
-  const sizeClass = small ? "w-6 h-6" : "w-7 h-7";
-  const imgSize = small ? 24 : 28;
-
-  if (!imageUrl) {
-    return null;
-  }
-
-  return (
-    <GameTooltip type="rune" id={runeId}>
-      <div className={`${sizeClass} bg-surface-4 rounded border border-divider/50 overflow-hidden relative shadow-sm flex items-center justify-center`}>
-        <Image
-          src={imageUrl}
-          alt={`Rune ${runeId}`}
-          width={imgSize}
-          height={imgSize}
-          className="object-cover"
-          unoptimized
-          onError={(e) => {
-            const target = e.target as HTMLImageElement;
-            target.style.display = "none";
-          }}
-        />
-      </div>
-    </GameTooltip>
-  );
-}
 
 interface MatchHistoryProps {
   puuid?: string | null;
@@ -841,9 +776,9 @@ export default function MatchHistory({
                     </div>
                   </div>
 
-                  {/* Row 2: 챔피언+스펠+룬 | KDA | 아이템 */}
-                  <div className="flex items-center gap-2">
-                    {/* 왼쪽: 챔프 + 스펠 + 룬 */}
+                  {/* Row 2: 챔피언+스펠+룬 | KDA | 티어 | 아이템 */}
+                  <div className="flex items-center justify-between gap-1.5">
+                    {/* 왼쪽: 챔프 + 스펠+룬 (행 단위) */}
                     <div className="flex items-center gap-1 shrink-0">
                       {/* 챔피언 아이콘 */}
                       <GameTooltip type="champion" id={match.champion}>
@@ -871,67 +806,72 @@ export default function MatchHistory({
                           </div>
                         </div>
                       </GameTooltip>
-                      {/* 소환사 주문 */}
+                      {/* 스펠+룬 행 단위 배치 */}
                       <div className="flex flex-col gap-0.5">
-                        {myData.summoner1Id > 0 && (
-                          <SummonerSpellImage spellId={myData.summoner1Id} small />
-                        )}
-                        {myData.summoner2Id > 0 && (
-                          <SummonerSpellImage spellId={myData.summoner2Id} small />
-                        )}
-                      </div>
-                      {/* 룬 */}
-                      <div className="flex flex-col gap-0.5">
-                        {mainRuneId > 0 && (
-                          <RuneImage
-                            runeId={mainRuneId}
-                            imageUrl={getPerkImageUrl(mainRuneId)}
-                            small
-                          />
-                        )}
-                        {subRuneStyleId > 0 && (
-                          <RuneImage
-                            runeId={subRuneStyleId}
-                            imageUrl={getStyleImageUrl(subRuneStyleId)}
-                            small
-                          />
-                        )}
+                        <div className="flex gap-0.5">
+                          {myData.summoner1Id > 0 && (
+                            <SummonerSpellImage spellId={myData.summoner1Id} size="xs" />
+                          )}
+                          {mainRuneId > 0 && (
+                            <RuneImage
+                              runeId={mainRuneId}
+                              imageUrl={getPerkImageUrl(mainRuneId)}
+                              size="xs"
+                            />
+                          )}
+                        </div>
+                        <div className="flex gap-0.5">
+                          {myData.summoner2Id > 0 && (
+                            <SummonerSpellImage spellId={myData.summoner2Id} size="xs" />
+                          )}
+                          {subRuneStyleId > 0 && (
+                            <RuneImage
+                              runeId={subRuneStyleId}
+                              imageUrl={getStyleImageUrl(subRuneStyleId)}
+                              size="xs"
+                            />
+                          )}
+                        </div>
                       </div>
                     </div>
 
                     {/* 중앙: KDA */}
-                    <div className="flex flex-col items-center flex-1 min-w-0">
-                      <div className="flex items-center gap-1 text-sm font-semibold">
+                    <div className="flex flex-col items-center min-w-0">
+                      <div className="flex items-center gap-1 text-xs font-semibold">
                         <span className="text-on-surface">{match.kda.kills}</span>
                         <span className="text-on-surface-disabled">/</span>
                         <span className="text-loss">{match.kda.deaths}</span>
                         <span className="text-on-surface-disabled">/</span>
                         <span className="text-on-surface">{match.kda.assists}</span>
                       </div>
-                      <div className="flex items-center gap-1 text-[11px] font-medium">
+                      <div className="flex items-center gap-1 text-[10px] font-medium">
                         <span className={getKDAColorClass(calculateKDA(match.kda))}>
                           {calculateKDA(match.kda) === "perfect"
                             ? "perfect"
                             : `${calculateKDA(match.kda)}:1 평점`}
                         </span>
-                        {gameInfo?.averageTier != null && getTierImageUrl(gameInfo.averageTier) && (
-                          <span className="flex items-center gap-0.5 text-on-surface-medium">
-                            <Image
-                              src={getTierImageUrl(gameInfo.averageTier)}
-                              alt={getTierName(gameInfo.averageTier)}
-                              width={20}
-                              height={20}
-                              className="w-5 h-5"
-                            />
-                            <span className="text-[10px]">{getTierName(gameInfo.averageTier)}</span>
-                          </span>
-                        )}
                       </div>
                     </div>
 
-                    {/* 오른쪽: 아이템 */}
+                    {/* 평균티어 */}
+                    {gameInfo?.averageTier != null && getTierImageUrl(gameInfo.averageTier) && (
+                      <div className="flex flex-col items-center justify-center">
+                        <Image
+                          src={getTierImageUrl(gameInfo.averageTier)}
+                          alt={getTierName(gameInfo.averageTier)}
+                          width={24}
+                          height={24}
+                          className="w-6 h-6"
+                        />
+                        <span className="text-[10px] text-on-surface-medium">
+                          {getTierName(gameInfo.averageTier)}
+                        </span>
+                      </div>
+                    )}
+
+                    {/* 오른쪽: 아이템 (3+장신구 / 3) */}
                     <div className="grid grid-cols-4 gap-0.5 shrink-0">
-                      {items.slice(0, 6).map((itemId, idx) => (
+                      {items.slice(0, 3).map((itemId, idx) => (
                         <GameTooltip key={idx} type="item" id={itemId} disabled={itemId <= 0}>
                           <div className="w-5 h-5 bg-surface-4 rounded border border-divider/50 overflow-hidden relative">
                             <Image
@@ -945,7 +885,7 @@ export default function MatchHistory({
                           </div>
                         </GameTooltip>
                       ))}
-                      {items[6] > 0 && (
+                      {items[6] > 0 ? (
                         <GameTooltip type="item" id={items[6]}>
                           <div className="w-5 h-5 bg-surface-4 rounded-full border border-divider/50 overflow-hidden relative">
                             <Image
@@ -958,7 +898,23 @@ export default function MatchHistory({
                             />
                           </div>
                         </GameTooltip>
+                      ) : (
+                        <div className="w-5 h-5" />
                       )}
+                      {items.slice(3, 6).map((itemId, idx) => (
+                        <GameTooltip key={idx + 3} type="item" id={itemId} disabled={itemId <= 0}>
+                          <div className="w-5 h-5 bg-surface-4 rounded border border-divider/50 overflow-hidden relative">
+                            <Image
+                              src={getItemImageUrl(itemId)}
+                              alt={`Item ${itemId}`}
+                              fill
+                              sizes="20px"
+                              className="object-cover"
+                              unoptimized
+                            />
+                          </div>
+                        </GameTooltip>
+                      ))}
                     </div>
                   </div>
                 </div>
@@ -972,6 +928,7 @@ export default function MatchHistory({
                     blueTeam={blueTeam}
                     redTeam={redTeam}
                     puuid={puuid}
+                    region={region}
                   />
                 )}
               </div>

@@ -6,10 +6,10 @@ import { useState } from "react";
 
 const SKILL_KEYS = ["Q", "W", "E", "R"] as const;
 const SKILL_COLORS: Record<string, { bg: string; text: string; master: string }> = {
-  Q: { bg: "bg-stat-mid text-white", text: "text-stat-mid", master: "bg-stat-mid ring-1 ring-white/30 text-white" },
-  W: { bg: "bg-secondary text-white", text: "text-secondary", master: "bg-secondary ring-1 ring-white/30 text-white" },
-  E: { bg: "bg-primary text-white", text: "text-primary", master: "bg-primary ring-1 ring-white/30 text-white" },
-  R: { bg: "bg-gold text-surface", text: "text-gold", master: "bg-gold ring-1 ring-white/30 text-surface" },
+  Q: { bg: "bg-stat-mid/20 text-stat-mid", text: "text-stat-mid", master: "bg-stat-mid/40 ring-1 ring-stat-mid/50 text-stat-mid" },
+  W: { bg: "bg-secondary/20 text-secondary", text: "text-secondary", master: "bg-secondary/40 ring-1 ring-secondary/50 text-secondary" },
+  E: { bg: "bg-primary/20 text-primary", text: "text-primary", master: "bg-primary/40 ring-1 ring-primary/50 text-primary" },
+  R: { bg: "bg-gold/20 text-gold", text: "text-gold", master: "bg-gold/40 ring-1 ring-gold/50 text-gold" },
 };
 const SKILL_NUMBERS = [1, 2, 3, 4] as const;
 const SKILL_MAX_LEVELS = [5, 5, 5, 3] as const; // Q, W, E, R
@@ -76,7 +76,7 @@ export default function SkillOrderGrid({ skillSeq, championName }: SkillOrderGri
                       className={`h-5 rounded-sm flex items-center justify-center ${cellClass}`}
                     >
                       {isSkillUp && data && (
-                        <span className={`text-[9px] font-bold ${isMaster ? "text-white" : ""}`}>
+                        <span className="text-[9px] font-bold">
                           {isMaster ? "M" : data.count}
                         </span>
                       )}

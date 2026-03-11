@@ -12,6 +12,7 @@ interface MatchDetailInfoProps {
   blueTeam: ParticipantData[];
   redTeam: ParticipantData[];
   puuid: string | null;
+  region?: string;
 }
 
 type DetailTab = "overview" | "build";
@@ -23,6 +24,7 @@ export default function MatchDetailInfo({
   blueTeam,
   redTeam,
   puuid,
+  region,
 }: MatchDetailInfoProps) {
   const [activeTab, setActiveTab] = useState<DetailTab>("overview");
 
@@ -43,11 +45,10 @@ export default function MatchDetailInfo({
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`px-4 py-1.5 text-xs font-medium transition-colors border-b-2 cursor-pointer ${
-                activeTab === tab.id
+              className={`px-4 py-1.5 text-xs font-medium transition-colors border-b-2 cursor-pointer ${activeTab === tab.id
                   ? "text-on-surface border-on-surface-medium"
                   : "text-on-surface-medium border-transparent hover:text-on-surface"
-              }`}
+                }`}
             >
               {tab.label}
             </button>
@@ -56,7 +57,7 @@ export default function MatchDetailInfo({
       )}
 
       {/* 탭 콘텐츠 */}
-      <div className="p-3">
+      <div className="p-1">
         {(isArena || activeTab === "overview") && (
           <MatchDetailOverview
             detail={detail}
@@ -65,6 +66,7 @@ export default function MatchDetailInfo({
             blueTeam={blueTeam}
             redTeam={redTeam}
             puuid={puuid}
+            region={region}
           />
         )}
 

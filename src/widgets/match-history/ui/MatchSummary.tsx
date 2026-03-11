@@ -182,9 +182,9 @@ export default function MatchSummary({ matches, dailyCounts, isDailyCountLoading
 
   return (
     <div className="bg-surface-1 rounded-lg p-2 mb-3 border border-divider">
-      <div className="grid grid-cols-1 md:grid-cols-[2.5fr_4fr_2.5fr_4.5fr] gap-2">
+      <div className="grid grid-cols-5 md:grid-cols-[2.5fr_4fr_2.5fr_4.5fr] gap-2">
         {/* 전적 요약 - 원차트 */}
-        <div className="flex flex-col min-w-0">
+        <div className="flex flex-col min-w-0 col-span-2 md:col-span-1">
           <div className="text-on-surface-medium text-xs mb-0.5">전적 요약</div>
           <div className="flex flex-col items-center gap-1.5 mt-auto">
             <div className="relative w-20 h-20">
@@ -217,7 +217,7 @@ export default function MatchSummary({ matches, dailyCounts, isDailyCountLoading
         </div>
 
         {/* 주요 챔피언 - Row 형태 */}
-        <div className="flex flex-col min-w-0">
+        <div className="flex flex-col min-w-0 col-span-3 md:col-span-1">
           <div className="text-on-surface-medium text-xs mb-0.5">주요 챔피언</div>
           <div className="space-y-1 mt-auto">
             {topChampions.map((champ, index) => (
@@ -240,9 +240,6 @@ export default function MatchSummary({ matches, dailyCounts, isDailyCountLoading
                   )}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="text-on-surface text-[11px] font-medium truncate">
-                    {champ.name}
-                  </div>
                   <div className="text-on-surface-medium text-[9px]">
                     {champ.games}게임 · 승률 {champ.winRate}%
                   </div>
@@ -258,7 +255,7 @@ export default function MatchSummary({ matches, dailyCounts, isDailyCountLoading
         </div>
 
         {/* 포지션 - 막대차트 */}
-        <div className="flex flex-col min-w-0">
+        <div className="flex flex-col min-w-0 col-span-2 md:col-span-1">
           <div className="text-on-surface-medium text-xs mb-0.5">포지션</div>
           <div className="relative mt-auto">
             <div className="h-24">
@@ -286,7 +283,7 @@ export default function MatchSummary({ matches, dailyCounts, isDailyCountLoading
         </div>
 
         {/* 게임 활동 - 잔디 그래프 */}
-        <div className="space-y-1 min-w-0">
+        <div className="space-y-1 min-w-0 col-span-3 md:col-span-1">
           <div className="text-on-surface-medium text-xs mb-0.5">최근 3개월 게임 활동</div>
           <ContributionGraph dailyCounts={dailyCounts ?? []} isLoading={isDailyCountLoading} />
         </div>

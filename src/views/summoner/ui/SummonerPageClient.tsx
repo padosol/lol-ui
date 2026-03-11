@@ -29,7 +29,7 @@ export default function SummonerPageClient({
     <div className="min-h-screen bg-surface flex flex-col">
       <Header />
       <Navigation />
-      <main className="flex-1 w-full max-w-[1080px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="flex-1 w-full max-w-[1080px] mx-auto sm:px-6 lg:px-8 py-8">
         <ProfileSection
           summonerName={gameName}
           region={region}
