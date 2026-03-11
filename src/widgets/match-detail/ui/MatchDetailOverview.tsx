@@ -441,7 +441,7 @@ export default function MatchDetailOverview({
           return (
             <div
               key={participant.participantId}
-              className={`flex items-start gap-1 p-1 rounded ${isMe ? highlightBg : "bg-surface-4/30"
+              className={`flex items-center gap-1 px-1 rounded h-8 ${isMe ? highlightBg : "bg-surface-4/30"
                 }`}
             >
               {/* Col 1: 챔피언 이미지 */}
@@ -516,13 +516,13 @@ export default function MatchDetailOverview({
                 <div className="flex gap-0.5">
                   {participantItems.slice(0, 3).map((itemId, idx) => (
                     <GameTooltip key={idx} type="item" id={itemId} disabled={itemId <= 0}>
-                      <div className="w-4 h-4 bg-surface-4 rounded border border-divider/50 overflow-hidden relative">
+                      <div className="w-[15px] h-[15px] bg-surface-4 rounded border border-divider/50 overflow-hidden relative">
                         {itemId > 0 ? (
                           <Image
                             src={getItemImageUrl(itemId)}
                             alt={`Item ${itemId}`}
                             fill
-                            sizes="16px"
+                            sizes="15px"
                             className="object-cover"
                             unoptimized
                           />
@@ -536,13 +536,13 @@ export default function MatchDetailOverview({
                 <div className="flex gap-0.5">
                   {participantItems.slice(3, 7).map((itemId, idx) => (
                     <GameTooltip key={idx + 3} type="item" id={itemId} disabled={itemId <= 0}>
-                      <div className="w-4 h-4 bg-surface-4 rounded border border-divider/50 overflow-hidden relative">
+                      <div className="w-[15px] h-[15px] bg-surface-4 rounded border border-divider/50 overflow-hidden relative">
                         {itemId > 0 ? (
                           <Image
                             src={getItemImageUrl(itemId)}
                             alt={`Item ${itemId}`}
                             fill
-                            sizes="16px"
+                            sizes="15px"
                             className="object-cover"
                             unoptimized
                           />
