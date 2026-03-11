@@ -12,7 +12,9 @@ import {
 import { parseRuneStyle, normalizeRunes } from "@/shared/lib/rune";
 import { getStyleImageUrl } from "@/shared/lib/styles";
 import { SummonerSpellImage, RuneImage } from "@/shared/ui/game";
+import { normalizeRegion } from "@/entities/summoner";
 import Image from "next/image";
+import Link from "next/link";
 import DamageBar from "./DamageBar";
 
 interface MatchDetailOverviewProps {
@@ -22,6 +24,7 @@ interface MatchDetailOverviewProps {
   blueTeam: ParticipantData[];
   redTeam: ParticipantData[];
   puuid: string | null;
+  region?: string;
 }
 
 interface TeamStats {
@@ -38,7 +41,18 @@ export default function MatchDetailOverview({
   blueTeam,
   redTeam,
   puuid,
+  region = "kr",
 }: MatchDetailOverviewProps) {
+  const getSummonerUrl = (participant: ParticipantData) => {
+    const normalizedRegion = normalizeRegion(region);
+    const gameName = participant.riotIdGameName
+      ? participant.riotIdTagline
+        ? `${participant.riotIdGameName}-${participant.riotIdTagline}`
+        : participant.riotIdGameName
+      : participant.summonerName;
+    return `/summoners/${normalizedRegion}/${encodeURIComponent(gameName)}`;
+  };
+
   if (isArena) {
     const participants = detail.participantData || [];
     const hasValidPlacement = participants.some(p => p.placement > 0);
@@ -473,9 +487,14 @@ export default function MatchDetailOverview({
               {/* Col 3: 텍스트 정보 (2행) */}
               <div className="flex flex-col flex-1 min-w-0">
                 <div className="flex items-center">
-                  <span className="text-on-surface text-[11px] font-medium truncate flex-1 min-w-0">
+                  <Link
+                    href={getSummonerUrl(participant)}
+                    prefetch={false}
+                    onClick={(e) => e.stopPropagation()}
+                    className="text-on-surface text-[11px] font-medium truncate flex-1 min-w-0 hover:text-team-blue hover:underline transition-colors"
+                  >
                     {participant.riotIdGameName || participant.summonerName}
-                  </span>
+                  </Link>
                   <span className="text-on-surface-medium text-[10px] shrink-0 ml-1">
                     {participantTotalCS}({participantCsPerMin})
                   </span>

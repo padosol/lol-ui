@@ -10,12 +10,12 @@ import {
   getItemImageUrl,
   getKDAColorClass,
   getPerkImageUrl,
-  getSpellImageUrlAsync,
 } from "@/shared/lib/game";
 import { sortByPosition } from "@/shared/lib/position";
 import { normalizeRunes, parseRuneStyle } from "@/shared/lib/rune";
 import { getStyleImageUrl } from "@/shared/lib/styles";
 import { getTierImageUrl, getTierName } from "@/shared/lib/tier";
+import { SummonerSpellImage, RuneImage } from "@/shared/ui/game";
 import { GameTooltip } from "@/shared/ui/tooltip";
 import { ArrowUp, ChevronDown } from "lucide-react";
 import Image from "next/image";
@@ -24,73 +24,6 @@ import { ArenaTeamInfo, MatchDetailInfo, TeamInfo } from "@/widgets/match-detail
 import MatchSummary from "./MatchSummary";
 
 type GameModeFilter = "ALL" | "RANKED" | "FLEX" | "NORMAL" | "ARENA" | "ARAM";
-
-// 소환사 주문 이미지 컴포넌트 (비동기 로드)
-function SummonerSpellImage({ spellId, small, size }: { spellId: number; small?: boolean; size?: "default" | "small" | "xs" }) {
-  const [imageUrl, setImageUrl] = useState<string>("");
-  const resolvedSize = size ?? (small ? "small" : "default");
-  const sizeClass = { xs: "w-[18px] h-[18px]", small: "w-6 h-6", default: "w-7 h-7" }[resolvedSize];
-  const imgSize = { xs: 18, small: 24, default: 28 }[resolvedSize];
-
-  useEffect(() => {
-    if (spellId > 0) {
-      getSpellImageUrlAsync(spellId).then(setImageUrl).catch(() => { });
-    }
-  }, [spellId]);
-
-  if (!imageUrl) {
-    return null;
-  }
-
-  return (
-    <GameTooltip type="spell" id={spellId}>
-      <div className={`${sizeClass} bg-surface-4 rounded border border-divider/50 overflow-hidden relative shadow-sm flex items-center justify-center`}>
-        <Image
-          src={imageUrl}
-          alt={`Summoner ${spellId}`}
-          width={imgSize}
-          height={imgSize}
-          className="object-cover"
-          unoptimized
-          onError={(e) => {
-            const target = e.target as HTMLImageElement;
-            target.style.display = "none";
-          }}
-        />
-      </div>
-    </GameTooltip>
-  );
-}
-
-// 룬 이미지 컴포넌트 (소환사 주문과 동일한 스타일)
-function RuneImage({ runeId, imageUrl, small, size }: { runeId: number; imageUrl: string; small?: boolean; size?: "default" | "small" | "xs" }) {
-  const resolvedSize = size ?? (small ? "small" : "default");
-  const sizeClass = { xs: "w-[18px] h-[18px]", small: "w-6 h-6", default: "w-7 h-7" }[resolvedSize];
-  const imgSize = { xs: 18, small: 24, default: 28 }[resolvedSize];
-
-  if (!imageUrl) {
-    return null;
-  }
-
-  return (
-    <GameTooltip type="rune" id={runeId}>
-      <div className={`${sizeClass} bg-surface-4 rounded border border-divider/50 overflow-hidden relative shadow-sm flex items-center justify-center`}>
-        <Image
-          src={imageUrl}
-          alt={`Rune ${runeId}`}
-          width={imgSize}
-          height={imgSize}
-          className="object-cover"
-          unoptimized
-          onError={(e) => {
-            const target = e.target as HTMLImageElement;
-            target.style.display = "none";
-          }}
-        />
-      </div>
-    </GameTooltip>
-  );
-}
 
 interface MatchHistoryProps {
   puuid?: string | null;
@@ -995,6 +928,7 @@ export default function MatchHistory({
                     blueTeam={blueTeam}
                     redTeam={redTeam}
                     puuid={puuid}
+                    region={region}
                   />
                 )}
               </div>
