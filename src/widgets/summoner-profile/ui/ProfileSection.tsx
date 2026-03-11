@@ -224,7 +224,7 @@ export default function ProfileSection({
 
   return (
     <div className="bg-surface-4 rounded-lg p-4 md:p-6 border border-divider">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 md:gap-6">
         {/* 첫 번째 열: 프로필 아이콘, 프로필 이름, 랭크 정보, 갱신 버튼, 승률 통계 */}
         <div className="flex flex-col gap-3 md:gap-4">
           {/* 프로필 아이콘과 이름, 갱신 버튼 */}
@@ -271,16 +271,14 @@ export default function ProfileSection({
                 <button
                   onClick={handleRefresh}
                   disabled={isRefreshDisabled()}
-                  className={`flex items-center justify-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium transition-colors min-w-[56px] ${
-                    isRefreshDisabled()
-                      ? "bg-surface-4 text-on-surface-disabled opacity-60 cursor-not-allowed border border-divider"
-                      : "bg-primary/20 text-primary hover:bg-primary/30 border border-primary/30 cursor-pointer"
-                  }`}
+                  className={`flex items-center justify-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium transition-colors min-w-[56px] ${isRefreshDisabled()
+                    ? "bg-surface-4 text-on-surface-disabled opacity-60 cursor-not-allowed border border-divider"
+                    : "bg-primary/20 text-primary hover:bg-primary/30 border border-primary/30 cursor-pointer"
+                    }`}
                 >
                   <RefreshCw
-                    className={`w-3.5 h-3.5 ${
-                      isRefreshing || isPolling ? "animate-spin" : ""
-                    }`}
+                    className={`w-3.5 h-3.5 ${isRefreshing || isPolling ? "animate-spin" : ""
+                      }`}
                   />
                   {isRefreshing || isPolling ? "갱신 중..." : "갱신"}
                 </button>

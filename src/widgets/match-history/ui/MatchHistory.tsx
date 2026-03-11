@@ -34,7 +34,7 @@ function SummonerSpellImage({ spellId, small, size }: { spellId: number; small?:
 
   useEffect(() => {
     if (spellId > 0) {
-      getSpellImageUrlAsync(spellId).then(setImageUrl).catch(() => {});
+      getSpellImageUrlAsync(spellId).then(setImageUrl).catch(() => { });
     }
   }, [spellId]);
 
@@ -844,7 +844,7 @@ export default function MatchHistory({
                   </div>
 
                   {/* Row 2: 챔피언+스펠+룬 | KDA | 티어 | 아이템 */}
-                  <div className="flex items-center gap-1.5">
+                  <div className="flex items-center justify-between gap-1.5">
                     {/* 왼쪽: 챔프 + 스펠+룬 (행 단위) */}
                     <div className="flex items-center gap-1 shrink-0">
                       {/* 챔피언 아이콘 */}
@@ -903,7 +903,7 @@ export default function MatchHistory({
                     </div>
 
                     {/* 중앙: KDA */}
-                    <div className="flex flex-col items-center flex-1 min-w-0">
+                    <div className="flex flex-col items-center min-w-0">
                       <div className="flex items-center gap-1 text-xs font-semibold">
                         <span className="text-on-surface">{match.kda.kills}</span>
                         <span className="text-on-surface-disabled">/</span>
@@ -919,6 +919,22 @@ export default function MatchHistory({
                         </span>
                       </div>
                     </div>
+
+                    {/* 평균티어 */}
+                    {gameInfo?.averageTier != null && getTierImageUrl(gameInfo.averageTier) && (
+                      <div className="flex flex-col items-center justify-center">
+                        <Image
+                          src={getTierImageUrl(gameInfo.averageTier)}
+                          alt={getTierName(gameInfo.averageTier)}
+                          width={24}
+                          height={24}
+                          className="w-6 h-6"
+                        />
+                        <span className="text-[10px] text-on-surface-medium">
+                          {getTierName(gameInfo.averageTier)}
+                        </span>
+                      </div>
+                    )}
 
                     {/* 오른쪽: 아이템 (3+장신구 / 3) */}
                     <div className="grid grid-cols-4 gap-0.5 shrink-0">
