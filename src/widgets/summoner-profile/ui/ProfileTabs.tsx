@@ -59,7 +59,7 @@ export default function ProfileTabs({
       {/* 탭 콘텐츠 */}
       <div className="bg-surface-4 rounded-b-lg border border-divider">
         {activeTab === "overview" && (
-          <div className="p-4 md:p-6">
+          <div className="py-4 md:p-6">
             {/* 모바일 전용: 리그정보 + 모스트5를 매치 히스토리 위에 배치 */}
             <div className="lg:hidden space-y-4 mb-6">
               <LeagueInfo
