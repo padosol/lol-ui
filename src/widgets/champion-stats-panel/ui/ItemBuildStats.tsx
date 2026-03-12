@@ -14,13 +14,13 @@ export default function ItemBuildStats({ data, startItemBuilds }: ItemBuildStats
   if (data.length === 0 && (!startItemBuilds || startItemBuilds.length === 0)) return null;
 
   return (
-    <div className="bg-surface-1 rounded-lg border border-divider p-5">
-      <h3 className="text-base font-bold text-on-surface mb-4">아이템 빌드</h3>
+    <div className="bg-surface-1 rounded-lg border border-divider p-0 md:p-5">
+      <h3 className="text-base font-bold text-on-surface p-2">아이템 빌드</h3>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {startItemBuilds && startItemBuilds.length > 0 && (
           <div>
-            <h4 className="text-sm font-medium text-on-surface-medium mb-2">시작 아이템</h4>
+            <h4 className="text-sm font-medium text-on-surface-medium mb-2 p-2">시작 아이템</h4>
             <div className="space-y-2">
               {startItemBuilds.map((build, i) => {
                 const itemIds = build.startItems
@@ -43,7 +43,7 @@ export default function ItemBuildStats({ data, startItemBuilds }: ItemBuildStats
 
         {data.length > 0 && (
           <div>
-            <h4 className="text-sm font-medium text-on-surface-medium mb-2">코어 빌드</h4>
+            <h4 className="text-sm font-medium text-on-surface-medium mb-2 p-2">코어 빌드</h4>
             <div className="space-y-2">
               {data.map((build, i) => {
                 const itemIds = build.itemBuild
@@ -100,9 +100,8 @@ function BuildRow({
         <span>
           <span className="text-on-surface-medium">승률 </span>
           <span
-            className={`font-medium ${
-              winRatePercent >= 50 ? "text-win" : "text-loss"
-            }`}
+            className={`font-medium ${winRatePercent >= 50 ? "text-win" : "text-loss"
+              }`}
           >
             {winRatePercent.toFixed(1)}%
           </span>

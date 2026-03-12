@@ -83,7 +83,7 @@ export default function ChampionStatsDetailPageClient({
     <div className="min-h-screen bg-surface">
       <Header />
       <Navigation />
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-5xl mx-auto py-8">
         {isInvalidChampion ? (
           <div className="text-center py-20">
             <p className="text-lg text-on-surface-medium">
@@ -91,64 +91,64 @@ export default function ChampionStatsDetailPageClient({
             </p>
           </div>
         ) : (
-        <>
-        <div className="mb-6">
+          <>
+            {/* <div className="mb-6">
           <h1 className="text-3xl font-bold text-on-surface mb-2">
             {championName} 통계
           </h1>
           <p className="text-on-surface-medium">
             승률, 아이템, 룬, 스킬, 상성 통계를 확인하세요
           </p>
-        </div>
+        </div> */}
 
-        <div className="space-y-6">
-          <ChampionStatsFilters
-            selectedTier={selectedTier}
-            onTierChange={setSelectedTier}
-            selectedPatch={selectedPatch}
-            onPatchChange={setSelectedPatch}
-            selectedPlatform={selectedPlatform}
-            onPlatformChange={setSelectedPlatform}
-          />
+            <div className="space-y-6">
+              <ChampionStatsFilters
+                selectedTier={selectedTier}
+                onTierChange={setSelectedTier}
+                selectedPatch={selectedPatch}
+                onPatchChange={setSelectedPatch}
+                selectedPlatform={selectedPlatform}
+                onPlatformChange={setSelectedPlatform}
+              />
 
-          <PositionTabs
-            selectedPosition={effectivePosition ?? "TOP"}
-            onSelectPosition={setSelectedPosition}
-            availablePositions={availablePositions.length > 0 ? availablePositions : undefined}
-          />
+              <PositionTabs
+                selectedPosition={effectivePosition ?? "TOP"}
+                onSelectPosition={setSelectedPosition}
+                availablePositions={availablePositions.length > 0 ? availablePositions : undefined}
+              />
 
-          {isLoading ? (
-            <div className="flex items-center justify-center py-20">
-              <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+              {isLoading ? (
+                <div className="flex items-center justify-center py-20">
+                  <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                </div>
+              ) : isError ? (
+                <div className="text-center py-20 text-loss">
+                  통계 데이터를 불러오는 중 오류가 발생했습니다.
+                </div>
+              ) : currentPositionStats ? (
+                <>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <ChampionOverview
+                      data={currentPositionStats}
+                      tier={data!.tier}
+                      championId={championId}
+                    />
+                    <SkillTreeStats
+                      data={currentPositionStats.skillBuilds.slice(0, 1)}
+                      championName={championId}
+                    />
+                  </div>
+                  <ItemBuildStats data={currentPositionStats.itemBuilds} startItemBuilds={currentPositionStats.startItemBuilds} />
+                  <RuneStats data={currentPositionStats.runeBuilds} />
+                  <MatchupStats data={currentPositionStats.matchups ?? []} />
+                </>
+              ) : activePatch ? (
+                <div className="text-center py-20 text-on-surface-medium">
+                  해당 패치의 통계 데이터가 없습니다.
+                </div>
+              ) : null}
             </div>
-          ) : isError ? (
-            <div className="text-center py-20 text-loss">
-              통계 데이터를 불러오는 중 오류가 발생했습니다.
-            </div>
-          ) : currentPositionStats ? (
-            <>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <ChampionOverview
-                  data={currentPositionStats}
-                  tier={data!.tier}
-                  championId={championId}
-                />
-                <SkillTreeStats
-                  data={currentPositionStats.skillBuilds.slice(0, 1)}
-                  championName={championId}
-                />
-              </div>
-              <ItemBuildStats data={currentPositionStats.itemBuilds} startItemBuilds={currentPositionStats.startItemBuilds} />
-              <RuneStats data={currentPositionStats.runeBuilds} />
-              <MatchupStats data={currentPositionStats.matchups ?? []} />
-            </>
-          ) : activePatch ? (
-            <div className="text-center py-20 text-on-surface-medium">
-              해당 패치의 통계 데이터가 없습니다.
-            </div>
-          ) : null}
-        </div>
-        </>
+          </>
         )}
       </main>
       <Footer />

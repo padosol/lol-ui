@@ -28,7 +28,7 @@ export default function PositionTabs({
             key={pos}
             type="button"
             onClick={() => onSelectPosition(pos)}
-            className={`flex items-center gap-1.5 px-4 py-2 text-sm font-medium transition-colors border-b-2 ${
+            className={`flex items-center gap-1.5 px-4 py-2 text-sm font-medium transition-colors border-b-2 cursor-pointer ${
               isActive
                 ? "text-on-surface border-primary"
                 : "text-on-surface-medium hover:text-on-surface border-transparent"

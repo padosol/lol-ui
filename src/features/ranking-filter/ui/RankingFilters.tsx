@@ -132,8 +132,8 @@ export default function RankingFilters({
                             setIsRegionOpen(false);
                           }}
                           className={`w-full px-3 py-1.5 text-left text-sm transition-colors cursor-pointer ${selected
-                              ? "bg-surface-8 text-on-surface"
-                              : "text-on-surface hover:bg-surface-8"
+                            ? "bg-surface-8 text-on-surface"
+                            : "text-on-surface hover:bg-surface-8"
                             }`}
                           role="option"
                           aria-selected={selected}
@@ -184,8 +184,8 @@ export default function RankingFilters({
                             setIsQueueTypeOpen(false);
                           }}
                           className={`w-full px-3 py-1.5 text-left text-sm transition-colors cursor-pointer ${selected
-                              ? "bg-surface-8 text-on-surface"
-                              : "text-on-surface hover:bg-surface-8"
+                            ? "bg-surface-8 text-on-surface"
+                            : "text-on-surface hover:bg-surface-8"
                             }`}
                           role="option"
                           aria-selected={selected}
@@ -201,7 +201,7 @@ export default function RankingFilters({
           </div>
         </div>
 
-        <div className="flex gap-3">
+        <div className="flex gap-3 sm:w-[350px]">
           {isLoading ? (
             <>
               {[1, 2].map((i) => (
@@ -231,14 +231,16 @@ export default function RankingFilters({
                   key={tier}
                   className="flex-1 bg-surface-8 border border-divider rounded-lg overflow-hidden"
                 >
-                  <div className="p-3 flex items-center gap-3">
-                    <Image
-                      src={getTierImageUrl(tier)}
-                      alt={label}
-                      width={40}
-                      height={40}
-                      className="shrink-0"
-                    />
+                  <div className="p-3 flex items-center justify-between">
+                    <div className="w-[54px] h-[54px] shrink-0 overflow-hidden">
+                      <Image
+                        src={getTierImageUrl(tier)}
+                        alt={label}
+                        width={54}
+                        height={60}
+                        className="object-cover object-top"
+                      />
+                    </div>
                     <div>
                       <div className="text-[11px] text-on-surface-medium">{label}</div>
                       <div className="flex items-center">
