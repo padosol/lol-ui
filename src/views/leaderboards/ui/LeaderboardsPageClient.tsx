@@ -14,13 +14,8 @@ export default function LeaderboardsPageClient() {
     <div className="min-h-screen bg-surface">
       <Header />
       <Navigation />
-      <main className="max-w-[1080px] mx-auto py-8 px-4">
+      <main className="max-w-[1080px] mx-auto py-8 sm:px-4">
         <div className="max-w-[1024px]">
-          <div className="mb-6">
-            <h2 className="text-3xl font-bold text-on-surface mb-2">솔로 랭크</h2>
-            <p className="text-on-surface-medium">리그 오브 레전드 랭킹을 확인하세요</p>
-          </div>
-
           <div>
             <RankingFilters
               region={region}

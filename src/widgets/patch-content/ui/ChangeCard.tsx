@@ -57,12 +57,12 @@ export default function ChangeCard({
             {details.map((detail, index) => (
               <div
                 key={index}
-                className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 text-sm"
+                className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 text-sm overflow-hidden"
               >
                 <span className="text-on-surface-medium font-medium min-w-[120px]">
                   {detail.attribute}
                 </span>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 flex-wrap min-w-0">
                   <span className="text-loss line-through">
                     {detail.before}
                   </span>

@@ -5,6 +5,7 @@ import Image from "next/image";
 import type { SkillBuildData } from "@/entities/champion";
 import { useGameDataStore } from "@/shared/model/game-data";
 import { IMAGE_HOST } from "@/shared/config/image";
+import { GameTooltip } from "@/shared/ui/tooltip";
 
 const SLOT_TO_SKILL: Record<string, string> = {
   "1": "Q", "2": "W", "3": "E", "4": "R",
@@ -12,10 +13,10 @@ const SLOT_TO_SKILL: Record<string, string> = {
 };
 
 const SKILL_COLORS: Record<string, string> = {
-  Q: "bg-stat-mid text-white",
-  W: "bg-secondary text-white",
-  E: "bg-primary text-white",
-  R: "bg-gold text-surface",
+  Q: "bg-stat-mid/20 text-stat-mid",
+  W: "bg-secondary/20 text-secondary",
+  E: "bg-primary/20 text-primary",
+  R: "bg-gold/20 text-gold",
 };
 
 function normalizeSkills(skillBuild: string): string[] {
@@ -58,8 +59,8 @@ export default function SkillTreeStats({
   if (data.length === 0) return null;
 
   return (
-    <div className="bg-surface-1 rounded-lg border border-divider p-5">
-      <h3 className="text-base font-bold text-on-surface mb-4">스킬 트리</h3>
+    <div className="bg-surface-1 rounded-lg border border-divider p-0 md:p-5">
+      <h3 className="text-base font-bold text-on-surface p-2">스킬 트리</h3>
 
       <div className="space-y-2">
         {data.map((build, i) => {
@@ -151,14 +152,20 @@ function SkillIcon({
     : `${IMAGE_HOST}/spells/${championName}${skillKey}.png`;
 
   return (
-    <Image
-      src={src}
-      alt={spell?.name ?? `${championName} ${skillKey}`}
-      width={24}
-      height={24}
-      className="rounded"
-      unoptimized
-      onError={() => setImgError(true)}
-    />
+    <GameTooltip
+      type="championSpell"
+      id={`${championName}:${index}`}
+      disabled={index === undefined}
+    >
+      <Image
+        src={src}
+        alt={spell?.name ?? `${championName} ${skillKey}`}
+        width={24}
+        height={24}
+        className="rounded"
+        unoptimized
+        onError={() => setImgError(true)}
+      />
+    </GameTooltip>
   );
 }

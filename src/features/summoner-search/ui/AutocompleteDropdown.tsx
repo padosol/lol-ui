@@ -108,19 +108,26 @@ export default function AutocompleteDropdown({
                 onClick={() => onSelect(item)}
                 className="w-full px-3 py-1.5 flex items-center gap-2 hover:bg-surface-8 transition-colors text-left cursor-pointer"
               >
-                <div className="w-8 h-8 bg-surface-8 rounded-lg overflow-hidden relative shrink-0">
-                  {item.profileIconId ? (
-                    <Image
-                      src={getProfileIconImageUrl(item.profileIconId)}
-                      alt="Profile Icon"
-                      fill
-                      sizes="32px"
-                      className="object-cover"
-                      unoptimized
-                    />
-                  ) : (
-                    <span className="text-lg flex items-center justify-center w-full h-full">
-                      👤
+                <div className="relative shrink-0 mb-1">
+                  <div className="w-8 h-8 bg-surface-8 rounded-lg overflow-hidden relative">
+                    {item.profileIconId ? (
+                      <Image
+                        src={getProfileIconImageUrl(item.profileIconId)}
+                        alt="Profile Icon"
+                        fill
+                        sizes="32px"
+                        className="object-cover"
+                        unoptimized
+                      />
+                    ) : (
+                      <span className="text-lg flex items-center justify-center w-full h-full">
+                        ?
+                      </span>
+                    )}
+                  </div>
+                  {item.summonerLevel && (
+                    <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-surface-12 text-[10px] px-1 rounded leading-tight text-on-surface">
+                      {item.summonerLevel}
                     </span>
                   )}
                 </div>
@@ -134,11 +141,6 @@ export default function AutocompleteDropdown({
                       </span>
                     )}
                   </div>
-                  {item.summonerLevel && (
-                    <div className="text-on-surface-medium text-xs">
-                      레벨 {item.summonerLevel}
-                    </div>
-                  )}
                 </div>
 
                 {item.tier && item.rank && (
@@ -165,16 +167,11 @@ export default function AutocompleteDropdown({
                         </div>
                       )}
                     </div>
-                    <div className="flex flex-row items-center gap-2">
-                      <div className="text-on-surface text-xs font-semibold">
-                        {item.tier} {item.rank}
+                    {item.leaguePoints !== null && (
+                      <div className="font-semibold text-on-surface text-xs">
+                        {item.leaguePoints}LP
                       </div>
-                      {item.leaguePoints !== null && (
-                        <div className="text-on-surface-medium text-xs">
-                          {item.leaguePoints}LP
-                        </div>
-                      )}
-                    </div>
+                    )}
                   </div>
                 )}
               </button>

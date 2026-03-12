@@ -37,17 +37,8 @@ export default function ChampionStatsPageClient() {
     <div className="min-h-screen bg-surface">
       <Header />
       <Navigation />
-      <main className="max-w-[1080px] mx-auto py-8 px-4">
+      <main className="max-w-[1080px] mx-auto py-8">
         <div className="max-w-[1024px] mx-auto">
-          <div className="mb-6">
-            <h1 className="text-3xl font-bold text-on-surface mb-2">
-              챔피언 분석
-            </h1>
-            <p className="text-on-surface-medium">
-              포지션별 챔피언 승률, 픽률, 밴률을 확인하고, 챔피언을 클릭하여 상세 통계를 확인하세요
-            </p>
-          </div>
-
           <div className="lg:grid lg:grid-cols-2 lg:gap-6">
             {/* 좌측 사이드바 - 데스크톱만 표시 */}
             <div className="hidden lg:block">

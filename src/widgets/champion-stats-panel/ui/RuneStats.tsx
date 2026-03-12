@@ -22,8 +22,8 @@ export default function RuneStats({ data }: RuneStatsProps) {
   if (data.length === 0) return null;
 
   return (
-    <div className="bg-surface-1 rounded-lg border border-divider p-5">
-      <h3 className="text-base font-bold text-on-surface mb-4">룬</h3>
+    <div className="bg-surface-1 rounded-lg border border-divider p-0 md:p-5">
+      <h3 className="text-base font-bold text-on-surface p-2">룬</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {data.slice(0, 2).map((build, i) => (
           <RunePageRow key={i} build={build} />
@@ -51,13 +51,12 @@ function RuneIcon({
   return (
     <GameTooltip type="rune" id={perkId} disabled={!isSelected}>
       <div
-        className={`${sizeClass} rounded-full overflow-hidden relative bg-surface-8 ${
-          isSelected
+        className={`${sizeClass} rounded-full overflow-hidden relative bg-surface-8 ${isSelected
             ? isKeystone
               ? "ring-2 ring-gold/60"
               : "ring-1 ring-white/30"
             : "opacity-25 grayscale"
-        }`}
+          }`}
       >
         <Image
           src={getPerkImageUrl(perkId)}
@@ -134,7 +133,7 @@ function RuneTreeSection({
     <div className="flex flex-col items-center gap-1.5">
       {/* 트리 아이콘 + 이름 */}
       <div className="flex flex-col items-center gap-0.5 mb-0.5">
-        <div className="w-5 h-5 relative shrink-0">
+        <div className="w-5 h-5 relative shrink-0" title={treeName ?? ""}>
           <Image
             src={getStyleImageUrl(treeId)}
             alt={treeName ?? ""}
@@ -192,9 +191,8 @@ function StatPerkRow({
             disabled={!isSelected}
           >
             <div
-              className={`w-5 h-5 rounded-full overflow-hidden relative bg-surface-8 ${
-                isSelected ? "ring-1 ring-white/30" : "opacity-25 grayscale"
-              }`}
+              className={`w-5 h-5 rounded-full overflow-hidden relative bg-surface-8 ${isSelected ? "ring-1 ring-white/30" : "opacity-25 grayscale"
+                }`}
             >
               <Image
                 src={getPerkImageUrl(perkId)}
@@ -227,46 +225,44 @@ function RunePageRow({ build }: { build: RuneBuildData }) {
 
   return (
     <div className="bg-surface rounded-lg px-4 py-3">
-      <div className="flex items-start justify-center gap-0">
-        {/* 주 트리 */}
+      <div className="grid grid-cols-2 gap-4">
+        {/* 메인룬 트리 */}
         <RuneTreeSection
           treeId={build.primaryStyleId}
           selectedPerkIds={allSelectedIds}
           isPrimary
         />
 
-        <div className="w-px self-stretch bg-divider/30 mx-3" />
+        {/* 서브룬 트리 + 룬 파편 */}
+        <div className="flex flex-col items-center gap-3">
+          <RuneTreeSection
+            treeId={build.subStyleId}
+            selectedPerkIds={allSelectedIds}
+            isPrimary={false}
+          />
 
-        {/* 보조 트리 */}
-        <RuneTreeSection
-          treeId={build.subStyleId}
-          selectedPerkIds={allSelectedIds}
-          isPrimary={false}
-        />
-
-        <div className="w-px self-stretch bg-divider/30 mx-3" />
-
-        {/* 스탯 파편 */}
-        <div className="flex flex-col items-center gap-1.5 min-w-[80px]">
-          <span className="text-[9px] text-on-surface-medium mb-0.5">
-            룬 파편
-          </span>
-          {STAT_PERK_ROWS.map((row, rowIdx) => {
-            const key = STAT_PERK_ROW_KEYS[rowIdx];
-            const perkMap: Record<string, number> = {
-              offense: build.statPerkOffense,
-              flex: build.statPerkFlex,
-              defense: build.statPerkDefense,
-            };
-            const selectedId = perkMap[key] ?? 0;
-            return (
-              <StatPerkRow
-                key={key}
-                perks={row.perks}
-                selectedPerkId={selectedId}
-              />
-            );
-          })}
+          {/* 룬 파편 */}
+          <div className="flex flex-col items-center gap-1.5">
+            <span className="text-[9px] text-on-surface-medium mb-0.5">
+              룬 파편
+            </span>
+            {STAT_PERK_ROWS.map((row, rowIdx) => {
+              const key = STAT_PERK_ROW_KEYS[rowIdx];
+              const perkMap: Record<string, number> = {
+                offense: build.statPerkOffense,
+                flex: build.statPerkFlex,
+                defense: build.statPerkDefense,
+              };
+              const selectedId = perkMap[key] ?? 0;
+              return (
+                <StatPerkRow
+                  key={key}
+                  perks={row.perks}
+                  selectedPerkId={selectedId}
+                />
+              );
+            })}
+          </div>
         </div>
       </div>
 
@@ -275,9 +271,8 @@ function RunePageRow({ build }: { build: RuneBuildData }) {
         <span>
           <span className="text-on-surface-medium">승률 </span>
           <span
-            className={`font-medium ${
-              winRatePercent >= 50 ? "text-win" : "text-loss"
-            }`}
+            className={`font-medium ${winRatePercent >= 50 ? "text-win" : "text-loss"
+              }`}
           >
             {winRatePercent.toFixed(1)}%
           </span>

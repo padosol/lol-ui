@@ -40,7 +40,7 @@ export default function SystemChanges({ changes }: SystemChangesProps) {
 
       {/* 내용 */}
       {isExpanded && (
-        <div className="p-4 pt-0 space-y-2">
+        <div className="sm:p-4 sm:pt-0 space-y-2">
           {changes.map((change, index) => (
             <div
               key={index}
@@ -71,12 +71,12 @@ export default function SystemChanges({ changes }: SystemChangesProps) {
                     {change.details.map((detail, detailIndex) => (
                       <div
                         key={detailIndex}
-                        className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 text-sm"
+                        className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 text-sm overflow-hidden"
                       >
                         <span className="text-on-surface-medium font-medium min-w-[120px]">
                           {detail.attribute}
                         </span>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 flex-wrap min-w-0">
                           <span className="text-loss line-through">
                             {detail.before}
                           </span>

@@ -32,7 +32,7 @@ export default async function PatchNotePage({ params }: Props) {
     <div className="min-h-screen bg-surface">
       <Header />
       <Navigation />
-      <main className="max-w-[1080px] mx-auto py-8 px-4">
+      <main className="max-w-[1080px] mx-auto py-8">
         <div className="max-w-[1024px]">
           <div className="mb-6">
             <h1 className="text-3xl font-bold text-on-surface mb-2">패치노트</h1>

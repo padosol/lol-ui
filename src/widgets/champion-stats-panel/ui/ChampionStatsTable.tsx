@@ -45,10 +45,9 @@ export default function ChampionStatsTable({
   return (
     <div className="bg-surface-2 border border-divider rounded-xl overflow-hidden">
       {/* 테이블 헤더 */}
-      <div className="grid grid-cols-[48px_48px_1fr_80px_80px_80px] px-4 py-2 text-xs font-medium text-on-surface-medium border-b border-divider bg-surface-4">
-        <span className="text-center">#</span>
+      <div className="grid grid-cols-[80px_60px_1fr_1fr_1fr] px-4 py-2 text-xs font-medium text-on-surface-medium border-b border-divider bg-surface-4">
+        <span className="text-center">랭킹</span>
         <span className="text-center">티어</span>
-        <span>챔피언</span>
         <span className="text-right">승률</span>
         <span className="text-right">픽률</span>
         <span className="text-right">밴률</span>
@@ -71,29 +70,28 @@ export default function ChampionStatsTable({
 
             const content = (
               <>
-                <span className="text-center text-sm text-on-surface-medium">
-                  {index + 1}
-                </span>
+                <div className="flex items-center">
+                  <span className="w-1/2 text-sm text-on-surface-medium text-center">
+                    {index + 1}
+                  </span>
+                  <span className="w-1/2 flex justify-center">
+                    {championId && (
+                      <Image
+                        src={getChampionImageUrl(championId)}
+                        alt={championName}
+                        width={24}
+                        height={24}
+                        unoptimized
+                        className="rounded"
+                      />
+                    )}
+                  </span>
+                </div>
                 <span className="flex justify-center">
                   <span className={`inline-flex items-center justify-center w-7 h-5 rounded text-xs font-bold ${tierColor}`}>
                     {entry.tier}
                   </span>
                 </span>
-                <div className="flex items-center gap-2">
-                  {championId && (
-                    <Image
-                      src={getChampionImageUrl(championId)}
-                      alt={championName}
-                      width={32}
-                      height={32}
-                      unoptimized
-                      className="rounded"
-                    />
-                  )}
-                  <span className="text-sm font-medium text-on-surface">
-                    {championName}
-                  </span>
-                </div>
                 <span className={`text-right text-sm font-medium ${getWinRateTextClass(winRatePercent)}`}>
                   {winRatePercent.toFixed(1)}%
                 </span>
@@ -110,7 +108,7 @@ export default function ChampionStatsTable({
               return (
                 <div
                   key={entry.championId}
-                  className="grid grid-cols-[48px_48px_1fr_80px_80px_80px] items-center px-4 py-2.5 border-b border-divider last:border-b-0"
+                  className="grid grid-cols-[80px_60px_1fr_1fr_1fr] items-center px-4 py-2.5 border-b border-divider last:border-b-0"
                 >
                   {content}
                 </div>
@@ -122,7 +120,7 @@ export default function ChampionStatsTable({
                 prefetch={false}
                 key={entry.championId}
                 href={`/champion-stats/${championId}?tier=${tier}&patch=${patch}&platformId=${platformId}`}
-                className="grid grid-cols-[48px_48px_1fr_80px_80px_80px] items-center px-4 py-2.5 hover:bg-surface-4 transition-colors border-b border-divider last:border-b-0"
+                className="grid grid-cols-[80px_60px_1fr_1fr_1fr] items-center px-4 py-2.5 hover:bg-surface-4 transition-colors border-b border-divider last:border-b-0"
               >
                 {content}
               </Link>
