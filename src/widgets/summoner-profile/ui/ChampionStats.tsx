@@ -5,7 +5,6 @@ import { useGameDataStore } from "@/shared/model/game-data";
 import { GameTooltip } from "@/shared/ui/tooltip";
 import {
   getChampionImageUrl,
-  getChampionNameByEnglishName,
 } from "@/entities/champion";
 import Image from "next/image";
 import { useSeasonStore } from "@/entities/season";
@@ -226,11 +225,11 @@ export default function ChampionStats({
           <table className="w-full">
             <thead className="bg-surface-1/50 border-b border-divider">
               <tr>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-on-surface">
+                <th className="px-1.5 py-2 md:px-4 md:py-3 text-left text-xs font-semibold text-on-surface">
                   챔피언
                 </th>
                 <th
-                  className="px-4 py-3 text-right text-xs font-semibold text-on-surface cursor-pointer hover:text-on-surface-medium transition-colors"
+                  className="px-1.5 py-2 md:px-4 md:py-3 text-right text-xs font-semibold text-on-surface cursor-pointer hover:text-on-surface-medium transition-colors"
                   onClick={() => handleSort("playCount")}
                 >
                   게임
@@ -241,7 +240,7 @@ export default function ChampionStats({
                   )}
                 </th>
                 <th
-                  className="px-4 py-3 text-right text-xs font-semibold text-on-surface cursor-pointer hover:text-on-surface-medium transition-colors"
+                  className="px-1.5 py-2 md:px-4 md:py-3 text-right text-xs font-semibold text-on-surface cursor-pointer hover:text-on-surface-medium transition-colors"
                   onClick={() => handleSort("wins")}
                 >
                   승리
@@ -252,7 +251,7 @@ export default function ChampionStats({
                   )}
                 </th>
                 <th
-                  className="px-4 py-3 text-right text-xs font-semibold text-on-surface cursor-pointer hover:text-on-surface-medium transition-colors"
+                  className="px-1.5 py-2 md:px-4 md:py-3 text-right text-xs font-semibold text-on-surface cursor-pointer hover:text-on-surface-medium transition-colors"
                   onClick={() => handleSort("losses")}
                 >
                   패배
@@ -263,7 +262,7 @@ export default function ChampionStats({
                   )}
                 </th>
                 <th
-                  className="px-4 py-3 text-right text-xs font-semibold text-on-surface cursor-pointer hover:text-on-surface-medium transition-colors"
+                  className="px-1.5 py-2 md:px-4 md:py-3 text-right text-xs font-semibold text-on-surface cursor-pointer hover:text-on-surface-medium transition-colors"
                   onClick={() => handleSort("winRate")}
                 >
                   승률
@@ -274,7 +273,7 @@ export default function ChampionStats({
                   )}
                 </th>
                 <th
-                  className="px-4 py-3 text-right text-xs font-semibold text-on-surface cursor-pointer hover:text-on-surface-medium transition-colors"
+                  className="px-1.5 py-2 md:px-4 md:py-3 text-right text-xs font-semibold text-on-surface cursor-pointer hover:text-on-surface-medium transition-colors"
                   onClick={() => handleSort("kda")}
                 >
                   KDA
@@ -285,7 +284,7 @@ export default function ChampionStats({
                   )}
                 </th>
                 <th
-                  className="px-4 py-3 text-right text-xs font-semibold text-on-surface cursor-pointer hover:text-on-surface-medium transition-colors"
+                  className="px-1.5 py-2 md:px-4 md:py-3 text-right text-xs font-semibold text-on-surface cursor-pointer hover:text-on-surface-medium transition-colors"
                   onClick={() => handleSort("kills")}
                 >
                   K
@@ -296,7 +295,7 @@ export default function ChampionStats({
                   )}
                 </th>
                 <th
-                  className="px-4 py-3 text-right text-xs font-semibold text-on-surface cursor-pointer hover:text-on-surface-medium transition-colors"
+                  className="px-1.5 py-2 md:px-4 md:py-3 text-right text-xs font-semibold text-on-surface cursor-pointer hover:text-on-surface-medium transition-colors"
                   onClick={() => handleSort("deaths")}
                 >
                   D
@@ -307,7 +306,7 @@ export default function ChampionStats({
                   )}
                 </th>
                 <th
-                  className="px-4 py-3 text-right text-xs font-semibold text-on-surface cursor-pointer hover:text-on-surface-medium transition-colors"
+                  className="px-1.5 py-2 md:px-4 md:py-3 text-right text-xs font-semibold text-on-surface cursor-pointer hover:text-on-surface-medium transition-colors"
                   onClick={() => handleSort("assists")}
                 >
                   A
@@ -317,7 +316,7 @@ export default function ChampionStats({
                     </span>
                   )}
                 </th>
-                <th className="px-4 py-3 text-right text-xs font-semibold text-on-surface">
+                <th className="px-1.5 py-2 md:px-4 md:py-3 text-right text-xs font-semibold text-on-surface">
                   CS
                 </th>
               </tr>
@@ -332,8 +331,8 @@ export default function ChampionStats({
                     key={champion.championId || index}
                     className="border-b border-divider/50 hover:bg-surface-8/30 transition-colors"
                   >
-                    <td className="px-4 py-3">
-                      <div className="flex items-center gap-2">
+                    <td className="px-1.5 py-2 md:px-4 md:py-3">
+                      <div className="flex items-center">
                         <GameTooltip type="champion" id={champion.championName}>
                           <div className="w-8 h-8 bg-surface-6 rounded-lg flex items-center justify-center overflow-hidden relative shrink-0">
                             <Image
@@ -346,40 +345,37 @@ export default function ChampionStats({
                             />
                           </div>
                         </GameTooltip>
-                        <span className="text-on-surface font-medium text-sm">
-                          {getChampionNameByEnglishName(champion.championName)}
-                        </span>
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-right text-on-surface text-sm">
+                    <td className="px-1.5 py-2 md:px-4 md:py-3 text-right text-on-surface text-sm">
                       {champion.playCount}
                     </td>
-                    <td className="px-4 py-3 text-right text-on-surface text-sm">
+                    <td className="px-1.5 py-2 md:px-4 md:py-3 text-right text-on-surface text-sm">
                       {champion.win}
                     </td>
-                    <td className="px-4 py-3 text-right text-on-surface text-sm">
+                    <td className="px-1.5 py-2 md:px-4 md:py-3 text-right text-on-surface text-sm">
                       {champion.losses}
                     </td>
-                    <td className="px-4 py-3 text-right">
+                    <td className="px-1.5 py-2 md:px-4 md:py-3 text-right">
                       <span className="text-on-surface font-semibold">
                         {champion.winRate.toFixed(2)}%
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-right">
+                    <td className="px-1.5 py-2 md:px-4 md:py-3 text-right">
                       <span className="text-sm font-semibold text-on-surface">
                         {kdaDisplay}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-right text-on-surface text-sm">
+                    <td className="px-1.5 py-2 md:px-4 md:py-3 text-right text-on-surface text-sm">
                       {champion.kills.toFixed(1)}
                     </td>
-                    <td className="px-4 py-3 text-right text-on-surface text-sm">
+                    <td className="px-1.5 py-2 md:px-4 md:py-3 text-right text-on-surface text-sm">
                       {champion.deaths.toFixed(1)}
                     </td>
-                    <td className="px-4 py-3 text-right text-on-surface text-sm">
+                    <td className="px-1.5 py-2 md:px-4 md:py-3 text-right text-on-surface text-sm">
                       {champion.assists.toFixed(1)}
                     </td>
-                    <td className="px-4 py-3 text-right text-on-surface text-sm">
+                    <td className="px-1.5 py-2 md:px-4 md:py-3 text-right text-on-surface text-sm">
                       {champion.cs !== null ? champion.cs.toFixed(1) : "-"}
                     </td>
                   </tr>
