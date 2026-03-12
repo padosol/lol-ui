@@ -33,7 +33,7 @@ export default function SearchBar({ variant = "full" }: SearchBarProps) {
   return (
     <form
       onSubmit={handleSearch}
-      className={`flex gap-0 items-stretch relative ${isCompact ? "w-full max-w-xl" : "w-full"
+      className={`grid grid-cols-[auto_1fr_auto] items-stretch relative ${isCompact ? "w-full max-w-xl" : "w-full"
         }`}
     >
       <RegionSelector
@@ -70,7 +70,6 @@ export default function SearchBar({ variant = "full" }: SearchBarProps) {
               : "px-4 py-3 pr-12"
             }`}
         />
-
       </div>
 
       <button
@@ -84,13 +83,21 @@ export default function SearchBar({ variant = "full" }: SearchBarProps) {
       </button>
 
       {showAutocomplete && (
-        <AutocompleteDropdown
-          results={autocompleteResults}
-          isLoading={isLoadingAutocomplete}
-          onSelect={handleAutocompleteSelect}
-          dropdownRef={autocompleteRef}
-          compact={isCompact}
-        />
+        <div
+          className={`relative h-0 ${
+            isCompact
+              ? "col-span-full"
+              : "col-span-full md:col-start-2 md:col-span-1"
+          }`}
+        >
+          <AutocompleteDropdown
+            results={autocompleteResults}
+            isLoading={isLoadingAutocomplete}
+            onSelect={handleAutocompleteSelect}
+            dropdownRef={autocompleteRef}
+            compact={isCompact}
+          />
+        </div>
       )}
     </form>
   );
