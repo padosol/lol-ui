@@ -96,7 +96,7 @@ export default function ProfileTabs({
         )}
 
         {activeTab === "champions" && (
-          <div className="p-6">
+          <div className="p-0 md:p-6">
             <ChampionStats puuid={puuid} showTitle={false} />
           </div>
         )}
