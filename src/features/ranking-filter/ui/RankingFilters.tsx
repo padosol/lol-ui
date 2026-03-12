@@ -201,18 +201,17 @@ export default function RankingFilters({
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-3">
+        <div className="flex gap-3">
           {isLoading ? (
             <>
               {[1, 2].map((i) => (
-                <div key={i} className="bg-surface-8 border border-divider rounded-lg overflow-hidden animate-pulse">
-                  <div className="h-0.5 bg-surface-12" />
+                <div key={i} className="flex-1 bg-surface-8 border border-divider rounded-lg overflow-hidden animate-pulse">
                   <div className="p-3 flex items-center gap-3">
                     <div className="w-10 h-10 bg-surface-12 rounded-full shrink-0" />
-                    <div className="space-y-1.5">
-                      <div className="h-3.5 bg-surface-12 rounded w-16" />
-                      <div className="h-4 bg-surface-12 rounded w-14" />
-                      <div className="h-3 bg-surface-12 rounded w-12" />
+                    <div className="space-y-1">
+                      <div className="h-3 bg-surface-12 rounded w-14" />
+                      <div className="h-3.5 bg-surface-12 rounded w-12" />
+                      <div className="h-2.5 bg-surface-12 rounded w-10" />
                     </div>
                   </div>
                 </div>
@@ -230,9 +229,8 @@ export default function RankingFilters({
               ].map(({ tier, label, data }) => (
                 <div
                   key={tier}
-                  className="bg-surface-8 border border-divider rounded-lg overflow-hidden"
+                  className="flex-1 bg-surface-8 border border-divider rounded-lg overflow-hidden"
                 >
-                  <div className={`h-0.5 bg-gradient-to-r ${getTierColor(tier)}`} />
                   <div className="p-3 flex items-center gap-3">
                     <Image
                       src={getTierImageUrl(tier)}
@@ -242,16 +240,16 @@ export default function RankingFilters({
                       className="shrink-0"
                     />
                     <div>
-                      <div className="text-xs text-on-surface-medium">{label}</div>
+                      <div className="text-[11px] text-on-surface-medium">{label}</div>
                       <div className="flex items-center">
-                        <span className="text-base font-bold text-on-surface">
+                        <span className="text-sm font-bold text-on-surface">
                           {data?.minLeaguePoints ?? "-"}
                         </span>
-                        <span className="text-xs text-on-surface-medium ml-1">LP</span>
+                        <span className="text-[10px] text-on-surface-medium ml-1">LP</span>
                         {getLpChangeDisplay(data?.lpChange)}
                       </div>
                       {data?.userCount !== undefined && (
-                        <div className="text-xs text-on-surface-medium">
+                        <div className="text-[11px] text-on-surface-medium">
                           {data.userCount.toLocaleString()}명
                         </div>
                       )}
