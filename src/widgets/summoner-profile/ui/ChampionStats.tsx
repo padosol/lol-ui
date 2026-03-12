@@ -17,15 +17,7 @@ interface ChampionStatsProps {
   limit?: number;
 }
 
-type SortField =
-  | "playCount"
-  | "winRate"
-  | "wins"
-  | "losses"
-  | "kda"
-  | "kills"
-  | "deaths"
-  | "assists";
+type SortField = "playCount" | "winRate" | "wins" | "losses" | "kda";
 type SortDirection = "asc" | "desc";
 
 export default function ChampionStats({
@@ -98,23 +90,11 @@ export default function ChampionStats({
           ? champion.losses
           : champion.playCount - champion.win;
 
-      // 문서 필드(laneMinionsFirst10Minutes)를 기존 UI의 cs에 매핑 (없으면 null)
-      const cs =
-        typeof champion.cs === "number"
-          ? champion.cs
-          : typeof champion.laneMinionsFirst10Minutes === "number"
-          ? champion.laneMinionsFirst10Minutes
-          : null;
-
-      const duration = champion.duration ?? null;
-
       return {
         ...champion,
         winRate,
         losses,
         kda,
-        cs,
-        duration,
       };
     });
 
@@ -142,18 +122,6 @@ export default function ChampionStats({
         case "kda":
           aValue = a.kda;
           bValue = b.kda;
-          break;
-        case "kills":
-          aValue = a.kills;
-          bValue = b.kills;
-          break;
-        case "deaths":
-          aValue = a.deaths;
-          bValue = b.deaths;
-          break;
-        case "assists":
-          aValue = a.assists;
-          bValue = b.assists;
           break;
         default:
           return 0;
@@ -273,51 +241,20 @@ export default function ChampionStats({
                   )}
                 </th>
                 <th
-                  className="px-1.5 py-2 md:px-4 md:py-3 text-right text-xs font-semibold text-on-surface cursor-pointer hover:text-on-surface-medium transition-colors"
+                  className="px-1.5 py-2 md:px-4 md:py-3 text-center text-xs font-semibold text-on-surface cursor-pointer hover:text-on-surface-medium transition-colors"
                   onClick={() => handleSort("kda")}
                 >
-                  KDA
-                  {sortField === "kda" && (
-                    <span className="ml-1">
-                      {sortDirection === "asc" ? "↑" : "↓"}
-                    </span>
-                  )}
-                </th>
-                <th
-                  className="px-1.5 py-2 md:px-4 md:py-3 text-right text-xs font-semibold text-on-surface cursor-pointer hover:text-on-surface-medium transition-colors"
-                  onClick={() => handleSort("kills")}
-                >
-                  K
-                  {sortField === "kills" && (
-                    <span className="ml-1">
-                      {sortDirection === "asc" ? "↑" : "↓"}
-                    </span>
-                  )}
-                </th>
-                <th
-                  className="px-1.5 py-2 md:px-4 md:py-3 text-right text-xs font-semibold text-on-surface cursor-pointer hover:text-on-surface-medium transition-colors"
-                  onClick={() => handleSort("deaths")}
-                >
-                  D
-                  {sortField === "deaths" && (
-                    <span className="ml-1">
-                      {sortDirection === "asc" ? "↑" : "↓"}
-                    </span>
-                  )}
-                </th>
-                <th
-                  className="px-1.5 py-2 md:px-4 md:py-3 text-right text-xs font-semibold text-on-surface cursor-pointer hover:text-on-surface-medium transition-colors"
-                  onClick={() => handleSort("assists")}
-                >
-                  A
-                  {sortField === "assists" && (
-                    <span className="ml-1">
-                      {sortDirection === "asc" ? "↑" : "↓"}
-                    </span>
-                  )}
-                </th>
-                <th className="px-1.5 py-2 md:px-4 md:py-3 text-right text-xs font-semibold text-on-surface">
-                  CS
+                  <div>
+                    KDA
+                    {sortField === "kda" && (
+                      <span className="ml-1">
+                        {sortDirection === "asc" ? "↑" : "↓"}
+                      </span>
+                    )}
+                  </div>
+                  <div className="text-[10px] font-normal text-on-surface-medium">
+                    (K / D / A)
+                  </div>
                 </th>
               </tr>
             </thead>
@@ -357,26 +294,17 @@ export default function ChampionStats({
                       {champion.losses}
                     </td>
                     <td className="px-1.5 py-2 md:px-4 md:py-3 text-right">
-                      <span className="text-on-surface font-semibold">
+                      <span className="text-xs text-on-surface font-semibold">
                         {champion.winRate.toFixed(2)}%
                       </span>
                     </td>
-                    <td className="px-1.5 py-2 md:px-4 md:py-3 text-right">
-                      <span className="text-sm font-semibold text-on-surface">
+                    <td className="px-1.5 py-2 md:px-4 md:py-3 text-center">
+                      <div className="text-xs font-semibold text-on-surface">
                         {kdaDisplay}
-                      </span>
-                    </td>
-                    <td className="px-1.5 py-2 md:px-4 md:py-3 text-right text-on-surface text-sm">
-                      {champion.kills.toFixed(1)}
-                    </td>
-                    <td className="px-1.5 py-2 md:px-4 md:py-3 text-right text-on-surface text-sm">
-                      {champion.deaths.toFixed(1)}
-                    </td>
-                    <td className="px-1.5 py-2 md:px-4 md:py-3 text-right text-on-surface text-sm">
-                      {champion.assists.toFixed(1)}
-                    </td>
-                    <td className="px-1.5 py-2 md:px-4 md:py-3 text-right text-on-surface text-sm">
-                      {champion.cs !== null ? champion.cs.toFixed(1) : "-"}
+                      </div>
+                      <div className="text-[10px] text-on-surface-medium">
+                        {champion.kills.toFixed(1)} / {champion.deaths.toFixed(1)} / {champion.assists.toFixed(1)}
+                      </div>
                     </td>
                   </tr>
                 );
