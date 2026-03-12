@@ -11,7 +11,6 @@ import {
 import { Header, Navigation, Footer } from "@/widgets/layout";
 import {
   useChampionStats,
-  getChampionNameByEnglishName,
   type ApiPositionType,
 } from "@/entities/champion";
 import { useGameDataStore } from "@/shared/model/game-data";
@@ -49,7 +48,6 @@ export default function ChampionStatsDetailPageClient({
     return champ?.key || "";
   }, [championData, championId]);
 
-  const championName = getChampionNameByEnglishName(championId);
   const isInvalidChampion = !!championData?.data && !championKey;
 
   const { data, isLoading, isError } = useChampionStats(

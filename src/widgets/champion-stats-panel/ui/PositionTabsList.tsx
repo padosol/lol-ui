@@ -18,7 +18,7 @@ interface PositionTabsListProps {
 export default function PositionTabsList({
   selectedPosition,
   onSelectPosition,
-  data,
+  data: _data,
 }: PositionTabsListProps) {
   return (
     <div className="flex border-b border-divider">

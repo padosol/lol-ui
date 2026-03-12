@@ -2,7 +2,7 @@
 
 import { useTierCutoffs } from "@/entities/ranking";
 import { AVAILABLE_REGIONS, type RegionValue } from "@/features/region-select";
-import { getTierColor, getTierImageUrl } from "@/shared/lib/tier";
+import { getTierImageUrl } from "@/shared/lib/tier";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
