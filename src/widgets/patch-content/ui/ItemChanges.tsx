@@ -41,7 +41,7 @@ export default function ItemChanges({ changes }: ItemChangesProps) {
 
       {/* 내용 */}
       {isExpanded && (
-        <div className="p-4 pt-0 space-y-2">
+        <div className="sm:p-4 sm:pt-0 space-y-2">
           {changes.map((change, index) => (
             <ChangeCard
               key={`${change.itemId}-${index}`}

@@ -33,15 +33,14 @@ export default function ChampionChanges({ changes }: ChampionChangesProps) {
           </span>
         </div>
         <ChevronDown
-          className={`w-5 h-5 text-on-surface-medium transition-transform ${
-            isExpanded ? "rotate-180" : ""
-          }`}
+          className={`w-5 h-5 text-on-surface-medium transition-transform ${isExpanded ? "rotate-180" : ""
+            }`}
         />
       </button>
 
       {/* 내용 */}
       {isExpanded && (
-        <div className="p-4 pt-0 space-y-2">
+        <div className="sm:p-4 sm:pt-0 space-y-2">
           {changes.map((change, index) => (
             <ChangeCard
               key={`champion-${change.championKey}-${index}`}

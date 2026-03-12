@@ -45,7 +45,7 @@ export default function ArenaChanges({ changes }: ArenaChangesProps) {
       </button>
 
       {isExpanded && (
-        <div className="p-4 pt-0 space-y-4">
+        <div className="sm:p-4 sm:pt-0 space-y-4">
           {hasChampions && (
             <div className="space-y-2">
               <h4 className="text-sm font-semibold text-on-surface-medium px-1">
