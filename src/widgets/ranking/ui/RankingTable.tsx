@@ -26,20 +26,20 @@ export default function RankingTable({ region, queueType }: RankingTableProps) {
   const getRankChangeIcon = (rankChange: number) => {
     if (rankChange > 0) {
       return (
-        <span className="flex items-center text-win text-xs">
-          <ChevronUp className="w-3 h-3" />
+        <span className="flex items-center text-win text-[10px] sm:text-xs">
+          <ChevronUp className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
           {rankChange}
         </span>
       );
     } else if (rankChange < 0) {
       return (
-        <span className="flex items-center text-lose text-xs">
-          <ChevronDown className="w-3 h-3" />
+        <span className="flex items-center text-lose text-[10px] sm:text-xs">
+          <ChevronDown className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
           {Math.abs(rankChange)}
         </span>
       );
     }
-    return <Minus className="w-3 h-3 text-on-surface-disabled" />;
+    return <Minus className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-on-surface-disabled" />;
   };
 
   if (isLoading) {
@@ -81,29 +81,32 @@ export default function RankingTable({ region, queueType }: RankingTableProps) {
         <table className="w-full">
           <thead className="bg-surface-8">
             <tr>
-              <th className="px-4 py-3 text-left text-xs font-medium text-on-surface uppercase tracking-wider">
+              <th className="px-1 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-on-surface uppercase tracking-wider">
                 순위
               </th>
-              <th className="px-4 py-3 text-left text-xs font-medium text-on-surface uppercase tracking-wider">
+              <th className="px-1 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-on-surface uppercase tracking-wider">
                 소환사
               </th>
-              <th className="px-4 py-3 text-left text-xs font-medium text-on-surface uppercase tracking-wider">
-                모스트 챔피언
+              <th className="px-1 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-on-surface uppercase tracking-wider">
+                <span className="sm:hidden">승</span>
+                <span className="hidden sm:inline">승리</span>
               </th>
-              <th className="px-4 py-3 text-left text-xs font-medium text-on-surface uppercase tracking-wider">
-                승리
+              <th className="px-1 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-on-surface uppercase tracking-wider">
+                <span className="sm:hidden">패</span>
+                <span className="hidden sm:inline">패배</span>
               </th>
-              <th className="px-4 py-3 text-left text-xs font-medium text-on-surface uppercase tracking-wider">
-                패배
-              </th>
-              <th className="px-4 py-3 text-left text-xs font-medium text-on-surface uppercase tracking-wider">
+              <th className="px-1 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-on-surface uppercase tracking-wider">
                 승률
               </th>
-              <th className="px-2 py-3 text-left text-xs font-medium text-on-surface uppercase tracking-wider">
+              <th className="px-1 sm:px-2 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-on-surface uppercase tracking-wider">
                 티어
               </th>
-              <th className="px-2 py-3 text-left text-xs font-medium text-on-surface uppercase tracking-wider">
+              <th className="px-1 sm:px-2 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-on-surface uppercase tracking-wider">
                 LP
+              </th>
+              <th className="px-1 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-on-surface uppercase tracking-wider">
+                <span className="sm:hidden">모스트</span>
+                <span className="hidden sm:inline">모스트 챔피언</span>
               </th>
             </tr>
           </thead>
@@ -117,13 +120,13 @@ export default function RankingTable({ region, queueType }: RankingTableProps) {
                     : "hover:bg-surface-8 transition-colors"
                 }
               >
-                <td className={`px-4 py-4 whitespace-nowrap ${player.currentRank === 1 ? "border-l-3 border-rank-top" : ""}`}>
+                <td className={`px-1 sm:px-4 py-1.5 sm:py-4 whitespace-nowrap ${player.currentRank === 1 ? "border-l-3 border-rank-top" : ""}`}>
                   <div className="flex items-center gap-2">
                     {player.currentRank === 1 && (
-                      <Crown className="w-4 h-4 text-rank-top animate-crown-glow" />
+                      <Crown className="w-3 h-3 sm:w-4 sm:h-4 text-rank-top animate-crown-glow shrink-0" />
                     )}
                     <span
-                      className={`text-sm font-semibold ${
+                      className={`flex-1 text-center text-[11px] sm:text-sm font-semibold ${
                         player.currentRank <= 3
                           ? "text-rank-top"
                           : player.currentRank <= 10
@@ -133,86 +136,85 @@ export default function RankingTable({ region, queueType }: RankingTableProps) {
                     >
                       {player.currentRank !== 1 && player.currentRank}
                     </span>
-                    {getRankChangeIcon(player.rankChange)}
+                    <span className="flex-1 flex justify-center">
+                      {getRankChangeIcon(player.rankChange)}
+                    </span>
                   </div>
                 </td>
-                <td className="px-4 py-4 whitespace-nowrap">
+                <td className="px-1 sm:px-4 py-1.5 sm:py-4 whitespace-nowrap">
                   <Link
                     href={`/summoners/${region}/${player.gameName}-${player.tagLine}`}
                     prefetch={false}
-                    className={
+                    className={`flex items-center max-w-[80px] sm:max-w-none ${
                       player.currentRank === 1
-                        ? "text-sm font-bold text-rank-top hover:text-rank-top/80 transition-colors"
-                        : "text-sm font-medium text-on-surface hover:text-on-surface-medium transition-colors"
-                    }
+                        ? "text-[11px] sm:text-sm font-bold text-rank-top hover:text-rank-top/80 transition-colors"
+                        : "text-[11px] sm:text-sm font-medium text-on-surface hover:text-on-surface-medium transition-colors"
+                    }`}
                   >
-                    {player.gameName}
-                    <span className={player.currentRank === 1 ? "text-rank-top/60" : "text-on-surface-disabled"}>#{player.tagLine}</span>
+                    <span className="truncate min-w-0">{player.gameName}</span>
+                    <span className={`shrink-0 ${player.currentRank === 1 ? "text-rank-top/60" : "text-on-surface-disabled"}`}>#{player.tagLine}</span>
                   </Link>
                 </td>
-                <td className="px-4 py-4">
-                  <div className="flex items-center gap-1">
-                    {player.champions.map((championName, idx) => (
-                      <GameTooltip key={idx} type="champion" id={championName}>
-                        <div className="relative group">
-                          <div className="relative w-8 h-8 rounded overflow-hidden border border-divider hover:border-primary transition-colors">
-                            <Image
-                              src={getChampionImageUrl(championName)}
-                              alt={championName}
-                              fill
-                              sizes="32px"
-                              className="object-cover"
-                              unoptimized
-                            />
-                          </div>
-                          {idx === 0 && (
-                            <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-primary rounded-full border-2 border-surface-4"></div>
-                          )}
-                        </div>
-                      </GameTooltip>
-                    ))}
-                  </div>
+                <td className="px-1 sm:px-4 py-1.5 sm:py-4 whitespace-nowrap">
+                  <span className="text-[11px] sm:text-sm text-on-surface">{player.wins}</span>
                 </td>
-                <td className="px-4 py-4 whitespace-nowrap">
-                  <span className="text-sm text-on-surface">{player.wins}</span>
+                <td className="px-1 sm:px-4 py-1.5 sm:py-4 whitespace-nowrap">
+                  <span className="text-[11px] sm:text-sm text-on-surface">{player.losses}</span>
                 </td>
-                <td className="px-4 py-4 whitespace-nowrap">
-                  <span className="text-sm text-on-surface">{player.losses}</span>
-                </td>
-                <td className="px-4 py-4 whitespace-nowrap">
-                  <span className="text-sm font-medium text-on-surface">
+                <td className="px-1 sm:px-4 py-1.5 sm:py-4 whitespace-nowrap">
+                  <span className="text-[11px] sm:text-sm font-medium text-on-surface">
                     {player.winRate.toFixed(1)}%
                   </span>
                 </td>
-                <td className="px-2 py-4 whitespace-nowrap">
-                  <div className="flex items-center gap-2">
+                <td className="px-1 sm:px-2 py-1.5 sm:py-4 whitespace-nowrap align-bottom">
+                  <div className="flex items-center justify-center sm:justify-start gap-2">
                     {player.tier && (
-                      <div className="relative w-8 h-8">
+                      <div className="relative w-5 h-5 sm:w-8 sm:h-8">
                         <Image
                           src={getTierImageUrl(player.tier)}
                           alt={player.tier}
                           fill
-                          sizes="32px"
+                          sizes="(max-width: 640px) 20px, 32px"
                           className="object-contain"
                           unoptimized
                         />
                       </div>
                     )}
-                    <div>
+                    <div className="hidden sm:block">
                       <div className="text-sm font-medium text-on-surface">
                         {getTierName(player.tier)}
                       </div>
                     </div>
                   </div>
                 </td>
-                <td className="px-2 py-4 whitespace-nowrap">
+                <td className="px-1 sm:px-2 py-1.5 sm:py-4 whitespace-nowrap">
                   <span className={
                     player.currentRank === 1
-                      ? "text-sm font-bold text-rank-top"
-                      : "text-sm text-on-surface"
+                      ? "text-[10px] sm:text-sm font-bold text-rank-top"
+                      : "text-[10px] sm:text-sm text-on-surface"
                   }>
                     {player.leaguePoints} LP
                   </span>
+                </td>
+                <td className="px-1 sm:px-4 py-1.5 sm:py-4">
+                  <div className="flex items-center gap-0.5 sm:gap-1">
+                    {player.champions.map((championName, idx) => (
+                      <GameTooltip key={idx} type="champion" id={championName}>
+                        <div className="relative group">
+                          <div className="relative w-4 h-4 sm:w-8 sm:h-8 rounded overflow-hidden border border-divider hover:border-primary transition-colors">
+                            <Image
+                              src={getChampionImageUrl(championName)}
+                              alt={championName}
+                              fill
+                              sizes="(max-width: 640px) 16px, 32px"
+                              className="object-cover"
+                              unoptimized
+                            />
+                          </div>
+                        </div>
+                      </GameTooltip>
+                    ))}
+                  </div>
                 </td>
               </tr>
             ))}
