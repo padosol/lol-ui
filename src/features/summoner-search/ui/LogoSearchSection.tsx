@@ -1,3 +1,4 @@
+import Image from "next/image";
 import SearchBar from "./SearchBar";
 
 export default function LogoSearchSection() {
@@ -7,7 +8,14 @@ export default function LogoSearchSection() {
         <div className="flex flex-col items-center gap-10">
           <div className="flex items-center justify-center">
             <div className="w-64 h-32 flex items-center justify-center">
-              <h1 className="text-3xl font-bold text-primary">METAPICK</h1>
+              <h1 className="sr-only">METAPICK</h1>
+              <Image
+                src="/data/METAPICK_LOGO.png"
+                alt="METAPICK"
+                width={384}
+                height={128}
+                priority
+              />
             </div>
           </div>
 
