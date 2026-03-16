@@ -12,10 +12,9 @@ import {
 import { parseRuneStyle, normalizeRunes } from "@/shared/lib/rune";
 import { getStyleImageUrl } from "@/shared/lib/styles";
 import { SummonerSpellImage, RuneImage } from "@/shared/ui/game";
-import { normalizeRegion } from "@/entities/summoner";
 import Image from "next/image";
-import Link from "next/link";
 import DamageBar from "./DamageBar";
+import SummonerNameLink from "./SummonerNameLink";
 
 interface MatchDetailOverviewProps {
   detail: MatchDetail;
@@ -43,16 +42,6 @@ export default function MatchDetailOverview({
   puuid,
   region = "kr",
 }: MatchDetailOverviewProps) {
-  const getSummonerUrl = (participant: ParticipantData) => {
-    const normalizedRegion = normalizeRegion(region);
-    const gameName = participant.riotIdGameName
-      ? participant.riotIdTagline
-        ? `${participant.riotIdGameName}-${participant.riotIdTagline}`
-        : participant.riotIdGameName
-      : participant.summonerName;
-    return `/summoners/${normalizedRegion}/${encodeURIComponent(gameName)}`;
-  };
-
   if (isArena) {
     const participants = detail.participantData || [];
     const hasValidPlacement = participants.some(p => p.placement > 0);
@@ -154,10 +143,12 @@ export default function MatchDetailOverview({
                           </div>
                         </GameTooltip>
                         <div className="flex-1 min-w-0">
-                          <div className="text-on-surface text-[11px] font-medium truncate">
-                            {participant.riotIdGameName ||
-                              participant.summonerName}
-                          </div>
+                          <SummonerNameLink
+                            participant={participant}
+                            region={region}
+                            className="text-on-surface text-[11px] font-medium"
+                            hoverClassName="hover:text-primary hover:underline transition-colors"
+                          />
                           <div className="text-on-surface-medium text-[9px]">
                             {participant.championName}
                           </div>
@@ -325,9 +316,14 @@ export default function MatchDetailOverview({
                   </div>
                 </GameTooltip>
                 <div className="flex-1 min-w-0">
-                  <div className="text-on-surface text-[11px] font-medium truncate">
-                    {participant.riotIdGameName || participant.summonerName}
-                  </div>
+                  <SummonerNameLink
+                    participant={participant}
+                    region={region}
+                    className="text-on-surface text-[11px] font-medium"
+                    hoverClassName={`${
+                      teamColor === "blue" ? "hover:text-team-blue" : "hover:text-team-red"
+                    } hover:underline transition-colors`}
+                  />
                   <div className="text-on-surface-medium text-[9px]">
                     {participant.championName}
                   </div>
@@ -485,16 +481,14 @@ export default function MatchDetailOverview({
               </div>
 
               {/* Col 3: 텍스트 정보 (2행) */}
-              <div className="flex flex-col flex-1 min-w-0">
-                <div className="flex items-center">
-                  <Link
-                    href={getSummonerUrl(participant)}
-                    prefetch={false}
-                    onClick={(e) => e.stopPropagation()}
-                    className="text-on-surface text-[11px] font-medium truncate flex-1 min-w-0 hover:text-team-blue hover:underline transition-colors"
-                  >
-                    {participant.riotIdGameName || participant.summonerName}
-                  </Link>
+                <div className="flex flex-col flex-1 min-w-0">
+                  <div className="flex items-center">
+                    <SummonerNameLink
+                      participant={participant}
+                      region={region}
+                      className="text-on-surface text-[11px] font-medium flex-1"
+                      hoverClassName="hover:text-team-blue hover:underline transition-colors"
+                    />
                   <span className="text-on-surface-medium text-[10px] shrink-0 ml-1">
                     {participantTotalCS}({participantCsPerMin})
                   </span>

@@ -48,9 +48,13 @@ export default function IngamePlayer({
     ? getChampionImageUrl(champId)
     : `https://static.mmrtr.shop/champion/${participant.championId}.png`;
 
+  const perks = participant.perks;
+  const mainPerkId = perks?.perkIds?.[0];
+  const subPerkStyleId = perks?.perkSubStyle;
+  const baseDisplayName = participant.riotId || participant.summonerName;
   const displayName = participant.isBot
-    ? `${participant.riotId} (Bot)`
-    : participant.riotId;
+    ? `${baseDisplayName} (Bot)`
+    : baseDisplayName;
 
   return (
     <div className="flex items-center gap-1.5 px-2 py-1 rounded border border-divider bg-surface-4/50 hover:bg-surface-4/70 transition-all shadow-md hover:shadow-lg">
@@ -125,11 +129,11 @@ export default function IngamePlayer({
         </div>
         {/* 룬 - 가로로 묶기 */}
         <div className="flex gap-0.5">
-          {participant.perks.perkIds.length > 0 && (
-            <GameTooltip type="rune" id={participant.perks.perkIds[0]}>
+          {mainPerkId && (
+            <GameTooltip type="rune" id={mainPerkId}>
               <div className="w-5 h-5 rounded overflow-hidden relative">
                 <Image
-                  src={getPerkImageUrl(participant.perks.perkIds[0])}
+                  src={getPerkImageUrl(mainPerkId)}
                   alt="Main Rune"
                   fill
                   sizes="20px"
@@ -139,11 +143,11 @@ export default function IngamePlayer({
               </div>
             </GameTooltip>
           )}
-          {participant.perks.perkSubStyle > 0 && (
-            <GameTooltip type="rune" id={participant.perks.perkSubStyle}>
+          {subPerkStyleId && subPerkStyleId > 0 && (
+            <GameTooltip type="rune" id={subPerkStyleId}>
               <div className="w-5 h-5 rounded overflow-hidden relative">
                 <Image
-                  src={getPerkImageUrl(participant.perks.perkSubStyle)}
+                  src={getPerkImageUrl(subPerkStyleId)}
                   alt="Sub Rune"
                   fill
                   sizes="20px"

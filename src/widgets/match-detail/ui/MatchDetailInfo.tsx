@@ -76,6 +76,7 @@ export default function MatchDetailInfo({
             blueTeam={blueTeam}
             redTeam={redTeam}
             puuid={puuid}
+            region={region}
           />
         )}
       </div>

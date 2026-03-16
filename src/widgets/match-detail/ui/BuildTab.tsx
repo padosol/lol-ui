@@ -7,12 +7,14 @@ import { useState } from "react";
 import ItemBuildOrder from "./ItemBuildOrder";
 import RuneSetup from "./RuneSetup";
 import SkillOrderGrid from "./SkillOrderGrid";
+import SummonerNameLink, { getSummonerDisplayName } from "./SummonerNameLink";
 
 interface BuildTabProps {
   detail: MatchDetail;
   blueTeam: ParticipantData[];
   redTeam: ParticipantData[];
   puuid: string | null;
+  region?: string;
 }
 
 /* ─── 메인 BuildTab ─── */
@@ -21,6 +23,7 @@ export default function BuildTab({
   blueTeam,
   redTeam,
   puuid,
+  region = "kr",
 }: BuildTabProps) {
   const allParticipants = detail.participantData || [];
 
@@ -55,10 +58,13 @@ export default function BuildTab({
               unoptimized
             />
           </div>
-          <div>
-            <div className="text-on-surface text-xs font-semibold max-w-[120px] truncate">
-              {selected.riotIdGameName || selected.summonerName}
-            </div>
+          <div className="min-w-0">
+            <SummonerNameLink
+              participant={selected}
+              region={region}
+              className="text-on-surface text-xs font-semibold max-w-[160px]"
+              hoverClassName="hover:text-primary hover:underline transition-colors"
+            />
             <div className="text-on-surface-medium text-[10px]">
               {selected.championName} &middot; Lv.{selected.champLevel}
             </div>
@@ -85,7 +91,7 @@ export default function BuildTab({
                     ? "border-team-blue scale-110 z-10"
                     : "border-transparent opacity-60 hover:opacity-100"
                     }`}
-                  title={p.riotIdGameName || p.summonerName}
+                  title={getSummonerDisplayName(p)}
                 >
                   <Image
                     src={getChampionImageUrl(p.championName || "")}
@@ -117,7 +123,7 @@ export default function BuildTab({
                     ? "border-loss scale-110 z-10"
                     : "border-transparent opacity-60 hover:opacity-100"
                     }`}
-                  title={p.riotIdGameName || p.summonerName}
+                  title={getSummonerDisplayName(p)}
                 >
                   <Image
                     src={getChampionImageUrl(p.championName || "")}

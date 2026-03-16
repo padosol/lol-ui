@@ -7,10 +7,10 @@ export interface SpectatorParticipant {
   spell1Id: number;
   spell2Id: number;
   isBot?: boolean;
-  perks: {
-    perkIds: number[];
-    perkStyle: number;
-    perkSubStyle: number;
+  perks?: {
+    perkIds?: number[];
+    perkStyle?: number;
+    perkSubStyle?: number;
   };
 }
 

@@ -2,9 +2,8 @@
 
 import type { ParticipantData } from "@/entities/match";
 import { getChampionImageUrl } from "@/entities/champion";
-import { normalizeRegion } from "@/entities/summoner";
 import Image from "next/image";
-import Link from "next/link";
+import SummonerNameLink from "./SummonerNameLink";
 
 interface TeamInfoProps {
   blueTeam: ParticipantData[];
@@ -19,17 +18,6 @@ export default function TeamInfo({
   myPuuid,
   region = "kr",
 }: TeamInfoProps) {
-  const getSummonerUrl = (participant: ParticipantData) => {
-    const normalizedRegion = normalizeRegion(region);
-    // riotIdGameName과 riotIdTagline이 있으면 사용, 없으면 summonerName 사용
-    const gameName = participant.riotIdGameName
-      ? participant.riotIdTagline
-        ? `${participant.riotIdGameName}-${participant.riotIdTagline}`
-        : participant.riotIdGameName
-      : participant.summonerName;
-    const encodedName = encodeURIComponent(gameName);
-    return `/summoners/${normalizedRegion}/${encodedName}`;
-  };
   return (
     <div className="grid grid-cols-[90px_90px] gap-1 items-start">
       {/* 블루팀 */}
@@ -59,16 +47,12 @@ export default function TeamInfo({
                     />
                   </div>
                   <div className="flex-1 min-w-0 overflow-hidden">
-                    <Link
-                      href={getSummonerUrl(participant)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      prefetch={false}
-                      onClick={(e) => e.stopPropagation()}
-                      className="block text-on-surface text-[10px] font-medium truncate leading-tight hover:text-team-blue hover:underline transition-colors"
-                    >
-                      {participant.riotIdGameName || participant.summonerName}
-                    </Link>
+                    <SummonerNameLink
+                      participant={participant}
+                      region={region}
+                      className="text-on-surface text-[10px] font-medium leading-tight"
+                      hoverClassName="hover:text-team-blue hover:underline transition-colors"
+                    />
                   </div>
                 </div>
               );
@@ -104,16 +88,12 @@ export default function TeamInfo({
                     />
                   </div>
                   <div className="flex-1 min-w-0 overflow-hidden">
-                    <Link
-                      href={getSummonerUrl(participant)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      prefetch={false}
-                      onClick={(e) => e.stopPropagation()}
-                      className="block text-on-surface text-[10px] font-medium truncate leading-tight hover:text-team-red hover:underline transition-colors"
-                    >
-                      {participant.riotIdGameName || participant.summonerName}
-                    </Link>
+                    <SummonerNameLink
+                      participant={participant}
+                      region={region}
+                      className="text-on-surface text-[10px] font-medium leading-tight"
+                      hoverClassName="hover:text-team-red hover:underline transition-colors"
+                    />
                   </div>
                 </div>
               );

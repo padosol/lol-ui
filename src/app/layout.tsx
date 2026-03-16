@@ -11,8 +11,8 @@ const geistSans = Geist({
 });
 
 export const metadata: Metadata = {
-  title: "롤, 전적 검색, 메타픽, 라이엇 | METAPICK.ME",
-  description: "Search Riot ID and Tagline for Stats",
+  title: "롤 전적 검색, 메타픽, 라이엇 | METAPICK.ME",
+  description: "롤 전적 검색, 메타픽을 사용하여 나의 최근 전적을 확인하고, 챔피언 분석을 통해 챔피언 빌드를 최적화하세요!",
   verification: {
     google: "xR-MUvBKROkou2kxGMHdh3JQmgSMyL20SnZLWf0VMk8",
   },
