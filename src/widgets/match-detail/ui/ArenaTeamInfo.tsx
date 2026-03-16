@@ -2,9 +2,8 @@
 
 import type { ParticipantData } from "@/entities/match";
 import { getChampionImageUrl } from "@/entities/champion";
-import { normalizeRegion } from "@/entities/summoner";
 import Image from "next/image";
-import Link from "next/link";
+import SummonerNameLink from "./SummonerNameLink";
 
 interface ArenaTeamInfoProps {
   participants: ParticipantData[];
@@ -19,17 +18,6 @@ export default function ArenaTeamInfo({
   myPlacement: _myPlacement,
   region = "kr",
 }: ArenaTeamInfoProps) {
-  const getSummonerUrl = (participant: ParticipantData) => {
-    const normalizedRegion = normalizeRegion(region);
-    // riotIdGameName과 riotIdTagline이 있으면 사용, 없으면 summonerName 사용
-    const gameName = participant.riotIdGameName
-      ? participant.riotIdTagline
-        ? `${participant.riotIdGameName}-${participant.riotIdTagline}`
-        : participant.riotIdGameName
-      : participant.summonerName;
-    const encodedName = encodeURIComponent(gameName);
-    return `/summoners/${normalizedRegion}/${encodedName}`;
-  };
   // placement가 유효한지 확인
   const hasValidPlacement = participants.some(p => p.placement > 0);
 
@@ -102,16 +90,12 @@ export default function ArenaTeamInfo({
                         unoptimized
                       />
                     </div>
-                    <Link
-                      href={getSummonerUrl(participant)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      prefetch={false}
-                      onClick={(e) => e.stopPropagation()}
-                      className="text-on-surface text-[10px] truncate min-w-0 flex-1 hover:text-primary hover:underline transition-colors"
-                    >
-                      {participant.riotIdGameName || participant.summonerName}
-                    </Link>
+                    <SummonerNameLink
+                      participant={participant}
+                      region={region}
+                      className="text-on-surface text-[10px] flex-1"
+                      hoverClassName="hover:text-primary hover:underline transition-colors"
+                    />
                   </div>
                 ))}
               </div>
