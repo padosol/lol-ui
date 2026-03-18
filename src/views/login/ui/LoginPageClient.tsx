@@ -1,31 +1,69 @@
 "use client";
 
-import { Header, Navigation, Footer } from "@/widgets/layout";
-import { LoginForm, GoogleLoginButton } from "@/features/auth";
+import Link from "next/link";
+import { GoogleLoginButton } from "@/features/auth";
 
 export default function LoginPageClient() {
   return (
-    <div className="min-h-screen bg-surface">
-      <Header />
-      <Navigation />
-      <main className="flex-1 flex items-start justify-center py-16">
-        <div className="w-full max-w-[400px] mx-auto px-4">
-          <h1 className="text-2xl font-bold text-on-surface text-center mb-8">
-            로그인
-          </h1>
+    <div className="min-h-screen bg-surface flex flex-col items-center justify-center px-4">
 
-          <LoginForm />
 
-          <div className="flex items-center gap-4 my-6">
-            <div className="flex-1 h-px bg-divider" />
-            <span className="text-sm text-on-surface-medium">또는</span>
-            <div className="flex-1 h-px bg-divider" />
-          </div>
+      {/* 로그인 카드 */}
+      <div className="w-full max-w-[400px] bg-surface-1 rounded-2xl border border-divider p-8">
+        <h1 className="text-xl font-bold text-on-surface text-center mb-2">
+          로그인
+        </h1>
+        <p className="text-sm text-on-surface-medium text-center mb-8">
+          METAPICK에 오신 것을 환영합니다
+        </p>
 
+        {/* 소셜 로그인 */}
+        <div className="space-y-3">
           <GoogleLoginButton />
         </div>
-      </main>
-      <Footer />
+
+        {/* 구분선 */}
+        <div className="flex items-center gap-4 my-6">
+          <div className="flex-1 h-px bg-divider" />
+          <span className="text-xs text-on-surface-disabled">또는</span>
+          <div className="flex-1 h-px bg-divider" />
+        </div>
+
+        {/* 이메일 로그인 (준비중) */}
+        <div className="space-y-3">
+          <input
+            type="email"
+            disabled
+            placeholder="이메일 주소"
+            className="w-full px-4 py-3 bg-surface-4 border border-divider rounded-lg text-on-surface placeholder:text-on-surface-disabled text-sm disabled:opacity-40 disabled:cursor-not-allowed"
+          />
+          <button
+            type="button"
+            disabled
+            className="w-full py-3 bg-primary/30 text-on-surface/40 rounded-lg text-sm font-medium cursor-not-allowed"
+          >
+            이메일로 계속하기 (준비중)
+          </button>
+        </div>
+      </div>
+
+      {/* 하단 링크 */}
+      <div className="mt-6 text-center">
+        <Link
+          href="/"
+          className="text-sm text-on-surface-medium hover:text-on-surface transition-colors"
+        >
+          홈으로 돌아가기
+        </Link>
+      </div>
+
+      {/* 하단 정보 */}
+      <p className="mt-8 text-xs text-on-surface-disabled text-center">
+        로그인 시{" "}
+        <span className="underline cursor-pointer">이용약관</span> 및{" "}
+        <span className="underline cursor-pointer">개인정보처리방침</span>에
+        동의합니다.
+      </p>
     </div>
   );
 }
