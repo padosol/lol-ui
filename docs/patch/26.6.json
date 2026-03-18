@@ -1,0 +1,133 @@
+{
+  "version": "26.6",
+  "url": "https://www.leagueoflegends.com/ko-kr/news/game-updates/league-of-legends-patch-26-6-notes/",
+  "date": "2026-03-17",
+  "rift": {
+    "champions": [
+      {
+        "targetName": "아리",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "Q - 구슬 적중 시 피해량", "before": "40/65/90/115/140", "after": "35/60/85/110/135" }
+        ]
+      },
+      {
+        "targetName": "아지르",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          { "statName": "Q - 피해량 주문력 계수", "before": "+주문력의 35%", "after": "+주문력의 35/40/45/50/55%" },
+          { "statName": "W - 피해량", "before": "0~45 (10레벨부터 레벨당 피해량 5)", "after": "0~72 (10레벨부터 레벨당 피해량 7)" },
+          { "statName": "W - 피해량 주문력 계수", "before": "+주문력의 32.5/40/47.5/55/62.5%", "after": "+주문력의 35/42.5/50/57.5/65%" }
+        ]
+      },
+      {
+        "targetName": "카시오페아",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          { "statName": "기본 마나", "before": "450", "after": "480" },
+          { "statName": "E - 중독된 대상에게 입히는 추가 마법 피해량", "before": "20/43/66/89/112", "after": "20/45/70/90/120" }
+        ]
+      },
+      {
+        "targetName": "리산드라",
+        "type": "champion",
+        "direction": "adjust",
+        "changes": [
+          { "statName": "방어력 증가량", "before": "4.9", "after": "4.2" },
+          { "statName": "Q - 재사용 대기시간", "before": "8/7/6/5/4초", "after": "7.5/6.5/5.5/4.5/3.5초" }
+        ]
+      },
+      {
+        "targetName": "올라프",
+        "type": "champion",
+        "direction": "adjust",
+        "changes": [
+          { "statName": "기본 공격 속도", "before": "0.694", "after": "0.72" },
+          { "statName": "Q - 둔화율", "before": "1.5~2.5초(거리에 따라) 동안 25/30/40/45%", "after": "1~3초(거리에 따라) 동안 30/40/45/50%" },
+          { "statName": "E - 자신에게 입히는 피해량", "before": "입힌 피해량의 30%", "after": "입힌 피해량의 40%" }
+        ]
+      },
+      {
+        "targetName": "파이크",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "기본 방어력", "before": "43", "after": "37" }
+        ]
+      },
+      {
+        "targetName": "쉔",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "Q - 몬스터 대상 피해량 한도", "before": "120/140/160/180/200", "after": "100/125/150/175/200" }
+        ]
+      },
+      {
+        "targetName": "스카너",
+        "type": "champion",
+        "direction": "adjust",
+        "changes": [
+          { "statName": "Q - 마나 소모량", "before": "45", "after": "30" },
+          { "statName": "Q - 세 번째 공격 대상 최대 체력 비례 피해량", "before": "11%", "after": "9%" },
+          { "statName": "E - 재사용 대기시간", "before": "22/21/20/19/18초", "after": "22/20.5/19/17.5/16초" }
+        ]
+      },
+      {
+        "targetName": "트린다미어",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          { "statName": "공격 속도 계수", "before": "0.694", "after": "0.725" }
+        ]
+      },
+      {
+        "targetName": "자헨",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "W - 2차 피해량", "before": "40/60/80/100/120 (+추가 공격력의 50%)", "after": "30/50/70/90/110 (+추가 공격력의 30%)" },
+          { "statName": "E - 몬스터 대상 추가 피해량", "before": "75", "after": "50" }
+        ]
+      }
+    ],
+    "items": [
+      {
+        "targetName": "화공 펑크 사슬검",
+        "type": "item",
+        "direction": "buff",
+        "changes": [
+          { "statName": "조합 가격", "before": "350골드", "after": "250골드" },
+          { "statName": "총가격", "before": "3,100골드", "after": "3,000골드" }
+        ]
+      },
+      {
+        "targetName": "태양불꽃 방패",
+        "type": "item",
+        "direction": "adjust",
+        "changes": [
+          { "statName": "아이템 조합식", "before": "바미의 불씨 + 쇠사슬 조끼 + 1,000골드", "after": "바미의 불씨 + 쇠사슬 조끼 + 루비 수정 + 600골드" }
+        ]
+      }
+    ],
+    "systems": [
+      {
+        "targetName": "서포터 골드 수급",
+        "type": "system",
+        "direction": "adjust",
+        "changes": [
+          { "statName": "골드 불이익 활성화 기준 미니언 처치 수 (게임 시작 5분 이전)", "before": "7", "after": "24" },
+          { "statName": "골드 불이익 활성화 기준 5분당 미니언 처치 수 (게임 시작 5분 이후)", "before": "20", "after": "30" }
+        ]
+      }
+    ]
+  },
+  "arena": {
+    "champions": [],
+    "items": [],
+    "systems": []
+  }
+}

@@ -9,7 +9,7 @@ import { useState } from "react";
 
 export default function Navigation() {
   const pathname = usePathname() ?? "/";
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const user = useAuthStore((s) => s.user);
   const isHome = pathname === "/";
   const isSummonerPage = pathname.startsWith("/summoners/");
   const [mobileSearchOpen, setMobileSearchOpen] = useState(isSummonerPage);
@@ -70,7 +70,7 @@ export default function Navigation() {
               </button>
             )}
 
-            {isLoggedIn && (
+            {user && (
               <Link
                 href="/mypage"
                 className={`h-full flex items-center font-medium text-sm transition-colors border-b-2 shrink-0 ${pathname === "/mypage"
