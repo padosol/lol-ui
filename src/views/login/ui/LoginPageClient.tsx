@@ -60,8 +60,8 @@ export default function LoginPageClient() {
       {/* 하단 정보 */}
       <p className="mt-8 text-xs text-on-surface-disabled text-center">
         로그인 시{" "}
-        <span className="underline cursor-pointer">이용약관</span> 및{" "}
-        <span className="underline cursor-pointer">개인정보처리방침</span>에
+        <Link href="/terms-of-service" className="underline hover:text-on-surface-medium transition-colors">이용약관</Link> 및{" "}
+        <Link href="/privacy-policy" className="underline hover:text-on-surface-medium transition-colors">개인정보처리방침</Link>에
         동의합니다.
       </p>
     </div>
