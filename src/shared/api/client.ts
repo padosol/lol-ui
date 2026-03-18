@@ -1,10 +1,11 @@
 import { logger } from "@/shared/lib/logger";
-import axios, { InternalAxiosRequestConfig } from "axios";
+import axios, { InternalAxiosRequestConfig, AxiosError } from "axios";
 
 // axios 타입 확장: 요청 시작 시간 기록용
 declare module "axios" {
   interface InternalAxiosRequestConfig {
     metadata?: { startTime: number };
+    _retry?: boolean;
   }
 }
 
@@ -21,10 +22,80 @@ export const apiClient = axios.create({
   },
 });
 
+// 토큰 갱신 동시성 제어
+let isRefreshing = false;
+let failedQueue: {
+  resolve: (token: string) => void;
+  reject: (error: unknown) => void;
+}[] = [];
+
+function processQueue(error: unknown, token: string | null) {
+  failedQueue.forEach((prom) => {
+    if (token) {
+      prom.resolve(token);
+    } else {
+      prom.reject(error);
+    }
+  });
+  failedQueue = [];
+}
+
+// localStorage에서 auth 상태 읽기 (FSD 규칙: shared → entities 임포트 금지)
+function getAuthFromStorage(): {
+  accessToken: string | null;
+  refreshToken: string | null;
+} {
+  if (typeof window === "undefined") return { accessToken: null, refreshToken: null };
+  try {
+    const raw = localStorage.getItem("auth-storage");
+    if (!raw) return { accessToken: null, refreshToken: null };
+    const parsed = JSON.parse(raw);
+    return {
+      accessToken: parsed?.state?.accessToken ?? null,
+      refreshToken: parsed?.state?.refreshToken ?? null,
+    };
+  } catch {
+    return { accessToken: null, refreshToken: null };
+  }
+}
+
+function setAuthToStorage(accessToken: string, refreshToken: string, expiresIn: number) {
+  if (typeof window === "undefined") return;
+  try {
+    const raw = localStorage.getItem("auth-storage");
+    const parsed = raw ? JSON.parse(raw) : { state: {}, version: 0 };
+    parsed.state = {
+      ...parsed.state,
+      accessToken,
+      refreshToken,
+      expiresIn,
+    };
+    localStorage.setItem("auth-storage", JSON.stringify(parsed));
+  } catch {
+    // ignore
+  }
+}
+
+function clearAuthStorage() {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.removeItem("auth-storage");
+  } catch {
+    // ignore
+  }
+}
+
 // 요청 인터셉터
 apiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     config.metadata = { startTime: Date.now() };
+
+    // Authorization 헤더 부착
+    const { accessToken } = getAuthFromStorage();
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
+    }
+
     logger.info("API Request", {
       method: config.method?.toUpperCase(),
       url: `${config.baseURL ?? ""}${config.url ?? ""}`,
@@ -50,8 +121,9 @@ apiClient.interceptors.response.use(
     });
     return response;
   },
-  (error) => {
-    const config = error.config as InternalAxiosRequestConfig | undefined;
+  async (error: AxiosError) => {
+    const originalRequest = error.config as InternalAxiosRequestConfig | undefined;
+    const config = originalRequest;
     const duration = config?.metadata?.startTime
       ? Date.now() - config.metadata.startTime
       : undefined;
@@ -59,6 +131,71 @@ apiClient.interceptors.response.use(
     const url = config
       ? `${config.baseURL ?? ""}${config.url ?? ""}`
       : undefined;
+
+    // 401 토큰 갱신 로직
+    if (
+      error.response?.status === 401 &&
+      originalRequest &&
+      !originalRequest._retry
+    ) {
+      // 토큰 갱신/로그아웃 요청은 재시도하지 않음
+      const requestUrl = originalRequest.url ?? "";
+      if (requestUrl.includes("/auth/refresh") || requestUrl.includes("/auth/logout")) {
+        clearAuthStorage();
+        if (typeof window !== "undefined") {
+          window.location.href = "/login";
+        }
+        return Promise.reject(error);
+      }
+
+      if (isRefreshing) {
+        return new Promise((resolve, reject) => {
+          failedQueue.push({
+            resolve: (token: string) => {
+              originalRequest.headers.Authorization = `Bearer ${token}`;
+              resolve(apiClient(originalRequest));
+            },
+            reject: (err: unknown) => {
+              reject(err);
+            },
+          });
+        });
+      }
+
+      originalRequest._retry = true;
+      isRefreshing = true;
+
+      const { refreshToken } = getAuthFromStorage();
+      if (!refreshToken) {
+        isRefreshing = false;
+        clearAuthStorage();
+        if (typeof window !== "undefined") {
+          window.location.href = "/login";
+        }
+        return Promise.reject(error);
+      }
+
+      try {
+        // 순환 방지를 위해 axios 직접 사용
+        const res = await axios.post(`${API_BASE_URL}/auth/refresh`, {
+          refreshToken,
+        });
+        const data = res.data.data;
+        setAuthToStorage(data.accessToken, data.refreshToken, data.expiresIn);
+        processQueue(null, data.accessToken);
+        originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
+        return apiClient(originalRequest);
+      } catch (refreshError) {
+        processQueue(refreshError, null);
+        clearAuthStorage();
+        if (typeof window !== "undefined") {
+          window.location.href = "/login";
+        }
+        return Promise.reject(refreshError);
+      } finally {
+        isRefreshing = false;
+      }
+    }
 
     if (error.response) {
       // 서버에서 응답이 온 경우

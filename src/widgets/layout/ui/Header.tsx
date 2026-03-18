@@ -1,10 +1,13 @@
 "use client";
 
+import Link from "next/link";
 import { ThemeToggle } from "@/features/theme-toggle";
+import { useLogout } from "@/features/auth";
+import { useAuthStore } from "@/entities/auth";
 
 export default function Header() {
-  // TODO: 로그인 기능 구현 시 아래 주석 해제
-  // const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const user = useAuthStore((s) => s.user);
+  const { handleLogout } = useLogout();
 
   return (
     <header className="bg-surface-1 border-b border-divider">
@@ -19,18 +22,26 @@ export default function Header() {
             </div>
             <div className="flex items-center gap-4">
               <ThemeToggle />
-              {/* {isLoggedIn ? (
+              {user ? (
+                <>
+                  <span className="text-on-surface-medium">
+                    {user.nickname}
+                  </span>
+                  <button
+                    onClick={handleLogout}
+                    className="text-on-surface-medium hover:text-on-surface"
+                  >
+                    로그아웃
+                  </button>
+                </>
+              ) : (
                 <Link
-                  href="/mypage"
+                  href="/login"
                   className="text-on-surface-medium hover:text-on-surface"
                 >
-                  마이페이지
-                </Link>
-              ) : (
-                <button className="text-on-surface-medium hover:text-on-surface">
                   로그인
-                </button>
-              )} */}
+                </Link>
+              )}
             </div>
           </div>
         </div>
