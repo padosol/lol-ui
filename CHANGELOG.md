@@ -1,5 +1,46 @@
 # Changelog
 
+## [1.11.0](https://github.com/padosol/lol-ui/compare/v1.10.0...v1.11.0) (2026-03-19)
+
+
+### Features
+
+* Footer에 이용약관·개인정보처리방침 링크 추가 ([014e37c](https://github.com/padosol/lol-ui/commit/014e37c7cbbc9ecd0257a55b76c8f269ceb375ec))
+* SummonerNameLink 공통 컴포넌트 추출 및 spectator perks 안전성 개선 ([5087290](https://github.com/padosol/lol-ui/commit/50872909b7da8bc5bb247421d93b7ac332df4d35))
+* 검색바 자동완성 드롭다운 CSS Grid 기반 반응형 너비 조정 ([3b882dd](https://github.com/padosol/lol-ui/commit/3b882ddaecd84af6e8cfcf9df04986c1b82f2fff))
+* 검색바 자동완성 드롭다운 반응형 너비 조정 ([86d01bf](https://github.com/padosol/lol-ui/commit/86d01bfaeda03ae1d59e485e2e169b10f84d8f89))
+* 랭킹 테이블 모바일 반응형 UI 개선 및 린트 경고 수정 ([53f9c76](https://github.com/padosol/lol-ui/commit/53f9c76130a6ac414b416360895fc58b9d7309e3))
+* 브랜딩/SEO 및 UI 컴팩트화 개선 ([86bd776](https://github.com/padosol/lol-ui/commit/86bd776c3329afa2c1367ba110441742b9565401))
+* 이용약관 및 개인정보처리방침 페이지 추가 ([95ef747](https://github.com/padosol/lol-ui/commit/95ef747b01023257db9a9f46513a3c6d50b06d9f))
+* 이용약관 및 개인정보처리방침 페이지·링크 추가 ([de400aa](https://github.com/padosol/lol-ui/commit/de400aa574a553da924b66ca84613ff92d03fadc))
+* 챔피언 통계 테이블 10컬럼→6컬럼 간소화 및 승률/KDA 스타일 조정 ([bceba20](https://github.com/padosol/lol-ui/commit/bceba20202208b1a0734182c9c32fe287d4bb331))
+* 챔피언 통계 테이블 간소화 및 스타일 조정 ([9a278b7](https://github.com/padosol/lol-ui/commit/9a278b726fc5c81d9ee57575e6841970624fde0e))
+* 챔피언 통계 테이블 모바일 반응형 UI 개선 - padding 축소 및 챔피언명 제거 ([8e372b2](https://github.com/padosol/lol-ui/commit/8e372b29cf032d7d319f934a843110075b12989f))
+* 챔피언 통계 페이지 UI 개선 및 티어컷 이미지 수직 중앙 보정 ([e3f40f2](https://github.com/padosol/lol-ui/commit/e3f40f2f3a217532906a5a8d9d32757d0ca67394))
+* 챔피언 통계 페이지 UI 컴팩트화 - 필터 라벨 제거, 테이블 랭킹+이미지 통합, 포지션 탭 균등 분배 ([4a9d635](https://github.com/padosol/lol-ui/commit/4a9d63570392137729f27be7b7b637176c8c4f6f))
+* 티어컷 카드 UI 컴팩트화 - 상단 그라데이션 바 제거 및 텍스트 크기 축소 ([5d4a8cd](https://github.com/padosol/lol-ui/commit/5d4a8cd58cbcd870ad9d8736ced6ce41a486a308))
+* 파비콘 여백 제거, 로고 이미지 적용 및 SEO 설정 추가 ([2a7a79d](https://github.com/padosol/lol-ui/commit/2a7a79d8857a53319723bf4329cb6da0caaf37d4))
+* 파비콘 여백 제거, 로고 이미지 적용 및 SEO 설정 추가 ([ed16084](https://github.com/padosol/lol-ui/commit/ed160844e75fa489c92334b79a4b90aaba9e1e7a))
+* 홈 검색 자동완성 UI 개선 - 드롭다운 전체 너비, 레벨 배지 오버레이, LP만 표시 ([6e7cb9f](https://github.com/padosol/lol-ui/commit/6e7cb9fe1f3caef816dc812becb3963b35f74176))
+
+
+### Bug Fixes
+
+* metadata에 favicon 명시적 추가로 구글 검색결과 favicon 캐시 문제 해결 ([710a107](https://github.com/padosol/lol-ui/commit/710a10763cc88df531ca3949fd9c5268f1e98c46))
+* 구글 검색결과 favicon 캐시 문제 해결 ([7e5c658](https://github.com/padosol/lol-ui/commit/7e5c65843f99ff33136b19d821af05bdf765f811))
+* 룬 파편 이미지 아이콘 적용 및 모바일 UI 개선 ([de5f38c](https://github.com/padosol/lol-ui/commit/de5f38c689f01b8474a84276adc9c40659f22754))
+* 룬 파편 이미지 아이콘 적용 및 모바일 UI 개선 ([e481cc0](https://github.com/padosol/lol-ui/commit/e481cc0e0c278691a7eb4372e9c6c8a30026e679))
+* 매치 요약 모바일 레이아웃 2x2 그리드 적용 및 챔피언명 제거 ([4f4baf1](https://github.com/padosol/lol-ui/commit/4f4baf1801e427668b9a3f8b615a334b5c95e233))
+* 모바일 매치 상세 Col 3 KDA/골드 겹침 수정 ([e8a0f49](https://github.com/padosol/lol-ui/commit/e8a0f499e7bba4e0553b5cbee68e58a6e2272dae))
+* 모바일 매치 상세 아이템 아이콘 15px로 축소하여 행 높이 32px 맞춤 ([a89f0e3](https://github.com/padosol/lol-ui/commit/a89f0e3fd36143a9fb5c9a5ef1c0964028008395))
+* 모바일 매치 카드 레이아웃 개선 - 스펠/룬 축소, 아이템 2행 배치, 평균티어 제거 ([25745c9](https://github.com/padosol/lol-ui/commit/25745c95bc7753e47d0aca64f88609cd6a96bf11))
+* 모바일 매치 카드 평균티어 아이콘 아래 티어명 추가 및 레이아웃 개선 ([18da0b7](https://github.com/padosol/lol-ui/commit/18da0b7e432bd301cef1212c02d371af32559192))
+* 모바일 소환사 페이지 좌우 패딩 제거 ([581c355](https://github.com/padosol/lol-ui/commit/581c35561b7952ac1920ded6b6a26140387c78a2))
+* 미사용 변수 및 import 린트 경고 수정 ([8bd6c2b](https://github.com/padosol/lol-ui/commit/8bd6c2be5dfe7afce208e04c4871ea47f52dd114))
+* 미사용 변수 및 import 린트 경고 수정 ([35f15e1](https://github.com/padosol/lol-ui/commit/35f15e166d5b03d271cb3ff5d704e0cbfb3590d0))
+* 소환사 상세 페이지에서 모바일 검색바 기본 열림 상태로 변경 ([feb4fb3](https://github.com/padosol/lol-ui/commit/feb4fb31af0afed1d1f23bdd1f85e7a5d9c624fa))
+* 패치노트 모바일 반응형 개선 - 변경사항 카드 텍스트 오버플로우 수정 및 패딩 조정 ([4846b9c](https://github.com/padosol/lol-ui/commit/4846b9c75e1a308c8e0c356c7a80c97522a933ea))
+
 ## [1.10.0](https://github.com/padosol/lol-ui/compare/v1.9.0...v1.10.0) (2026-03-10)
 
 
