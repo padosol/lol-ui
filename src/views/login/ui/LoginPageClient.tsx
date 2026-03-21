@@ -1,12 +1,21 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { GoogleLoginButton } from "@/features/auth";
 
 export default function LoginPageClient() {
   return (
-    <div className="min-h-screen bg-surface flex flex-col items-center justify-center px-4">
-
+    <div className="relative min-h-screen bg-surface flex flex-col items-center justify-center px-4">
+      <Link href="/" className="absolute top-6 left-6">
+        <Image
+          src="/main_logo.png"
+          alt="METAPICK.ME"
+          width={120}
+          height={80}
+          priority
+        />
+      </Link>
 
       {/* 로그인 카드 */}
       <div className="w-full max-w-[400px] bg-surface-1 rounded-2xl border border-divider p-8">
