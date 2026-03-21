@@ -11,10 +11,10 @@ export default function LeaderboardsPageClient() {
   const [queueType, setQueueType] = useState("solo");
 
   return (
-    <div className="min-h-screen bg-surface">
+    <div className="min-h-screen bg-surface flex flex-col">
       <Header />
       <Navigation />
-      <main className="max-w-[1080px] mx-auto py-8 sm:px-4">
+      <main className="flex-1 w-full max-w-[1080px] mx-auto py-8 sm:px-4">
         <div className="max-w-[1024px]">
           <div>
             <RankingFilters

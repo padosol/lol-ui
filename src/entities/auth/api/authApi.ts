@@ -1,6 +1,6 @@
 import { apiClient } from "@/shared/api/client";
 import type { ApiResponse } from "@/shared/api/types";
-import type { AuthTokens, MemberProfile } from "../types";
+import type { AuthTokens, MemberProfile, RsoProfile } from "../types";
 
 export async function refreshToken(token: string): Promise<AuthTokens> {
   const res = await apiClient.post<ApiResponse<AuthTokens>>("/auth/refresh", {
@@ -16,4 +16,22 @@ export async function logout(): Promise<void> {
 export async function getMyProfile(): Promise<MemberProfile> {
   const res = await apiClient.get<ApiResponse<MemberProfile>>("/members/me");
   return res.data.data;
+}
+
+export async function updateNickname(nickname: string): Promise<MemberProfile> {
+  const res = await apiClient.patch<ApiResponse<MemberProfile>>("/members/me", {
+    nickname,
+  });
+  return res.data.data;
+}
+
+export async function getRsoStatus(): Promise<RsoProfile | null> {
+  const res = await apiClient.get<ApiResponse<RsoProfile | null>>(
+    "/members/me/rso"
+  );
+  return res.data.data;
+}
+
+export async function disconnectRso(): Promise<void> {
+  await apiClient.delete("/members/me/rso");
 }

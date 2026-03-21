@@ -78,10 +78,10 @@ export default function ChampionStatsDetailPageClient({
   }, [data, effectivePosition]);
 
   return (
-    <div className="min-h-screen bg-surface">
+    <div className="min-h-screen bg-surface flex flex-col">
       <Header />
       <Navigation />
-      <main className="max-w-5xl mx-auto py-8">
+      <main className="flex-1 w-full max-w-5xl mx-auto py-8">
         {isInvalidChampion ? (
           <div className="text-center py-20">
             <p className="text-lg text-on-surface-medium">

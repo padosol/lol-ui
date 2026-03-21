@@ -12,6 +12,14 @@ export interface MemberProfile {
   oauthProvider: string;
 }
 
+export interface RsoProfile {
+  puuid: string;
+  gameName: string;
+  tagLine: string;
+  region: string;
+  linkedAt: string;
+}
+
 export interface AuthState {
   accessToken: string | null;
   refreshToken: string | null;
