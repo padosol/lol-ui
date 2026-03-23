@@ -18,7 +18,7 @@ export default function Navigation() {
     { label: "홈", href: "/" },
     { label: "챔피언 분석", href: "/champion-stats" },
     { label: "랭킹", href: "/leaderboards" },
-    { label: "듀오 ㄱ", href: "/duo" },
+    { label: "듀오 찾기", href: "/duo" },
     { label: "패치노트", href: "/patch-notes" },
   ];
 
