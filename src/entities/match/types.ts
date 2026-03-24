@@ -203,3 +203,9 @@ export interface DailyMatchCount {
   gameDate: string;
   gameCount: number;
 }
+
+export interface DailyMatchCountResponse {
+  dailyCounts: DailyMatchCount[];
+  minCount: number;
+  maxCount: number;
+}

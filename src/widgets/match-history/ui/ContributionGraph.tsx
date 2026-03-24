@@ -8,6 +8,8 @@ import { useMemo } from "react";
 interface ContributionGraphProps {
   dailyCounts: DailyMatchCount[];
   isLoading?: boolean;
+  minCount?: number;
+  maxCount?: number;
 }
 
 const DAY_LABELS = ["", "월", "", "수", "", "금", ""];
@@ -16,15 +18,32 @@ const MONTH_LABELS = [
   "7월", "8월", "9월", "10월", "11월", "12월",
 ];
 
-function getColorClass(count: number): string {
+const COLOR_LEVELS = [
+  "bg-primary/20",
+  "bg-primary/40",
+  "bg-primary/60",
+  "bg-primary/80",
+  "bg-primary/95",
+];
+
+function getColorClass(count: number, minCount?: number, maxCount?: number): string {
   if (count === 0) return "bg-surface-4";
-  if (count === 1) return "bg-primary/25";
-  if (count === 2) return "bg-primary/40";
-  if (count <= 4) return "bg-primary/60";
-  return "bg-primary/90";
+
+  if (minCount === undefined || maxCount === undefined) {
+    if (count === 1) return COLOR_LEVELS[0];
+    if (count === 2) return COLOR_LEVELS[1];
+    if (count <= 4) return COLOR_LEVELS[2];
+    return COLOR_LEVELS[4];
+  }
+
+  if (minCount === maxCount) return COLOR_LEVELS[2];
+
+  const ratio = (count - minCount) / (maxCount - minCount);
+  const level = Math.min(Math.floor(ratio * COLOR_LEVELS.length), COLOR_LEVELS.length - 1);
+  return COLOR_LEVELS[level];
 }
 
-export default function ContributionGraph({ dailyCounts, isLoading }: ContributionGraphProps) {
+export default function ContributionGraph({ dailyCounts, isLoading, minCount, maxCount }: ContributionGraphProps) {
   const { weeks, monthLabels } = useMemo(() => {
     if (dailyCounts.length === 0) return { weeks: [], monthLabels: [] };
 
@@ -155,7 +174,7 @@ export default function ContributionGraph({ dailyCounts, isLoading }: Contributi
                       }
                     >
                       <div
-                        className={`rounded-sm ${getColorClass(cell.count)}`}
+                        className={`rounded-sm ${getColorClass(cell.count, minCount, maxCount)}`}
                         style={{ width: "10px", height: "10px" }}
                       />
                     </Tooltip>
@@ -169,10 +188,11 @@ export default function ContributionGraph({ dailyCounts, isLoading }: Contributi
         {/* 범례 */}
         <div className="flex items-center justify-end gap-1 mt-1">
           <span className="text-[9px] text-on-surface-medium">적음</span>
-          {[0, 1, 2, 3, 5].map((count) => (
+          <div className="rounded-sm bg-surface-4" style={{ width: "10px", height: "10px" }} />
+          {COLOR_LEVELS.map((colorClass, idx) => (
             <div
-              key={count}
-              className={`rounded-sm ${getColorClass(count)}`}
+              key={idx}
+              className={`rounded-sm ${colorClass}`}
               style={{ width: "10px", height: "10px" }}
             />
           ))}

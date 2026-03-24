@@ -62,9 +62,12 @@ export default function MatchHistory({
     }
   }, [gameModeFilter]);
 
-  const { data: dailyCounts = [], isLoading: isDailyCountLoading } = useDailyMatchCount(
+  const { data: dailyMatchData, isLoading: isDailyCountLoading } = useDailyMatchCount(
     region, puuid || "", latestSeasonValue ?? "", filterQueueId
   );
+  const dailyCounts = dailyMatchData?.dailyCounts ?? [];
+  const minCount = dailyMatchData?.minCount;
+  const maxCount = dailyMatchData?.maxCount;
 
   // 소환사 매치 배치 조회
   const { data: matchesData, isLoading } = useSummonerMatches(
@@ -402,6 +405,8 @@ export default function MatchHistory({
         matches={allMatchesLoaded ? allMatches : []}
         dailyCounts={dailyCounts}
         isDailyCountLoading={isDailyCountLoading}
+        minCount={minCount}
+        maxCount={maxCount}
       />
 
       {allMatches.length === 0 && (isLoading || (matchesData?.content?.length ?? 0) > 0) ? (
