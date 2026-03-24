@@ -20,6 +20,7 @@ export default function Navigation() {
     { label: "랭킹", href: "/leaderboards" },
     { label: "듀오 찾기", href: "/duo" },
     { label: "패치노트", href: "/patch-notes" },
+    { label: "커뮤니티", href: "/community" },
   ];
 
   return (
