@@ -24,9 +24,12 @@ export default function Header() {
               <ThemeToggle />
               {user ? (
                 <>
-                  <span className="text-on-surface-medium">
+                  <Link
+                    href="/mypage"
+                    className="text-on-surface-medium hover:text-on-surface"
+                  >
                     {user.nickname}
-                  </span>
+                  </Link>
                   <button
                     onClick={handleLogout}
                     className="text-on-surface-medium hover:text-on-surface"

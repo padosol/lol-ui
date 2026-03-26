@@ -1,7 +1,6 @@
 "use client";
 
 import { SearchBar } from "@/features/summoner-search";
-import { useAuthStore } from "@/entities/auth";
 import { Search, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -9,7 +8,6 @@ import { useState } from "react";
 
 export default function Navigation() {
   const pathname = usePathname() ?? "/";
-  const user = useAuthStore((s) => s.user);
   const isHome = pathname === "/";
   const isSummonerPage = pathname.startsWith("/summoners/");
   const [mobileSearchOpen, setMobileSearchOpen] = useState(isSummonerPage);
@@ -18,7 +16,6 @@ export default function Navigation() {
     { label: "홈", href: "/" },
     { label: "챔피언 분석", href: "/champion-stats" },
     { label: "랭킹", href: "/leaderboards" },
-    { label: "듀오 찾기", href: "/duo" },
     { label: "패치노트", href: "/patch-notes" },
     { label: "커뮤니티", href: "/community" },
   ];
@@ -27,7 +24,7 @@ export default function Navigation() {
     <nav className="sticky top-0 z-50 bg-surface-1 border-b border-divider">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-[50px] gap-4">
-          <div className="flex items-center h-full gap-6 shrink-0">
+          <div className="flex items-center h-full gap-4 sm:gap-6 overflow-x-auto">
             {navItems.map((item) => {
               const isActive =
                 item.href === "/"
@@ -37,7 +34,7 @@ export default function Navigation() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`h-full flex items-center font-medium text-sm transition-colors border-b-2 ${isActive
+                  className={`h-full flex items-center font-medium text-sm transition-colors border-b-2 whitespace-nowrap shrink-0 ${isActive
                     ? "text-primary border-primary"
                     : "text-on-surface-medium hover:text-primary border-transparent"
                     }`}
@@ -72,17 +69,6 @@ export default function Navigation() {
               </button>
             )}
 
-            {user && (
-              <Link
-                href="/mypage"
-                className={`h-full flex items-center font-medium text-sm transition-colors border-b-2 shrink-0 ${pathname === "/mypage"
-                  ? "text-primary border-primary"
-                  : "text-on-surface-medium hover:text-primary border-transparent"
-                  }`}
-              >
-                마이페이지
-              </Link>
-            )}
           </div>
         </div>
       </div>
