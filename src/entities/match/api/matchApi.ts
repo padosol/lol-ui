@@ -1,6 +1,6 @@
 import type { ApiResponse } from "@/shared/api/types";
 import type {
-  DailyMatchCount,
+  DailyMatchCountResponse,
   MatchDetail,
   ChampionStat,
   MatchIdsResponse,
@@ -59,8 +59,8 @@ export async function getDailyMatchCount(
   puuid: string,
   season: string,
   queueId?: number
-): Promise<DailyMatchCount[]> {
-  const response = await apiClient.get<ApiResponse<DailyMatchCount[]>>(
+): Promise<DailyMatchCountResponse> {
+  const response = await apiClient.get<ApiResponse<DailyMatchCountResponse>>(
     `/v1/${region}/summoners/${puuid}/matches/daily-count`,
     {
       params: {
