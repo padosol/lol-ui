@@ -6,12 +6,14 @@ export function useChampionStats(
   championKey: string,
   patch: string,
   tier?: string,
-  region: string = "kr"
+  region: string = "kr",
+  options?: { initialData?: ChampionStatsResponse }
 ) {
   return useQuery<ChampionStatsResponse, Error>({
     queryKey: ["champion-stats", championKey, patch, tier, region],
     queryFn: () => getChampionStats(region, championKey, patch, tier),
     enabled: !!championKey && !!patch,
     staleTime: 5 * 60 * 1000,
+    initialData: options?.initialData,
   });
 }
