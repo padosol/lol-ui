@@ -53,18 +53,18 @@ export default function DesktopAppSection() {
           <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
         </div>
       ) : champions.length > 0 ? (
-        <div className="grid grid-cols-4 sm:grid-cols-6 gap-4">
+        <div className="grid grid-cols-5 sm:grid-cols-10 gap-2">
           {champions.map((champion) => (
             <div
               key={champion.id}
               className="flex flex-col items-center group cursor-pointer"
             >
-              <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-divider group-hover:border-primary transition-colors mb-2">
+              <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-divider group-hover:border-primary transition-colors mb-1">
                 <Image
                   src={getChampionImageUrl(champion.id)}
                   alt={champion.name}
                   fill
-                  sizes="64px"
+                  sizes="48px"
                   className="object-cover"
                   unoptimized
                 />
