@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useMemo } from "react";
-import { Plus } from "lucide-react";
+import { useState, useMemo, useRef, useEffect, useCallback } from "react";
+import { Plus, ChevronDown } from "lucide-react";
 import { useRouter } from "next/navigation";
 import {
   usePosts,
@@ -27,6 +27,25 @@ export default function CommunityListPanel() {
   const [sort, setSort] = useState<PostSort>("HOT");
   const [period, setPeriod] = useState<PostPeriod>("ALL");
   const [searchKeyword, setSearchKeyword] = useState("");
+
+  const [sortOpen, setSortOpen] = useState(false);
+  const [periodOpen, setPeriodOpen] = useState(false);
+  const sortRef = useRef<HTMLDivElement>(null);
+  const periodRef = useRef<HTMLDivElement>(null);
+
+  const handleClickOutside = useCallback((e: MouseEvent) => {
+    if (sortRef.current && !sortRef.current.contains(e.target as Node)) {
+      setSortOpen(false);
+    }
+    if (periodRef.current && !periodRef.current.contains(e.target as Node)) {
+      setPeriodOpen(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [handleClickOutside]);
 
   const postsQuery = usePosts({
     category: category === "ALL" ? undefined : category,
@@ -70,7 +89,7 @@ export default function CommunityListPanel() {
         <button
           type="button"
           onClick={handleWriteClick}
-          className="flex items-center gap-1.5 bg-primary hover:bg-primary/80 text-on-surface font-medium px-4 py-2 rounded-md text-sm transition-colors"
+          className="flex items-center gap-1.5 bg-primary hover:bg-primary/80 text-on-surface font-medium px-4 py-2 rounded-md text-sm transition-colors cursor-pointer"
         >
           <Plus className="w-4 h-4" />
           글쓰기
@@ -87,7 +106,7 @@ export default function CommunityListPanel() {
               setCategory(cat);
               setSearchKeyword("");
             }}
-            className={`whitespace-nowrap px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
+            className={`whitespace-nowrap px-3 py-1.5 rounded-md text-sm font-medium transition-colors cursor-pointer ${
               category === cat
                 ? "bg-primary text-on-surface"
                 : "bg-surface-4 hover:bg-surface-8 border border-divider text-on-surface-medium"
@@ -100,25 +119,93 @@ export default function CommunityListPanel() {
 
       {/* 정렬 + 기간 + 검색 */}
       <div className="flex flex-wrap items-center gap-3">
-        <select
-          value={sort}
-          onChange={(e) => setSort(e.target.value as PostSort)}
-          className="bg-surface-4 border border-divider rounded-md px-3 py-2 text-sm text-on-surface focus:outline-none focus:border-primary"
-        >
-          {SORTS.map((s) => (
-            <option key={s} value={s}>{POST_SORT_LABELS[s]}</option>
-          ))}
-        </select>
+        {/* 정렬 드롭다운 */}
+        <div ref={sortRef} className="relative">
+          <button
+            type="button"
+            onClick={() => setSortOpen((v) => !v)}
+            className="bg-surface-4 hover:bg-surface-8 border border-divider rounded-lg px-3 py-1.5 pr-8 text-sm font-medium text-on-surface cursor-pointer focus:outline-none min-w-[80px] text-left"
+            aria-haspopup="listbox"
+            aria-expanded={sortOpen}
+          >
+            {POST_SORT_LABELS[sort]}
+            <ChevronDown
+              className={`absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-on-surface-medium transition-transform ${sortOpen ? "rotate-180" : ""}`}
+            />
+          </button>
+          {sortOpen && (
+            <div className="absolute top-full left-0 mt-1 w-full bg-surface-4 border border-divider rounded-lg shadow-lg z-50 overflow-hidden">
+              <div className="py-1" role="listbox" aria-label="정렬 선택">
+                {SORTS.map((s) => {
+                  const selected = s === sort;
+                  return (
+                    <button
+                      key={s}
+                      type="button"
+                      onClick={() => {
+                        setSort(s);
+                        setSortOpen(false);
+                      }}
+                      className={`w-full px-3 py-1.5 text-left text-sm transition-colors cursor-pointer ${
+                        selected
+                          ? "bg-surface-8 text-on-surface font-medium"
+                          : "text-on-surface hover:bg-surface-8"
+                      }`}
+                      role="option"
+                      aria-selected={selected}
+                    >
+                      {POST_SORT_LABELS[s]}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+        </div>
 
-        <select
-          value={period}
-          onChange={(e) => setPeriod(e.target.value as PostPeriod)}
-          className="bg-surface-4 border border-divider rounded-md px-3 py-2 text-sm text-on-surface focus:outline-none focus:border-primary"
-        >
-          {PERIODS.map((p) => (
-            <option key={p} value={p}>{POST_PERIOD_LABELS[p]}</option>
-          ))}
-        </select>
+        {/* 기간 드롭다운 */}
+        <div ref={periodRef} className="relative">
+          <button
+            type="button"
+            onClick={() => setPeriodOpen((v) => !v)}
+            className="bg-surface-4 hover:bg-surface-8 border border-divider rounded-lg px-3 py-1.5 pr-8 text-sm font-medium text-on-surface cursor-pointer focus:outline-none min-w-[90px] text-left"
+            aria-haspopup="listbox"
+            aria-expanded={periodOpen}
+          >
+            {POST_PERIOD_LABELS[period]}
+            <ChevronDown
+              className={`absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-on-surface-medium transition-transform ${periodOpen ? "rotate-180" : ""}`}
+            />
+          </button>
+          {periodOpen && (
+            <div className="absolute top-full left-0 mt-1 w-full bg-surface-4 border border-divider rounded-lg shadow-lg z-50 overflow-hidden">
+              <div className="py-1" role="listbox" aria-label="기간 선택">
+                {PERIODS.map((p) => {
+                  const selected = p === period;
+                  return (
+                    <button
+                      key={p}
+                      type="button"
+                      onClick={() => {
+                        setPeriod(p);
+                        setPeriodOpen(false);
+                      }}
+                      className={`w-full px-3 py-1.5 text-left text-sm transition-colors cursor-pointer ${
+                        selected
+                          ? "bg-surface-8 text-on-surface font-medium"
+                          : "text-on-surface hover:bg-surface-8"
+                      }`}
+                      role="option"
+                      aria-selected={selected}
+                    >
+                      {POST_PERIOD_LABELS[p]}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+        </div>
 
         <div className="flex-1 min-w-[200px]">
           <CommunitySearchBar onSearch={handleSearch} />
@@ -132,7 +219,7 @@ export default function CommunityListPanel() {
           <button
             type="button"
             onClick={handleClearSearch}
-            className="text-primary hover:underline"
+            className="text-primary hover:underline cursor-pointer"
           >
             검색 초기화
           </button>
@@ -163,7 +250,7 @@ export default function CommunityListPanel() {
             type="button"
             onClick={() => postsQuery.fetchNextPage()}
             disabled={postsQuery.isFetchingNextPage}
-            className="px-6 py-2 bg-surface-4 hover:bg-surface-8 border border-divider rounded-md text-sm text-on-surface-medium transition-colors disabled:opacity-50"
+            className="px-6 py-2 bg-surface-4 hover:bg-surface-8 border border-divider rounded-md text-sm text-on-surface-medium transition-colors disabled:opacity-50 cursor-pointer"
           >
             {postsQuery.isFetchingNextPage ? "로딩 중..." : "더 보기"}
           </button>

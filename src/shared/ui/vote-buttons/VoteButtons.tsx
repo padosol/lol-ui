@@ -29,7 +29,7 @@ export default function VoteButtons({
         type="button"
         onClick={() => onVote("UPVOTE")}
         disabled={isPending}
-        className={`flex items-center gap-1 ${padding} rounded-md ${textSize} font-medium transition-colors disabled:opacity-50 ${
+        className={`flex items-center gap-1 ${padding} rounded-md ${textSize} font-medium transition-colors disabled:opacity-50 cursor-pointer ${
           currentUserVote === "UPVOTE"
             ? "bg-primary/20 text-primary border border-primary/50"
             : "bg-surface-4 hover:bg-surface-8 border border-divider text-on-surface-medium"
@@ -42,7 +42,7 @@ export default function VoteButtons({
         type="button"
         onClick={() => onVote("DOWNVOTE")}
         disabled={isPending}
-        className={`flex items-center gap-1 ${padding} rounded-md ${textSize} font-medium transition-colors disabled:opacity-50 ${
+        className={`flex items-center gap-1 ${padding} rounded-md ${textSize} font-medium transition-colors disabled:opacity-50 cursor-pointer ${
           currentUserVote === "DOWNVOTE"
             ? "bg-red-500/20 text-red-400 border border-red-500/50"
             : "bg-surface-4 hover:bg-surface-8 border border-divider text-on-surface-medium"

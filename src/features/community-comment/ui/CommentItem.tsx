@@ -104,7 +104,7 @@ export default function CommentItem({
               <button
                 type="button"
                 onClick={() => setShowReplyForm(!showReplyForm)}
-                className="flex items-center gap-1 text-xs text-on-surface-disabled hover:text-on-surface transition-colors"
+                className="flex items-center gap-1 text-xs text-on-surface-disabled hover:text-on-surface transition-colors cursor-pointer"
               >
                 <Reply className="w-3.5 h-3.5" />
                 답글
@@ -115,7 +115,7 @@ export default function CommentItem({
                 <button
                   type="button"
                   onClick={() => setShowEditForm(true)}
-                  className="flex items-center gap-1 text-xs text-on-surface-disabled hover:text-on-surface transition-colors"
+                  className="flex items-center gap-1 text-xs text-on-surface-disabled hover:text-on-surface transition-colors cursor-pointer"
                 >
                   <Pencil className="w-3 h-3" />
                   수정
@@ -123,7 +123,7 @@ export default function CommentItem({
                 <button
                   type="button"
                   onClick={() => onDelete(comment.id)}
-                  className="flex items-center gap-1 text-xs text-on-surface-disabled hover:text-red-400 transition-colors"
+                  className="flex items-center gap-1 text-xs text-on-surface-disabled hover:text-red-400 transition-colors cursor-pointer"
                 >
                   <Trash2 className="w-3 h-3" />
                   삭제
