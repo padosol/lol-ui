@@ -2,9 +2,12 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { GoogleLoginButton } from "@/features/auth";
 
 export default function LoginPageClient() {
+  const router = useRouter();
+
   return (
     <div className="relative min-h-screen bg-surface flex flex-col items-center justify-center px-4">
       <Link href="/" className="absolute top-6 left-6">
@@ -58,12 +61,12 @@ export default function LoginPageClient() {
 
       {/* 하단 링크 */}
       <div className="mt-6 text-center">
-        <Link
-          href="/"
-          className="text-sm text-on-surface-medium hover:text-on-surface transition-colors"
+        <button
+          onClick={() => router.back()}
+          className="text-base text-on-surface hover:text-primary transition-colors cursor-pointer"
         >
-          홈으로 돌아가기
-        </Link>
+          돌아가기
+        </button>
       </div>
 
       {/* 하단 정보 */}
