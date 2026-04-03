@@ -242,155 +242,7 @@ export default function MatchDetailOverview({
     ...redTeam.map((p) => p.totalDamageTaken || 0)
   );
 
-  function renderDesktopTeam(
-    team: ParticipantData[],
-    teamColor: "blue" | "red",
-    stats: TeamStats,
-  ) {
-    const teamLabel = teamColor === "blue" ? "블루팀" : "레드팀";
-    const teamTextClass = teamColor === "blue" ? "text-team-blue" : "text-loss";
-    const highlightBg = teamColor === "blue"
-      ? "bg-team-blue/20 border border-team-blue/50"
-      : "bg-team-red/20 border border-team-red/50";
-    const dmgBarColor1 = teamColor === "blue" ? "orange" : "red";
-    const dmgBarColor2 = teamColor === "blue" ? "blue" : "lime";
-
-    return (
-      <div className="space-y-1.5">
-        <div className="flex items-center justify-between mb-1.5">
-          <div className={`${teamTextClass} text-xs font-semibold`}>
-            {teamLabel} {team.some((p) => p.win) ? "승리" : "패배"}
-          </div>
-          <div className="flex items-center gap-2 text-[10px] text-on-surface-medium">
-            <span>바론 {stats.baron}</span>
-            <span>드래곤 {stats.dragon}</span>
-            <span>타워 {stats.turret}</span>
-            <span>억제기 {stats.inhibitor}</span>
-          </div>
-        </div>
-        {team.map((participant) => {
-          const participantItems = extractItemIds(
-            participant.item || participant.itemSeq
-          );
-          const participantTotalCS =
-            (participant.totalMinionsKilled || 0) +
-            (participant.neutralMinionsKilled || 0);
-          const participantCsPerMin =
-            match.gameDuration > 0
-              ? (participantTotalCS / (match.gameDuration / 60)).toFixed(1)
-              : "0.0";
-          const participantKDA =
-            participant.deaths === 0
-              ? "perfect"
-              : participant.deaths > 0
-                ? (
-                  (participant.kills + participant.assists) /
-                  participant.deaths
-                ).toFixed(2)
-                : (participant.kills + participant.assists).toFixed(2);
-          const isMe = participant.puuid === puuid;
-          const damage = participant.totalDamageDealtToChampions || 0;
-          const damageTaken = participant.totalDamageTaken || 0;
-          const damagePercentage =
-            maxDamage > 0 ? (damage / maxDamage) * 100 : 0;
-          const damageTakenPercentage =
-            maxDamageTaken > 0 ? (damageTaken / maxDamageTaken) * 100 : 0;
-
-          return (
-            <div
-              key={participant.participantId}
-              className={`flex flex-col p-1 rounded ${isMe ? highlightBg : "bg-surface-4/30"
-                }`}
-            >
-              <div className="flex items-start gap-1.5">
-                <GameTooltip type="champion" id={participant.championName || ""} disabled={!participant.championName}>
-                  <div className="w-7 h-7 bg-surface-8 rounded overflow-hidden relative shrink-0">
-                    <Image
-                      src={getChampionImageUrl(participant.championName || "")}
-                      alt={participant.championName || "Unknown"}
-                      fill
-                      sizes="28px"
-                      className="object-cover"
-                      unoptimized
-                    />
-                  </div>
-                </GameTooltip>
-                <div className="flex-1 min-w-0">
-                  <SummonerNameLink
-                    participant={participant}
-                    region={region}
-                    className="text-on-surface text-[11px] font-medium"
-                    hoverClassName={`${
-                      teamColor === "blue" ? "hover:text-team-blue" : "hover:text-team-red"
-                    } hover:underline transition-colors`}
-                  />
-                  <div className="text-on-surface-medium text-[9px]">
-                    {participant.championName}
-                  </div>
-                </div>
-                <div className="flex flex-col items-start gap-0.5 text-[11px]">
-                  <div className="text-on-surface font-semibold">
-                    {participant.kills} /{" "}
-                    <span className="text-loss">{participant.deaths}</span>{" "}
-                    / {participant.assists}
-                  </div>
-                  <div className="text-on-surface-medium text-[9px]">
-                    {participantKDA === "perfect"
-                      ? "perfect"
-                      : `${participantKDA}:1 평점`}
-                  </div>
-                </div>
-                <div className="flex flex-col items-start gap-0.5 text-[11px]">
-                  <div className="text-on-surface-medium text-[9px]">
-                    {participantTotalCS}({participantCsPerMin})
-                  </div>
-                  <div className="text-gold text-[9px]">
-                    {((participant.goldEarned || 0) / 1000).toFixed(1)}k
-                  </div>
-                </div>
-                <div className="grid grid-cols-3 gap-0.5">
-                  {participantItems.slice(0, 6).map((itemId, idx) => (
-                    <GameTooltip key={idx} type="item" id={itemId} disabled={itemId <= 0}>
-                      <div className="w-5 h-5 bg-surface-4 rounded border border-divider/50 overflow-hidden relative">
-                        {itemId > 0 ? (
-                          <Image
-                            src={getItemImageUrl(itemId)}
-                            alt={`Item ${itemId}`}
-                            fill
-                            sizes="20px"
-                            className="object-cover"
-                            unoptimized
-                          />
-                        ) : (
-                          <div className="w-full h-full bg-surface-4/50"></div>
-                        )}
-                      </div>
-                    </GameTooltip>
-                  ))}
-                </div>
-              </div>
-              <div className="flex gap-1.5">
-                <DamageBar
-                  label="피해"
-                  percentage={damagePercentage}
-                  value={`${(damage / 1000).toFixed(1)}k`}
-                  color={dmgBarColor1}
-                />
-                <DamageBar
-                  label="받은 피해"
-                  percentage={damageTakenPercentage}
-                  value={`${(damageTaken / 1000).toFixed(1)}k`}
-                  color={dmgBarColor2}
-                />
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    );
-  }
-
-  function renderMobileTeam(
+  function renderTeam(
     team: ParticipantData[],
     teamColor: "blue" | "red",
     stats: TeamStats,
@@ -487,7 +339,7 @@ export default function MatchDetailOverview({
                       participant={participant}
                       region={region}
                       className="text-on-surface text-[11px] font-medium flex-1"
-                      hoverClassName="hover:text-team-blue hover:underline transition-colors"
+                      hoverClassName={`${teamColor === "blue" ? "hover:text-team-blue" : "hover:text-team-red"} hover:underline transition-colors`}
                     />
                   <span className="text-on-surface-medium text-[10px] shrink-0 ml-1">
                     {participantTotalCS}({participantCsPerMin})
@@ -576,16 +428,9 @@ export default function MatchDetailOverview({
 
   return (
     <>
-      {/* 데스크탑 (기존 2컬럼 레이아웃) */}
-      <div className="hidden md:grid grid-cols-2 gap-3">
-        {renderDesktopTeam(blueTeam, "blue", blueTeamStats)}
-        {renderDesktopTeam(redTeam, "red", redTeamStats)}
-      </div>
-
-      {/* 모바일 (1컬럼, 팀별 풀 너비) */}
-      <div className="md:hidden space-y-4">
-        {renderMobileTeam(blueTeam, "blue", blueTeamStats)}
-        {renderMobileTeam(redTeam, "red", redTeamStats)}
+      <div className="space-y-4">
+        {renderTeam(blueTeam, "blue", blueTeamStats)}
+        {renderTeam(redTeam, "red", redTeamStats)}
       </div>
     </>
   );
