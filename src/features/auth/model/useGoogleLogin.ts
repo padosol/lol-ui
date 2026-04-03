@@ -8,13 +8,15 @@ import type { AuthTokens } from "@/entities/auth";
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || "http://localhost:8100/api";
 
+const SERVER_ROOT_URL = API_BASE_URL.replace(/\/api\/?$/, "");
+
 export function useGoogleLogin() {
   const router = useRouter();
   const setTokens = useAuthStore((s) => s.setTokens);
   const setUser = useAuthStore((s) => s.setUser);
 
   function initiateGoogleLogin() {
-    window.location.href = `${API_BASE_URL}/auth/google`;
+    window.location.href = `${SERVER_ROOT_URL}/oauth2/authorize/google`;
   }
 
   async function handleAuthCallback(hash: string) {

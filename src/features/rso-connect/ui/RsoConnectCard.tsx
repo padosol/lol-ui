@@ -5,14 +5,14 @@ import { useRsoConnect } from "../model/useRsoConnect";
 
 export default function RsoConnectCard() {
   const {
-    rsoProfile,
+    riotAccounts,
     isLoading,
     isLinked,
     initiateRsoConnect,
-    disconnectRso,
+    disconnectRiotAccount,
     isDisconnecting,
   } = useRsoConnect();
-  const [showConfirm, setShowConfirm] = useState(false);
+  const [confirmId, setConfirmId] = useState<number | null>(null);
 
   if (isLoading) {
     return (
@@ -30,7 +30,7 @@ export default function RsoConnectCard() {
 
   return (
     <div className="px-5 py-6 bg-surface-1 border border-divider rounded-xl">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-4">
           {/* Riot Games 아이콘 */}
           <div className="w-10 h-10 bg-[#D32936] rounded-lg flex items-center justify-center shrink-0">
@@ -46,11 +46,7 @@ export default function RsoConnectCard() {
             <h3 className="text-sm font-bold text-on-surface">
               Riot 계정 (RSO)
             </h3>
-            {isLinked && rsoProfile ? (
-              <p className="text-xs text-on-surface-medium mt-0.5">
-                {rsoProfile.gameName}#{rsoProfile.tagLine} ({rsoProfile.region})
-              </p>
-            ) : (
+            {!isLinked && (
               <p className="text-xs text-on-surface-disabled mt-0.5">
                 라이엇 계정을 연동하여 전적 검색에 활용할 수 있습니다.
               </p>
@@ -59,50 +55,65 @@ export default function RsoConnectCard() {
         </div>
 
         <div className="shrink-0">
-          {isLinked ? (
-            !showConfirm ? (
-              <button
-                type="button"
-                onClick={() => setShowConfirm(true)}
-                className="px-4 py-2 text-sm text-on-surface-medium border border-divider rounded-lg hover:text-error hover:border-error transition-colors"
-              >
-                연동 해제
-              </button>
-            ) : (
-              <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => {
-                    disconnectRso(undefined, {
-                      onSuccess: () => setShowConfirm(false),
-                    });
-                  }}
-                  disabled={isDisconnecting}
-                  className="px-4 py-2 text-sm text-error border border-error rounded-lg hover:bg-error/10 transition-colors disabled:opacity-50"
-                >
-                  {isDisconnecting ? "해제 중..." : "확인"}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setShowConfirm(false)}
-                  disabled={isDisconnecting}
-                  className="px-4 py-2 text-sm text-on-surface-medium border border-divider rounded-lg hover:bg-surface-2 transition-colors disabled:opacity-50"
-                >
-                  취소
-                </button>
-              </div>
-            )
-          ) : (
-            <button
-              type="button"
-              onClick={initiateRsoConnect}
-              className="px-4 py-2 text-sm font-medium text-on-surface bg-primary rounded-lg hover:bg-primary/90 transition-colors"
-            >
-              연동하기
-            </button>
-          )}
+          <button
+            type="button"
+            onClick={initiateRsoConnect}
+            className="px-4 py-2 text-sm font-medium text-on-surface bg-primary rounded-lg hover:bg-primary/90 transition-colors"
+          >
+            연동하기
+          </button>
         </div>
       </div>
+
+      {isLinked && (
+        <div className="space-y-2 mt-3">
+          {riotAccounts.map((account) => (
+            <div
+              key={account.id}
+              className="flex items-center justify-between py-2 px-3 bg-surface-2 rounded-lg"
+            >
+              <p className="text-sm text-on-surface">
+                {account.gameName}#{account.tagLine}{" "}
+                <span className="text-on-surface-medium">
+                  ({account.platformId})
+                </span>
+              </p>
+              {confirmId !== account.id ? (
+                <button
+                  type="button"
+                  onClick={() => setConfirmId(account.id)}
+                  className="px-3 py-1.5 text-xs text-on-surface-medium border border-divider rounded-lg hover:text-error hover:border-error transition-colors"
+                >
+                  해제
+                </button>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      disconnectRiotAccount(account.id, {
+                        onSuccess: () => setConfirmId(null),
+                      });
+                    }}
+                    disabled={isDisconnecting}
+                    className="px-3 py-1.5 text-xs text-error border border-error rounded-lg hover:bg-error/10 transition-colors disabled:opacity-50"
+                  >
+                    {isDisconnecting ? "해제 중..." : "확인"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setConfirmId(null)}
+                    disabled={isDisconnecting}
+                    className="px-3 py-1.5 text-xs text-on-surface-medium border border-divider rounded-lg hover:bg-surface-2 transition-colors disabled:opacity-50"
+                  >
+                    취소
+                  </button>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

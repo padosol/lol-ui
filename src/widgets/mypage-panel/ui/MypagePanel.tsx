@@ -4,7 +4,8 @@ import { Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import MypageSidebar from "./MypageSidebar";
 import AccountSection from "./AccountSection";
-export type Tab = "account";
+import ConnectedAppsSection from "./ConnectedAppsSection";
+export type Tab = "account" | "connected-apps";
 
 function MypagePanelContent() {
   const searchParams = useSearchParams();
@@ -20,6 +21,7 @@ function MypagePanelContent() {
       <MypageSidebar activeTab={tab} onTabChange={handleTabChange} />
       <div className="flex-1 min-w-0">
         {tab === "account" && <AccountSection />}
+        {tab === "connected-apps" && <ConnectedAppsSection />}
       </div>
     </div>
   );

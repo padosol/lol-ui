@@ -80,6 +80,7 @@ export function aggregateTeammates(
   return Array.from(map.values())
     .filter((t) => t.gamesPlayed >= 2)
     .sort((a, b) => b.gamesPlayed - a.gamesPlayed)
+    .slice(0, 5)
     .map((t) => {
       const kda: number | "perfect" =
         t.deaths === 0

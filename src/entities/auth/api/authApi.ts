@@ -19,19 +19,31 @@ export async function getMyProfile(): Promise<MemberProfile> {
 }
 
 export async function updateNickname(nickname: string): Promise<MemberProfile> {
-  const res = await apiClient.patch<ApiResponse<MemberProfile>>("/members/me", {
+  const res = await apiClient.patch<ApiResponse<MemberProfile>>("/members/me/nickname", {
     nickname,
   });
   return res.data.data;
 }
 
-export async function getRsoStatus(): Promise<RsoProfile | null> {
-  const res = await apiClient.get<ApiResponse<RsoProfile | null>>(
-    "/members/me/rso"
+export async function getRiotAccounts(): Promise<RsoProfile[]> {
+  const res = await apiClient.get<ApiResponse<RsoProfile[]>>(
+    "/members/me/riot-accounts"
   );
   return res.data.data;
 }
 
-export async function disconnectRso(): Promise<void> {
-  await apiClient.delete("/members/me/rso");
+export async function linkRiotAccount(params: {
+  code: string;
+  redirectUri: string;
+  platformId: string;
+}): Promise<RsoProfile> {
+  const res = await apiClient.post<ApiResponse<RsoProfile>>(
+    "/members/me/riot-accounts",
+    params
+  );
+  return res.data.data;
+}
+
+export async function disconnectRiotAccount(linkId: number): Promise<void> {
+  await apiClient.delete(`/members/me/riot-accounts/${linkId}`);
 }
