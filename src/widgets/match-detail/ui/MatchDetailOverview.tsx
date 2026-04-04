@@ -14,6 +14,7 @@ import { getStyleImageUrl } from "@/shared/lib/styles";
 import { SummonerSpellImage, RuneImage } from "@/shared/ui/game";
 import Image from "next/image";
 import DamageBar from "./DamageBar";
+import GoldFlowChart from "./GoldFlowChart";
 import SummonerNameLink from "./SummonerNameLink";
 
 interface MatchDetailOverviewProps {
@@ -430,6 +431,7 @@ export default function MatchDetailOverview({
     <>
       <div className="space-y-4">
         {renderTeam(blueTeam, "blue", blueTeamStats)}
+        <GoldFlowChart />
         {renderTeam(redTeam, "red", redTeamStats)}
       </div>
     </>
