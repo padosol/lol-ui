@@ -2,8 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/entities/auth";
-import { getMyProfile } from "@/entities/auth";
-import type { AuthTokens } from "@/entities/auth";
+import { exchangeCodeForTokens, getMyProfile } from "@/entities/auth";
 
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || "http://localhost:8100/api";
@@ -19,28 +18,43 @@ export function useGoogleLogin() {
     window.location.href = `${SERVER_ROOT_URL}/oauth2/authorize/google`;
   }
 
-  async function handleAuthCallback(hash: string) {
-    const params = new URLSearchParams(hash.replace(/^#/, ""));
-    const accessToken = params.get("accessToken");
-    const refreshToken = params.get("refreshToken");
-    const expiresIn = params.get("expiresIn");
+  async function handleAuthCallback() {
+    const hash = window.location.hash;
+    if (hash) {
+      const hashParams = new URLSearchParams(hash.replace(/^#/, ""));
 
-    if (!accessToken || !refreshToken || !expiresIn) {
+      const error = hashParams.get("error");
+      if (error) {
+        router.replace(`/login?error=${encodeURIComponent(error)}`);
+        return;
+      }
+
+      const linkSuccess = hashParams.get("linkSuccess");
+      if (linkSuccess === "true") {
+        router.replace("/mypage?linkSuccess=true");
+        return;
+      }
+    }
+
+    const searchParams = new URLSearchParams(window.location.search);
+    const code = searchParams.get("code");
+
+    if (!code) {
       router.replace("/login");
       return;
     }
 
-    const tokens: AuthTokens = {
-      accessToken,
-      refreshToken,
-      expiresIn: Number(expiresIn),
-    };
-    setTokens(tokens);
+    try {
+      const tokens = await exchangeCodeForTokens(code);
+      setTokens(tokens);
 
-    const profile = await getMyProfile();
-    setUser(profile);
+      const profile = await getMyProfile();
+      setUser(profile);
 
-    router.replace("/");
+      router.replace("/");
+    } catch {
+      router.replace("/login");
+    }
   }
 
   return { initiateGoogleLogin, handleAuthCallback };

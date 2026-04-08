@@ -1,5 +1,6 @@
 export { useAuthStore } from "./model/useAuthStore";
 export {
+  exchangeCodeForTokens,
   refreshToken,
   logout,
   getMyProfile,

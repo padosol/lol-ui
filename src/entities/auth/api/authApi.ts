@@ -2,6 +2,13 @@ import { apiClient } from "@/shared/api/client";
 import type { ApiResponse } from "@/shared/api/types";
 import type { AuthTokens, MemberProfile } from "../types";
 
+export async function exchangeCodeForTokens(code: string): Promise<AuthTokens> {
+  const res = await apiClient.post<ApiResponse<AuthTokens>>("/auth/token", {
+    code,
+  });
+  return res.data.data;
+}
+
 export async function refreshToken(token: string): Promise<AuthTokens> {
   const res = await apiClient.post<ApiResponse<AuthTokens>>("/auth/refresh", {
     refreshToken: token,
