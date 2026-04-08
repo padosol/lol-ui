@@ -9,8 +9,7 @@ import { useState } from "react";
 export default function Navigation() {
   const pathname = usePathname() ?? "/";
   const isHome = pathname === "/";
-  const isSummonerPage = pathname.startsWith("/summoners/");
-  const [mobileSearchOpen, setMobileSearchOpen] = useState(isSummonerPage);
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
 
   const navItems = [
     { label: "홈", href: "/" },

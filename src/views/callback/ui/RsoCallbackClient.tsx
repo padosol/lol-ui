@@ -1,39 +1,51 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
+import { linkRiotAccount } from "@/entities/auth";
 
 export default function RsoCallbackClient() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const calledRef = useRef(false);
-
-  const success = searchParams.get("success");
-  const errorMsg = searchParams.get("error");
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (calledRef.current) return;
     calledRef.current = true;
 
-    if (success === "true") {
-      router.replace("/mypage?tab=connected-apps");
+    const code = searchParams.get("code");
+    const platformId = searchParams.get("state") || "kr";
+    const errorParam = searchParams.get("error");
+
+    if (errorParam || !code) {
+      const msg = errorParam || "인증 코드를 받지 못했습니다.";
+      setTimeout(() => {
+        setError(msg);
+        router.replace("/mypage?tab=connected-apps");
+      }, 0);
       return;
     }
 
-    const timer = setTimeout(
-      () => router.replace("/mypage?tab=connected-apps"),
-      3000
-    );
-    return () => clearTimeout(timer);
-  }, [success, router]);
+    const redirectUri = `${window.location.origin}/auth/rso/callback`;
 
-  if (success !== "true") {
+    linkRiotAccount({ code, redirectUri, platformId })
+      .then(() => {
+        router.replace("/mypage?tab=connected-apps");
+      })
+      .catch((err) => {
+        const msg =
+          err?.response?.data?.errorMessage || "RSO 연동에 실패했습니다.";
+        setError(msg);
+        setTimeout(() => router.replace("/mypage?tab=connected-apps"), 3000);
+      });
+  }, [searchParams, router]);
+
+  if (error) {
     return (
       <div className="min-h-screen bg-surface flex items-center justify-center">
         <div className="text-center">
-          <p className="text-error mb-2">
-            {errorMsg || "RSO 연동에 실패했습니다."}
-          </p>
+          <p className="text-error mb-2">{error}</p>
           <p className="text-sm text-on-surface-medium">
             잠시 후 마이페이지로 이동합니다...
           </p>

@@ -4,8 +4,9 @@ export {
   logout,
   getMyProfile,
   updateNickname,
-  getRsoStatus,
-  disconnectRso,
+  getRiotAccounts,
+  linkRiotAccount,
+  disconnectRiotAccount,
 } from "./api/authApi";
 export type {
   AuthState,

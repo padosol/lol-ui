@@ -13,10 +13,11 @@ export interface MemberProfile {
 }
 
 export interface RsoProfile {
+  id: number;
   puuid: string;
   gameName: string;
   tagLine: string;
-  region: string;
+  platformId: string;
   linkedAt: string;
 }
 

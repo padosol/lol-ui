@@ -62,7 +62,7 @@ export default function CommunityEditPageClient({ postId }: CommunityEditPageCli
           <button
             type="button"
             onClick={() => router.push(`/community/${postId}`)}
-            className="flex items-center gap-1 text-sm text-on-surface-medium hover:text-on-surface transition-colors"
+            className="flex items-center gap-1 text-sm text-on-surface-medium hover:text-on-surface transition-colors cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />
             돌아가기

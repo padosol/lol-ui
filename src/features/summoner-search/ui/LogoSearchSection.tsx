@@ -3,7 +3,7 @@ import SearchBar from "./SearchBar";
 
 export default function LogoSearchSection() {
   return (
-    <section className="bg-surface-1 border-b border-divider py-12">
+    <section className="bg-surface py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center gap-10">
           <div className="flex items-center justify-center">

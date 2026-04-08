@@ -43,7 +43,7 @@ export default function CommentForm({
           <button
             type="button"
             onClick={onCancel}
-            className="px-3 py-1.5 text-sm text-on-surface-medium hover:text-on-surface transition-colors"
+            className="px-3 py-1.5 text-sm text-on-surface-medium hover:text-on-surface transition-colors cursor-pointer"
           >
             취소
           </button>
@@ -51,7 +51,7 @@ export default function CommentForm({
         <button
           type="submit"
           disabled={isPending || !content.trim()}
-          className="px-4 py-1.5 bg-primary hover:bg-primary/80 text-on-surface text-sm font-medium rounded-md transition-colors disabled:opacity-50"
+          className="px-4 py-1.5 bg-primary hover:bg-primary/80 text-on-surface text-sm font-medium rounded-md transition-colors disabled:opacity-50 cursor-pointer"
         >
           {isPending ? "등록 중..." : buttonText}
         </button>

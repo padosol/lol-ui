@@ -29,7 +29,7 @@ export default function CommunitySearchBar({ onSearch }: CommunitySearchBarProps
       />
       <button
         type="submit"
-        className="absolute right-2 top-1/2 -translate-y-1/2 text-on-surface-disabled hover:text-on-surface transition-colors"
+        className="absolute right-2 top-1/2 -translate-y-1/2 text-on-surface-disabled hover:text-on-surface transition-colors cursor-pointer"
       >
         <Search className="w-4 h-4" />
       </button>

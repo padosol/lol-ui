@@ -74,7 +74,7 @@ export default function PostDetailPanel({ postId }: PostDetailPanelProps) {
       <button
         type="button"
         onClick={() => router.push("/community")}
-        className="flex items-center gap-1 text-sm text-on-surface-medium hover:text-on-surface transition-colors"
+        className="flex items-center gap-1 text-sm text-on-surface-medium hover:text-on-surface transition-colors cursor-pointer"
       >
         <ArrowLeft className="w-4 h-4" />
         목록으로
@@ -112,7 +112,7 @@ export default function PostDetailPanel({ postId }: PostDetailPanelProps) {
               <button
                 type="button"
                 onClick={() => router.push(`/community/${post.id}/edit`)}
-                className="flex items-center gap-1 text-xs text-on-surface-disabled hover:text-on-surface transition-colors"
+                className="flex items-center gap-1 text-xs text-on-surface-disabled hover:text-on-surface transition-colors cursor-pointer"
               >
                 <Pencil className="w-3.5 h-3.5" />
                 수정
@@ -121,7 +121,7 @@ export default function PostDetailPanel({ postId }: PostDetailPanelProps) {
                 type="button"
                 onClick={handleDelete}
                 disabled={deleteMutation.isPending}
-                className="flex items-center gap-1 text-xs text-on-surface-disabled hover:text-red-400 transition-colors disabled:opacity-50"
+                className="flex items-center gap-1 text-xs text-on-surface-disabled hover:text-red-400 transition-colors disabled:opacity-50 cursor-pointer"
               >
                 <Trash2 className="w-3.5 h-3.5" />
                 삭제

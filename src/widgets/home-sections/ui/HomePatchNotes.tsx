@@ -8,9 +8,9 @@ export default function HomePatchNotes() {
 
   return (
     <div>
-      <div className="text-left mb-8">
-        <h2 className="text-2xl font-bold text-on-surface mb-2">패치노트</h2>
-        <p className="text-on-surface-medium text-sm">
+      <div className="text-left mb-4">
+        <h2 className="text-lg font-bold text-on-surface mb-1">패치노트</h2>
+        <p className="text-on-surface-medium text-xs">
           최신 패치노트를 확인하세요
         </p>
       </div>
@@ -42,9 +42,9 @@ export default function HomePatchNotes() {
             <Link
               key={patch.versionId}
               href={`/patch-notes/${patch.versionId}`}
-              className="block w-full text-left p-3 rounded-lg bg-surface-2 hover:bg-surface-4 border-l-4 border-transparent hover:border-primary transition-all"
+              className="block w-full text-left px-3 py-2 rounded-lg bg-surface-2 hover:bg-surface-4 border-l-4 border-transparent hover:border-primary transition-all"
             >
-              <span className="font-bold text-lg text-on-surface">
+              <span className="font-bold text-sm text-on-surface">
                 {patch.title}
               </span>
             </Link>

@@ -28,7 +28,7 @@ export default function CommunityWritePageClient() {
           <button
             type="button"
             onClick={() => router.push("/community")}
-            className="flex items-center gap-1 text-sm text-on-surface-medium hover:text-on-surface transition-colors"
+            className="flex items-center gap-1 text-sm text-on-surface-medium hover:text-on-surface transition-colors cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />
             목록으로
