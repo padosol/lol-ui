@@ -2,7 +2,6 @@
 
 import { useAuthStore } from "@/entities/auth";
 import { NicknameEditForm } from "@/features/nickname-edit";
-import { RsoConnectCard } from "@/features/rso-connect";
 import { Check } from "lucide-react";
 
 export default function AccountSection() {
@@ -81,7 +80,6 @@ export default function AccountSection() {
               로그인되었습니다.
             </span>
           </div>
-          <RsoConnectCard />
         </div>
       </section>
     </div>
