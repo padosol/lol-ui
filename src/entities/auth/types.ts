@@ -1,9 +1,3 @@
-export interface AuthTokens {
-  accessToken: string;
-  refreshToken: string;
-  expiresIn: number;
-}
-
 export interface MemberProfile {
   id: number;
   email: string;
@@ -13,11 +7,7 @@ export interface MemberProfile {
 }
 
 export interface AuthState {
-  accessToken: string | null;
-  refreshToken: string | null;
-  expiresIn: number | null;
   user: MemberProfile | null;
-  setTokens: (tokens: AuthTokens) => void;
   setUser: (user: MemberProfile) => void;
   clearAuth: () => void;
 }

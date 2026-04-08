@@ -17,6 +17,7 @@ const API_BASE_URL =
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,
   timeout: 10000,
+  withCredentials: true,
   headers: {
     "Content-Type": "application/json",
   },
@@ -25,55 +26,19 @@ export const apiClient = axios.create({
 // 토큰 갱신 동시성 제어
 let isRefreshing = false;
 let failedQueue: {
-  resolve: (token: string) => void;
+  resolve: () => void;
   reject: (error: unknown) => void;
 }[] = [];
 
-function processQueue(error: unknown, token: string | null) {
+function processQueue(error: unknown) {
   failedQueue.forEach((prom) => {
-    if (token) {
-      prom.resolve(token);
+    if (!error) {
+      prom.resolve();
     } else {
       prom.reject(error);
     }
   });
   failedQueue = [];
-}
-
-// localStorage에서 auth 상태 읽기 (FSD 규칙: shared → entities 임포트 금지)
-function getAuthFromStorage(): {
-  accessToken: string | null;
-  refreshToken: string | null;
-} {
-  if (typeof window === "undefined") return { accessToken: null, refreshToken: null };
-  try {
-    const raw = localStorage.getItem("auth-storage");
-    if (!raw) return { accessToken: null, refreshToken: null };
-    const parsed = JSON.parse(raw);
-    return {
-      accessToken: parsed?.state?.accessToken ?? null,
-      refreshToken: parsed?.state?.refreshToken ?? null,
-    };
-  } catch {
-    return { accessToken: null, refreshToken: null };
-  }
-}
-
-function setAuthToStorage(accessToken: string, refreshToken: string, expiresIn: number) {
-  if (typeof window === "undefined") return;
-  try {
-    const raw = localStorage.getItem("auth-storage");
-    const parsed = raw ? JSON.parse(raw) : { state: {}, version: 0 };
-    parsed.state = {
-      ...parsed.state,
-      accessToken,
-      refreshToken,
-      expiresIn,
-    };
-    localStorage.setItem("auth-storage", JSON.stringify(parsed));
-  } catch {
-    // ignore
-  }
 }
 
 function clearAuthStorage() {
@@ -89,12 +54,6 @@ function clearAuthStorage() {
 apiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     config.metadata = { startTime: Date.now() };
-
-    // Authorization 헤더 부착
-    const { accessToken } = getAuthFromStorage();
-    if (accessToken) {
-      config.headers.Authorization = `Bearer ${accessToken}`;
-    }
 
     logger.info("API Request", {
       method: config.method?.toUpperCase(),
@@ -151,8 +110,7 @@ apiClient.interceptors.response.use(
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
           failedQueue.push({
-            resolve: (token: string) => {
-              originalRequest.headers.Authorization = `Bearer ${token}`;
+            resolve: () => {
               resolve(apiClient(originalRequest));
             },
             reject: (err: unknown) => {
@@ -165,28 +123,13 @@ apiClient.interceptors.response.use(
       originalRequest._retry = true;
       isRefreshing = true;
 
-      const { refreshToken } = getAuthFromStorage();
-      if (!refreshToken) {
-        isRefreshing = false;
-        clearAuthStorage();
-        if (typeof window !== "undefined") {
-          window.location.href = "/login";
-        }
-        return Promise.reject(error);
-      }
-
       try {
-        // 순환 방지를 위해 axios 직접 사용
-        const res = await axios.post(`${API_BASE_URL}/auth/refresh`, {
-          refreshToken,
-        });
-        const data = res.data.data;
-        setAuthToStorage(data.accessToken, data.refreshToken, data.expiresIn);
-        processQueue(null, data.accessToken);
-        originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
+        // 순환 방지를 위해 axios 직접 사용 (쿠키 자동 전송)
+        await axios.post(`${API_BASE_URL}/auth/refresh`, {}, { withCredentials: true });
+        processQueue(null);
         return apiClient(originalRequest);
       } catch (refreshError) {
-        processQueue(refreshError, null);
+        processQueue(refreshError);
         clearAuthStorage();
         if (typeof window !== "undefined") {
           window.location.href = "/login";

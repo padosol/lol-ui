@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/entities/auth";
-import { exchangeCodeForTokens, getMyProfile } from "@/entities/auth";
+import { getMyProfile } from "@/entities/auth";
 
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || "http://localhost:8100/api";
@@ -11,7 +11,6 @@ const SERVER_ROOT_URL = API_BASE_URL.replace(/\/api\/?$/, "");
 
 export function useGoogleLogin() {
   const router = useRouter();
-  const setTokens = useAuthStore((s) => s.setTokens);
   const setUser = useAuthStore((s) => s.setUser);
 
   function initiateGoogleLogin() {
@@ -36,21 +35,9 @@ export function useGoogleLogin() {
       }
     }
 
-    const searchParams = new URLSearchParams(window.location.search);
-    const code = searchParams.get("code");
-
-    if (!code) {
-      router.replace("/login");
-      return;
-    }
-
     try {
-      const tokens = await exchangeCodeForTokens(code);
-      setTokens(tokens);
-
       const profile = await getMyProfile();
       setUser(profile);
-
       router.replace("/");
     } catch {
       router.replace("/login");
