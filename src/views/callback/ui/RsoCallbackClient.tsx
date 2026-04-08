@@ -19,8 +19,11 @@ export default function RsoCallbackClient() {
     const errorParam = searchParams.get("error");
 
     if (errorParam || !code) {
-      setError(errorParam || "인증 코드를 받지 못했습니다.");
-      setTimeout(() => router.replace("/mypage?tab=connected-apps"), 3000);
+      const msg = errorParam || "인증 코드를 받지 못했습니다.";
+      setTimeout(() => {
+        setError(msg);
+        router.replace("/mypage?tab=connected-apps");
+      }, 0);
       return;
     }
 

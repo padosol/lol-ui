@@ -32,10 +32,11 @@ export default function RecentlyPlayed({
     effectiveSeason,
   );
 
+  const matchContent = matchesData?.content;
   const teammates = useMemo(() => {
-    if (!matchesData?.content || !puuid) return [];
-    return aggregateTeammates(matchesData.content, puuid);
-  }, [matchesData?.content, puuid]);
+    if (!matchContent || !puuid) return [];
+    return aggregateTeammates(matchContent, puuid);
+  }, [matchContent, puuid]);
 
   const renderHeader = () => (
     <div className="bg-surface-6/50 p-2">
