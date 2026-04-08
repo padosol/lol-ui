@@ -2,6 +2,7 @@
 
 import { useAuthStore } from "@/entities/auth";
 import { NicknameEditForm } from "@/features/nickname-edit";
+import { RsoConnectCard } from "@/features/rso-connect";
 import { Check } from "lucide-react";
 
 export default function AccountSection() {
@@ -45,7 +46,7 @@ export default function AccountSection() {
 
       <section>
         <h2 className="text-lg font-bold text-on-surface mb-6">
-          SNS 계정 연동하기
+          계정 연동하기
         </h2>
         <div className="space-y-3">
           <div className="flex items-center justify-between px-5 py-4 bg-surface-1 border border-divider rounded-xl">
@@ -80,6 +81,7 @@ export default function AccountSection() {
               로그인되었습니다.
             </span>
           </div>
+          <RsoConnectCard />
         </div>
       </section>
     </div>

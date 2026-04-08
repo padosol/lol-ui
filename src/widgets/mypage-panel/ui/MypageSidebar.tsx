@@ -1,6 +1,6 @@
 "use client";
 
-import { LogOut, User, Link } from "lucide-react";
+import { LogOut, User } from "lucide-react";
 import { useLogout } from "@/features/auth";
 import type { Tab } from "./MypagePanel";
 
@@ -11,7 +11,6 @@ interface MypageSidebarProps {
 
 const tabs: { key: Tab; label: string; icon: typeof User }[] = [
   { key: "account", label: "계정 관리", icon: User },
-  { key: "connected-apps", label: "Riot 계정 관리", icon: Link },
 ];
 
 export default function MypageSidebar({
