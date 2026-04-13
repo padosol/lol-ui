@@ -2,12 +2,17 @@
 
 import { useAuthStore } from "@/entities/auth";
 import { NicknameEditForm } from "@/features/nickname-edit";
+import { RiotLinkCard } from "@/features/riot-link";
 import { Check } from "lucide-react";
 
 export default function AccountSection() {
   const user = useAuthStore((s) => s.user);
 
   if (!user) return null;
+
+  const googleAccount = user.socialAccounts?.find(
+    (a) => a.provider === "GOOGLE",
+  );
 
   return (
     <div className="space-y-8">
@@ -72,14 +77,18 @@ export default function AccountSection() {
                 <span className="text-sm font-medium text-on-surface">
                   구글
                 </span>
-                <p className="text-xs text-on-surface-medium">{user.email}</p>
+                <p className="text-xs text-on-surface-medium">
+                  {googleAccount?.email ?? user.email}
+                </p>
               </div>
             </div>
             <span className="flex items-center gap-1 text-sm text-success">
               <Check className="w-4 h-4" />
-              로그인되었습니다.
+              연동됨
             </span>
           </div>
+
+          <RiotLinkCard />
         </div>
       </section>
     </div>
