@@ -363,7 +363,7 @@ export default function MatchDetailOverview({
 
               {/* Col 4: 피해량 막대바 (2행, 인라인) */}
               <div className="flex flex-col gap-0.5 shrink-0 w-32">
-                <Tooltip content={<span className="text-xs text-on-surface whitespace-nowrap">적에게 가한 피해량</span>}>
+                <Tooltip content={<span className="bg-surface-1 border border-divider shadow-xl rounded-lg px-3 py-1.5 text-xs text-on-surface whitespace-nowrap">적에게 가한 피해량</span>}>
                   <div className="flex items-center gap-1 cursor-default">
                     <div className="flex-1 h-1.5 bg-surface-8/50 rounded-full overflow-hidden">
                       <div className="h-full bg-warning/70 rounded-full" style={{ width: `${damagePercentage}%` }} />
@@ -371,7 +371,7 @@ export default function MatchDetailOverview({
                     <span className="text-warning text-[9px] w-7 text-right">{(damage / 1000).toFixed(1)}k</span>
                   </div>
                 </Tooltip>
-                <Tooltip content={<span className="text-xs text-on-surface whitespace-nowrap">받은 피해량</span>}>
+                <Tooltip content={<span className="bg-surface-1 border border-divider shadow-xl rounded-lg px-3 py-1.5 text-xs text-on-surface whitespace-nowrap">받은 피해량</span>}>
                   <div className="flex items-center gap-1 cursor-default">
                     <div className="flex-1 h-1.5 bg-surface-8/50 rounded-full overflow-hidden">
                       <div className="h-full bg-primary/70 rounded-full" style={{ width: `${damageTakenPercentage}%` }} />

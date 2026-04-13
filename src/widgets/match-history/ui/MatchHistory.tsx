@@ -527,7 +527,7 @@ export default function MatchHistory({
                 className={`group relative flex flex-col w-full border-l-4 ${borderColor} ${bgColor} rounded-lg overflow-hidden transition-all hover:shadow-lg ${shadowColor}`}
               >
                 {/* 데스크톱 레이아웃 (md 이상) */}
-                <div className="hidden md:grid grid-cols-[80px_250px_60px_1fr_30px] bg-surface-1/50 backdrop-blur-sm w-full">
+                <div className="hidden md:grid grid-cols-[80px_240px_60px_1fr_30px] bg-surface-1/50 backdrop-blur-sm w-full">
                   {/* 1. 게임 정보 섹션 */}
                   <div className="flex flex-col items-start justify-between p-2 text-xs shrink-0 h-full gap-3">
                     <div className="flex flex-col items-start gap-0.5">
@@ -698,7 +698,7 @@ export default function MatchHistory({
                   </div>
 
                   {/* 3. 평균 티어 섹션 */}
-                  <div className="flex flex-col items-center justify-start py-2 w-[50px]">
+                  <div className="flex flex-col items-center justify-start py-2 w-[60px]">
                     {gameInfo?.averageTier != null ? (
                       <div className="flex flex-col items-center gap-0.5">
                         <span className="text-[10px] text-on-surface-disabled">평균</span>
