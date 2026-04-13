@@ -5,9 +5,11 @@ import Image from "next/image";
 import { ThemeToggle } from "@/features/theme-toggle";
 import { useLogout } from "@/features/auth";
 import { useAuthStore } from "@/entities/auth";
+import { useHasHydrated } from "@/shared/lib/useHasHydrated";
 
 export default function Header() {
   const user = useAuthStore((s) => s.user);
+  const hasHydrated = useHasHydrated(useAuthStore);
   const { handleLogout } = useLogout();
 
   return (
@@ -29,7 +31,7 @@ export default function Header() {
             </div>
             <div className="flex items-center gap-4">
               <ThemeToggle />
-              {user ? (
+              {!hasHydrated ? null : user ? (
                 <>
                   <Link
                     href="/mypage"

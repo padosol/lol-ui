@@ -3,20 +3,22 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/entities/auth";
+import { useHasHydrated } from "@/shared/lib/useHasHydrated";
 import { Header, Navigation, Footer } from "@/widgets/layout";
 import { MypagePanel } from "@/widgets/mypage-panel";
 
 export default function MypageClient() {
   const user = useAuthStore((s) => s.user);
+  const hasHydrated = useHasHydrated(useAuthStore);
   const router = useRouter();
 
   useEffect(() => {
-    if (!user) {
+    if (hasHydrated && !user) {
       router.replace("/login");
     }
-  }, [user, router]);
+  }, [user, hasHydrated, router]);
 
-  if (!user) {
+  if (!hasHydrated || !user) {
     return (
       <div className="min-h-screen bg-surface flex items-center justify-center">
         <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
