@@ -97,6 +97,16 @@ export default function Tooltip({ content, children, disabled }: TooltipProps) {
 
   const childRef = (children as { ref?: unknown }).ref;
 
+  const handleClick = useCallback(() => {
+    if (disabled) return;
+    if ("ontouchstart" in window) {
+      setOpen((prev) => {
+        if (prev) setPositioned(false);
+        return !prev;
+      });
+    }
+  }, [disabled]);
+
   const mergedRef = useCallback(
     (node: HTMLElement | null) => {
       triggerRef.current = node;
@@ -119,6 +129,10 @@ export default function Tooltip({ content, children, disabled }: TooltipProps) {
     onMouseLeave: (e: React.MouseEvent) => {
       handleLeave();
       (childProps.onMouseLeave as ((e: React.MouseEvent) => void) | undefined)?.(e);
+    },
+    onClick: (e: React.MouseEvent) => {
+      handleClick(e);
+      (childProps.onClick as ((e: React.MouseEvent) => void) | undefined)?.(e);
     },
   } as Record<string, unknown>);
 

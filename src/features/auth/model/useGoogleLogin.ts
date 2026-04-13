@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import axios from "axios";
 import { useAuthStore } from "@/entities/auth";
 import { getMyProfile } from "@/entities/auth";
 
@@ -39,8 +40,15 @@ export function useGoogleLogin() {
       const profile = await getMyProfile();
       setUser(profile);
       router.replace("/");
-    } catch {
-      router.replace("/login");
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err) && err.response?.status === 403) {
+        const message =
+          err.response.data?.errorMessage ||
+          "탈퇴 후 30일 이내에는 재가입할 수 없습니다.";
+        router.replace(`/login?error=${encodeURIComponent(message)}`);
+      } else {
+        router.replace("/login");
+      }
     }
   }
 

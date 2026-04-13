@@ -25,3 +25,7 @@ export async function updateNickname(nickname: string): Promise<MemberProfile> {
 export async function disconnectSocialAccount(socialAccountId: number): Promise<void> {
   await apiClient.delete(`/members/me/social-accounts/${socialAccountId}`);
 }
+
+export async function withdrawMember(): Promise<void> {
+  await apiClient.delete("/members/me");
+}

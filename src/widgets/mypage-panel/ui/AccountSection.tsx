@@ -1,12 +1,15 @@
 "use client";
 
+import { useState } from "react";
 import { useAuthStore } from "@/entities/auth";
+import { WithdrawalConfirmModal } from "@/features/member-withdrawal";
 import { NicknameEditForm } from "@/features/nickname-edit";
 import { RiotLinkCard } from "@/features/riot-link";
 import { Check } from "lucide-react";
 
 export default function AccountSection() {
   const user = useAuthStore((s) => s.user);
+  const [showWithdrawalModal, setShowWithdrawalModal] = useState(false);
 
   if (!user) return null;
 
@@ -91,6 +94,23 @@ export default function AccountSection() {
           <RiotLinkCard />
         </div>
       </section>
+
+      <hr className="border-divider" />
+
+      <section>
+        <button
+          type="button"
+          onClick={() => setShowWithdrawalModal(true)}
+          className="text-sm text-on-surface-disabled hover:text-error transition-colors"
+        >
+          회원 탈퇴
+        </button>
+      </section>
+
+      <WithdrawalConfirmModal
+        open={showWithdrawalModal}
+        onClose={() => setShowWithdrawalModal(false)}
+      />
     </div>
   );
 }

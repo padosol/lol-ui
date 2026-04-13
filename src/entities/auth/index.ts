@@ -5,6 +5,7 @@ export {
   getMyProfile,
   updateNickname,
   disconnectSocialAccount,
+  withdrawMember,
 } from "./api/authApi";
 export type {
   AuthState,
