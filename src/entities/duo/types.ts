@@ -64,9 +64,9 @@ export interface DuoPost {
   primaryLane: Lane;
   secondaryLane: Lane;
   hasMicrophone: boolean;
-  tier: string;
-  rank: string;
-  leaguePoints: number;
+  tier: string | null;
+  rank: string | null;
+  leaguePoints: number | null;
   memo: string;
   status: PostStatus;
   tierAvailable?: boolean;
@@ -84,9 +84,9 @@ export interface DuoRequest {
   primaryLane: Lane;
   secondaryLane: Lane;
   hasMicrophone: boolean;
-  tier: string;
-  rank: string;
-  leaguePoints: number;
+  tier: string | null;
+  rank: string | null;
+  leaguePoints: number | null;
   memo: string;
   status: RequestStatus;
   createdAt: string;

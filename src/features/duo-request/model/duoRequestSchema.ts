@@ -9,7 +9,7 @@ export const duoRequestSchema = z.object({
     message: "부 라인을 선택해주세요",
   }),
   hasMicrophone: z.boolean(),
-  memo: z.string().max(100, "메모는 100자 이내로 입력해주세요"),
+  memo: z.string().max(500, "메모는 500자 이내로 입력해주세요"),
 });
 
 export type DuoRequestFormData = z.output<typeof duoRequestSchema>;

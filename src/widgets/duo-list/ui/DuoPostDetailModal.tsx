@@ -128,9 +128,8 @@ function PostContent({
   isDeleting: boolean;
   onRequestClick: () => void;
 }) {
-  const isMasterPlus = ["MASTER", "GRANDMASTER", "CHALLENGER"].includes(
-    post.tier,
-  );
+  const tier = post.tier;
+  const isMasterPlus = tier !== null && ["MASTER", "GRANDMASTER", "CHALLENGER"].includes(tier);
 
   return (
     <div className="space-y-5">
@@ -166,8 +165,11 @@ function PostContent({
 
         {/* 티어 */}
         <p className="text-sm text-on-surface-medium">
-          {getTierName(post.tier)} {isMasterPlus ? "" : post.rank}{" "}
-          {post.leaguePoints}LP
+          {tier !== null ? (
+            <>{getTierName(tier)} {isMasterPlus ? "" : post.rank}{" "}{post.leaguePoints}LP</>
+          ) : (
+            <span className="text-on-surface-disabled">언랭크</span>
+          )}
         </p>
 
         {/* 마이크 */}
@@ -271,9 +273,8 @@ function OwnerSection({
 }
 
 function RequestItem({ request }: { request: DuoRequest }) {
-  const isMasterPlus = ["MASTER", "GRANDMASTER", "CHALLENGER"].includes(
-    request.tier,
-  );
+  const tier = request.tier;
+  const isMasterPlus = tier !== null && ["MASTER", "GRANDMASTER", "CHALLENGER"].includes(tier);
 
   return (
     <div className="bg-surface-1 border border-divider rounded-md p-3 space-y-2">
@@ -305,8 +306,11 @@ function RequestItem({ request }: { request: DuoRequest }) {
       </div>
 
       <p className="text-xs text-on-surface-medium">
-        {getTierName(request.tier)} {isMasterPlus ? "" : request.rank}{" "}
-        {request.leaguePoints}LP
+        {tier !== null ? (
+          <>{getTierName(tier)} {isMasterPlus ? "" : request.rank}{" "}{request.leaguePoints}LP</>
+        ) : (
+          <span className="text-on-surface-disabled">언랭크</span>
+        )}
       </p>
 
       {request.memo && (

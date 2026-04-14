@@ -44,6 +44,15 @@ export async function cancelDuoRequest(requestId: number): Promise<void> {
   await apiClient.put(`/duo/requests/${requestId}/cancel`);
 }
 
+export async function getPostRequests(
+  postId: number,
+): Promise<DuoRequest[]> {
+  const response = await apiClient.get<ApiResponse<DuoRequest[]>>(
+    `/duo/posts/${postId}/requests`,
+  );
+  return response.data.data;
+}
+
 export async function getMyDuoRequests(
   page: number = 0,
 ): Promise<DuoRequestListResponse> {

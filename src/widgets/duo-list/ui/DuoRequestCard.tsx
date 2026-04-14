@@ -26,9 +26,8 @@ const STATUS_COLORS: Record<string, string> = {
 };
 
 export default function DuoRequestCard({ request }: DuoRequestCardProps) {
-  const isMasterPlus = ["MASTER", "GRANDMASTER", "CHALLENGER"].includes(
-    request.tier,
-  );
+  const tier = request.tier;
+  const isMasterPlus = tier !== null && ["MASTER", "GRANDMASTER", "CHALLENGER"].includes(tier);
 
   return (
     <div className="bg-surface-1 border border-divider rounded-lg p-4 space-y-3">
@@ -64,8 +63,11 @@ export default function DuoRequestCard({ request }: DuoRequestCardProps) {
 
       {/* 티어 */}
       <p className="text-xs text-on-surface-medium">
-        {getTierName(request.tier)} {isMasterPlus ? "" : request.rank}{" "}
-        {request.leaguePoints}LP
+        {tier !== null ? (
+          <>{getTierName(tier)} {isMasterPlus ? "" : request.rank}{" "}{request.leaguePoints}LP</>
+        ) : (
+          <span className="text-on-surface-disabled">언랭크</span>
+        )}
       </p>
 
       {/* 메모 */}

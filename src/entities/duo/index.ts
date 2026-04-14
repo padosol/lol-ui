@@ -35,6 +35,7 @@ export {
 
 export {
   createDuoRequest,
+  getPostRequests,
   acceptDuoRequest,
   confirmDuoRequest,
   rejectDuoRequest,

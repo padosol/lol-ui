@@ -27,11 +27,11 @@ interface DuoCardProps {
 }
 
 export default function DuoCard({ post, onSelect }: DuoCardProps) {
-  const isMasterPlus = ["MASTER", "GRANDMASTER", "CHALLENGER"].includes(
-    post.tier,
-  );
-  const tierDisplay = getTierName(post.tier);
-  const rankDisplay = isMasterPlus ? "" : ` ${post.rank}`;
+  const tier = post.tier;
+  const isMasterPlus = tier !== null && ["MASTER", "GRANDMASTER", "CHALLENGER"].includes(tier);
+  const tierDisplay = tier !== null ? getTierName(tier) : "언랭크";
+  const rankDisplay = tier === null || isMasterPlus ? "" : ` ${post.rank}`;
+  const lpDisplay = tier !== null ? ` ${post.leaguePoints}LP` : "";
   const isActive = post.status === "ACTIVE";
 
   return (
@@ -72,10 +72,10 @@ export default function DuoCard({ post, onSelect }: DuoCardProps) {
       {/* 중간: 티어 + 상태 + 마이크 */}
       <div className="flex flex-wrap items-center gap-2 mb-3">
         <span
-          className={`text-sm font-medium ${TIER_COLORS[post.tier] ?? "text-on-surface"}`}
+          className={`text-sm font-medium ${tier !== null ? (TIER_COLORS[tier] ?? "text-on-surface") : "text-on-surface-disabled"}`}
         >
           {tierDisplay}
-          {rankDisplay} {post.leaguePoints}LP
+          {rankDisplay}{lpDisplay}
         </span>
 
         {!isActive && (
