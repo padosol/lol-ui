@@ -91,6 +91,7 @@ export default function GoldFlowChart() {
       intersect: false,
     },
     plugins: {
+      legend: { display: false },
       tooltip: {
         backgroundColor: "rgba(30, 30, 30, 0.95)",
         titleFont: { size: 11 },
@@ -142,19 +143,6 @@ export default function GoldFlowChart() {
 
   return (
     <div className="bg-surface-4/30 rounded p-3">
-      <div className="flex items-center justify-between mb-2">
-        <span className="text-on-surface text-xs font-semibold">골드 흐름</span>
-        <div className="flex items-center gap-3 text-[10px]">
-          <span className="flex items-center gap-1">
-            <span className="w-2 h-2 rounded-full bg-team-blue inline-block" />
-            <span className="text-on-surface-medium">블루팀 우세</span>
-          </span>
-          <span className="flex items-center gap-1">
-            <span className="w-2 h-2 rounded-full bg-loss inline-block" />
-            <span className="text-on-surface-medium">레드팀 우세</span>
-          </span>
-        </div>
-      </div>
       <div className="h-40">
         <Line data={data} options={options} />
       </div>

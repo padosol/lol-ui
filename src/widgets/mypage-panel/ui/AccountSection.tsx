@@ -23,15 +23,6 @@ export default function AccountSection() {
         <h2 className="text-lg font-bold text-on-surface mb-6">기본정보</h2>
         <div className="space-y-6">
           <div>
-            <label className="block text-sm text-on-surface-medium mb-2">
-              이메일
-            </label>
-            <div className="px-4 py-3 bg-surface-4 border border-divider rounded-lg text-on-surface-disabled text-sm">
-              {user.email}
-            </div>
-          </div>
-
-          <div>
             <label className="block text-sm font-bold text-on-surface mb-2">
               비밀번호
             </label>
