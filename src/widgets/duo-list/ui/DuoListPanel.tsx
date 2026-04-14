@@ -55,7 +55,7 @@ export default function DuoListPanel() {
             <button
               type="button"
               onClick={() => setRegisterModalOpen(true)}
-              className="flex items-center gap-1.5 bg-primary hover:bg-primary/80 text-on-surface font-medium px-4 py-2 rounded-md text-sm transition-colors"
+              className="cursor-pointer flex items-center gap-1.5 bg-primary hover:bg-primary/80 text-on-surface font-medium px-4 py-2 rounded-md text-sm transition-colors"
             >
               <Plus className="w-4 h-4" />
               듀오 등록
@@ -73,7 +73,7 @@ export default function DuoListPanel() {
                 key={tab.key}
                 type="button"
                 onClick={() => setActiveTab(tab.key)}
-                className={`px-4 py-2.5 text-sm font-medium transition-colors border-b-2 -mb-px ${
+                className={`cursor-pointer px-4 py-2.5 text-sm font-medium transition-colors border-b-2 -mb-px ${
                   isActive
                     ? "text-primary border-primary"
                     : "text-on-surface-medium hover:text-primary border-transparent"

@@ -31,7 +31,7 @@ export default function LaneSelector({
               key={lane}
               type="button"
               onClick={() => onChange(lane)}
-              className={`flex items-center gap-1.5 px-3 py-2 rounded-md text-sm transition-colors ${
+              className={`cursor-pointer flex items-center gap-1.5 px-3 py-2 rounded-md text-sm transition-colors ${
                 isSelected
                   ? "bg-primary text-on-primary"
                   : "bg-surface-4 text-on-surface-medium hover:bg-surface-8"

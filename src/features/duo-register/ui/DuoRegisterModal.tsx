@@ -82,7 +82,7 @@ export default function DuoRegisterModal({
           <button
             type="button"
             onClick={onClose}
-            className="text-on-surface-disabled hover:text-on-surface transition-colors"
+            className="cursor-pointer text-on-surface-disabled hover:text-on-surface transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -126,7 +126,7 @@ export default function DuoRegisterModal({
                 <button
                   type="button"
                   onClick={() => field.onChange(!field.value)}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm transition-colors ${
+                  className={`cursor-pointer flex items-center gap-2 px-4 py-2 rounded-md text-sm transition-colors ${
                     field.value
                       ? "bg-primary text-on-primary"
                       : "bg-surface-4 border border-divider text-on-surface-medium hover:bg-surface-8"
@@ -149,8 +149,8 @@ export default function DuoRegisterModal({
             </label>
             <textarea
               {...register("memo")}
-              placeholder="하고 싶은 말을 적어주세요 (최대 100자)"
-              maxLength={100}
+              placeholder="하고 싶은 말을 적어주세요 (최대 500자)"
+              maxLength={500}
               rows={2}
               className="w-full bg-surface-4 border border-divider rounded-md px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-disabled focus:outline-none focus:border-primary resize-none"
             />
@@ -164,7 +164,7 @@ export default function DuoRegisterModal({
           <button
             type="submit"
             disabled={createPost.isPending}
-            className="w-full bg-primary hover:bg-primary/80 text-on-surface font-medium py-2.5 rounded-md transition-colors disabled:opacity-50"
+            className="cursor-pointer w-full bg-primary hover:bg-primary/80 text-on-surface font-medium py-2.5 rounded-md transition-colors disabled:opacity-50"
           >
             {createPost.isPending ? "등록 중..." : "등록하기"}
           </button>

@@ -27,7 +27,7 @@ export default function RequesterActionButtons({
           type="button"
           onClick={() => confirm.mutate(requestId)}
           disabled={isPending}
-          className="px-3 py-1.5 text-xs font-medium rounded-md bg-primary hover:bg-primary/80 text-on-primary transition-colors disabled:opacity-50"
+          className="cursor-pointer px-3 py-1.5 text-xs font-medium rounded-md bg-primary hover:bg-primary/80 text-on-primary transition-colors disabled:opacity-50"
         >
           {confirm.isPending ? "확정 중..." : "확정하기"}
         </button>
@@ -37,7 +37,7 @@ export default function RequesterActionButtons({
           type="button"
           onClick={() => cancel.mutate(requestId)}
           disabled={isPending}
-          className="px-3 py-1.5 text-xs font-medium rounded-md bg-surface-4 border border-divider text-on-surface-medium hover:bg-surface-8 transition-colors disabled:opacity-50"
+          className="cursor-pointer px-3 py-1.5 text-xs font-medium rounded-md bg-surface-4 border border-divider text-on-surface-medium hover:bg-surface-8 transition-colors disabled:opacity-50"
         >
           {cancel.isPending ? "취소 중..." : "취소"}
         </button>

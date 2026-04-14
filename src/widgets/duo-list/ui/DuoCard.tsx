@@ -38,7 +38,7 @@ export default function DuoCard({ post, onSelect }: DuoCardProps) {
     <button
       type="button"
       onClick={() => onSelect(post.id)}
-      className="bg-surface-1 border border-divider rounded-lg p-4 hover:border-primary/50 transition-colors text-left w-full"
+      className="cursor-pointer bg-surface-1 border border-divider rounded-lg p-4 hover:border-primary/50 transition-colors text-left w-full"
     >
       {/* 상단: 라인 + 티어 + 시간 */}
       <div className="flex items-start justify-between mb-3">

@@ -55,7 +55,7 @@ export default function DuoPostList({
             type="button"
             onClick={onFetchNextPage}
             disabled={isFetchingNextPage}
-            className="px-6 py-2 text-sm font-medium text-on-surface-medium bg-surface-4 border border-divider rounded-md hover:bg-surface-8 transition-colors disabled:opacity-50"
+            className="cursor-pointer px-6 py-2 text-sm font-medium text-on-surface-medium bg-surface-4 border border-divider rounded-md hover:bg-surface-8 transition-colors disabled:opacity-50"
           >
             {isFetchingNextPage ? "로딩 중..." : "더 보기"}
           </button>

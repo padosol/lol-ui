@@ -73,7 +73,7 @@ export default function DuoPostDetailModal({
             <button
               type="button"
               onClick={onClose}
-              className="text-on-surface-disabled hover:text-on-surface transition-colors"
+              className="cursor-pointer text-on-surface-disabled hover:text-on-surface transition-colors"
             >
               <X className="w-5 h-5" />
             </button>
@@ -210,7 +210,7 @@ function PostContent({
             <button
               type="button"
               onClick={onRequestClick}
-              className="w-full bg-primary hover:bg-primary/80 text-on-surface font-medium py-2.5 rounded-md transition-colors"
+              className="cursor-pointer w-full bg-primary hover:bg-primary/80 text-on-surface font-medium py-2.5 rounded-md transition-colors"
             >
               듀오 신청하기
             </button>
@@ -243,7 +243,7 @@ function OwnerSection({
             type="button"
             onClick={onDelete}
             disabled={isDeleting}
-            className="flex items-center gap-1 px-3 py-1.5 text-xs font-medium rounded-md bg-surface-4 border border-divider text-red-400 hover:bg-red-400/10 transition-colors disabled:opacity-50"
+            className="cursor-pointer flex items-center gap-1 px-3 py-1.5 text-xs font-medium rounded-md bg-surface-4 border border-divider text-red-400 hover:bg-red-400/10 transition-colors disabled:opacity-50"
           >
             <Trash2 className="w-3 h-3" />
             {isDeleting ? "삭제 중..." : "삭제"}
