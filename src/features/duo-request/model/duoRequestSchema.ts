@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { LANES } from "@/entities/duo";
 
-export const duoRegisterSchema = z.object({
+export const duoRequestSchema = z.object({
   primaryLane: z.enum(LANES, {
     message: "주 라인을 선택해주세요",
   }),
@@ -12,4 +12,4 @@ export const duoRegisterSchema = z.object({
   memo: z.string().max(100, "메모는 100자 이내로 입력해주세요"),
 });
 
-export type DuoRegisterFormData = z.output<typeof duoRegisterSchema>;
+export type DuoRequestFormData = z.output<typeof duoRequestSchema>;

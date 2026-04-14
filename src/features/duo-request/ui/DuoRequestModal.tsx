@@ -4,33 +4,34 @@ import { useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { X, Mic, MicOff } from "lucide-react";
-import { useCreateDuoPost } from "@/entities/duo";
+import { useCreateDuoRequest } from "@/entities/duo";
 import { LaneSelector } from "@/shared/ui/lane-selector";
 import {
-  duoRegisterSchema,
-  type DuoRegisterFormData,
-} from "../model/duoRegisterSchema";
+  duoRequestSchema,
+  type DuoRequestFormData,
+} from "../model/duoRequestSchema";
 
-interface DuoRegisterModalProps {
+interface DuoRequestModalProps {
   open: boolean;
   onClose: () => void;
+  postId: number;
 }
 
-export default function DuoRegisterModal({
+export default function DuoRequestModal({
   open,
   onClose,
-}: DuoRegisterModalProps) {
-  const createPost = useCreateDuoPost();
+  postId,
+}: DuoRequestModalProps) {
+  const createRequest = useCreateDuoRequest();
 
   const {
     handleSubmit,
     control,
-    watch,
     register,
     formState: { errors },
     reset,
-  } = useForm<DuoRegisterFormData>({
-    resolver: zodResolver(duoRegisterSchema),
+  } = useForm<DuoRequestFormData>({
+    resolver: zodResolver(duoRequestSchema),
     defaultValues: {
       primaryLane: undefined,
       secondaryLane: undefined,
@@ -38,8 +39,6 @@ export default function DuoRegisterModal({
       memo: "",
     },
   });
-
-  const hasMic = watch("hasMicrophone");
 
   useEffect(() => {
     if (!open) return;
@@ -58,13 +57,16 @@ export default function DuoRegisterModal({
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [open, onClose]);
 
-  const onSubmit = (data: DuoRegisterFormData) => {
-    createPost.mutate(data, {
-      onSuccess: () => {
-        reset();
-        onClose();
+  const onSubmit = (data: DuoRequestFormData) => {
+    createRequest.mutate(
+      { postId, data },
+      {
+        onSuccess: () => {
+          reset();
+          onClose();
+        },
       },
-    });
+    );
   };
 
   if (!open) return null;
@@ -78,7 +80,7 @@ export default function DuoRegisterModal({
     >
       <div className="bg-surface-4 rounded-lg border border-divider w-full max-w-md mx-4 max-h-[90vh] overflow-y-auto p-6">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-lg font-bold text-on-surface">듀오 등록</h2>
+          <h2 className="text-lg font-bold text-on-surface">듀오 신청</h2>
           <button
             type="button"
             onClick={onClose}
@@ -163,15 +165,15 @@ export default function DuoRegisterModal({
 
           <button
             type="submit"
-            disabled={createPost.isPending}
+            disabled={createRequest.isPending}
             className="w-full bg-primary hover:bg-primary/80 text-on-surface font-medium py-2.5 rounded-md transition-colors disabled:opacity-50"
           >
-            {createPost.isPending ? "등록 중..." : "등록하기"}
+            {createRequest.isPending ? "신청 중..." : "듀오 신청하기"}
           </button>
 
-          {createPost.isError && (
+          {createRequest.isError && (
             <p className="text-xs text-red-400 text-center">
-              {createPost.error?.message || "등록에 실패했습니다."}
+              {createRequest.error?.message || "신청에 실패했습니다."}
             </p>
           )}
         </form>

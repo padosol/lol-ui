@@ -131,7 +131,7 @@ export default function Tooltip({ content, children, disabled }: TooltipProps) {
       (childProps.onMouseLeave as ((e: React.MouseEvent) => void) | undefined)?.(e);
     },
     onClick: (e: React.MouseEvent) => {
-      handleClick(e);
+      handleClick();
       (childProps.onClick as ((e: React.MouseEvent) => void) | undefined)?.(e);
     },
   } as Record<string, unknown>);
