@@ -30,61 +30,69 @@ export default function DuoRequestCard({ request }: DuoRequestCardProps) {
   const isMasterPlus = tier !== null && ["MASTER", "GRANDMASTER", "CHALLENGER"].includes(tier);
 
   return (
-    <div className="bg-surface-1 border border-divider rounded-lg p-4 space-y-3">
-      {/* 상단: 라인 + 상태 */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Image
-            src={getPositionImageUrl(LANE_IMAGE_KEY[request.primaryLane])}
-            alt={LANE_LABELS[request.primaryLane]}
-            width={18}
-            height={18}
-          />
-          <span className="text-sm font-medium text-on-surface">
-            {LANE_LABELS[request.primaryLane]} /{" "}
-            {LANE_LABELS[request.secondaryLane]}
-          </span>
-          <span
-            className={`inline-flex items-center gap-0.5 text-xs ${request.hasMicrophone ? "text-green-400" : "text-on-surface-disabled"}`}
-          >
-            {request.hasMicrophone ? (
-              <Mic className="w-3 h-3" />
-            ) : (
-              <MicOff className="w-3 h-3" />
-            )}
-          </span>
-        </div>
-        <span
-          className={`text-xs font-medium ${STATUS_COLORS[request.status] ?? "text-on-surface-disabled"}`}
-        >
-          {REQUEST_STATUS_LABELS[request.status]}
-        </span>
+    <div className="bg-surface-1 border border-divider rounded-lg p-3 flex items-center gap-3">
+      {/* 라인 아이콘 */}
+      <div className="flex items-center gap-1 shrink-0">
+        <Image
+          src={getPositionImageUrl(LANE_IMAGE_KEY[request.primaryLane])}
+          alt={LANE_LABELS[request.primaryLane]}
+          width={18}
+          height={18}
+        />
+        <span className="text-on-surface-disabled text-xs">/</span>
+        <Image
+          src={getPositionImageUrl(LANE_IMAGE_KEY[request.secondaryLane])}
+          alt={LANE_LABELS[request.secondaryLane]}
+          width={16}
+          height={16}
+          className="opacity-70"
+        />
       </div>
 
       {/* 티어 */}
-      <p className="text-xs text-on-surface-medium">
+      <span className="text-xs text-on-surface-medium shrink-0 w-28 truncate">
         {tier !== null ? (
-          <>{getTierName(tier)} {isMasterPlus ? "" : request.rank}{" "}{request.leaguePoints}LP</>
+          <>{getTierName(tier)} {isMasterPlus ? "" : request.rank} {request.leaguePoints}LP</>
         ) : (
           <span className="text-on-surface-disabled">언랭크</span>
         )}
-      </p>
+      </span>
+
+      {/* 마이크 */}
+      <span
+        className={`shrink-0 ${request.hasMicrophone ? "text-green-400" : "text-on-surface-disabled"}`}
+      >
+        {request.hasMicrophone ? (
+          <Mic className="w-3.5 h-3.5" />
+        ) : (
+          <MicOff className="w-3.5 h-3.5" />
+        )}
+      </span>
 
       {/* 메모 */}
-      {request.memo && (
-        <p className="text-sm text-on-surface-medium">{request.memo}</p>
-      )}
-
-      {/* 시간 */}
-      <p className="text-xs text-on-surface-disabled">
-        {getRelativeTime(request.createdAt)}
+      <p className="text-sm text-on-surface-medium truncate min-w-0 flex-1">
+        {request.memo || "—"}
       </p>
 
+      {/* 상태 */}
+      <span
+        className={`shrink-0 text-xs font-medium ${STATUS_COLORS[request.status] ?? "text-on-surface-disabled"}`}
+      >
+        {REQUEST_STATUS_LABELS[request.status]}
+      </span>
+
+      {/* 시간 */}
+      <span className="shrink-0 text-xs text-on-surface-disabled hidden sm:inline">
+        {getRelativeTime(request.createdAt)}
+      </span>
+
       {/* 액션 버튼 */}
-      <RequesterActionButtons
-        requestId={request.id}
-        status={request.status}
-      />
+      <div className="shrink-0">
+        <RequesterActionButtons
+          requestId={request.id}
+          status={request.status}
+        />
+      </div>
     </div>
   );
 }

@@ -22,11 +22,11 @@ export default function DuoPostList({
 }: DuoPostListProps) {
   if (isLoading) {
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="space-y-2">
         {Array.from({ length: 4 }).map((_, i) => (
           <div
             key={i}
-            className="bg-surface-1 border border-divider rounded-lg p-4 animate-pulse h-[140px]"
+            className="bg-surface-1 border border-divider rounded-lg p-3 animate-pulse h-[52px]"
           />
         ))}
       </div>
@@ -43,7 +43,7 @@ export default function DuoPostList({
 
   return (
     <div className="space-y-4">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="space-y-2">
         {posts.map((post) => (
           <DuoCard key={post.id} post={post} onSelect={onSelectPost} />
         ))}

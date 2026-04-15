@@ -9,11 +9,11 @@ export default function MyDuoRequestsPanel() {
 
   if (isLoading) {
     return (
-      <div className="space-y-4">
+      <div className="space-y-2">
         {Array.from({ length: 2 }).map((_, i) => (
           <div
             key={i}
-            className="bg-surface-1 border border-divider rounded-lg p-4 animate-pulse h-[120px]"
+            className="bg-surface-1 border border-divider rounded-lg p-3 animate-pulse h-[52px]"
           />
         ))}
       </div>
@@ -29,7 +29,7 @@ export default function MyDuoRequestsPanel() {
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <div className="space-y-2">
       {requests.map((request) => (
         <DuoRequestCard key={request.id} request={request} />
       ))}

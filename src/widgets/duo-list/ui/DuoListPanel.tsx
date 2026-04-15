@@ -4,7 +4,7 @@ import { useState, useMemo } from "react";
 import { Plus } from "lucide-react";
 import { useAuthStore } from "@/entities/auth";
 import { useDuoPosts } from "@/entities/duo";
-import type { Lane, Tier } from "@/entities/duo";
+import type { Lane, Tier, DuoPostFilters } from "@/entities/duo";
 import { DuoFilters } from "@/features/duo-filter";
 import { DuoRegisterModal } from "@/features/duo-register";
 import DuoPostList from "./DuoPostList";
@@ -23,15 +23,18 @@ export default function DuoListPanel() {
 
   // 필터 상태
   const [lane, setLane] = useState<Lane | "ALL">("ALL");
-  const [tier, setTier] = useState<Tier | "ALL">("ALL");
+  const [tier, setTier] = useState<Tier | "ALL" | "MATCHED">("ALL");
 
-  const filterParams = useMemo(
-    () => ({
-      ...(lane !== "ALL" && { lane }),
-      ...(tier !== "ALL" && { tier }),
-    }),
-    [lane, tier],
-  );
+  const filterParams = useMemo((): Omit<DuoPostFilters, "page"> => {
+    const params: Omit<DuoPostFilters, "page"> = {};
+    if (lane !== "ALL") params.lane = lane;
+    if (tier === "MATCHED") {
+      params.tierMatched = true;
+    } else if (tier !== "ALL") {
+      params.tier = tier;
+    }
+    return params;
+  }, [lane, tier]);
 
   const postsQuery = useDuoPosts(filterParams);
   const posts = useMemo(

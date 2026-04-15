@@ -38,83 +38,69 @@ export default function DuoCard({ post, onSelect }: DuoCardProps) {
     <button
       type="button"
       onClick={() => onSelect(post.id)}
-      className="cursor-pointer bg-surface-1 border border-divider rounded-lg p-4 hover:border-primary/50 transition-colors text-left w-full"
+      className="cursor-pointer bg-surface-1 border border-divider rounded-lg p-3 hover:border-primary/50 transition-colors w-full flex items-center gap-3"
     >
-      {/* 상단: 라인 + 티어 + 시간 */}
-      <div className="flex items-start justify-between mb-3">
-        <div className="flex items-center gap-2">
-          <Image
-            src={getPositionImageUrl(LANE_IMAGE_KEY[post.primaryLane])}
-            alt={LANE_LABELS[post.primaryLane]}
-            width={20}
-            height={20}
-          />
-          <span className="text-sm font-medium text-on-surface">
-            {LANE_LABELS[post.primaryLane]}
-          </span>
-          <span className="text-on-surface-disabled">/</span>
-          <Image
-            src={getPositionImageUrl(LANE_IMAGE_KEY[post.secondaryLane])}
-            alt={LANE_LABELS[post.secondaryLane]}
-            width={16}
-            height={16}
-            className="opacity-70"
-          />
-          <span className="text-xs text-on-surface-medium">
-            {LANE_LABELS[post.secondaryLane]}
-          </span>
-        </div>
-        <span className="text-xs text-on-surface-disabled">
-          {getRelativeTime(post.createdAt)}
-        </span>
+      {/* 라인 아이콘 */}
+      <div className="flex items-center gap-1 shrink-0">
+        <Image
+          src={getPositionImageUrl(LANE_IMAGE_KEY[post.primaryLane])}
+          alt={LANE_LABELS[post.primaryLane]}
+          width={18}
+          height={18}
+        />
+        <span className="text-on-surface-disabled text-xs">/</span>
+        <Image
+          src={getPositionImageUrl(LANE_IMAGE_KEY[post.secondaryLane])}
+          alt={LANE_LABELS[post.secondaryLane]}
+          width={16}
+          height={16}
+          className="opacity-70"
+        />
       </div>
 
-      {/* 중간: 티어 + 상태 + 마이크 */}
-      <div className="flex flex-wrap items-center gap-2 mb-3">
-        <span
-          className={`text-sm font-medium ${tier !== null ? (TIER_COLORS[tier] ?? "text-on-surface") : "text-on-surface-disabled"}`}
-        >
-          {tierDisplay}
-          {rankDisplay}{lpDisplay}
-        </span>
+      {/* 티어 */}
+      <span
+        className={`text-sm font-medium shrink-0 w-28 truncate text-left ${tier !== null ? (TIER_COLORS[tier] ?? "text-on-surface") : "text-on-surface-disabled"}`}
+      >
+        {tierDisplay}{rankDisplay}{lpDisplay}
+      </span>
 
-        {!isActive && (
-          <span className="text-xs bg-surface-4 border border-divider rounded px-2 py-0.5 text-on-surface-disabled">
-            {POST_STATUS_LABELS[post.status]}
-          </span>
+      {/* 마이크 */}
+      <span
+        className={`shrink-0 ${post.hasMicrophone ? "text-green-400" : "text-on-surface-disabled"}`}
+      >
+        {post.hasMicrophone ? (
+          <Mic className="w-3.5 h-3.5" />
+        ) : (
+          <MicOff className="w-3.5 h-3.5" />
         )}
+      </span>
 
-        <span
-          className={`inline-flex items-center gap-1 text-xs ${post.hasMicrophone ? "text-green-400" : "text-on-surface-disabled"}`}
-        >
-          {post.hasMicrophone ? (
-            <Mic className="w-3 h-3" />
-          ) : (
-            <MicOff className="w-3 h-3" />
-          )}
-          {post.hasMicrophone ? "마이크" : "마이크 없음"}
+      {/* 상태 배지 */}
+      {!isActive && (
+        <span className="shrink-0 text-xs bg-surface-4 border border-divider rounded px-2 py-0.5 text-on-surface-disabled">
+          {POST_STATUS_LABELS[post.status]}
         </span>
-      </div>
-
-      {/* 메모 */}
-      {post.memo && (
-        <p className="text-sm text-on-surface-medium leading-relaxed mb-3 line-clamp-2">
-          {post.memo}
-        </p>
       )}
 
-      {/* 하단: 요청 수 */}
-      <div className="flex items-center gap-3 text-xs text-on-surface-disabled">
+      {/* 메모 */}
+      <p className="text-sm text-on-surface-medium truncate min-w-0 flex-1 text-left">
+        {post.memo || "—"}
+      </p>
+
+      {/* 메타: 신청수 + 만료 + 시간 */}
+      <div className="flex items-center gap-2 shrink-0 text-xs text-on-surface-disabled">
         {post.requestCount !== undefined && post.requestCount > 0 && (
-          <span className="inline-flex items-center gap-1">
+          <span className="inline-flex items-center gap-0.5">
             <Users className="w-3 h-3" />
-            신청 {post.requestCount}
+            {post.requestCount}
           </span>
         )}
-        <span className="inline-flex items-center gap-1">
+        <span className="inline-flex items-center gap-0.5">
           <Clock className="w-3 h-3" />
           {getExpiryText(post.expiresAt)}
         </span>
+        <span className="hidden sm:inline">{getRelativeTime(post.createdAt)}</span>
       </div>
     </button>
   );
@@ -125,6 +111,6 @@ function getExpiryText(expiresAt: string): string {
   if (diff <= 0) return "만료됨";
   const hours = Math.floor(diff / (1000 * 60 * 60));
   const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-  if (hours > 0) return `${hours}시간 ${minutes}분 남음`;
-  return `${minutes}분 남음`;
+  if (hours > 0) return `${hours}시간 ${minutes}분`;
+  return `${minutes}분`;
 }

@@ -131,5 +131,6 @@ export interface CreateDuoRequestPayload {
 export interface DuoPostFilters {
   lane?: Lane;
   tier?: Tier;
+  tierMatched?: boolean;
   page?: number;
 }
