@@ -50,6 +50,7 @@ export default function MatchHistory({
 
   // 날짜별 게임수 조회
   const latestSeasonValue = useSeasonStore((s) => s.getLatestSeasonValue());
+  const seasonsLoaded = useSeasonStore((s) => s.seasons.length > 0);
 
   const filterQueueId = useMemo(() => {
     switch (gameModeFilter) {
@@ -75,7 +76,8 @@ export default function MatchHistory({
     filterQueueId,
     page,
     region,
-    latestSeasonValue ?? undefined
+    latestSeasonValue ?? undefined,
+    seasonsLoaded
   );
 
   // puuid/region/refreshKey 변경 시 누적 데이터 초기화 - 의도적인 상태 리셋

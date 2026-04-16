@@ -151,14 +151,14 @@ function PostContent({
           <span className="text-on-surface-disabled">/</span>
           <div className="flex items-center gap-1.5">
             <Image
-              src={getPositionImageUrl(LANE_IMAGE_KEY[post.secondaryLane])}
-              alt={LANE_LABELS[post.secondaryLane]}
+              src={getPositionImageUrl(LANE_IMAGE_KEY[post.desiredLane])}
+              alt={LANE_LABELS[post.desiredLane]}
               width={20}
               height={20}
               className="opacity-70"
             />
             <span className="text-sm text-on-surface-medium">
-              {LANE_LABELS[post.secondaryLane]}
+              {LANE_LABELS[post.desiredLane]}
             </span>
           </div>
         </div>
@@ -288,8 +288,8 @@ function RequestItem({ request }: { request: DuoRequest }) {
         />
         <span className="text-on-surface-disabled text-xs">/</span>
         <Image
-          src={getPositionImageUrl(LANE_IMAGE_KEY[request.secondaryLane])}
-          alt={LANE_LABELS[request.secondaryLane]}
+          src={getPositionImageUrl(LANE_IMAGE_KEY[request.desiredLane])}
+          alt={LANE_LABELS[request.desiredLane]}
           width={14}
           height={14}
           className="opacity-70"

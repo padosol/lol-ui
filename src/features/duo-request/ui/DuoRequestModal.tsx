@@ -34,7 +34,7 @@ export default function DuoRequestModal({
     resolver: zodResolver(duoRequestSchema),
     defaultValues: {
       primaryLane: undefined,
-      secondaryLane: undefined,
+      desiredLane: undefined,
       hasMicrophone: false,
       memo: "",
     },
@@ -105,14 +105,14 @@ export default function DuoRequestModal({
           />
 
           <Controller
-            name="secondaryLane"
+            name="desiredLane"
             control={control}
             render={({ field }) => (
               <LaneSelector
                 label="부 라인"
                 value={field.value ?? ""}
                 onChange={field.onChange}
-                error={errors.secondaryLane?.message}
+                error={errors.desiredLane?.message}
               />
             )}
           />

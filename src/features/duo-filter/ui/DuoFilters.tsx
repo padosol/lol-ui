@@ -10,9 +10,9 @@ import { getTierName } from "@/shared/lib/tier";
 
 interface DuoFiltersProps {
   lane: Lane | "ALL";
-  tier: Tier | "ALL" | "MATCHED";
+  tier: Tier | "ALL";
   onLaneChange: (value: Lane | "ALL") => void;
-  onTierChange: (value: Tier | "ALL" | "MATCHED") => void;
+  onTierChange: (value: Tier | "ALL") => void;
 }
 
 export default function DuoFilters({
@@ -36,7 +36,7 @@ export default function DuoFilters({
     }
   }, [tierOpen]);
 
-  const tierLabel = tier === "ALL" ? "전체 티어" : tier === "MATCHED" ? "맞춤 티어" : getTierName(tier);
+  const tierLabel = tier === "ALL" ? "전체 티어" : getTierName(tier);
 
   return (
     <div className="flex flex-wrap items-center gap-3">
@@ -104,20 +104,6 @@ export default function DuoFilters({
             >
               전체 티어
             </div>
-            <div
-              onClick={() => {
-                onTierChange("MATCHED");
-                setTierOpen(false);
-              }}
-              className={`cursor-pointer px-3 py-2 text-sm transition-colors ${
-                tier === "MATCHED"
-                  ? "bg-primary/20 text-primary"
-                  : "text-on-surface-medium hover:bg-surface-8"
-              }`}
-            >
-              맞춤 티어
-            </div>
-            <div className="border-t border-divider my-1" />
             {TIERS.map((t) => (
               <div
                 key={t}

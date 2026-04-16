@@ -58,11 +58,31 @@ export const REQUEST_STATUS_LABELS: Record<RequestStatus, string> = {
   CANCELLED: "취소됨",
 };
 
+// === 챔피언 통계 ===
+export interface MostChampion {
+  championId: number;
+  championName: string;
+  playCount: number;
+  wins: number;
+  losses: number;
+}
+
+export interface PlayedChampion {
+  championId: number;
+  championName: string;
+}
+
+export interface RecentGameSummary {
+  wins: number;
+  losses: number;
+  playedChampions: PlayedChampion[];
+}
+
 // === 게시글 ===
 export interface DuoPost {
   id: number;
   primaryLane: Lane;
-  secondaryLane: Lane;
+  desiredLane: Lane;
   hasMicrophone: boolean;
   tier: string | null;
   rank: string | null;
@@ -72,6 +92,8 @@ export interface DuoPost {
   tierAvailable?: boolean;
   requestCount?: number;
   isOwner?: boolean;
+  mostChampions?: MostChampion[];
+  recentGameSummary?: RecentGameSummary;
   expiresAt: string;
   createdAt: string;
   requests?: DuoRequest[];
@@ -82,13 +104,15 @@ export interface DuoRequest {
   id: number;
   duoPostId: number;
   primaryLane: Lane;
-  secondaryLane: Lane;
+  desiredLane: Lane;
   hasMicrophone: boolean;
   tier: string | null;
   rank: string | null;
   leaguePoints: number | null;
   memo: string;
   status: RequestStatus;
+  mostChampions?: MostChampion[];
+  recentGameSummary?: RecentGameSummary;
   createdAt: string;
 }
 
@@ -115,14 +139,14 @@ export interface DuoRequestListResponse {
 // === 요청 DTO ===
 export interface CreateDuoPostRequest {
   primaryLane: Lane;
-  secondaryLane: Lane;
+  desiredLane: Lane;
   hasMicrophone: boolean;
   memo: string;
 }
 
 export interface CreateDuoRequestPayload {
   primaryLane: Lane;
-  secondaryLane: Lane;
+  desiredLane: Lane;
   hasMicrophone: boolean;
   memo: string;
 }
@@ -131,6 +155,5 @@ export interface CreateDuoRequestPayload {
 export interface DuoPostFilters {
   lane?: Lane;
   tier?: Tier;
-  tierMatched?: boolean;
   page?: number;
 }

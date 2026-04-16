@@ -12,6 +12,9 @@ export type {
   CreateDuoPostRequest,
   CreateDuoRequestPayload,
   DuoPostFilters,
+  MostChampion,
+  PlayedChampion,
+  RecentGameSummary,
 } from "./types";
 
 export {

@@ -41,8 +41,8 @@ export default function DuoRequestCard({ request }: DuoRequestCardProps) {
         />
         <span className="text-on-surface-disabled text-xs">/</span>
         <Image
-          src={getPositionImageUrl(LANE_IMAGE_KEY[request.secondaryLane])}
-          alt={LANE_LABELS[request.secondaryLane]}
+          src={getPositionImageUrl(LANE_IMAGE_KEY[request.desiredLane])}
+          alt={LANE_LABELS[request.desiredLane]}
           width={16}
           height={16}
           className="opacity-70"

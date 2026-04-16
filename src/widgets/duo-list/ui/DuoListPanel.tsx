@@ -23,16 +23,12 @@ export default function DuoListPanel() {
 
   // 필터 상태
   const [lane, setLane] = useState<Lane | "ALL">("ALL");
-  const [tier, setTier] = useState<Tier | "ALL" | "MATCHED">("ALL");
+  const [tier, setTier] = useState<Tier | "ALL">("ALL");
 
   const filterParams = useMemo((): Omit<DuoPostFilters, "page"> => {
     const params: Omit<DuoPostFilters, "page"> = {};
     if (lane !== "ALL") params.lane = lane;
-    if (tier === "MATCHED") {
-      params.tierMatched = true;
-    } else if (tier !== "ALL") {
-      params.tier = tier;
-    }
+    if (tier !== "ALL") params.tier = tier;
     return params;
   }, [lane, tier]);
 

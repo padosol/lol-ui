@@ -50,8 +50,8 @@ export default function DuoCard({ post, onSelect }: DuoCardProps) {
         />
         <span className="text-on-surface-disabled text-xs">/</span>
         <Image
-          src={getPositionImageUrl(LANE_IMAGE_KEY[post.secondaryLane])}
-          alt={LANE_LABELS[post.secondaryLane]}
+          src={getPositionImageUrl(LANE_IMAGE_KEY[post.desiredLane])}
+          alt={LANE_LABELS[post.desiredLane]}
           width={16}
           height={16}
           className="opacity-70"
