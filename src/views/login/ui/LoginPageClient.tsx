@@ -1,12 +1,15 @@
 "use client";
 
+import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { GoogleLoginButton } from "@/features/auth";
 
-export default function LoginPageClient() {
+function LoginPageContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const error = searchParams.get("error");
 
   return (
     <div className="relative min-h-screen bg-surface flex flex-col items-center justify-center px-4">
@@ -19,6 +22,12 @@ export default function LoginPageClient() {
           priority
         />
       </Link>
+
+      {error && (
+        <div className="w-full max-w-[400px] mb-4 px-4 py-3 bg-error/10 border border-error rounded-lg text-sm text-error text-center">
+          {error}
+        </div>
+      )}
 
       {/* 로그인 카드 */}
       <div className="w-full max-w-[400px] bg-surface-1 rounded-2xl border border-divider p-8">
@@ -77,5 +86,19 @@ export default function LoginPageClient() {
         동의합니다.
       </p>
     </div>
+  );
+}
+
+export default function LoginPageClient() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-surface flex items-center justify-center">
+          <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+        </div>
+      }
+    >
+      <LoginPageContent />
+    </Suspense>
   );
 }

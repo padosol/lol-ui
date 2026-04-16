@@ -63,11 +63,17 @@ export default function ChangeCard({
                   {detail.attribute}
                 </span>
                 <div className="flex items-center gap-2 flex-wrap min-w-0">
-                  <span className="text-loss line-through">
-                    {detail.before}
-                  </span>
-                  <span className="text-on-surface-disabled">→</span>
-                  <span className="text-win font-medium">{detail.after}</span>
+                  {detail.before && (
+                    <span className="text-loss line-through">
+                      {detail.before}
+                    </span>
+                  )}
+                  {detail.before && detail.after && (
+                    <span className="text-on-surface-disabled">→</span>
+                  )}
+                  {detail.after && (
+                    <span className="text-win font-medium">{detail.after}</span>
+                  )}
                 </div>
               </div>
             ))}

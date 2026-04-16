@@ -3,55 +3,43 @@
 import { useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { X } from "lucide-react";
-import { useDuoStore } from "@/entities/duo";
-import { duoRegisterSchema, type DuoRegisterFormData } from "../model/duoRegisterSchema";
-import GameTypeSelector from "./GameTypeSelector";
-import PositionSelector from "./PositionSelector";
-import ChampionPicker from "./ChampionPicker";
-
-const TIERS = [
-  "IRON", "BRONZE", "SILVER", "GOLD", "PLATINUM",
-  "EMERALD", "DIAMOND", "MASTER", "GRANDMASTER", "CHALLENGER",
-];
-const RANKS = ["IV", "III", "II", "I"];
-const TIER_LABELS: Record<string, string> = {
-  IRON: "아이언", BRONZE: "브론즈", SILVER: "실버", GOLD: "골드",
-  PLATINUM: "플래티넘", EMERALD: "에메랄드", DIAMOND: "다이아몬드",
-  MASTER: "마스터", GRANDMASTER: "그랜드마스터", CHALLENGER: "챌린저",
-};
+import { X, Mic, MicOff } from "lucide-react";
+import { useCreateDuoPost } from "@/entities/duo";
+import { LaneSelector } from "@/shared/ui/lane-selector";
+import {
+  duoRegisterSchema,
+  type DuoRegisterFormData,
+} from "../model/duoRegisterSchema";
 
 interface DuoRegisterModalProps {
   open: boolean;
   onClose: () => void;
 }
 
-export default function DuoRegisterModal({ open, onClose }: DuoRegisterModalProps) {
-  const addListing = useDuoStore((s) => s.addListing);
+export default function DuoRegisterModal({
+  open,
+  onClose,
+}: DuoRegisterModalProps) {
+  const createPost = useCreateDuoPost();
 
   const {
-    register,
     handleSubmit,
     control,
     watch,
+    register,
     formState: { errors },
     reset,
   } = useForm<DuoRegisterFormData>({
     resolver: zodResolver(duoRegisterSchema),
     defaultValues: {
-      summonerName: "",
-      tagLine: "",
-      tier: "",
-      rank: "",
-      gameType: undefined,
-      position: undefined,
-      champions: [],
+      primaryLane: undefined,
+      desiredLane: undefined,
+      hasMicrophone: false,
       memo: "",
     },
   });
 
-  const tier = watch("tier");
-  const isMasterPlus = ["MASTER", "GRANDMASTER", "CHALLENGER"].includes(tier);
+  const hasMic = watch("hasMicrophone");
 
   useEffect(() => {
     if (!open) return;
@@ -71,18 +59,12 @@ export default function DuoRegisterModal({ open, onClose }: DuoRegisterModalProp
   }, [open, onClose]);
 
   const onSubmit = (data: DuoRegisterFormData) => {
-    addListing({
-      summonerName: data.summonerName,
-      tagLine: data.tagLine,
-      tier: data.tier,
-      rank: isMasterPlus ? "I" : data.rank,
-      gameType: data.gameType,
-      position: data.position,
-      champions: data.champions,
-      memo: data.memo ?? "",
+    createPost.mutate(data, {
+      onSuccess: () => {
+        reset();
+        onClose();
+      },
     });
-    reset();
-    onClose();
   };
 
   if (!open) return null;
@@ -100,143 +82,98 @@ export default function DuoRegisterModal({ open, onClose }: DuoRegisterModalProp
           <button
             type="button"
             onClick={onClose}
-            className="text-on-surface-disabled hover:text-on-surface transition-colors"
+            className="cursor-pointer text-on-surface-disabled hover:text-on-surface transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="block text-sm font-medium text-on-surface-medium mb-1">
-                소환사명 <span className="text-red-400">*</span>
-              </label>
-              <input
-                {...register("summonerName")}
-                placeholder="소환사명"
-                className="w-full bg-surface-4 border border-divider rounded-md px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-disabled focus:outline-none focus:border-primary"
-              />
-              {errors.summonerName && (
-                <p className="mt-1 text-xs text-red-400">{errors.summonerName.message}</p>
-              )}
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-on-surface-medium mb-1">
-                태그 <span className="text-red-400">*</span>
-              </label>
-              <input
-                {...register("tagLine")}
-                placeholder="KR1"
-                className="w-full bg-surface-4 border border-divider rounded-md px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-disabled focus:outline-none focus:border-primary"
-              />
-              {errors.tagLine && (
-                <p className="mt-1 text-xs text-red-400">{errors.tagLine.message}</p>
-              )}
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="block text-sm font-medium text-on-surface-medium mb-1">
-                티어 <span className="text-red-400">*</span>
-              </label>
-              <select
-                {...register("tier")}
-                className="w-full bg-surface-4 border border-divider rounded-md px-3 py-2 text-sm text-on-surface focus:outline-none focus:border-primary"
-              >
-                <option value="">선택</option>
-                {TIERS.map((t) => (
-                  <option key={t} value={t}>
-                    {TIER_LABELS[t]}
-                  </option>
-                ))}
-              </select>
-              {errors.tier && (
-                <p className="mt-1 text-xs text-red-400">{errors.tier.message}</p>
-              )}
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-on-surface-medium mb-1">
-                랭크 <span className="text-red-400">*</span>
-              </label>
-              <select
-                {...register("rank")}
-                disabled={isMasterPlus}
-                className="w-full bg-surface-4 border border-divider rounded-md px-3 py-2 text-sm text-on-surface focus:outline-none focus:border-primary disabled:opacity-50"
-              >
-                <option value="">{isMasterPlus ? "-" : "선택"}</option>
-                {!isMasterPlus &&
-                  RANKS.map((r) => (
-                    <option key={r} value={r}>
-                      {r}
-                    </option>
-                  ))}
-              </select>
-              {errors.rank && !isMasterPlus && (
-                <p className="mt-1 text-xs text-red-400">{errors.rank.message}</p>
-              )}
-            </div>
-          </div>
-
           <Controller
-            name="gameType"
+            name="primaryLane"
             control={control}
             render={({ field }) => (
-              <GameTypeSelector
+              <LaneSelector
+                label="주 라인"
                 value={field.value ?? ""}
                 onChange={field.onChange}
-                error={errors.gameType?.message}
+                error={errors.primaryLane?.message}
               />
             )}
           />
 
           <Controller
-            name="position"
+            name="desiredLane"
             control={control}
             render={({ field }) => (
-              <PositionSelector
+              <LaneSelector
+                label="부 라인"
                 value={field.value ?? ""}
                 onChange={field.onChange}
-                error={errors.position?.message}
+                error={errors.desiredLane?.message}
               />
             )}
           />
 
           <Controller
-            name="champions"
+            name="hasMicrophone"
             control={control}
             render={({ field }) => (
-              <ChampionPicker
-                value={field.value}
-                onChange={field.onChange}
-                error={errors.champions?.message}
-              />
+              <div>
+                <label className="block text-sm text-on-surface-medium mb-2">
+                  마이크
+                </label>
+                <button
+                  type="button"
+                  onClick={() => field.onChange(!field.value)}
+                  className={`cursor-pointer flex items-center gap-2 px-4 py-2 rounded-md text-sm transition-colors ${
+                    field.value
+                      ? "bg-primary text-on-primary"
+                      : "bg-surface-4 border border-divider text-on-surface-medium hover:bg-surface-8"
+                  }`}
+                >
+                  {field.value ? (
+                    <Mic className="w-4 h-4" />
+                  ) : (
+                    <MicOff className="w-4 h-4" />
+                  )}
+                  {field.value ? "마이크 사용" : "마이크 미사용"}
+                </button>
+              </div>
             )}
           />
 
           <div>
-            <label className="block text-sm font-medium text-on-surface-medium mb-1">
+            <label className="block text-sm text-on-surface-medium mb-1">
               메모
             </label>
             <textarea
               {...register("memo")}
-              placeholder="하고 싶은 말을 적어주세요 (최대 100자)"
-              maxLength={100}
+              placeholder="하고 싶은 말을 적어주세요 (최대 500자)"
+              maxLength={500}
               rows={2}
               className="w-full bg-surface-4 border border-divider rounded-md px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-disabled focus:outline-none focus:border-primary resize-none"
             />
             {errors.memo && (
-              <p className="mt-1 text-xs text-red-400">{errors.memo.message}</p>
+              <p className="mt-1 text-xs text-red-400">
+                {errors.memo.message}
+              </p>
             )}
           </div>
 
           <button
             type="submit"
-            className="w-full bg-primary hover:bg-primary/80 text-on-surface font-medium py-2.5 rounded-md transition-colors"
+            disabled={createPost.isPending}
+            className="cursor-pointer w-full bg-primary hover:bg-primary/80 text-on-surface font-medium py-2.5 rounded-md transition-colors disabled:opacity-50"
           >
-            등록하기
+            {createPost.isPending ? "등록 중..." : "등록하기"}
           </button>
+
+          {createPost.isError && (
+            <p className="text-xs text-red-400 text-center">
+              {createPost.error?.message || "등록에 실패했습니다."}
+            </p>
+          )}
         </form>
       </div>
     </div>

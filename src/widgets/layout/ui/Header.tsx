@@ -3,12 +3,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ThemeToggle } from "@/features/theme-toggle";
-import { useLogout } from "@/features/auth";
-import { useAuthStore } from "@/entities/auth";
 
 export default function Header() {
-  const user = useAuthStore((s) => s.user);
-  const { handleLogout } = useLogout();
 
   return (
     <header className="bg-surface-1 border-b border-divider">
@@ -29,29 +25,6 @@ export default function Header() {
             </div>
             <div className="flex items-center gap-4">
               <ThemeToggle />
-              {user ? (
-                <>
-                  <Link
-                    href="/mypage"
-                    className="text-on-surface-medium hover:text-on-surface"
-                  >
-                    {user.nickname}
-                  </Link>
-                  <button
-                    onClick={handleLogout}
-                    className="text-on-surface-medium hover:text-on-surface"
-                  >
-                    로그아웃
-                  </button>
-                </>
-              ) : (
-                <Link
-                  href="/login"
-                  className="text-on-surface-medium hover:text-on-surface"
-                >
-                  로그인
-                </Link>
-              )}
             </div>
           </div>
         </div>

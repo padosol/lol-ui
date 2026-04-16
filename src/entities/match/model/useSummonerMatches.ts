@@ -7,12 +7,13 @@ export function useSummonerMatches(
   queueId?: number,
   pageNo: number = 0,
   region: string = "kr",
-  season?: string
+  season?: string,
+  enabled: boolean = true
 ) {
   return useQuery<SummonerMatchesResponse, Error>({
     queryKey: ["summoner", "matches", puuid, queueId, pageNo, region, season],
     queryFn: () => getSummonerMatches(puuid, queueId, pageNo, region, season),
-    enabled: !!puuid,
+    enabled: !!puuid && enabled,
     staleTime: 2 * 60 * 1000,
   });
 }

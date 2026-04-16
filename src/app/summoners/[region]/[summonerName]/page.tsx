@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { getLeagueByPuuid } from "@/entities/league";
 import { serverApiClient } from "@/shared/api/server-client";
 import { getSummonerProfile } from "@/entities/summoner";
@@ -7,6 +8,10 @@ import { normalizeRegion, parseSummonerName } from "@/entities/summoner";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { SummonerPageClient } from "@/views/summoner";
+
+const getCachedSummonerProfile = cache(
+  (gameName: string, region: string) => getSummonerProfile(gameName, region, serverApiClient)
+);
 
 interface PageProps {
   params: Promise<{
@@ -30,7 +35,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { region, gameName } = parseParams(urlRegion, urlSummonerName);
 
   try {
-    const profile = await getSummonerProfile(gameName, region, serverApiClient);
+    const profile = await getCachedSummonerProfile(gameName, region);
     const displayName = `${profile.gameName}#${profile.tagLine}`;
     const title = `${displayName} 전적 검색 | METAPICK`;
 
@@ -83,7 +88,7 @@ export default async function SummonerPage({ params }: PageProps) {
   // 서버에서 직접 API 호출
   let profileData;
   try {
-    profileData = await getSummonerProfile(gameName, region, serverApiClient);
+    profileData = await getCachedSummonerProfile(gameName, region);
   } catch (error) {
     logger.error("Failed to load summoner profile", {
       url: `/summoners/${region}/${gameName}`,

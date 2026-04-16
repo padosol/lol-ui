@@ -22,14 +22,15 @@ export default function RecentlyPlayed({
   region = "kr",
 }: RecentlyPlayedProps) {
   const latestSeasonValue = useSeasonStore((s) => s.getLatestSeasonValue());
-  const effectiveSeason = latestSeasonValue ?? "";
+  const seasonsLoaded = useSeasonStore((s) => s.seasons.length > 0);
 
   const { data: matchesData, isLoading } = useSummonerMatches(
     puuid || "",
     undefined,
     0,
     region,
-    effectiveSeason,
+    latestSeasonValue ?? undefined,
+    seasonsLoaded,
   );
 
   const matchContent = matchesData?.content;

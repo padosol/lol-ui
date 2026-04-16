@@ -50,6 +50,7 @@ export default function MatchHistory({
 
   // 날짜별 게임수 조회
   const latestSeasonValue = useSeasonStore((s) => s.getLatestSeasonValue());
+  const seasonsLoaded = useSeasonStore((s) => s.seasons.length > 0);
 
   const filterQueueId = useMemo(() => {
     switch (gameModeFilter) {
@@ -70,12 +71,13 @@ export default function MatchHistory({
   const maxCount = dailyMatchData?.maxCount;
 
   // 소환사 매치 배치 조회
-  const { data: matchesData, isLoading } = useSummonerMatches(
+  const { data: matchesData, isLoading, isError } = useSummonerMatches(
     puuid || "",
     filterQueueId,
     page,
     region,
-    latestSeasonValue ?? undefined
+    latestSeasonValue ?? undefined,
+    seasonsLoaded
   );
 
   // puuid/region/refreshKey 변경 시 누적 데이터 초기화 - 의도적인 상태 리셋
@@ -108,9 +110,13 @@ export default function MatchHistory({
   // 페이지별 응답을 누적(append)해서 유지 - 외부 데이터 동기화
   /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
-    setIsLoadingMore(false);
     const newDetails = matchesData?.content;
-    if (!newDetails || newDetails.length === 0) return;
+    if (!newDetails || newDetails.length === 0) {
+      if (matchesData) {
+        setIsLoadingMore(false);
+      }
+      return;
+    }
 
     setAccMatchDetails((prev) => {
       const next = [...prev];
@@ -124,7 +130,17 @@ export default function MatchHistory({
       }
       return next;
     });
+    setIsLoadingMore(false);
   }, [matchesData]);
+  /* eslint-enable react-hooks/set-state-in-effect */
+
+  // API 에러 시 로딩 상태 해제
+  /* eslint-disable react-hooks/set-state-in-effect */
+  useEffect(() => {
+    if (isError) {
+      setIsLoadingMore(false);
+    }
+  }, [isError]);
   /* eslint-enable react-hooks/set-state-in-effect */
 
   // 스크롤 위치에 따라 Top 버튼 표시/숨김
@@ -513,7 +529,7 @@ export default function MatchHistory({
                 className={`group relative flex flex-col w-full border-l-4 ${borderColor} ${bgColor} rounded-lg overflow-hidden transition-all hover:shadow-lg ${shadowColor}`}
               >
                 {/* 데스크톱 레이아웃 (md 이상) */}
-                <div className="hidden md:grid grid-cols-[90px_250px_90px_1fr_30px] bg-surface-1/50 backdrop-blur-sm w-full">
+                <div className="hidden md:grid grid-cols-[80px_240px_60px_1fr_30px] bg-surface-1/50 backdrop-blur-sm w-full">
                   {/* 1. 게임 정보 섹션 */}
                   <div className="flex flex-col items-start justify-between p-2 text-xs shrink-0 h-full gap-3">
                     <div className="flex flex-col items-start gap-0.5">
@@ -543,7 +559,7 @@ export default function MatchHistory({
                   </div>
 
                   {/* 2. 챔피언+룬+아이템+KDA 정보 섹션 */}
-                  <div className="flex gap-4 py-2 pl-4 pr-3 min-w-0">
+                  <div className="flex gap-4 pl-2 pr-2 min-w-0">
                     <div className="flex flex-1 gap-4 flex-col">
                       {/* 상단: 챔피언+스펠+룬, KDA, 통계 */}
                       <div className="flex gap-4 items-center">
@@ -684,7 +700,7 @@ export default function MatchHistory({
                   </div>
 
                   {/* 3. 평균 티어 섹션 */}
-                  <div className="flex flex-col items-center justify-start py-2 w-[80px]">
+                  <div className="flex flex-col items-center justify-start py-2 w-[60px]">
                     {gameInfo?.averageTier != null ? (
                       <div className="flex flex-col items-center gap-0.5">
                         <span className="text-[10px] text-on-surface-disabled">평균</span>
@@ -720,7 +736,7 @@ export default function MatchHistory({
                   </div>
 
                   {/* 4. 팀 정보 섹션 */}
-                  <div className="py-1 px-1.5 w-full shrink-0 flex flex-col items-end max-w-[200px] overflow-hidden">
+                  <div className="py-1 px-1.5 w-full shrink-0 flex flex-col items-end overflow-hidden">
                     {isArena ? (
                       <ArenaTeamInfo
                         participants={detail.participantData || []}

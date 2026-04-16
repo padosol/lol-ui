@@ -9,10 +9,8 @@ export default function CallbackPageClient() {
 
   useEffect(() => {
     if (calledRef.current) return;
-    const hash = window.location.hash;
-    if (!hash) return;
     calledRef.current = true;
-    handleAuthCallback(hash);
+    handleAuthCallback();
   }, [handleAuthCallback]);
 
   return (

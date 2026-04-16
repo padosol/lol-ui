@@ -1,6 +1,6 @@
 "use client";
 
-import { GameTooltip } from "@/shared/ui/tooltip";
+import { GameTooltip, Tooltip } from "@/shared/ui/tooltip";
 import type { Match, MatchDetail, ParticipantData } from "@/entities/match";
 import { getChampionImageUrl } from "@/entities/champion";
 import {
@@ -334,7 +334,7 @@ export default function MatchDetailOverview({
               </div>
 
               {/* Col 3: 텍스트 정보 (2행) */}
-                <div className="flex flex-col flex-1 min-w-0">
+                <div className="flex flex-col flex-1 min-w-0 md:max-w-[240px]">
                   <div className="flex items-center">
                     <SummonerNameLink
                       participant={participant}
@@ -362,63 +362,45 @@ export default function MatchDetailOverview({
               </div>
 
               {/* Col 4: 피해량 막대바 (2행, 인라인) */}
-              <div className="flex flex-col gap-0.5 shrink-0 w-24">
-                <div className="flex items-center gap-1">
-                  <div className="flex-1 h-1.5 bg-surface-8/50 rounded-full overflow-hidden">
-                    <div className="h-full bg-warning/70 rounded-full" style={{ width: `${damagePercentage}%` }} />
+              <div className="flex flex-col gap-0.5 shrink-0 w-32">
+                <Tooltip content={<span className="bg-surface-1 border border-divider shadow-xl rounded-lg px-3 py-1.5 text-xs text-on-surface whitespace-nowrap">적에게 가한 피해량</span>}>
+                  <div className="flex items-center gap-1 cursor-default">
+                    <div className="flex-1 h-1.5 bg-surface-8/50 rounded-full overflow-hidden">
+                      <div className="h-full bg-warning/70 rounded-full" style={{ width: `${damagePercentage}%` }} />
+                    </div>
+                    <span className="text-warning text-[9px] w-7 text-right">{(damage / 1000).toFixed(1)}k</span>
                   </div>
-                  <span className="text-warning text-[9px] w-7 text-right">{(damage / 1000).toFixed(1)}k</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <div className="flex-1 h-1.5 bg-surface-8/50 rounded-full overflow-hidden">
-                    <div className="h-full bg-primary/70 rounded-full" style={{ width: `${damageTakenPercentage}%` }} />
+                </Tooltip>
+                <Tooltip content={<span className="bg-surface-1 border border-divider shadow-xl rounded-lg px-3 py-1.5 text-xs text-on-surface whitespace-nowrap">받은 피해량</span>}>
+                  <div className="flex items-center gap-1 cursor-default">
+                    <div className="flex-1 h-1.5 bg-surface-8/50 rounded-full overflow-hidden">
+                      <div className="h-full bg-primary/70 rounded-full" style={{ width: `${damageTakenPercentage}%` }} />
+                    </div>
+                    <span className="text-primary text-[9px] w-7 text-right">{(damageTaken / 1000).toFixed(1)}k</span>
                   </div>
-                  <span className="text-primary text-[9px] w-7 text-right">{(damageTaken / 1000).toFixed(1)}k</span>
-                </div>
+                </Tooltip>
               </div>
 
-              {/* Col 5: 아이템 (2행: 3개 / 4개) */}
-              <div className="flex flex-col gap-0.5 shrink-0">
-                <div className="flex gap-0.5">
-                  {participantItems.slice(0, 3).map((itemId, idx) => (
-                    <GameTooltip key={idx} type="item" id={itemId} disabled={itemId <= 0}>
-                      <div className="w-[15px] h-[15px] bg-surface-4 rounded border border-divider/50 overflow-hidden relative">
-                        {itemId > 0 ? (
-                          <Image
-                            src={getItemImageUrl(itemId)}
-                            alt={`Item ${itemId}`}
-                            fill
-                            sizes="15px"
-                            className="object-cover"
-                            unoptimized
-                          />
-                        ) : (
-                          <div className="w-full h-full bg-surface-4/50"></div>
-                        )}
-                      </div>
-                    </GameTooltip>
-                  ))}
-                </div>
-                <div className="flex gap-0.5">
-                  {participantItems.slice(3, 7).map((itemId, idx) => (
-                    <GameTooltip key={idx + 3} type="item" id={itemId} disabled={itemId <= 0}>
-                      <div className="w-[15px] h-[15px] bg-surface-4 rounded border border-divider/50 overflow-hidden relative">
-                        {itemId > 0 ? (
-                          <Image
-                            src={getItemImageUrl(itemId)}
-                            alt={`Item ${itemId}`}
-                            fill
-                            sizes="15px"
-                            className="object-cover"
-                            unoptimized
-                          />
-                        ) : (
-                          <div className="w-full h-full bg-surface-4/50"></div>
-                        )}
-                      </div>
-                    </GameTooltip>
-                  ))}
-                </div>
+              {/* Col 5: 아이템 */}
+              <div className="flex flex-wrap md:flex-nowrap gap-0.5 shrink-0 max-w-[51px] md:max-w-none ml-auto">
+                {participantItems.slice(0, 7).map((itemId, idx) => (
+                  <GameTooltip key={idx} type="item" id={itemId} disabled={itemId <= 0}>
+                    <div className="w-[15px] h-[15px] md:w-[24px] md:h-[24px] bg-surface-4 rounded border border-divider/50 overflow-hidden relative">
+                      {itemId > 0 ? (
+                        <Image
+                          src={getItemImageUrl(itemId)}
+                          alt={`Item ${itemId}`}
+                          fill
+                          sizes="24px"
+                          className="object-cover"
+                          unoptimized
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-surface-4/50"></div>
+                      )}
+                    </div>
+                  </GameTooltip>
+                ))}
               </div>
             </div>
           );

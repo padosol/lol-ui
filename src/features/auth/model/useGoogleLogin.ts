@@ -1,9 +1,9 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import axios from "axios";
 import { useAuthStore } from "@/entities/auth";
 import { getMyProfile } from "@/entities/auth";
-import type { AuthTokens } from "@/entities/auth";
 
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || "http://localhost:8100/api";
@@ -12,35 +12,44 @@ const SERVER_ROOT_URL = API_BASE_URL.replace(/\/api\/?$/, "");
 
 export function useGoogleLogin() {
   const router = useRouter();
-  const setTokens = useAuthStore((s) => s.setTokens);
   const setUser = useAuthStore((s) => s.setUser);
 
   function initiateGoogleLogin() {
     window.location.href = `${SERVER_ROOT_URL}/oauth2/authorize/google`;
   }
 
-  async function handleAuthCallback(hash: string) {
-    const params = new URLSearchParams(hash.replace(/^#/, ""));
-    const accessToken = params.get("accessToken");
-    const refreshToken = params.get("refreshToken");
-    const expiresIn = params.get("expiresIn");
+  async function handleAuthCallback() {
+    const hash = window.location.hash;
+    if (hash) {
+      const hashParams = new URLSearchParams(hash.replace(/^#/, ""));
 
-    if (!accessToken || !refreshToken || !expiresIn) {
-      router.replace("/login");
-      return;
+      const error = hashParams.get("error");
+      if (error) {
+        router.replace(`/login?error=${encodeURIComponent(error)}`);
+        return;
+      }
+
+      const linkSuccess = hashParams.get("linkSuccess");
+      if (linkSuccess === "true") {
+        router.replace("/mypage?linkSuccess=true");
+        return;
+      }
     }
 
-    const tokens: AuthTokens = {
-      accessToken,
-      refreshToken,
-      expiresIn: Number(expiresIn),
-    };
-    setTokens(tokens);
-
-    const profile = await getMyProfile();
-    setUser(profile);
-
-    router.replace("/");
+    try {
+      const profile = await getMyProfile();
+      setUser(profile);
+      router.replace("/");
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err) && err.response?.status === 403) {
+        const message =
+          err.response.data?.errorMessage ||
+          "탈퇴 후 30일 이내에는 재가입할 수 없습니다.";
+        router.replace(`/login?error=${encodeURIComponent(message)}`);
+      } else {
+        router.replace("/login");
+      }
+    }
   }
 
   return { initiateGoogleLogin, handleAuthCallback };

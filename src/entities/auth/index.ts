@@ -1,16 +1,14 @@
 export { useAuthStore } from "./model/useAuthStore";
 export {
-  refreshToken,
+  refreshAuth,
   logout,
   getMyProfile,
   updateNickname,
-  getRiotAccounts,
-  linkRiotAccount,
-  disconnectRiotAccount,
+  disconnectSocialAccount,
+  withdrawMember,
 } from "./api/authApi";
 export type {
   AuthState,
-  AuthTokens,
   MemberProfile,
-  RsoProfile,
+  SocialAccount,
 } from "./types";

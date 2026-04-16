@@ -1,32 +1,23 @@
-export interface AuthTokens {
-  accessToken: string;
-  refreshToken: string;
-  expiresIn: number;
+export interface SocialAccount {
+  id: number;
+  provider: string;
+  providerId: string;
+  email: string;
+  nickname: string;
+  linkedAt: string;
 }
 
 export interface MemberProfile {
   id: number;
+  uuid: string;
   email: string;
   nickname: string;
   profileImageUrl: string;
-  oauthProvider: string;
-}
-
-export interface RsoProfile {
-  id: number;
-  puuid: string;
-  gameName: string;
-  tagLine: string;
-  platformId: string;
-  linkedAt: string;
+  socialAccounts: SocialAccount[];
 }
 
 export interface AuthState {
-  accessToken: string | null;
-  refreshToken: string | null;
-  expiresIn: number | null;
   user: MemberProfile | null;
-  setTokens: (tokens: AuthTokens) => void;
   setUser: (user: MemberProfile) => void;
   clearAuth: () => void;
 }

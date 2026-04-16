@@ -1,29 +1,27 @@
 "use client";
 
+import { useState } from "react";
 import { useAuthStore } from "@/entities/auth";
+import { WithdrawalConfirmModal } from "@/features/member-withdrawal";
 import { NicknameEditForm } from "@/features/nickname-edit";
-import { RsoConnectCard } from "@/features/rso-connect";
+import { RiotLinkCard } from "@/features/riot-link";
 import { Check } from "lucide-react";
 
 export default function AccountSection() {
   const user = useAuthStore((s) => s.user);
+  const [showWithdrawalModal, setShowWithdrawalModal] = useState(false);
 
   if (!user) return null;
+
+  const googleAccount = user.socialAccounts?.find(
+    (a) => a.provider === "GOOGLE",
+  );
 
   return (
     <div className="space-y-8">
       <section>
         <h2 className="text-lg font-bold text-on-surface mb-6">기본정보</h2>
         <div className="space-y-6">
-          <div>
-            <label className="block text-sm text-on-surface-medium mb-2">
-              이메일
-            </label>
-            <div className="px-4 py-3 bg-surface-4 border border-divider rounded-lg text-on-surface-disabled text-sm">
-              {user.email}
-            </div>
-          </div>
-
           <div>
             <label className="block text-sm font-bold text-on-surface mb-2">
               비밀번호
@@ -73,17 +71,37 @@ export default function AccountSection() {
                 <span className="text-sm font-medium text-on-surface">
                   구글
                 </span>
-                <p className="text-xs text-on-surface-medium">{user.email}</p>
+                <p className="text-xs text-on-surface-medium">
+                  {googleAccount?.email ?? user.email}
+                </p>
               </div>
             </div>
             <span className="flex items-center gap-1 text-sm text-success">
               <Check className="w-4 h-4" />
-              로그인되었습니다.
+              연동됨
             </span>
           </div>
-          <RsoConnectCard />
+
+          <RiotLinkCard />
         </div>
       </section>
+
+      <hr className="border-divider" />
+
+      <section>
+        <button
+          type="button"
+          onClick={() => setShowWithdrawalModal(true)}
+          className="text-sm text-on-surface-disabled hover:text-error transition-colors"
+        >
+          회원 탈퇴
+        </button>
+      </section>
+
+      <WithdrawalConfirmModal
+        open={showWithdrawalModal}
+        onClose={() => setShowWithdrawalModal(false)}
+      />
     </div>
   );
 }
