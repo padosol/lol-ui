@@ -7,7 +7,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "prepare": "husky"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -25,6 +26,10 @@
     "zod": "^4.3.6",
     "zustand": "^5.0.11"
   },
+  "lint-staged": {
+    "*.js": "eslint --fix",
+    "*.{js,css,md}": "prettier --write"
+  },
   "devDependencies": {
     "@playwright/test": "^1.58.2",
     "@tailwindcss/postcss": "^4",
@@ -34,6 +39,8 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
     "playwright": "^1.58.2",
     "tailwindcss": "^4",
     "typescript": "^5"

@@ -33,9 +33,11 @@ interface MatchSummaryProps {
   matches: Match[];
   dailyCounts?: DailyMatchCount[];
   isDailyCountLoading?: boolean;
+  minCount?: number;
+  maxCount?: number;
 }
 
-export default function MatchSummary({ matches, dailyCounts, isDailyCountLoading }: MatchSummaryProps) {
+export default function MatchSummary({ matches, dailyCounts, isDailyCountLoading, minCount, maxCount }: MatchSummaryProps) {
   if (matches.length === 0) {
     return null;
   }
@@ -264,7 +266,7 @@ export default function MatchSummary({ matches, dailyCounts, isDailyCountLoading
             <div className="flex items-center justify-around mt-1">
               {positions.map((pos, index) => {
                 const positionUpper = pos.position?.toUpperCase() || "";
-                const positionImageUrl = `https://static.mmrtr.shop/position/Position-${positionUpper}.png`;
+                const positionImageUrl = `https://static.metapick.me/position/Position-${positionUpper}.png`;
                 return (
                   <div key={index} className="relative w-5 h-5 shrink-0">
                     <Image
@@ -285,7 +287,7 @@ export default function MatchSummary({ matches, dailyCounts, isDailyCountLoading
         {/* 게임 활동 - 잔디 그래프 */}
         <div className="space-y-1 min-w-0 col-span-3 md:col-span-1">
           <div className="text-on-surface-medium text-xs mb-0.5">최근 3개월 게임 활동</div>
-          <ContributionGraph dailyCounts={dailyCounts ?? []} isLoading={isDailyCountLoading} />
+          <ContributionGraph dailyCounts={dailyCounts ?? []} isLoading={isDailyCountLoading} minCount={minCount} maxCount={maxCount} />
         </div>
       </div>
     </div>

@@ -8,5 +8,5 @@ export type {
   Match, MatchDetail, ParticipantData, GameInfoData, TeamInfo,
   ChampionStat, ItemData, RuneSelection, RuneStyleEntry, RuneStyle,
   StatValue, ItemSeqEntry, SkillSeqEntry, MatchIdsResponse,
-  SummonerMatchesResponse, DailyMatchCount,
+  SummonerMatchesResponse, DailyMatchCount, DailyMatchCountResponse,
 } from "./types";

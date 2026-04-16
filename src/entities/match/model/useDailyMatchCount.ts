@@ -1,5 +1,5 @@
 import { getDailyMatchCount } from "../api/matchApi";
-import type { DailyMatchCount } from "../types";
+import type { DailyMatchCountResponse } from "../types";
 import { useQuery } from "@tanstack/react-query";
 
 export function useDailyMatchCount(
@@ -8,7 +8,7 @@ export function useDailyMatchCount(
   season: string,
   queueId?: number
 ) {
-  return useQuery<DailyMatchCount[], Error>({
+  return useQuery<DailyMatchCountResponse, Error>({
     queryKey: ["daily-match-count", region, puuid, season, queueId],
     queryFn: () => getDailyMatchCount(region, puuid, season, queueId),
     enabled: !!puuid && !!season,

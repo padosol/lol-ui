@@ -43,7 +43,7 @@ export function normalizeRunes(runeStyle: RuneStyle | null): NormalizedRunes | n
   }
 
   // Format B: flat 구조 (primaryRuneId + primaryRuneIds)
-  if (runeStyle.primaryRuneId && runeStyle.primaryRuneIds) {
+  if (runeStyle.primaryRuneId !== undefined && runeStyle.primaryRuneIds) {
     return {
       primaryTreeId: runeStyle.primaryRuneId,
       secondaryTreeId: runeStyle.secondaryRuneId ?? 0,
@@ -53,7 +53,7 @@ export function normalizeRunes(runeStyle: RuneStyle | null): NormalizedRunes | n
   }
 
   // Format C: flat 구조 (primaryStyleId + primaryPerk0~3)
-  if (runeStyle.primaryStyleId && runeStyle.primaryPerk0 !== undefined) {
+  if (runeStyle.primaryStyleId !== undefined && runeStyle.primaryPerk0 !== undefined) {
     return {
       primaryTreeId: runeStyle.primaryStyleId,
       secondaryTreeId: runeStyle.subStyleId ?? 0,

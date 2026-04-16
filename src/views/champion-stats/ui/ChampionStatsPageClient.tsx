@@ -34,10 +34,10 @@ export default function ChampionStatsPageClient() {
   }, [data, selectedPosition]);
 
   return (
-    <div className="min-h-screen bg-surface">
+    <div className="min-h-screen bg-surface flex flex-col">
       <Header />
       <Navigation />
-      <main className="max-w-[1080px] mx-auto py-8">
+      <main className="flex-1 w-full max-w-[1080px] mx-auto py-8">
         <div className="max-w-[1024px] mx-auto">
           <div className="lg:grid lg:grid-cols-2 lg:gap-6">
             {/* 좌측 사이드바 - 데스크톱만 표시 */}

@@ -126,6 +126,8 @@ export interface TeamInfo {
   inhibitorKills: number;
   championId: number[];
   pickTurn: number[];
+  goldTimeline?: number[];
+  timestamps?: number[];
 }
 
 export interface ChampionStat {
@@ -202,4 +204,10 @@ export interface SummonerMatchesResponse {
 export interface DailyMatchCount {
   gameDate: string;
   gameCount: number;
+}
+
+export interface DailyMatchCountResponse {
+  dailyCounts: DailyMatchCount[];
+  minCount: number;
+  maxCount: number;
 }

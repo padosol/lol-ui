@@ -1,10 +1,11 @@
 import { logger } from "@/shared/lib/logger";
-import axios, { InternalAxiosRequestConfig } from "axios";
+import axios, { InternalAxiosRequestConfig, AxiosError } from "axios";
 
 // axios 타입 확장: 요청 시작 시간 기록용
 declare module "axios" {
   interface InternalAxiosRequestConfig {
     metadata?: { startTime: number };
+    _retry?: boolean;
   }
 }
 
@@ -16,15 +17,44 @@ const API_BASE_URL =
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,
   timeout: 10000,
+  withCredentials: true,
   headers: {
     "Content-Type": "application/json",
   },
 });
 
+// 토큰 갱신 동시성 제어
+let isRefreshing = false;
+let failedQueue: {
+  resolve: () => void;
+  reject: (error: unknown) => void;
+}[] = [];
+
+function processQueue(error: unknown) {
+  failedQueue.forEach((prom) => {
+    if (!error) {
+      prom.resolve();
+    } else {
+      prom.reject(error);
+    }
+  });
+  failedQueue = [];
+}
+
+function clearAuthStorage() {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.removeItem("auth-storage");
+  } catch {
+    // ignore
+  }
+}
+
 // 요청 인터셉터
 apiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     config.metadata = { startTime: Date.now() };
+
     logger.info("API Request", {
       method: config.method?.toUpperCase(),
       url: `${config.baseURL ?? ""}${config.url ?? ""}`,
@@ -50,8 +80,9 @@ apiClient.interceptors.response.use(
     });
     return response;
   },
-  (error) => {
-    const config = error.config as InternalAxiosRequestConfig | undefined;
+  async (error: AxiosError) => {
+    const originalRequest = error.config as InternalAxiosRequestConfig | undefined;
+    const config = originalRequest;
     const duration = config?.metadata?.startTime
       ? Date.now() - config.metadata.startTime
       : undefined;
@@ -59,6 +90,55 @@ apiClient.interceptors.response.use(
     const url = config
       ? `${config.baseURL ?? ""}${config.url ?? ""}`
       : undefined;
+
+    // 401 토큰 갱신 로직
+    if (
+      error.response?.status === 401 &&
+      originalRequest &&
+      !originalRequest._retry
+    ) {
+      // 토큰 갱신/로그아웃 요청은 재시도하지 않음
+      const requestUrl = originalRequest.url ?? "";
+      if (requestUrl.includes("/auth/refresh") || requestUrl.includes("/auth/logout")) {
+        clearAuthStorage();
+        if (typeof window !== "undefined") {
+          window.location.href = "/login";
+        }
+        return Promise.reject(error);
+      }
+
+      if (isRefreshing) {
+        return new Promise((resolve, reject) => {
+          failedQueue.push({
+            resolve: () => {
+              resolve(apiClient(originalRequest));
+            },
+            reject: (err: unknown) => {
+              reject(err);
+            },
+          });
+        });
+      }
+
+      originalRequest._retry = true;
+      isRefreshing = true;
+
+      try {
+        // 순환 방지를 위해 axios 직접 사용 (쿠키 자동 전송)
+        await axios.post(`${API_BASE_URL}/auth/refresh`, {}, { withCredentials: true });
+        processQueue(null);
+        return apiClient(originalRequest);
+      } catch (refreshError) {
+        processQueue(refreshError);
+        clearAuthStorage();
+        if (typeof window !== "undefined") {
+          window.location.href = "/login";
+        }
+        return Promise.reject(refreshError);
+      } finally {
+        isRefreshing = false;
+      }
+    }
 
     if (error.response) {
       // 서버에서 응답이 온 경우

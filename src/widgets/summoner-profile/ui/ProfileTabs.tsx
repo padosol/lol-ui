@@ -8,6 +8,7 @@ import FanLetter from "./FanLetter";
 import { IngameTab } from "@/widgets/ingame";
 import { LeagueInfo } from "@/entities/league";
 import { MatchHistory } from "@/widgets/match-history";
+import { RecentlyPlayed } from "@/widgets/recently-played";
 
 interface ProfileTabsProps {
   summonerName: string;
@@ -72,12 +73,13 @@ export default function ProfileTabs({
                 showTitle={true}
                 limit={5}
               />
+              <RecentlyPlayed puuid={puuid} region={region} />
             </div>
 
             {/* 데스크톱: 기존 3컬럼 그리드 유지 */}
             <div className="grid grid-cols-1 lg:grid-cols-[660px_1fr] gap-6">
               <div>
-                <MatchHistory puuid={puuid} showTitle={false} refreshKey={refreshKey} />
+                <MatchHistory puuid={puuid} region={region} showTitle={false} refreshKey={refreshKey} />
               </div>
               <div className="hidden lg:block space-y-6">
                 <LeagueInfo
@@ -90,6 +92,7 @@ export default function ProfileTabs({
                   showTitle={true}
                   limit={5}
                 />
+                <RecentlyPlayed puuid={puuid} region={region} />
               </div>
             </div>
           </div>
