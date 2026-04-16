@@ -92,7 +92,7 @@ export default function SkillOrderGrid({ skillSeq, championName }: SkillOrderGri
   );
 }
 
-const IMAGE_HOST = process.env.NEXT_PUBLIC_IMAGE_HOST || 'https://static.mmrtr.shop';
+const IMAGE_HOST = process.env.NEXT_PUBLIC_IMAGE_HOST || 'https://static.metapick.me';
 
 function SkillLabel({ skillKey, skillIndex, championName }: { skillKey: string; skillIndex: number; championName?: string }) {
   const [imgError, setImgError] = useState(false);

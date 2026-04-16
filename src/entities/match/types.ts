@@ -126,6 +126,8 @@ export interface TeamInfo {
   inhibitorKills: number;
   championId: number[];
   pickTurn: number[];
+  goldTimeline?: number[];
+  timestamps?: number[];
 }
 
 export interface ChampionStat {

@@ -266,7 +266,7 @@ export default function MatchSummary({ matches, dailyCounts, isDailyCountLoading
             <div className="flex items-center justify-around mt-1">
               {positions.map((pos, index) => {
                 const positionUpper = pos.position?.toUpperCase() || "";
-                const positionImageUrl = `https://static.mmrtr.shop/position/Position-${positionUpper}.png`;
+                const positionImageUrl = `https://static.metapick.me/position/Position-${positionUpper}.png`;
                 return (
                   <div key={index} className="relative w-5 h-5 shrink-0">
                     <Image

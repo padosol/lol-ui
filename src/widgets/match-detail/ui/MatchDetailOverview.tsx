@@ -413,7 +413,15 @@ export default function MatchDetailOverview({
     <>
       <div className="space-y-4">
         {renderTeam(blueTeam, "blue", blueTeamStats)}
-        <GoldFlowChart />
+        {detail.teamInfoData.blueTeam.goldTimeline &&
+          detail.teamInfoData.redTeam.goldTimeline &&
+          detail.teamInfoData.blueTeam.timestamps && (
+          <GoldFlowChart
+            blueGoldTimeline={detail.teamInfoData.blueTeam.goldTimeline}
+            redGoldTimeline={detail.teamInfoData.redTeam.goldTimeline}
+            timestamps={detail.teamInfoData.blueTeam.timestamps}
+          />
+        )}
         {renderTeam(redTeam, "red", redTeamStats)}
       </div>
     </>
