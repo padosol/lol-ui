@@ -46,7 +46,7 @@ export default function IngamePlayer({
 
   const championImageUrl = champId
     ? getChampionImageUrl(champId)
-    : `https://static.mmrtr.shop/champion/${participant.championId}.png`;
+    : `https://static.metapick.me/champion/${participant.championId}.png`;
 
   const perks = participant.perks;
   const mainPerkId = perks?.perkIds?.[0];

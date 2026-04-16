@@ -21,34 +21,20 @@ ChartJS.register(
   Tooltip
 );
 
-interface GoldFlowEntry {
-  teamId: number;
-  timestamp: number;
-  total_gold: number;
+interface GoldFlowChartProps {
+  blueGoldTimeline: number[];
+  redGoldTimeline: number[];
+  timestamps: number[];
 }
 
-// 더미 데이터: 1분 간격, 30분 게임
-const DUMMY_DATA: GoldFlowEntry[] = (() => {
-  const entries: GoldFlowEntry[] = [];
-  let blueGold = 500;
-  let redGold = 500;
-
-  for (let t = 0; t <= 30; t++) {
-    blueGold += Math.floor(Math.random() * 800 + 400);
-    redGold += Math.floor(Math.random() * 800 + 400);
-    entries.push({ teamId: 100, timestamp: t, total_gold: blueGold });
-    entries.push({ teamId: 200, timestamp: t, total_gold: redGold });
-  }
-  return entries;
-})();
-
-export default function GoldFlowChart() {
-  const blueData = DUMMY_DATA.filter((d) => d.teamId === 100);
-  const redData = DUMMY_DATA.filter((d) => d.teamId === 200);
-
-  const labels = blueData.map((d) => `${d.timestamp}m`);
-  const goldDiffs = blueData.map(
-    (b, i) => b.total_gold - redData[i].total_gold
+export default function GoldFlowChart({
+  blueGoldTimeline,
+  redGoldTimeline,
+  timestamps,
+}: GoldFlowChartProps) {
+  const labels = timestamps.map((ts) => `${Math.floor(ts / 60000)}m`);
+  const goldDiffs = blueGoldTimeline.map(
+    (blue, i) => blue - (redGoldTimeline[i] ?? 0)
   );
 
   const maxAbsDiff = Math.max(...goldDiffs.map(Math.abs), 1000);
