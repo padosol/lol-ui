@@ -29,6 +29,13 @@ export interface StartItemBuildData {
   pickRate: number;
 }
 
+export interface BootBuildData {
+  bootId: number;
+  games: number;
+  winRate: number;
+  pickRate: number;
+}
+
 export interface RuneBuildData {
   primaryStyleId: number;
   subStyleId: number;
@@ -76,6 +83,7 @@ export interface ChampionPositionStats {
   matchups: MatchupData[];
   itemBuilds: ItemBuildData[];
   startItemBuilds: StartItemBuildData[];
+  bootBuilds: BootBuildData[];
   runeBuilds: RuneBuildData[];
   skillBuilds: SkillBuildData[];
   spellStats: SpellStatsData[];

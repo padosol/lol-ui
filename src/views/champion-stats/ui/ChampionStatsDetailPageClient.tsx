@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  BootBuildStats,
   ChampionOverview,
   ItemBuildStats,
   MatchupStats,
@@ -126,6 +127,7 @@ export default function ChampionStatsDetailPageClient({
                 />
               </div>
               <ItemBuildStats data={currentPositionStats.itemBuilds} startItemBuilds={currentPositionStats.startItemBuilds} />
+              <BootBuildStats data={currentPositionStats.bootBuilds} />
               <RuneStats data={currentPositionStats.runeBuilds} />
               <MatchupStats data={currentPositionStats.matchups ?? []} />
             </>
