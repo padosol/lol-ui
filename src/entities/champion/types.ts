@@ -45,9 +45,6 @@ export interface RuneBuildData {
   primaryPerk3: number;
   subPerk0: number;
   subPerk1: number;
-  statPerkDefense: number;
-  statPerkFlex: number;
-  statPerkOffense: number;
   games: number;
   winRate: number;
   pickRate: number;
