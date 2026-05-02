@@ -20,6 +20,16 @@ const SKILL_COLORS: Record<string, string> = {
 };
 
 function normalizeSkills(skillBuild: string): string[] {
+  if (skillBuild.trim().startsWith("[")) {
+    try {
+      const arr = JSON.parse(skillBuild);
+      if (Array.isArray(arr)) {
+        return arr.map((s) => SLOT_TO_SKILL[String(s)] ?? String(s));
+      }
+    } catch {
+      // fall through to legacy parser
+    }
+  }
   return skillBuild.split(",").map((s) => SLOT_TO_SKILL[s] ?? s);
 }
 

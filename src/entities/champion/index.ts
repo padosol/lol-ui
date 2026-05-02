@@ -9,7 +9,7 @@ export { WIN_RATE_COLOR_CLASSES, getWinRateTextClass, calcWinRateCeil2 } from ".
 export type {
   ChampionRotationResponse, PositionType, MatchupData,
   ItemBuildData, StartItemBuildData, BootBuildData, RuneBuildData, SkillBuildData,
-  SpellStatsData, ItemStatByOrder,
+  SpellStatsData,
   ChampionPositionStats, ChampionStatsResponse,
   ApiPositionType, PositionChampionEntry, PositionChampionStats,
 } from "./types";

@@ -51,7 +51,7 @@ export interface RuneBuildData {
 }
 
 export interface SkillBuildData {
-  skillBuild: string; // "Q,E,W,Q,Q,R,Q,E,Q,E,R,E,E,W,W"
+  skillBuild: string; // BQ: "[1,2,1,2,2,3,...]" / 레거시: "Q,E,W,Q,Q,R,..."
   games: number;
   winRate: number;
   pickRate: number;
@@ -60,14 +60,6 @@ export interface SkillBuildData {
 export interface SpellStatsData {
   summoner1Id: number;
   summoner2Id: number;
-  games: number;
-  winRate: number;
-  pickRate: number;
-}
-
-export interface ItemStatByOrder {
-  itemId: number;
-  itemName: string;
   games: number;
   winRate: number;
   pickRate: number;
@@ -84,7 +76,6 @@ export interface ChampionPositionStats {
   runeBuilds: RuneBuildData[];
   skillBuilds: SkillBuildData[];
   spellStats: SpellStatsData[];
-  itemStatsByOrder: Record<string, ItemStatByOrder[]>;
 }
 
 export interface ChampionStatsResponse {
