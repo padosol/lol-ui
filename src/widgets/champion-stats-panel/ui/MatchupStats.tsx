@@ -15,7 +15,7 @@ export default function MatchupStats({ data }: MatchupStatsProps) {
     () =>
       [...data]
         .filter((m) => m.winRate != null && m.games != null && m.opponentChampionId != null)
-        .filter((m) => m.winRate >= 0.5)
+        .filter((m) => m.rankType === "TOP")
         .sort((a, b) => b.winRate - a.winRate),
     [data]
   );
@@ -24,7 +24,7 @@ export default function MatchupStats({ data }: MatchupStatsProps) {
     () =>
       [...data]
         .filter((m) => m.winRate != null && m.games != null && m.opponentChampionId != null)
-        .filter((m) => m.winRate < 0.5)
+        .filter((m) => m.rankType === "BOTTOM")
         .sort((a, b) => a.winRate - b.winRate),
     [data]
   );

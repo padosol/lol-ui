@@ -9,6 +9,7 @@ export type PositionType = "TOP" | "JUNGLE" | "MID" | "ADC" | "SUPPORT";
 export type ApiPositionType = "TOP" | "JUNGLE" | "MIDDLE" | "BOTTOM" | "UTILITY";
 
 export interface MatchupData {
+  rankType: "TOP" | "BOTTOM"; // TOP=잘 잡는 상대, BOTTOM=카운터
   opponentChampionId: number;
   games: number;
   winRate: number;
