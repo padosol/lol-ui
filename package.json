@@ -27,8 +27,7 @@
     "zustand": "^5.0.11"
   },
   "lint-staged": {
-    "*.js": "eslint --fix",
-    "*.{js,css,md}": "prettier --write"
+    "*.{js,jsx,ts,tsx}": "eslint --fix"
   },
   "devDependencies": {
     "@playwright/test": "^1.58.2",
