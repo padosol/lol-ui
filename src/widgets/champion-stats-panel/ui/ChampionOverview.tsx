@@ -13,12 +13,12 @@ import { useGameDataStore } from "@/shared/model/game-data";
 import Image from "next/image";
 
 const TIER_COLORS: Record<string, string> = {
-  OP: "bg-red-500 text-white",
-  "1": "bg-orange-500 text-white",
-  "2": "bg-yellow-500 text-surface",
-  "3": "bg-green-500 text-white",
-  "4": "bg-blue-500 text-white",
-  "5": "bg-gray-500 text-white",
+  "S+": "bg-red-500 text-white",
+  S: "bg-orange-500 text-white",
+  A: "bg-yellow-500 text-surface",
+  B: "bg-green-500 text-white",
+  C: "bg-blue-500 text-white",
+  D: "bg-gray-500 text-white",
 };
 
 const SKILL_KEYS = ["Q", "W", "E", "R"] as const;
@@ -69,10 +69,10 @@ export default function ChampionOverview({
         <div className="self-start">
           <span
             className={`px-2 py-0.5 text-xs font-bold rounded ${
-              TIER_COLORS[tier] || TIER_COLORS["5"]
+              TIER_COLORS[tier] || TIER_COLORS["D"]
             }`}
           >
-            {tier === "OP" ? "OP" : `Tier ${tier}`}
+            {tier}
           </span>
         </div>
         {/* 승리 */}

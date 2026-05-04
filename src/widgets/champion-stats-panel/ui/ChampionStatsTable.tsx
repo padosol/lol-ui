@@ -8,12 +8,12 @@ import Link from "next/link";
 import { useMemo } from "react";
 
 const TIER_COLORS: Record<string, string> = {
-  OP: "bg-red-500 text-white",
-  "1": "bg-orange-500 text-white",
-  "2": "bg-yellow-500 text-surface",
-  "3": "bg-green-500 text-white",
-  "4": "bg-blue-500 text-white",
-  "5": "bg-gray-500 text-white",
+  "S+": "bg-red-500 text-white",
+  S: "bg-orange-500 text-white",
+  A: "bg-yellow-500 text-surface",
+  B: "bg-green-500 text-white",
+  C: "bg-blue-500 text-white",
+  D: "bg-gray-500 text-white",
 };
 
 interface ChampionStatsTableProps {
@@ -66,7 +66,7 @@ export default function ChampionStatsTable({
             const championId = info?.id ?? "";
             const winRatePercent = entry.winRate * 100;
 
-            const tierColor = TIER_COLORS[entry.tier] ?? "bg-gray-500 text-white";
+            const tierColor = TIER_COLORS[entry.tier] ?? TIER_COLORS["D"];
 
             const content = (
               <>
