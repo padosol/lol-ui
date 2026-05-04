@@ -29,6 +29,13 @@ export interface StartItemBuildData {
   pickRate: number;
 }
 
+export interface BootBuildData {
+  bootId: number;
+  games: number;
+  winRate: number;
+  pickRate: number;
+}
+
 export interface RuneBuildData {
   primaryStyleId: number;
   subStyleId: number;
@@ -38,16 +45,13 @@ export interface RuneBuildData {
   primaryPerk3: number;
   subPerk0: number;
   subPerk1: number;
-  statPerkDefense: number;
-  statPerkFlex: number;
-  statPerkOffense: number;
   games: number;
   winRate: number;
   pickRate: number;
 }
 
 export interface SkillBuildData {
-  skillBuild: string; // "Q,E,W,Q,Q,R,Q,E,Q,E,R,E,E,W,W"
+  skillBuild: string; // BQ: "[1,2,1,2,2,3,...]" / 레거시: "Q,E,W,Q,Q,R,..."
   games: number;
   winRate: number;
   pickRate: number;
@@ -61,14 +65,6 @@ export interface SpellStatsData {
   pickRate: number;
 }
 
-export interface ItemStatByOrder {
-  itemId: number;
-  itemName: string;
-  games: number;
-  winRate: number;
-  pickRate: number;
-}
-
 export interface ChampionPositionStats {
   teamPosition: ApiPositionType;
   winRate: number;
@@ -76,10 +72,10 @@ export interface ChampionPositionStats {
   matchups: MatchupData[];
   itemBuilds: ItemBuildData[];
   startItemBuilds: StartItemBuildData[];
+  bootBuilds: BootBuildData[];
   runeBuilds: RuneBuildData[];
   skillBuilds: SkillBuildData[];
   spellStats: SpellStatsData[];
-  itemStatsByOrder: Record<string, ItemStatByOrder[]>;
 }
 
 export interface ChampionStatsResponse {
