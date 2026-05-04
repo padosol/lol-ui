@@ -1,14 +1,17 @@
 #!/usr/bin/env python3
 """
 LoL Patch Notes Crawler
-리그 오브 레전드 패치노트 HTML을 크롤링하여 정제된 HTML로 저장합니다.
+리그 오브 레전드 패치노트 HTML을 크롤링합니다. 기본은 파일 저장,
+`--stdout` 옵션을 주면 파일을 만들지 않고 정제된 HTML을 표준출력으로 흘려보냅니다.
 
 사용법:
     python patch_crawler.py <URL> [출력디렉토리]
+    python patch_crawler.py <URL> --stdout
 
 예시:
     python patch_crawler.py https://www.leagueoflegends.com/ko-kr/news/game-updates/patch-26-2-notes/
     python patch_crawler.py https://www.leagueoflegends.com/ko-kr/news/game-updates/patch-26-2-notes/ docs/patch
+    python patch_crawler.py https://www.leagueoflegends.com/ko-kr/news/game-updates/patch-26-2-notes/ --stdout
 """
 
 import re
@@ -86,19 +89,33 @@ def save_html(content: BeautifulSoup, version: str, output_dir: str, url: str = 
     return str(output_path)
 
 
-def crawl_patch_notes(url: str, output_dir: str = "docs/patch") -> str:
-    """패치노트를 크롤링하고 HTML로 저장합니다."""
-    print(f"URL 가져오는 중: {url}")
+def render_html(content: BeautifulSoup, url: str = "", metadata: dict = None) -> str:
+    """파일에 쓰는 형식과 동일한 HTML 문자열을 만들어 반환합니다."""
+    lines = []
+    if url:
+        lines.append(f"<!-- url: {url} -->")
+    if metadata and metadata.get("datetime"):
+        lines.append(f"<!-- datetime: {metadata['datetime']} -->")
+    lines.append(str(content))
+    return "\n".join(lines)
+
+
+def crawl_patch_notes(url: str, output_dir: str = "docs/patch", to_stdout: bool = False) -> str:
+    """패치노트를 크롤링합니다. to_stdout=True이면 HTML을 stdout으로 출력하고, 아니면 파일에 저장합니다."""
+    log = (lambda *_: None) if to_stdout else print
+    log(f"URL 가져오는 중: {url}")
     html = fetch_html(url)
 
-    print("HTML 파싱 중...")
+    log("HTML 파싱 중...")
     container = extract_patch_container(html)
     cleaned = remove_blockquotes(container)
     version = extract_version_from_url(url)
     metadata = extract_metadata(html)
 
-    output_path = save_html(cleaned, version, output_dir, url=url, metadata=metadata)
-    return output_path
+    if to_stdout:
+        sys.stdout.write(render_html(cleaned, url=url, metadata=metadata))
+        return version
+    return save_html(cleaned, version, output_dir, url=url, metadata=metadata)
 
 
 def main():
@@ -107,21 +124,25 @@ def main():
         sys.exit(1)
 
     url = sys.argv[1]
-    output_dir = sys.argv[2] if len(sys.argv) > 2 else "docs/patch"
+    rest = sys.argv[2:]
+    to_stdout = "--stdout" in rest
+    rest = [a for a in rest if a != "--stdout"]
+    output_dir = rest[0] if rest else "docs/patch"
 
     try:
-        output_path = crawl_patch_notes(url, output_dir)
-        print(f"저장 완료: {output_path}")
+        result = crawl_patch_notes(url, output_dir, to_stdout=to_stdout)
+        if not to_stdout:
+            print(f"저장 완료: {result}")
     except requests.RequestException as e:
-        print(f"네트워크 오류: {e}")
+        print(f"네트워크 오류: {e}", file=sys.stderr)
         sys.exit(1)
     except ValueError as e:
-        print(f"오류: {e}")
+        print(f"오류: {e}", file=sys.stderr)
         sys.exit(1)
     except Exception as e:
-        print(f"오류 발생: {e}")
+        print(f"오류 발생: {e}", file=sys.stderr)
         import traceback
-        traceback.print_exc()
+        traceback.print_exc(file=sys.stderr)
         sys.exit(1)
 
 
