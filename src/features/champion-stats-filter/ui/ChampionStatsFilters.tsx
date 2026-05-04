@@ -5,10 +5,27 @@ import { useSeasonStore } from "@/entities/season";
 import { ChevronDown } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
+// CHALLENGER+ 는 BE INVALID_TIER_FILTER이므로 의도적으로 제외
 const TIER_OPTIONS = [
   { value: "CHALLENGER", label: "챌린저" },
   { value: "GRANDMASTER", label: "그랜드마스터" },
+  { value: "GRANDMASTER+", label: "그랜드마스터+" },
   { value: "MASTER", label: "마스터" },
+  { value: "MASTER+", label: "마스터+" },
+  { value: "DIAMOND", label: "다이아몬드" },
+  { value: "DIAMOND+", label: "다이아몬드+" },
+  { value: "EMERALD", label: "에메랄드" },
+  { value: "EMERALD+", label: "에메랄드+" },
+  { value: "PLATINUM", label: "플래티넘" },
+  { value: "PLATINUM+", label: "플래티넘+" },
+  { value: "GOLD", label: "골드" },
+  { value: "GOLD+", label: "골드+" },
+  { value: "SILVER", label: "실버" },
+  { value: "SILVER+", label: "실버+" },
+  { value: "BRONZE", label: "브론즈" },
+  { value: "BRONZE+", label: "브론즈+" },
+  { value: "IRON", label: "아이언" },
+  { value: "IRON+", label: "아이언+" },
 ] as const;
 
 interface ChampionStatsFiltersProps {
@@ -63,7 +80,7 @@ export default function ChampionStatsFilters({
         <button
           type="button"
           onClick={() => setTierOpen((v) => !v)}
-          className="bg-surface-4 hover:bg-surface-8 border border-divider rounded-lg px-3 py-1.5 pr-8 text-sm font-medium text-on-surface cursor-pointer focus:outline-none min-w-[130px] text-left"
+          className="bg-surface-4 hover:bg-surface-8 border border-divider rounded-lg px-3 py-1.5 pr-8 text-sm font-medium text-on-surface cursor-pointer focus:outline-none min-w-[140px] text-left"
           aria-haspopup="listbox"
           aria-expanded={tierOpen}
         >
