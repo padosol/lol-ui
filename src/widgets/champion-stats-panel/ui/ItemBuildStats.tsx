@@ -22,21 +22,15 @@ export default function ItemBuildStats({ data, startItemBuilds }: ItemBuildStats
           <div>
             <h4 className="text-sm font-medium text-on-surface-medium mb-2 p-2">시작 아이템</h4>
             <div className="space-y-2">
-              {startItemBuilds.map((build, i) => {
-                const itemIds = build.startItems
-                  .split(",")
-                  .map(Number)
-                  .filter(Boolean);
-                return (
-                  <BuildRow
-                    key={i}
-                    itemIds={itemIds}
-                    winRate={build.winRate}
-                    games={build.games}
-                    pickRate={build.pickRate}
-                  />
-                );
-              })}
+              {startItemBuilds.map((build, i) => (
+                <BuildRow
+                  key={i}
+                  itemIds={build.startItems}
+                  winRate={build.winRate}
+                  games={build.games}
+                  pickRate={build.pickRate}
+                />
+              ))}
             </div>
           </div>
         )}
@@ -45,21 +39,15 @@ export default function ItemBuildStats({ data, startItemBuilds }: ItemBuildStats
           <div>
             <h4 className="text-sm font-medium text-on-surface-medium mb-2 p-2">코어 빌드</h4>
             <div className="space-y-2">
-              {data.map((build, i) => {
-                const itemIds = build.itemBuild
-                  .split(",")
-                  .map(Number)
-                  .filter(Boolean);
-                return (
-                  <BuildRow
-                    key={i}
-                    itemIds={itemIds}
-                    winRate={build.winRate}
-                    games={build.games}
-                    pickRate={build.pickRate}
-                  />
-                );
-              })}
+              {data.map((build, i) => (
+                <BuildRow
+                  key={i}
+                  itemIds={build.itemBuild}
+                  winRate={build.winRate}
+                  games={build.games}
+                  pickRate={build.pickRate}
+                />
+              ))}
             </div>
           </div>
         )}

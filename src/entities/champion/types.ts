@@ -17,14 +17,14 @@ export interface MatchupData {
 }
 
 export interface ItemBuildData {
-  itemBuild: string; // "3078,3053,3065"
+  itemBuild: number[]; // [3078, 3053, 3065]
   games: number;
   winRate: number;
   pickRate: number;
 }
 
 export interface StartItemBuildData {
-  startItems: string; // "1054,2003"
+  startItems: number[]; // [1054, 2003]
   games: number;
   winRate: number;
   pickRate: number;
