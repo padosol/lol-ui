@@ -8,3 +8,4 @@ export { default as PositionTabsList } from "./ui/PositionTabsList";
 export { default as ChampionStatsTable } from "./ui/ChampionStatsTable";
 export { default as RuneStats } from "./ui/RuneStats";
 export { default as SkillTreeStats } from "./ui/SkillTreeStats";
+export { default as SpellStats } from "./ui/SpellStats";

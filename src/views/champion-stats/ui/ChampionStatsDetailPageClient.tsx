@@ -8,6 +8,7 @@ import {
   PositionTabs,
   RuneStats,
   SkillTreeStats,
+  SpellStats,
 } from "@/widgets/champion-stats-panel";
 import { Header, Navigation, Footer } from "@/widgets/layout";
 import {
@@ -128,6 +129,7 @@ export default function ChampionStatsDetailPageClient({
               </div>
               <ItemBuildStats data={currentPositionStats.itemBuilds} startItemBuilds={currentPositionStats.startItemBuilds} />
               <BootBuildStats data={currentPositionStats.bootBuilds} />
+              <SpellStats data={currentPositionStats.spellStats} />
               <RuneStats data={currentPositionStats.runeBuilds} />
               <MatchupStats data={currentPositionStats.matchups ?? []} />
             </>
