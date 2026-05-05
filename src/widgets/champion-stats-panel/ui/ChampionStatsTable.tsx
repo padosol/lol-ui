@@ -16,6 +16,16 @@ const TIER_COLORS: Record<string, string> = {
   D: "bg-gray-500 text-white",
 };
 
+const TIER_ORDER = ["S+", "S", "A", "B", "C", "D"] as const;
+const TIER_RANK: Record<string, number> = TIER_ORDER.reduce(
+  (acc, tier, index) => {
+    acc[tier] = index;
+    return acc;
+  },
+  {} as Record<string, number>,
+);
+const UNKNOWN_TIER_RANK = TIER_ORDER.length;
+
 interface ChampionStatsTableProps {
   champions: PositionChampionEntry[];
   tier: string;
@@ -40,7 +50,14 @@ export default function ChampionStatsTable({
     return map;
   }, [championData]);
 
-  const filtered = champions;
+  const filtered = useMemo(() => {
+    return [...champions].sort((a, b) => {
+      const rankA = TIER_RANK[a.tier] ?? UNKNOWN_TIER_RANK;
+      const rankB = TIER_RANK[b.tier] ?? UNKNOWN_TIER_RANK;
+      if (rankA !== rankB) return rankA - rankB;
+      return b.winRate - a.winRate;
+    });
+  }, [champions]);
 
   return (
     <div className="bg-surface-2 border border-divider rounded-xl overflow-hidden">
