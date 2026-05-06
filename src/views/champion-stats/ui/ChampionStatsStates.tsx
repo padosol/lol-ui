@@ -20,7 +20,7 @@ interface ErrorStateProps {
 export function ErrorState({ errorUpdatedAt, onRetry }: ErrorStateProps) {
   return (
     <div className="flex flex-col items-center justify-center py-20 gap-3">
-      <p className="text-loss text-sm">통계 데이터를 불러오는 중 오류가 발생했습니다.</p>
+      <p className="text-loss text-sm">통계 데이터를 불러오지 못했습니다.</p>
       {errorUpdatedAt > 0 && (
         <p className="text-on-surface-medium text-xs">
           마지막 시도 {formatTime(errorUpdatedAt)}
@@ -64,7 +64,7 @@ export function EmptyState({
   return (
     <div className="flex flex-col items-center justify-center py-20 gap-3">
       <p className="text-on-surface-medium text-sm">
-        해당 조건의 통계 데이터가 없습니다.
+        선택한 조건의 통계가 없습니다.
       </p>
       <p className="text-on-surface-medium text-xs">
         {getTierLabel(selectedTier)} · {activePatch || "최신"}

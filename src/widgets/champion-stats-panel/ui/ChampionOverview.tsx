@@ -28,6 +28,7 @@ export default function ChampionOverview({
 }: ChampionOverviewProps) {
   const championData = useGameDataStore((s) => s.championData);
   const champion = championData?.data[championId];
+  const championDisplayName = getChampionNameByEnglishName(championId);
 
   return (
     <div className="bg-surface-1 rounded-lg border border-divider p-3 sm:p-5">
@@ -35,7 +36,7 @@ export default function ChampionOverview({
         <GameTooltip type="champion" id={championId}>
           <Image
             src={getChampionImageUrl(championId)}
-            alt={championId}
+            alt={championDisplayName}
             width={64}
             height={64}
             className="rounded-lg shrink-0"
@@ -45,7 +46,7 @@ export default function ChampionOverview({
         <div className="flex flex-col gap-1.5 min-w-0 flex-1">
           <div className="flex items-center gap-2 flex-wrap">
             <h2 className="text-lg sm:text-xl font-bold text-on-surface truncate">
-              {getChampionNameByEnglishName(championId)}
+              {championDisplayName}
             </h2>
             <span
               className={`shrink-0 px-2 py-0.5 text-xs font-bold rounded ${getTierBadgeClass(tier)}`}
