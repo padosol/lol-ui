@@ -5,21 +5,13 @@ import type { ChampionPositionStats } from "@/entities/champion";
 import {
   getChampionImageUrl,
   getChampionNameByEnglishName,
+  getTierBadgeClass,
 } from "@/entities/champion";
 import { getChampionPassiveImageUrl } from "@/shared/lib/game";
 import { IMAGE_HOST } from "@/shared/config/image";
 import { GameTooltip } from "@/shared/ui/tooltip";
 import { useGameDataStore } from "@/shared/model/game-data";
 import Image from "next/image";
-
-const TIER_COLORS: Record<string, string> = {
-  "S+": "bg-red-500 text-white",
-  S: "bg-orange-500 text-white",
-  A: "bg-yellow-500 text-surface",
-  B: "bg-green-500 text-white",
-  C: "bg-blue-500 text-white",
-  D: "bg-gray-500 text-white",
-};
 
 const SKILL_KEYS = ["Q", "W", "E", "R"] as const;
 
@@ -68,9 +60,7 @@ export default function ChampionOverview({
         {/* 티어 */}
         <div className="self-start">
           <span
-            className={`px-2 py-0.5 text-xs font-bold rounded ${
-              TIER_COLORS[tier] || TIER_COLORS["D"]
-            }`}
+            className={`px-2 py-0.5 text-xs font-bold rounded ${getTierBadgeClass(tier)}`}
           >
             {tier}
           </span>
