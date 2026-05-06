@@ -19,6 +19,7 @@ import {
 import { useSeasonStore } from "@/entities/season";
 import { ChampionStatsFilters } from "@/features/champion-stats-filter";
 import { useMemo, useState } from "react";
+import { ErrorState, EmptyState, SkeletonStats } from "./ChampionStatsStates";
 
 interface ChampionStatsDetailPageClientProps {
   championId: string;
@@ -57,7 +58,7 @@ export default function ChampionStatsDetailPageClient({
     );
   }, [activePatch, selectedTier, selectedPlatform, initialActivePatch, initialTier, initialPlatformId, initialStatsData]);
 
-  const { data, isLoading, isError } = useChampionStats(
+  const { data, isLoading, isError, errorUpdatedAt, refetch } = useChampionStats(
     championKey,
     activePatch,
     selectedTier,
@@ -107,13 +108,9 @@ export default function ChampionStatsDetailPageClient({
           />
 
           {isLoading ? (
-            <div className="flex items-center justify-center py-20">
-              <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-            </div>
+            <SkeletonStats />
           ) : isError ? (
-            <div className="text-center py-20 text-loss">
-              통계 데이터를 불러오는 중 오류가 발생했습니다.
-            </div>
+            <ErrorState errorUpdatedAt={errorUpdatedAt} onRetry={() => refetch()} />
           ) : currentPositionStats ? (
             <>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -134,9 +131,13 @@ export default function ChampionStatsDetailPageClient({
               <MatchupStats data={currentPositionStats.matchups ?? []} />
             </>
           ) : activePatch ? (
-            <div className="text-center py-20 text-on-surface-medium">
-              해당 패치의 통계 데이터가 없습니다.
-            </div>
+            <EmptyState
+              selectedTier={selectedTier}
+              selectedPatch={activePatch}
+              patchVersions={latestPatches}
+              onTierChange={setSelectedTier}
+              onPatchChange={setSelectedPatch}
+            />
           ) : null}
         </div>
       </main>
