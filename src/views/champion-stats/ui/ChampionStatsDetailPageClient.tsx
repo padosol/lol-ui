@@ -90,7 +90,7 @@ export default function ChampionStatsDetailPageClient({
     <div className="min-h-screen bg-surface">
       <Header />
       <Navigation />
-      <main className="max-w-5xl mx-auto py-8">
+      <main className="max-w-6xl mx-auto px-4 py-8">
         <div className="space-y-6">
           <ChampionStatsFilters
             selectedTier={selectedTier}

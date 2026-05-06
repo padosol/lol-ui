@@ -30,82 +30,75 @@ export default function ChampionOverview({
   const champion = championData?.data[championId];
 
   return (
-    <div className="bg-surface-1 rounded-lg border border-divider p-5">
-      <div className="grid grid-cols-[64px_1fr_auto] gap-x-4 gap-y-1">
-        {/* 챔피언 이미지 - row 1~2 */}
-        <div className="row-span-2 flex items-center">
-          <GameTooltip type="champion" id={championId}>
-            <Image
-              src={getChampionImageUrl(championId)}
-              alt={championId}
-              width={64}
-              height={64}
-              className="rounded-lg"
-              unoptimized
-            />
-          </GameTooltip>
+    <div className="bg-surface-1 rounded-lg border border-divider p-3 sm:p-5">
+      <div className="flex items-center gap-3 sm:gap-4">
+        <GameTooltip type="champion" id={championId}>
+          <Image
+            src={getChampionImageUrl(championId)}
+            alt={championId}
+            width={64}
+            height={64}
+            className="rounded-lg shrink-0"
+            unoptimized
+          />
+        </GameTooltip>
+        <div className="flex flex-col gap-1.5 min-w-0 flex-1">
+          <div className="flex items-center gap-2 flex-wrap">
+            <h2 className="text-lg sm:text-xl font-bold text-on-surface truncate">
+              {getChampionNameByEnglishName(championId)}
+            </h2>
+            <span
+              className={`shrink-0 px-2 py-0.5 text-xs font-bold rounded ${getTierBadgeClass(tier)}`}
+            >
+              {tier}
+            </span>
+          </div>
+          <div className="flex items-center gap-1.5 flex-wrap">
+            {champion?.passive && (
+              <GameTooltip type="championPassive" id={championId}>
+                <div>
+                  <SkillIcon
+                    src={getChampionPassiveImageUrl(champion.passive.image.full)}
+                    label="P"
+                    alt={champion.passive.name}
+                  />
+                </div>
+              </GameTooltip>
+            )}
+            {SKILL_KEYS.map((key, index) => (
+              <GameTooltip
+                key={key}
+                type="championSpell"
+                id={`${championId}:${index}`}
+                disabled={!champion}
+              >
+                <div>
+                  <SkillIcon
+                    src={
+                      champion?.spells?.[index]?.image.full
+                        ? `${IMAGE_HOST}/spells/${champion.spells[index].image.full}`
+                        : `${IMAGE_HOST}/spells/${championId}${key}.png`
+                    }
+                    label={key}
+                    alt={champion?.spells?.[index]?.name ?? `${championId} ${key}`}
+                  />
+                </div>
+              </GameTooltip>
+            ))}
+          </div>
         </div>
+      </div>
 
-        {/* 챔피언명 */}
-        <h2 className="text-xl font-bold text-on-surface self-end">
-          {getChampionNameByEnglishName(championId)}
-        </h2>
-        {/* 승률 */}
+      <div className="grid grid-cols-3 gap-2 mt-3 pt-3 border-t border-divider/50">
         <StatCard
           label="승률"
           value={`${(data.winRate * 100).toFixed(1)}%`}
           valueClass={data.winRate >= 0.5 ? "text-win" : "text-loss"}
         />
-
-        {/* 티어 */}
-        <div className="self-start">
-          <span
-            className={`px-2 py-0.5 text-xs font-bold rounded ${getTierBadgeClass(tier)}`}
-          >
-            {tier}
-          </span>
-        </div>
-        {/* 승리 */}
         <StatCard
           label="승리"
           value={Math.round(data.totalGames * data.winRate).toLocaleString()}
         />
-
-        {/* 스킬 아이콘들 */}
-        <div className="col-span-2 flex items-center gap-1.5">
-          {champion?.passive && (
-            <GameTooltip type="championPassive" id={championId}>
-              <div>
-                <SkillIcon
-                  src={getChampionPassiveImageUrl(champion.passive.image.full)}
-                  label="P"
-                  alt={champion.passive.name}
-                />
-              </div>
-            </GameTooltip>
-          )}
-          {SKILL_KEYS.map((key, index) => (
-            <GameTooltip
-              key={key}
-              type="championSpell"
-              id={`${championId}:${index}`}
-              disabled={!champion}
-            >
-              <div>
-                <SkillIcon
-                  src={
-                    champion?.spells?.[index]?.image.full
-                      ? `${IMAGE_HOST}/spells/${champion.spells[index].image.full}`
-                      : `${IMAGE_HOST}/spells/${championId}${key}.png`
-                  }
-                  label={key}
-                  alt={champion?.spells?.[index]?.name ?? `${championId} ${key}`}
-                />
-              </div>
-            </GameTooltip>
-          ))}
-        </div>
-        {/* 게임수 */}
         <StatCard
           label="게임수"
           value={data.totalGames.toLocaleString()}
@@ -157,8 +150,8 @@ function StatCard({
   valueClass?: string;
 }) {
   return (
-    <div className="flex items-center gap-2 self-center justify-self-end">
-      <span className="text-on-surface-medium text-xs">{label}</span>
+    <div className="flex flex-col items-center gap-0.5">
+      <span className="text-on-surface-medium text-[11px]">{label}</span>
       <span className={`text-sm font-bold ${valueClass}`}>{value}</span>
     </div>
   );
