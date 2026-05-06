@@ -11,6 +11,7 @@ export type {
   ChampionRotationResponse, PositionType, MatchupData,
   ItemBuildData, StartItemBuildData, BootBuildData, RuneBuildData, SkillBuildData,
   SpellStatsData,
+  ChampionAverageStats,
   ChampionPositionStats, ChampionStatsResponse,
   ApiPositionType, PositionChampionEntry, PositionChampionStats,
 } from "./types";

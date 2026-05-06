@@ -14,11 +14,38 @@ import { useGameDataStore } from "@/shared/model/game-data";
 import Image from "next/image";
 
 const SKILL_KEYS = ["Q", "W", "E", "R"] as const;
+const NA = "-";
 
 interface ChampionOverviewProps {
   data: ChampionPositionStats;
   tier: string;
   championId: string;
+}
+
+function formatRate(value: number | null | undefined): string {
+  if (value == null) return NA;
+  return `${(value * 100).toFixed(1)}%`;
+}
+
+function formatAvg(value: number | null | undefined, digits = 1): string {
+  if (value == null) return NA;
+  return value.toFixed(digits);
+}
+
+function formatGpm(value: number | null | undefined): string {
+  if (value == null) return NA;
+  return `${Math.round(value).toLocaleString()} G/min`;
+}
+
+function formatCs(
+  position: string,
+  laneCs: number | null | undefined,
+  jungleCs: number | null | undefined
+): string {
+  if (position === "JUNGLE") {
+    return jungleCs != null ? `${jungleCs.toFixed(1)} (jg)` : NA;
+  }
+  return laneCs != null ? `${laneCs.toFixed(1)} (lane)` : NA;
 }
 
 export default function ChampionOverview({
@@ -29,6 +56,16 @@ export default function ChampionOverview({
   const championData = useGameDataStore((s) => s.championData);
   const champion = championData?.data[championId];
   const championDisplayName = getChampionNameByEnglishName(championId);
+
+  // per-position tier 우선, fallback 으로 top-level tier
+  const displayedTier = data.tier ?? tier;
+  const averages = data.averages;
+  const hasAverages = !!averages;
+
+  const kdaLabel = hasAverages
+    ? `${formatAvg(averages?.avgKills)} / ${formatAvg(averages?.avgDeaths)} / ${formatAvg(averages?.avgAssists)}`
+    : "표본 부족";
+  const kdaScore = hasAverages ? `KDA ${formatAvg(averages?.kda, 2)}` : "";
 
   return (
     <div className="bg-surface-1 rounded-lg border border-divider p-3 sm:p-5">
@@ -49,10 +86,15 @@ export default function ChampionOverview({
               {championDisplayName}
             </h2>
             <span
-              className={`shrink-0 px-2 py-0.5 text-xs font-bold rounded ${getTierBadgeClass(tier)}`}
+              className={`shrink-0 px-2 py-0.5 text-xs font-bold rounded ${getTierBadgeClass(displayedTier)}`}
             >
-              {tier}
+              {displayedTier}
             </span>
+          </div>
+          <div className="text-xs text-on-surface-medium">
+            <span>픽률 {formatRate(data.pickRate)}</span>
+            <span className="mx-1.5">·</span>
+            <span>밴률 {formatRate(data.banRate)}</span>
           </div>
           <div className="flex items-center gap-1.5 flex-wrap">
             {champion?.passive && (
@@ -93,7 +135,7 @@ export default function ChampionOverview({
       <div className="grid grid-cols-3 gap-2 mt-3 pt-3 border-t border-divider/50">
         <StatCard
           label="승률"
-          value={`${(data.winRate * 100).toFixed(1)}%`}
+          value={formatRate(data.winRate)}
           valueClass={data.winRate >= 0.5 ? "text-win" : "text-loss"}
         />
         <StatCard
@@ -103,6 +145,22 @@ export default function ChampionOverview({
         <StatCard
           label="게임수"
           value={data.totalGames.toLocaleString()}
+        />
+      </div>
+
+      <div className="grid grid-cols-3 gap-2 mt-2">
+        <StatCard
+          label="K / D / A"
+          value={kdaLabel}
+          subValue={kdaScore}
+        />
+        <StatCard
+          label="분당 골드"
+          value={formatGpm(averages?.avgGoldPerMinute)}
+        />
+        <StatCard
+          label="10분 CS"
+          value={formatCs(data.teamPosition, averages?.avgLaneCs10m, averages?.avgJungleCs10m)}
         />
       </div>
     </div>
@@ -144,16 +202,21 @@ function SkillIcon({
 function StatCard({
   label,
   value,
+  subValue,
   valueClass = "text-on-surface",
 }: {
   label: string;
   value: string;
+  subValue?: string;
   valueClass?: string;
 }) {
   return (
     <div className="flex flex-col items-center gap-0.5">
       <span className="text-on-surface-medium text-[11px]">{label}</span>
       <span className={`text-sm font-bold ${valueClass}`}>{value}</span>
+      {subValue && (
+        <span className="text-[10px] text-on-surface-medium">{subValue}</span>
+      )}
     </div>
   );
 }

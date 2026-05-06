@@ -66,10 +66,25 @@ export interface SpellStatsData {
   pickRate: number;
 }
 
+export interface ChampionAverageStats {
+  teamPosition: string;
+  avgKills: number;
+  avgDeaths: number;
+  avgAssists: number;
+  kda: number;
+  avgGoldPerMinute: number;
+  avgLaneCs10m: number;
+  avgJungleCs10m: number;
+}
+
 export interface ChampionPositionStats {
   teamPosition: ApiPositionType;
   winRate: number;
   totalGames: number;
+  pickRate?: number;
+  banRate?: number;
+  tier?: string;
+  averages?: ChampionAverageStats | null;
   matchups: MatchupData[];
   itemBuilds: ItemBuildData[];
   startItemBuilds: StartItemBuildData[];
