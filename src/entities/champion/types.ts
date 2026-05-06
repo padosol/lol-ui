@@ -16,28 +16,36 @@ export interface MatchupData {
   pickRate: number;
 }
 
-export interface ItemBuildData {
+// 모든 빌드 타입 공통 신뢰도 메타 (server M2 도입).
+// games 와 sampleSize 는 동일값이지만 sampleSize 가 의미명 명확.
+export interface BuildConfidenceMeta {
+  sampleSize?: number;
+  totalSampleSize?: number;
+  confidenceLowerBound?: number; // Wilson 95% lower bound, 0~1
+}
+
+export interface ItemBuildData extends BuildConfidenceMeta {
   itemBuild: number[]; // [3078, 3053, 3065]
   games: number;
   winRate: number;
   pickRate: number;
 }
 
-export interface StartItemBuildData {
+export interface StartItemBuildData extends BuildConfidenceMeta {
   startItems: number[]; // [1054, 2003]
   games: number;
   winRate: number;
   pickRate: number;
 }
 
-export interface BootBuildData {
+export interface BootBuildData extends BuildConfidenceMeta {
   bootId: number;
   games: number;
   winRate: number;
   pickRate: number;
 }
 
-export interface RuneBuildData {
+export interface RuneBuildData extends BuildConfidenceMeta {
   primaryStyleId: number;
   subStyleId: number;
   primaryPerk0: number;
@@ -51,14 +59,14 @@ export interface RuneBuildData {
   pickRate: number;
 }
 
-export interface SkillBuildData {
+export interface SkillBuildData extends BuildConfidenceMeta {
   skillBuild: string; // BQ: "[1,2,1,2,2,3,...]" / 레거시: "Q,E,W,Q,Q,R,..."
   games: number;
   winRate: number;
   pickRate: number;
 }
 
-export interface SpellStatsData {
+export interface SpellStatsData extends BuildConfidenceMeta {
   summoner1Id: number;
   summoner2Id: number;
   games: number;

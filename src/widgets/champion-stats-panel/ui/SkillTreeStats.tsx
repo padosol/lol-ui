@@ -7,6 +7,7 @@ import { useGameDataStore } from "@/shared/model/game-data";
 import { IMAGE_HOST } from "@/shared/config/image";
 import { GameTooltip } from "@/shared/ui/tooltip";
 import StatSectionHeader from "./StatSectionHeader";
+import BuildConfidenceIndicator from "./BuildConfidenceIndicator";
 
 const DEFAULT_VISIBLE = 3;
 
@@ -135,6 +136,13 @@ export default function SkillTreeStats({
                     {skill}
                   </span>
                 ))}
+              </div>
+              <div className="mt-1.5">
+                <BuildConfidenceIndicator
+                  sampleSize={build.sampleSize}
+                  totalSampleSize={build.totalSampleSize}
+                  confidenceLowerBound={build.confidenceLowerBound}
+                />
               </div>
             </div>
           );

@@ -4,6 +4,7 @@ import { useState } from "react";
 import type { SpellStatsData } from "@/entities/champion";
 import { SummonerSpellImage } from "@/shared/ui/game";
 import StatSectionHeader from "./StatSectionHeader";
+import BuildConfidenceIndicator from "./BuildConfidenceIndicator";
 
 const DEFAULT_VISIBLE = 2;
 
@@ -30,11 +31,7 @@ export default function SpellStats({ data }: SpellStatsProps) {
         {visible.map((build, i) => (
           <BuildRow
             key={`${build.summoner1Id}-${build.summoner2Id}-${i}`}
-            summoner1Id={build.summoner1Id}
-            summoner2Id={build.summoner2Id}
-            winRate={build.winRate}
-            games={build.games}
-            pickRate={build.pickRate}
+            build={build}
           />
         ))}
       </div>
@@ -42,46 +39,41 @@ export default function SpellStats({ data }: SpellStatsProps) {
   );
 }
 
-function BuildRow({
-  summoner1Id,
-  summoner2Id,
-  winRate,
-  games,
-  pickRate,
-}: {
-  summoner1Id: number;
-  summoner2Id: number;
-  winRate: number;
-  games: number;
-  pickRate: number;
-}) {
-  const winRatePercent = winRate * 100;
+function BuildRow({ build }: { build: SpellStatsData }) {
+  const winRatePercent = build.winRate * 100;
   return (
-    <div className="flex items-center gap-3 bg-surface rounded-lg px-3 py-2">
-      <div className="flex items-center gap-1.5">
-        <SummonerSpellImage spellId={summoner1Id} size="small" />
-        <SummonerSpellImage spellId={summoner2Id} size="small" />
+    <div className="bg-surface rounded-lg px-3 py-2">
+      <div className="flex items-center gap-3">
+        <div className="flex items-center gap-1.5">
+          <SummonerSpellImage spellId={build.summoner1Id} size="small" />
+          <SummonerSpellImage spellId={build.summoner2Id} size="small" />
+        </div>
+        <div className="flex items-center gap-4 ml-auto text-xs">
+          <span>
+            <span className="text-on-surface-medium">승률 </span>
+            <span
+              className={`font-medium ${winRatePercent >= 50 ? "text-win" : "text-loss"}`}
+            >
+              {winRatePercent.toFixed(1)}%
+            </span>
+          </span>
+          <span>
+            <span className="text-on-surface-medium">픽률 </span>
+            <span className="font-medium text-on-surface">
+              {(build.pickRate * 100).toFixed(1)}%
+            </span>
+          </span>
+          <span className="text-on-surface-medium">
+            {build.games.toLocaleString()}게임
+          </span>
+        </div>
       </div>
-      <div className="flex items-center gap-4 ml-auto text-xs">
-        <span>
-          <span className="text-on-surface-medium">승률 </span>
-          <span
-            className={`font-medium ${
-              winRatePercent >= 50 ? "text-win" : "text-loss"
-            }`}
-          >
-            {winRatePercent.toFixed(1)}%
-          </span>
-        </span>
-        <span>
-          <span className="text-on-surface-medium">픽률 </span>
-          <span className="font-medium text-on-surface">
-            {(pickRate * 100).toFixed(1)}%
-          </span>
-        </span>
-        <span className="text-on-surface-medium">
-          {games.toLocaleString()}게임
-        </span>
+      <div className="mt-1.5">
+        <BuildConfidenceIndicator
+          sampleSize={build.sampleSize}
+          totalSampleSize={build.totalSampleSize}
+          confidenceLowerBound={build.confidenceLowerBound}
+        />
       </div>
     </div>
   );

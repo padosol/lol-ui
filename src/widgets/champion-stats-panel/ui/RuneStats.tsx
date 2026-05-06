@@ -12,6 +12,7 @@ import { getStyleImageUrl } from "@/shared/lib/styles";
 import { useGameDataStore } from "@/shared/model/game-data";
 import Image from "next/image";
 import StatSectionHeader from "./StatSectionHeader";
+import BuildConfidenceIndicator from "./BuildConfidenceIndicator";
 
 const DEFAULT_VISIBLE = 2;
 
@@ -217,8 +218,7 @@ function RunePageRow({ build }: { build: RuneBuildData }) {
         <span>
           <span className="text-on-surface-medium">승률 </span>
           <span
-            className={`font-medium ${winRatePercent >= 50 ? "text-win" : "text-loss"
-              }`}
+            className={`font-medium ${winRatePercent >= 50 ? "text-win" : "text-loss"}`}
           >
             {winRatePercent.toFixed(1)}%
           </span>
@@ -232,6 +232,13 @@ function RunePageRow({ build }: { build: RuneBuildData }) {
         <span className="text-on-surface-medium">
           {build.games.toLocaleString()}게임
         </span>
+      </div>
+      <div className="flex justify-center mt-1.5">
+        <BuildConfidenceIndicator
+          sampleSize={build.sampleSize}
+          totalSampleSize={build.totalSampleSize}
+          confidenceLowerBound={build.confidenceLowerBound}
+        />
       </div>
     </div>
   );

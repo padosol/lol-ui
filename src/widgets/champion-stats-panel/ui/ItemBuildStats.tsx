@@ -6,6 +6,7 @@ import type { ItemBuildData, StartItemBuildData } from "@/entities/champion";
 import { getItemImageUrl } from "@/shared/lib/game";
 import Image from "next/image";
 import StatSectionHeader from "./StatSectionHeader";
+import BuildConfidenceIndicator from "./BuildConfidenceIndicator";
 
 const DEFAULT_VISIBLE = 2;
 
@@ -49,6 +50,9 @@ export default function ItemBuildStats({ data, startItemBuilds }: ItemBuildStats
                   winRate={build.winRate}
                   games={build.games}
                   pickRate={build.pickRate}
+                  sampleSize={build.sampleSize}
+                  totalSampleSize={build.totalSampleSize}
+                  confidenceLowerBound={build.confidenceLowerBound}
                 />
               ))}
             </div>
@@ -73,6 +77,9 @@ export default function ItemBuildStats({ data, startItemBuilds }: ItemBuildStats
                   winRate={build.winRate}
                   games={build.games}
                   pickRate={build.pickRate}
+                  sampleSize={build.sampleSize}
+                  totalSampleSize={build.totalSampleSize}
+                  confidenceLowerBound={build.confidenceLowerBound}
                 />
               ))}
             </div>
@@ -88,48 +95,62 @@ function BuildRow({
   winRate,
   games,
   pickRate,
+  sampleSize,
+  totalSampleSize,
+  confidenceLowerBound,
 }: {
   itemIds: number[];
   winRate: number;
   games: number;
   pickRate: number;
+  sampleSize?: number;
+  totalSampleSize?: number;
+  confidenceLowerBound?: number;
 }) {
   const winRatePercent = winRate * 100;
   return (
-    <div className="flex items-center gap-3 bg-surface rounded-lg px-3 py-2">
-      <div className="flex items-center gap-1">
-        {itemIds.map((itemId, j) => (
-          <GameTooltip key={j} type="item" id={itemId}>
-            <Image
-              src={getItemImageUrl(itemId)}
-              alt={`item-${itemId}`}
-              width={36}
-              height={36}
-              className="rounded border border-divider"
-              unoptimized
-            />
-          </GameTooltip>
-        ))}
+    <div className="bg-surface rounded-lg px-3 py-2">
+      <div className="flex items-center gap-3">
+        <div className="flex items-center gap-1">
+          {itemIds.map((itemId, j) => (
+            <GameTooltip key={j} type="item" id={itemId}>
+              <Image
+                src={getItemImageUrl(itemId)}
+                alt={`item-${itemId}`}
+                width={36}
+                height={36}
+                className="rounded border border-divider"
+                unoptimized
+              />
+            </GameTooltip>
+          ))}
+        </div>
+        <div className="flex items-center gap-4 ml-auto text-xs">
+          <span>
+            <span className="text-on-surface-medium">승률 </span>
+            <span
+              className={`font-medium ${winRatePercent >= 50 ? "text-win" : "text-loss"}`}
+            >
+              {winRatePercent.toFixed(1)}%
+            </span>
+          </span>
+          <span>
+            <span className="text-on-surface-medium">픽률 </span>
+            <span className="font-medium text-on-surface">
+              {(pickRate * 100).toFixed(1)}%
+            </span>
+          </span>
+          <span className="text-on-surface-medium">
+            {games.toLocaleString()}게임
+          </span>
+        </div>
       </div>
-      <div className="flex items-center gap-4 ml-auto text-xs">
-        <span>
-          <span className="text-on-surface-medium">승률 </span>
-          <span
-            className={`font-medium ${winRatePercent >= 50 ? "text-win" : "text-loss"
-              }`}
-          >
-            {winRatePercent.toFixed(1)}%
-          </span>
-        </span>
-        <span>
-          <span className="text-on-surface-medium">픽률 </span>
-          <span className="font-medium text-on-surface">
-            {(pickRate * 100).toFixed(1)}%
-          </span>
-        </span>
-        <span className="text-on-surface-medium">
-          {games.toLocaleString()}게임
-        </span>
+      <div className="mt-1.5">
+        <BuildConfidenceIndicator
+          sampleSize={sampleSize}
+          totalSampleSize={totalSampleSize}
+          confidenceLowerBound={confidenceLowerBound}
+        />
       </div>
     </div>
   );
