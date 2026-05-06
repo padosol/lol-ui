@@ -1,22 +1,35 @@
 "use client";
 
+import { useState } from "react";
 import { GameTooltip } from "@/shared/ui/tooltip";
 import type { BootBuildData } from "@/entities/champion";
 import { getItemImageUrl } from "@/shared/lib/game";
 import Image from "next/image";
+import StatSectionHeader from "./StatSectionHeader";
+
+const DEFAULT_VISIBLE = 2;
 
 interface BootBuildStatsProps {
   data: BootBuildData[];
 }
 
 export default function BootBuildStats({ data }: BootBuildStatsProps) {
+  const [expanded, setExpanded] = useState(false);
   if (!data || data.length === 0) return null;
+
+  const visible = expanded ? data : data.slice(0, DEFAULT_VISIBLE);
 
   return (
     <div className="bg-surface-1 rounded-lg border border-divider p-0 md:p-5">
-      <h3 className="text-base font-bold text-on-surface p-2">신발 빌드</h3>
+      <StatSectionHeader
+        title="신발 빌드"
+        totalCount={data.length}
+        visibleCount={Math.min(DEFAULT_VISIBLE, data.length)}
+        expanded={expanded}
+        onToggle={() => setExpanded((v) => !v)}
+      />
       <div className="space-y-2">
-        {data.map((build, i) => (
+        {visible.map((build, i) => (
           <BuildRow
             key={i}
             bootId={build.bootId}

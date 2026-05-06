@@ -1,9 +1,13 @@
 "use client";
 
+import { useState } from "react";
 import { GameTooltip } from "@/shared/ui/tooltip";
 import type { ItemBuildData, StartItemBuildData } from "@/entities/champion";
 import { getItemImageUrl } from "@/shared/lib/game";
 import Image from "next/image";
+import StatSectionHeader from "./StatSectionHeader";
+
+const DEFAULT_VISIBLE = 2;
 
 interface ItemBuildStatsProps {
   data: ItemBuildData[];
@@ -11,7 +15,16 @@ interface ItemBuildStatsProps {
 }
 
 export default function ItemBuildStats({ data, startItemBuilds }: ItemBuildStatsProps) {
+  const [startExpanded, setStartExpanded] = useState(false);
+  const [coreExpanded, setCoreExpanded] = useState(false);
   if (data.length === 0 && (!startItemBuilds || startItemBuilds.length === 0)) return null;
+
+  const visibleStart = startItemBuilds
+    ? startExpanded
+      ? startItemBuilds
+      : startItemBuilds.slice(0, DEFAULT_VISIBLE)
+    : [];
+  const visibleCore = coreExpanded ? data : data.slice(0, DEFAULT_VISIBLE);
 
   return (
     <div className="bg-surface-1 rounded-lg border border-divider p-0 md:p-5">
@@ -20,9 +33,16 @@ export default function ItemBuildStats({ data, startItemBuilds }: ItemBuildStats
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {startItemBuilds && startItemBuilds.length > 0 && (
           <div>
-            <h4 className="text-sm font-medium text-on-surface-medium mb-2 p-2">시작 아이템</h4>
+            <StatSectionHeader
+              title="시작 아이템"
+              totalCount={startItemBuilds.length}
+              visibleCount={Math.min(DEFAULT_VISIBLE, startItemBuilds.length)}
+              expanded={startExpanded}
+              onToggle={() => setStartExpanded((v) => !v)}
+              size="sub"
+            />
             <div className="space-y-2">
-              {startItemBuilds.map((build, i) => (
+              {visibleStart.map((build, i) => (
                 <BuildRow
                   key={i}
                   itemIds={build.startItems}
@@ -37,9 +57,16 @@ export default function ItemBuildStats({ data, startItemBuilds }: ItemBuildStats
 
         {data.length > 0 && (
           <div>
-            <h4 className="text-sm font-medium text-on-surface-medium mb-2 p-2">코어 빌드</h4>
+            <StatSectionHeader
+              title="코어 빌드"
+              totalCount={data.length}
+              visibleCount={Math.min(DEFAULT_VISIBLE, data.length)}
+              expanded={coreExpanded}
+              onToggle={() => setCoreExpanded((v) => !v)}
+              size="sub"
+            />
             <div className="space-y-2">
-              {data.map((build, i) => (
+              {visibleCore.map((build, i) => (
                 <BuildRow
                   key={i}
                   itemIds={build.itemBuild}

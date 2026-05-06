@@ -123,7 +123,7 @@ export default function ChampionStatsDetailPageClient({
                   championId={championId}
                 />
                 <SkillTreeStats
-                  data={currentPositionStats.skillBuilds.slice(0, 1)}
+                  data={currentPositionStats.skillBuilds}
                   championName={championId}
                 />
               </div>

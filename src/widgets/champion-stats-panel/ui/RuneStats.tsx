@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { GameTooltip } from "@/shared/ui/tooltip";
 import {
   RUNE_TREE_MAP,
@@ -10,19 +11,31 @@ import { getPerkImageUrl } from "@/shared/lib/game";
 import { getStyleImageUrl } from "@/shared/lib/styles";
 import { useGameDataStore } from "@/shared/model/game-data";
 import Image from "next/image";
+import StatSectionHeader from "./StatSectionHeader";
+
+const DEFAULT_VISIBLE = 2;
 
 interface RuneStatsProps {
   data: RuneBuildData[];
 }
 
 export default function RuneStats({ data }: RuneStatsProps) {
+  const [expanded, setExpanded] = useState(false);
   if (data.length === 0) return null;
+
+  const visible = expanded ? data : data.slice(0, DEFAULT_VISIBLE);
 
   return (
     <div className="bg-surface-1 rounded-lg border border-divider p-0 md:p-5">
-      <h3 className="text-base font-bold text-on-surface p-2">룬</h3>
+      <StatSectionHeader
+        title="룬"
+        totalCount={data.length}
+        visibleCount={Math.min(DEFAULT_VISIBLE, data.length)}
+        expanded={expanded}
+        onToggle={() => setExpanded((v) => !v)}
+      />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {data.slice(0, 2).map((build, i) => (
+        {visible.map((build, i) => (
           <RunePageRow key={i} build={build} />
         ))}
       </div>

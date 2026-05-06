@@ -1,20 +1,33 @@
 "use client";
 
+import { useState } from "react";
 import type { SpellStatsData } from "@/entities/champion";
 import { SummonerSpellImage } from "@/shared/ui/game";
+import StatSectionHeader from "./StatSectionHeader";
+
+const DEFAULT_VISIBLE = 2;
 
 interface SpellStatsProps {
   data: SpellStatsData[];
 }
 
 export default function SpellStats({ data }: SpellStatsProps) {
+  const [expanded, setExpanded] = useState(false);
   if (!data || data.length === 0) return null;
+
+  const visible = expanded ? data : data.slice(0, DEFAULT_VISIBLE);
 
   return (
     <div className="bg-surface-1 rounded-lg border border-divider p-0 md:p-5">
-      <h3 className="text-base font-bold text-on-surface p-2">소환사 주문</h3>
+      <StatSectionHeader
+        title="소환사 주문"
+        totalCount={data.length}
+        visibleCount={Math.min(DEFAULT_VISIBLE, data.length)}
+        expanded={expanded}
+        onToggle={() => setExpanded((v) => !v)}
+      />
       <div className="space-y-2">
-        {data.map((build, i) => (
+        {visible.map((build, i) => (
           <BuildRow
             key={`${build.summoner1Id}-${build.summoner2Id}-${i}`}
             summoner1Id={build.summoner1Id}
