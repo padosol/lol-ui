@@ -1,77 +1,31 @@
-# LoL 전적 검색 서비스
+# LoL 전적 검색 서비스 (lol-ui)
 
-League of Legends 전적 검색 서비스를 위한 Next.js 기반 웹 애플리케이션입니다.
+League of Legends 전적 검색 서비스의 웹 프론트엔드.
+Next.js 16 (App Router) + Feature-Sliced Design.
 
-## 기술 스택
-
-- **Framework**: Next.js 16 (App Router)
-- **UI Library**: React 19
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS v4
-- **State Management**: Zustand
-- **Data Fetching**: TanStack Query (React Query)
-- **Form Management**: React Hook Form + Zod
-- **Charts**: Chart.js + react-chartjs-2
-- **Icons**: Lucide React
-
-## 시작하기
-
-### 설치
+## 빠른 시작
 
 ```bash
-npm install
+pnpm install
+pnpm dev          # http://localhost:3000
 ```
 
-### 개발 서버 실행
-
-```bash
-npm run dev
-```
-
-브라우저에서 [http://localhost:3000](http://localhost:3000)을 열어 확인하세요.
-
-### 빌드
-
-```bash
-npm run build
-```
-
-### 프로덕션 실행
-
-```bash
-npm start
-```
-
-## 프로젝트 구조
-
-```
-src/
-├── app/              # Next.js App Router
-│   ├── layout.tsx   # 루트 레이아웃
-│   └── page.tsx     # 홈 페이지
-└── components/       # 재사용 가능한 컴포넌트
-    ├── Header.tsx
-    ├── Navigation.tsx
-    ├── DesktopAppSection.tsx
-    └── Footer.tsx
-```
-
-## 문서
-
-자세한 문서는 [`docs/`](./docs/) 폴더를 참조하세요:
-
-- [프로젝트 구조](./docs/project-structure.md)
-- [라이브러리 및 의존성](./docs/libraries.md)
-- [컴포넌트 작성 가이드](./docs/component-guide.md)
-- [스타일링 가이드](./docs/styling-guide.md)
-- [개발 가이드](./docs/development-guide.md)
+`.env.local` 키 / 빌드·lint·E2E 명령은 [`docs/development-guide.md`](./docs/development-guide.md).
 
 ## 주요 기능
 
 - 🔍 소환사 전적 검색
-- 📊 전적 데이터 시각화
+- 📊 매치 데이터 시각화
 - 🎮 게임 모드별 통계
 - 📈 챔피언 통계 및 빌드
+
+## 문서
+
+- [프로젝트 구조](./docs/project-structure.md) — FSD 레이어 / SSR vs CSR
+- [컴포넌트 작성 가이드](./docs/component-guide.md) — 어디에 둘지 결정 트리
+- [라이브러리 및 의존성](./docs/libraries.md) — Next.js / React Query / Zustand / Tailwind / …
+- [스타일링 가이드](./docs/styling-guide.md) — Tailwind v4 토큰 / 다크-라이트
+- [개발 가이드](./docs/development-guide.md) — 환경 변수 / 명령 / pre-commit
 
 ## 라이선스
 
