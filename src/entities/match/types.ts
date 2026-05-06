@@ -211,3 +211,8 @@ export interface DailyMatchCountResponse {
   minCount: number;
   maxCount: number;
 }
+
+export interface RankChampionsResponse {
+  solo: ChampionStat[];
+  flex: ChampionStat[];
+}
