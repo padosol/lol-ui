@@ -20,7 +20,7 @@ export default function PositionTabs({
   const positions = availablePositions ?? ALL_POSITIONS;
 
   return (
-    <div className="flex border-b border-divider">
+    <div className="flex border-b border-divider overflow-x-auto scrollbar-thin">
       {positions.map((pos) => {
         const isActive = pos === selectedPosition;
         return (
@@ -28,7 +28,7 @@ export default function PositionTabs({
             key={pos}
             type="button"
             onClick={() => onSelectPosition(pos)}
-            className={`flex items-center gap-1.5 px-4 py-2 text-sm font-medium transition-colors border-b-2 cursor-pointer ${
+            className={`flex items-center gap-1.5 px-4 py-2 text-sm font-medium transition-colors border-b-2 cursor-pointer shrink-0 ${
               isActive
                 ? "text-on-surface border-primary"
                 : "text-on-surface-medium hover:text-on-surface border-transparent"

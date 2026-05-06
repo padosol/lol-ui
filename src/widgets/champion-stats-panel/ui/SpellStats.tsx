@@ -1,20 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import { GameTooltip } from "@/shared/ui/tooltip";
-import type { BootBuildData } from "@/entities/champion";
-import { getItemImageUrl } from "@/shared/lib/game";
-import Image from "next/image";
+import type { SpellStatsData } from "@/entities/champion";
+import { SummonerSpellImage } from "@/shared/ui/game";
 import StatSectionHeader from "./StatSectionHeader";
 import BuildConfidenceIndicator from "./BuildConfidenceIndicator";
 
 const DEFAULT_VISIBLE = 2;
 
-interface BootBuildStatsProps {
-  data: BootBuildData[];
+interface SpellStatsProps {
+  data: SpellStatsData[];
 }
 
-export default function BootBuildStats({ data }: BootBuildStatsProps) {
+export default function SpellStats({ data }: SpellStatsProps) {
   const [expanded, setExpanded] = useState(false);
   if (!data || data.length === 0) return null;
 
@@ -23,7 +21,7 @@ export default function BootBuildStats({ data }: BootBuildStatsProps) {
   return (
     <div className="bg-surface-1 rounded-lg border border-divider p-0 md:p-5">
       <StatSectionHeader
-        title="신발 빌드"
+        title="소환사 주문"
         totalCount={data.length}
         visibleCount={Math.min(DEFAULT_VISIBLE, data.length)}
         expanded={expanded}
@@ -31,28 +29,25 @@ export default function BootBuildStats({ data }: BootBuildStatsProps) {
       />
       <div className="space-y-2">
         {visible.map((build, i) => (
-          <BuildRow key={i} build={build} />
+          <BuildRow
+            key={`${build.summoner1Id}-${build.summoner2Id}-${i}`}
+            build={build}
+          />
         ))}
       </div>
     </div>
   );
 }
 
-function BuildRow({ build }: { build: BootBuildData }) {
+function BuildRow({ build }: { build: SpellStatsData }) {
   const winRatePercent = build.winRate * 100;
   return (
     <div className="bg-surface rounded-lg px-3 py-2">
       <div className="flex items-center gap-3">
-        <GameTooltip type="item" id={build.bootId}>
-          <Image
-            src={getItemImageUrl(build.bootId)}
-            alt={`item-${build.bootId}`}
-            width={36}
-            height={36}
-            className="rounded border border-divider"
-            unoptimized
-          />
-        </GameTooltip>
+        <div className="flex items-center gap-1.5">
+          <SummonerSpellImage spellId={build.summoner1Id} size="small" />
+          <SummonerSpellImage spellId={build.summoner2Id} size="small" />
+        </div>
         <div className="flex items-center gap-4 ml-auto text-xs">
           <span>
             <span className="text-on-surface-medium">승률 </span>
@@ -73,7 +68,7 @@ function BuildRow({ build }: { build: BootBuildData }) {
           </span>
         </div>
       </div>
-      <div className="mt-1.5 pl-[48px]">
+      <div className="mt-1.5">
         <BuildConfidenceIndicator
           sampleSize={build.sampleSize}
           totalSampleSize={build.totalSampleSize}

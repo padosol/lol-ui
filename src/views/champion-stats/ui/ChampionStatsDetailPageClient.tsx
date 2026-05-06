@@ -3,21 +3,25 @@
 import {
   BootBuildStats,
   ChampionOverview,
+  ChampionTimelineChart,
   ItemBuildStats,
   MatchupStats,
   PositionTabs,
   RuneStats,
   SkillTreeStats,
+  SpellStats,
 } from "@/widgets/champion-stats-panel";
 import { Header, Navigation, Footer } from "@/widgets/layout";
 import {
   useChampionStats,
+  useChampionTimeline,
   type ApiPositionType,
   type ChampionStatsResponse,
 } from "@/entities/champion";
 import { useSeasonStore } from "@/entities/season";
 import { ChampionStatsFilters } from "@/features/champion-stats-filter";
 import { useMemo, useState } from "react";
+import { ErrorState, EmptyState, SkeletonStats } from "./ChampionStatsStates";
 
 interface ChampionStatsDetailPageClientProps {
   championId: string;
@@ -56,12 +60,19 @@ export default function ChampionStatsDetailPageClient({
     );
   }, [activePatch, selectedTier, selectedPlatform, initialActivePatch, initialTier, initialPlatformId, initialStatsData]);
 
-  const { data, isLoading, isError } = useChampionStats(
+  const { data, isLoading, isError, errorUpdatedAt, refetch } = useChampionStats(
     championKey,
     activePatch,
     selectedTier,
     selectedPlatform,
     isInitialRequest ? { initialData: initialStatsData! } : undefined
+  );
+
+  const { data: timelineData } = useChampionTimeline(
+    championKey,
+    activePatch,
+    selectedTier,
+    selectedPlatform
   );
 
   // 사용 가능한 포지션 목록 추출
@@ -84,11 +95,20 @@ export default function ChampionStatsDetailPageClient({
     return data.positions.find((p) => p.teamPosition === effectivePosition) ?? data.positions[0];
   }, [data, effectivePosition]);
 
+  // 현재 포지션의 timeline frames
+  const currentTimelineFrames = useMemo(() => {
+    if (!timelineData?.positions || !effectivePosition) return [];
+    const match = timelineData.positions.find(
+      (p) => p.teamPosition === effectivePosition
+    );
+    return match?.frames ?? [];
+  }, [timelineData, effectivePosition]);
+
   return (
     <div className="min-h-screen bg-surface">
       <Header />
       <Navigation />
-      <main className="max-w-5xl mx-auto py-8">
+      <main className="max-w-6xl mx-auto px-4 py-8">
         <div className="space-y-6">
           <ChampionStatsFilters
             selectedTier={selectedTier}
@@ -106,13 +126,9 @@ export default function ChampionStatsDetailPageClient({
           />
 
           {isLoading ? (
-            <div className="flex items-center justify-center py-20">
-              <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-            </div>
+            <SkeletonStats />
           ) : isError ? (
-            <div className="text-center py-20 text-loss">
-              통계 데이터를 불러오는 중 오류가 발생했습니다.
-            </div>
+            <ErrorState errorUpdatedAt={errorUpdatedAt} onRetry={() => refetch()} />
           ) : currentPositionStats ? (
             <>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -122,19 +138,25 @@ export default function ChampionStatsDetailPageClient({
                   championId={championId}
                 />
                 <SkillTreeStats
-                  data={currentPositionStats.skillBuilds.slice(0, 1)}
+                  data={currentPositionStats.skillBuilds}
                   championName={championId}
                 />
               </div>
+              <ChampionTimelineChart frames={currentTimelineFrames} />
               <ItemBuildStats data={currentPositionStats.itemBuilds} startItemBuilds={currentPositionStats.startItemBuilds} />
               <BootBuildStats data={currentPositionStats.bootBuilds} />
+              <SpellStats data={currentPositionStats.spellStats} />
               <RuneStats data={currentPositionStats.runeBuilds} />
               <MatchupStats data={currentPositionStats.matchups ?? []} />
             </>
           ) : activePatch ? (
-            <div className="text-center py-20 text-on-surface-medium">
-              해당 패치의 통계 데이터가 없습니다.
-            </div>
+            <EmptyState
+              selectedTier={selectedTier}
+              selectedPatch={activePatch}
+              patchVersions={latestPatches}
+              onTierChange={setSelectedTier}
+              onPatchChange={setSelectedPatch}
+            />
           ) : null}
         </div>
       </main>

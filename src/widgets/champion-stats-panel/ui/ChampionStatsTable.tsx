@@ -1,20 +1,15 @@
 "use client";
 
 import type { PositionChampionEntry } from "@/entities/champion";
-import { getChampionImageUrl, getWinRateTextClass } from "@/entities/champion";
+import {
+  getChampionImageUrl,
+  getTierBadgeClass,
+  getWinRateTextClass,
+} from "@/entities/champion";
 import { useGameDataStore } from "@/shared/model/game-data";
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo } from "react";
-
-const TIER_COLORS: Record<string, string> = {
-  "S+": "bg-red-500 text-white",
-  S: "bg-orange-500 text-white",
-  A: "bg-yellow-500 text-surface",
-  B: "bg-green-500 text-white",
-  C: "bg-blue-500 text-white",
-  D: "bg-gray-500 text-white",
-};
 
 interface ChampionStatsTableProps {
   champions: PositionChampionEntry[];
@@ -66,7 +61,7 @@ export default function ChampionStatsTable({
             const championId = info?.id ?? "";
             const winRatePercent = entry.winRate * 100;
 
-            const tierColor = TIER_COLORS[entry.tier] ?? TIER_COLORS["D"];
+            const tierColor = getTierBadgeClass(entry.tier);
 
             const content = (
               <>
