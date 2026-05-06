@@ -1,0 +1,162 @@
+{
+  "schema_version": "1.0",
+  "tool": "ai-ready-audit/audit.py",
+  "scanned_at": "2026-05-06T05:07:16.257441+00:00",
+  "repo_path": "/home/padosol/lol/.orch/mp-23/worktrees/ui",
+  "git_head": "ef2f9f5cd04fa01e9e500c999947134a2887ae26",
+  "totals": {
+    "tracked_files": 378
+  },
+  "signals": {
+    "core_modules_total": 3,
+    "core_modules_with_context": 0,
+    "core_modules_with_strong_context": 0,
+    "navigation_coverage_ratio": 0.0,
+    "claude_md_count": 1,
+    "agents_md_count": 0,
+    "claude_md_locations": [
+      "CLAUDE.md"
+    ],
+    "claude_md_line_distribution": [
+      54
+    ],
+    "context_files_total": 2,
+    "context_files_with_commands_section": 0,
+    "context_files_with_key_files_section": 0,
+    "context_files_with_gotcha_section": 1,
+    "context_files_with_xref_section": 0,
+    "modules_answering_q1_what_owned": 0,
+    "modules_answering_q2_modification_patterns": 0,
+    "modules_answering_q3_failure_patterns": 0,
+    "modules_answering_q4_dependencies": 0,
+    "modules_answering_q5_tribal_knowledge": 0,
+    "five_question_module_coverage_pct": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "has_architecture_doc": false,
+    "has_dependency_map": false,
+    "has_data_flow_diagram": false,
+    "has_any_diagram": false,
+    "arch_doc_paths": [],
+    "dep_doc_paths": [],
+    "github_workflow_count": 6,
+    "other_ci_files": [],
+    "has_lint_ci": true,
+    "has_test_ci": false,
+    "has_typecheck_ci": false,
+    "has_doc_ci": false,
+    "has_freshness_ci": false,
+    "broken_path_refs_in_docs": 10,
+    "broken_refs_sample": [
+      {
+        "doc": "CLAUDE.md",
+        "ref": "app/GameDataLoader.tsx"
+      },
+      {
+        "doc": "CLAUDE.md",
+        "ref": "app/"
+      },
+      {
+        "doc": "CLAUDE.md",
+        "ref": "pages/"
+      },
+      {
+        "doc": "CLAUDE.md",
+        "ref": "shared/api/server-client.ts"
+      },
+      {
+        "doc": "CLAUDE.md",
+        "ref": "shared/api/client.ts"
+      },
+      {
+        "doc": "README.md",
+        "ref": "./docs/styling-guide.md"
+      },
+      {
+        "doc": "README.md",
+        "ref": "./docs/development-guide.md"
+      },
+      {
+        "doc": "README.md",
+        "ref": "./docs/libraries.md"
+      },
+      {
+        "doc": "README.md",
+        "ref": "./docs/component-guide.md"
+      },
+      {
+        "doc": "README.md",
+        "ref": "./docs/project-structure.md"
+      }
+    ]
+  },
+  "modules": [
+    {
+      "path": "design",
+      "name": "design",
+      "file_count": 14,
+      "has_readme": false,
+      "has_claude_md": false,
+      "has_agents_md": false,
+      "context_paths": []
+    },
+    {
+      "path": "plans",
+      "name": "plans",
+      "file_count": 7,
+      "has_readme": false,
+      "has_claude_md": false,
+      "has_agents_md": false,
+      "context_paths": []
+    },
+    {
+      "path": "src",
+      "name": "src",
+      "file_count": 307,
+      "has_readme": false,
+      "has_claude_md": false,
+      "has_agents_md": false,
+      "context_paths": []
+    }
+  ],
+  "context_files": [
+    {
+      "path": "CLAUDE.md",
+      "lines": 54,
+      "bytes_": 2437,
+      "has_quick_commands": false,
+      "has_key_files": false,
+      "has_gotcha": true,
+      "has_see_also": false,
+      "five_question_hits": {
+        "q1_what_owned": false,
+        "q2_modification_patterns": false,
+        "q3_failure_patterns": false,
+        "q4_dependencies": true,
+        "q5_tribal_knowledge": true
+      },
+      "has_mermaid": false
+    },
+    {
+      "path": "README.md",
+      "lines": 79,
+      "bytes_": 1685,
+      "has_quick_commands": false,
+      "has_key_files": false,
+      "has_gotcha": false,
+      "has_see_also": false,
+      "five_question_hits": {
+        "q1_what_owned": false,
+        "q2_modification_patterns": false,
+        "q3_failure_patterns": false,
+        "q4_dependencies": true,
+        "q5_tribal_knowledge": false
+      },
+      "has_mermaid": false
+    }
+  ]
+}
