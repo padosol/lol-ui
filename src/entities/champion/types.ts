@@ -119,3 +119,22 @@ export interface PositionChampionStats {
   teamPosition: ApiPositionType;
   champions: PositionChampionEntry[];
 }
+
+export interface TimelineFrame {
+  minute: number; // 10/15/20/25/30
+  avgGold: number;
+  avgCs: number;
+  avgXp: number;
+  sampleSize: number;
+}
+
+export interface PositionTimeline {
+  teamPosition: ApiPositionType;
+  frames: TimelineFrame[];
+}
+
+export interface ChampionTimelineResponse {
+  championId: number;
+  tier: string;
+  positions: PositionTimeline[];
+}
