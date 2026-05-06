@@ -9,4 +9,5 @@ export type {
   ChampionStat, ItemData, RuneSelection, RuneStyleEntry, RuneStyle,
   StatValue, ItemSeqEntry, SkillSeqEntry, MatchIdsResponse,
   SummonerMatchesResponse, DailyMatchCount, DailyMatchCountResponse,
+  RankChampionsResponse,
 } from "./types";

@@ -2,8 +2,8 @@ import type { ApiResponse } from "@/shared/api/types";
 import type {
   DailyMatchCountResponse,
   MatchDetail,
-  ChampionStat,
   MatchIdsResponse,
+  RankChampionsResponse,
   SummonerMatchesResponse,
 } from "../types";
 import { apiClient } from "@/shared/api/client";
@@ -75,16 +75,14 @@ export async function getDailyMatchCount(
 export async function getChampionRanking(
   puuid: string,
   season: string,
-  queueId?: number,
   platform?: string
-): Promise<ChampionStat[]> {
-  const response = await apiClient.get<ApiResponse<ChampionStat[]>>(
+): Promise<RankChampionsResponse> {
+  const response = await apiClient.get<ApiResponse<RankChampionsResponse>>(
     `/v1/rank/champions`,
     {
       params: {
         puuid,
         season,
-        ...(queueId !== undefined && { queueId }),
         ...(platform !== undefined && { platform }),
       },
     }
