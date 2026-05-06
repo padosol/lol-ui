@@ -6,6 +6,11 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
+        hostname: "static.metapick.me",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
         hostname: "static.mmrtr.shop",
         pathname: "/**",
       },
