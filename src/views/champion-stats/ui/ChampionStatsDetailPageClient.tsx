@@ -72,6 +72,17 @@ export default function ChampionStatsDetailPageClient({
     return data.positions.map((p) => p.teamPosition);
   }, [data]);
 
+  // 포지션별 totalGames 비율 (탭 % 표시용)
+  const positionShares = useMemo(() => {
+    if (!data?.positions || data.positions.length === 0) return undefined;
+    const total = data.positions.reduce((sum, p) => sum + (p.totalGames ?? 0), 0);
+    if (total <= 0) return undefined;
+    return data.positions.reduce<Partial<Record<ApiPositionType, number>>>((acc, p) => {
+      acc[p.teamPosition] = (p.totalGames ?? 0) / total;
+      return acc;
+    }, {});
+  }, [data]);
+
   // 유효한 포지션 계산: 선택된 포지션이 없거나 목록에 없으면 첫 번째 포지션으로 fallback
   const effectivePosition = useMemo(() => {
     if (selectedPosition && availablePositions.includes(selectedPosition)) {
@@ -105,6 +116,7 @@ export default function ChampionStatsDetailPageClient({
             selectedPosition={effectivePosition ?? "TOP"}
             onSelectPosition={setSelectedPosition}
             availablePositions={availablePositions.length > 0 ? availablePositions : undefined}
+            positionShares={positionShares}
           />
 
           {isLoading ? (

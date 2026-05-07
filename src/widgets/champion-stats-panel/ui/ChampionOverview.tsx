@@ -67,6 +67,9 @@ export default function ChampionOverview({
     : "표본 부족";
   const kdaScore = hasAverages ? `KDA ${formatAvg(averages?.kda, 2)}` : "";
 
+  const wins = Math.round(data.totalGames * data.winRate);
+  const losses = data.totalGames - wins;
+
   return (
     <div className="bg-surface-1 rounded-lg border border-divider p-3 sm:p-5">
       <div className="flex items-center gap-3 sm:gap-4">
@@ -90,11 +93,6 @@ export default function ChampionOverview({
             >
               {displayedTier}
             </span>
-          </div>
-          <div className="text-xs text-on-surface-medium">
-            <span>픽률 {formatRate(data.pickRate)}</span>
-            <span className="mx-1.5">·</span>
-            <span>밴률 {formatRate(data.banRate)}</span>
           </div>
           <div className="flex items-center gap-1.5 flex-wrap">
             {champion?.passive && (
@@ -138,14 +136,17 @@ export default function ChampionOverview({
           value={formatRate(data.winRate)}
           valueClass={data.winRate >= 0.5 ? "text-win" : "text-loss"}
         />
-        <StatCard
-          label="승리"
-          value={Math.round(data.totalGames * data.winRate).toLocaleString()}
-        />
+        <StatCard label="픽률" value={formatRate(data.pickRate)} />
+        <StatCard label="밴률" value={formatRate(data.banRate)} />
+      </div>
+
+      <div className="grid grid-cols-3 gap-2 mt-2">
         <StatCard
           label="게임수"
           value={data.totalGames.toLocaleString()}
         />
+        <StatCard label="승리" value={wins.toLocaleString()} />
+        <StatCard label="패배" value={losses.toLocaleString()} />
       </div>
 
       <div className="grid grid-cols-3 gap-2 mt-2">
