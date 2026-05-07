@@ -51,3 +51,16 @@ Component → React Query hook (entities/*/model/) → API함수 (entities/*/api
 - `NEXT_PUBLIC_API_URL` — 외부 API (기본: `http://localhost:8100/api`)
 - `API_URL_INTERNAL` — 서버 전용 내부 API (Docker 네트워크)
 - `NEXT_PUBLIC_IMAGE_HOST` — 정적 이미지 호스트 (`https://static.mmrtr.shop`)
+
+## Git Workflow
+
+브랜치 네이밍: `<type>/MP-<번호>-<kebab-설명>` → `develop` → `main`. 핫픽스만 예외로 `hotfix/MP-<번호>-*` → `main` → `develop` 역머지.
+
+| type | 용도 |
+| --- | --- |
+| `feature` | 신규 기능 |
+| `fix` | 버그 수정 |
+| `refactor` | 동작 변화 없는 구조 개선 |
+| `chore` | 코드 영향 없는 산출물·문서·CI·도구 변경 (의존 업그레이드, audit 산출물, lint 룰 추가 등) |
+| `docs` | 사용자/개발자 문서 |
+| `hotfix` | 긴급 prod 패치 (main 직접 분기) |
