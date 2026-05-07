@@ -56,7 +56,7 @@ Component → React Query hook (entities/*/model/) → API함수 (entities/*/api
 
 브랜치 네이밍: `<type>/MP-<번호>-<kebab-설명>` → `develop` → `main`. 핫픽스만 예외로 `hotfix/MP-<번호>-*` → `main` → `develop` 역머지.
 
-| type | 용도 |
+| prefix | 설명 |
 | --- | --- |
 | `feature` | 신규 기능 |
 | `fix` | 버그 수정 |
