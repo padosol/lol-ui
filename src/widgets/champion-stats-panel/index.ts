@@ -10,4 +10,3 @@ export { default as RuneStats } from "./ui/RuneStats";
 export { default as SkillTreeStats } from "./ui/SkillTreeStats";
 export { default as SpellStats } from "./ui/SpellStats";
 export { default as BuildConfidenceIndicator } from "./ui/BuildConfidenceIndicator";
-export { default as ChampionTimelineChart } from "./ui/ChampionTimelineChart";

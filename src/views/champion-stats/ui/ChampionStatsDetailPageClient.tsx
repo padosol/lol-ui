@@ -3,7 +3,6 @@
 import {
   BootBuildStats,
   ChampionOverview,
-  ChampionTimelineChart,
   ItemBuildStats,
   MatchupStats,
   PositionTabs,
@@ -14,7 +13,6 @@ import {
 import { Header, Navigation, Footer } from "@/widgets/layout";
 import {
   useChampionStats,
-  useChampionTimeline,
   type ApiPositionType,
   type ChampionStatsResponse,
 } from "@/entities/champion";
@@ -68,13 +66,6 @@ export default function ChampionStatsDetailPageClient({
     isInitialRequest ? { initialData: initialStatsData! } : undefined
   );
 
-  const { data: timelineData } = useChampionTimeline(
-    championKey,
-    activePatch,
-    selectedTier,
-    selectedPlatform
-  );
-
   // 사용 가능한 포지션 목록 추출
   const availablePositions = useMemo(() => {
     if (!data?.positions) return [];
@@ -94,15 +85,6 @@ export default function ChampionStatsDetailPageClient({
     if (!data?.positions || data.positions.length === 0 || !effectivePosition) return null;
     return data.positions.find((p) => p.teamPosition === effectivePosition) ?? data.positions[0];
   }, [data, effectivePosition]);
-
-  // 현재 포지션의 timeline frames
-  const currentTimelineFrames = useMemo(() => {
-    if (!timelineData?.positions || !effectivePosition) return [];
-    const match = timelineData.positions.find(
-      (p) => p.teamPosition === effectivePosition
-    );
-    return match?.frames ?? [];
-  }, [timelineData, effectivePosition]);
 
   return (
     <div className="min-h-screen bg-surface">
@@ -142,7 +124,6 @@ export default function ChampionStatsDetailPageClient({
                   championName={championId}
                 />
               </div>
-              <ChampionTimelineChart frames={currentTimelineFrames} />
               <ItemBuildStats data={currentPositionStats.itemBuilds} startItemBuilds={currentPositionStats.startItemBuilds} />
               <BootBuildStats data={currentPositionStats.bootBuilds} />
               <SpellStats data={currentPositionStats.spellStats} />
