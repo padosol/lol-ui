@@ -257,12 +257,14 @@ export default function ProfileSection({
               {/* 프로필 이름 */}
               <div>
                 <h1 className="text-lg md:text-xl font-bold text-on-surface break-words">
-                  {profileData.gameName || summonerName}
-                  {profileData.tagLine && (
-                    <span className="text-on-surface-medium ml-1 md:ml-2 text-sm md:text-base">
-                      #{profileData.tagLine}
-                    </span>
-                  )}
+                  <span className="whitespace-nowrap">
+                    {profileData.gameName || summonerName}
+                    {profileData.tagLine && (
+                      <span className="text-on-surface-medium ml-1 md:ml-2 text-sm md:text-base">
+                        #{profileData.tagLine}
+                      </span>
+                    )}
+                  </span>
                 </h1>
               </div>
 
