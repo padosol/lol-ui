@@ -60,7 +60,7 @@ export interface RuneBuildData extends BuildConfidenceMeta {
 }
 
 export interface SkillBuildData extends BuildConfidenceMeta {
-  skillBuild: string; // BQ: "[1,2,1,2,2,3,...]" / 레거시: "Q,E,W,Q,Q,R,..."
+  skillBuild: string | null; // BQ: "[1,2,1,2,2,3,...]" / 레거시: "Q,E,W,Q,Q,R,..." / null: 데이터 부족
   games: number;
   winRate: number;
   pickRate: number;

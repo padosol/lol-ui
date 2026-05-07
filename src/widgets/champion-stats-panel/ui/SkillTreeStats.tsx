@@ -71,16 +71,21 @@ export default function SkillTreeStats({
   const [expanded, setExpanded] = useState(false);
   const championData = useGameDataStore((s) => s.championData);
   const champion = championData?.data[championName];
-  if (data.length === 0) return null;
 
-  const visible = expanded ? data : data.slice(0, DEFAULT_VISIBLE);
+  const filtered = data.filter(
+    (b): b is SkillBuildData & { skillBuild: string } =>
+      b.skillBuild != null && b.skillBuild.trim() !== "",
+  );
+  if (filtered.length === 0) return null;
+
+  const visible = expanded ? filtered : filtered.slice(0, DEFAULT_VISIBLE);
 
   return (
     <div className="bg-surface-1 rounded-lg border border-divider p-0 md:p-5">
       <StatSectionHeader
         title="스킬 트리"
-        totalCount={data.length}
-        visibleCount={Math.min(DEFAULT_VISIBLE, data.length)}
+        totalCount={filtered.length}
+        visibleCount={Math.min(DEFAULT_VISIBLE, filtered.length)}
         expanded={expanded}
         onToggle={() => setExpanded((v) => !v)}
       />
