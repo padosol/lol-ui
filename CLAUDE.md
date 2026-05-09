@@ -61,6 +61,6 @@ Component → React Query hook (entities/*/model/) → API함수 (entities/*/api
 | `feature` | 신규 기능 | `feature/MP-7-summoner-search` |
 | `fix` | 버그 수정 | `fix/MP-12-match-null-check` |
 | `refactor` | 동작 변화 없는 구조 개선 | `refactor/MP-7-mapper-cleanup` |
-| `chore` | 코드 영향 없는 산출물·문서·CI·도구 변경 (의존 업그레이드, audit 산출물, lint 룰 추가 등) | `chore/MP-41` |
+| `chore` | 코드 영향 없는 산출물·문서·CI·도구 변경 (의존 업그레이드, audit 산출물, lint 룰 추가 등) | `chore/MP-41-claude-md-prefix-table` |
 | `docs` | 사용자/개발자 문서 | `docs/MP-20-workflow-guide` |
 | `hotfix` | 긴급 prod 패치 (main 직접 분기) | `hotfix/MP-34-login-500` |
