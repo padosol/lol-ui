@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>AI-Ready Audit · lol-ui</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #1e293b;
+      --panel-2: #334155;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --good: #22c55e;
+      --ok: #eab308;
+      --warn: #f97316;
+      --bad: #ef4444;
+      --border: #475569;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Pretendard', 'Noto Sans KR', sans-serif;
+      background: var(--bg); color: var(--text); line-height: 1.55;
+    }
+    .container { max-width: 1100px; margin: 0 auto; padding: 32px 24px 80px; }
+    h1, h2, h3 { margin: 0 0 12px; }
+    h1 { font-size: 28px; }
+    h2 { font-size: 22px; margin-top: 36px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+    h3 { font-size: 18px; }
+    .muted { color: var(--muted); font-size: 13px; }
+    .header {
+      display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: end;
+      background: linear-gradient(135deg, var(--panel) 0%, var(--panel-2) 100%);
+      padding: 28px; border-radius: 16px; border: 1px solid var(--border);
+    }
+    .total-score {
+      font-size: 64px; font-weight: 700; line-height: 1; color: var(--accent);
+    }
+    .total-score small { font-size: 24px; color: var(--muted); }
+    .grade-badge {
+      display: inline-block; padding: 6px 14px; border-radius: 999px;
+      font-weight: 600; font-size: 14px; margin-top: 8px;
+    }
+    .grade-AI-Native { background: var(--good); color: #052e16; }
+    .grade-AI-Ready { background: var(--accent); color: #0c4a6e; }
+    .grade-AI-Assisted { background: var(--ok); color: #422006; }
+    .grade-AI-Fragile { background: var(--warn); color: #431407; }
+    .grade-AI-Hostile { background: var(--bad); color: #450a0a; }
+
+    .meta-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;
+      margin-top: 24px;
+    }
+    .meta { background: var(--panel); padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border); }
+    .meta .label { color: var(--muted); font-size: 12px; }
+    .meta .value { font-size: 18px; font-weight: 600; margin-top: 4px; }
+
+    .cat-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;
+    }
+    .cat-card {
+      background: var(--panel); padding: 18px; border-radius: 12px; border: 1px solid var(--border);
+    }
+    .cat-card .cat-id { color: var(--muted); font-size: 12px; letter-spacing: 0.05em; }
+    .cat-card h3 { margin-top: 4px; }
+    .cat-card .scoreline {
+      display: flex; align-items: baseline; gap: 8px; margin-top: 8px;
+    }
+    .cat-card .score { font-size: 28px; font-weight: 700; }
+    .cat-card .max { color: var(--muted); }
+    .bar { height: 8px; background: var(--panel-2); border-radius: 999px; overflow: hidden; margin-top: 10px; }
+    .bar > div { height: 100%; transition: width .3s; }
+    .bar-good > div { background: var(--good); }
+    .bar-ok   > div { background: var(--ok); }
+    .bar-warn > div { background: var(--warn); }
+    .bar-bad  > div { background: var(--bad); }
+    .cat-card .desc { color: var(--muted); font-size: 13px; margin-top: 8px; }
+    .cat-card .reason { font-size: 13px; margin-top: 8px; padding: 8px 10px; background: rgba(56,189,248,.07); border-left: 2px solid var(--accent); border-radius: 4px; }
+
+    table {
+      width: 100%; border-collapse: collapse; margin-top: 12px;
+      background: var(--panel); border-radius: 12px; overflow: hidden;
+    }
+    th, td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--border); }
+    th { background: var(--panel-2); font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+    tr:last-child td { border-bottom: none; }
+
+    .roi-rank {
+      display: inline-block; width: 24px; height: 24px; border-radius: 50%;
+      background: var(--accent); color: #0c4a6e; font-weight: 700; text-align: center; line-height: 24px;
+      font-size: 12px;
+    }
+    .effort-low    { color: var(--good); }
+    .effort-medium { color: var(--ok); }
+    .effort-high   { color: var(--warn); }
+
+    .warn-box {
+      background: rgba(249, 115, 22, .08); border: 1px solid var(--warn); padding: 14px;
+      border-radius: 10px; margin-top: 16px; font-size: 14px;
+    }
+    .ref-list { font-family: 'Menlo', 'Consolas', monospace; font-size: 12px; color: var(--muted); margin-top: 8px; }
+    .ref-list li { margin: 2px 0; }
+
+    footer { color: var(--muted); font-size: 12px; margin-top: 60px; text-align: center; }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div>
+      <div class="muted">AI-Ready Codebase Audit</div>
+      <h1>lol-ui</h1>
+      <div class="muted">/home/padosol/lol/.orch/mp-23/worktrees/ui · git ef2f9f5c · 2026-05-06T05:07:16.257441+00:00</div>
+      <div class="grade-badge grade-AI-Hostile">AI-Hostile</div>
+      <div class="muted" style="margin-top: 6px;">tribal knowledge 의존도가 높고 AI가 추측 기반으로 작업함</div>
+    </div>
+    <div style="text-align: right;">
+      <div class="total-score">34<small>/100</small></div>
+    </div>
+  </div>
+
+  <div class="meta-grid">
+    <div class="meta"><div class="label">Tracked files</div><div class="value">378</div></div>
+    <div class="meta"><div class="label">핵심 모듈</div><div class="value">3</div></div>
+    <div class="meta"><div class="label">CLAUDE.md / AGENTS.md</div><div class="value">1</div></div>
+    <div class="meta"><div class="label">Navigation Coverage</div><div class="value">0.0%</div></div>
+    <div class="meta"><div class="label">의심 broken refs</div><div class="value">10</div></div>
+  </div>
+
+  <h2>카테고리별 점수</h2>
+  <div class="cat-grid">
+    
+<div class="cat-card">
+  <div class="cat-id">A</div>
+  <h3>AI Navigation &amp; Coverage</h3>
+  <div class="scoreline"><span class="score">5</span><span class="max">/15</span></div>
+  <div class="bar bar-warn"><div style="width:33%"></div></div>
+  <div class="desc">AI가 전체 codebase/module/workflow를 빠르게 찾을 수 있는가</div>
+  <div class="reason">루트 CLAUDE.md(54줄)와 .github/WORKFLOWS.md만 존재. src/ 하위 6개 FSD 레이어(app/views/widgets/features/entities/shared)에 모듈별 context 0건. navigation_coverage_ratio=0.0.</div>
+  
+</div>
+
+
+<div class="cat-card">
+  <div class="cat-id">B</div>
+  <h3>Context Document Quality</h3>
+  <div class="scoreline"><span class="score">12</span><span class="max">/20</span></div>
+  <div class="bar bar-ok"><div style="width:60%"></div></div>
+  <div class="desc">context files가 'compass, not encyclopedia' 원칙을 따르는가</div>
+  
+  <table style="margin-top:12px; font-size:13px;"><tr><td><strong>B1</strong> Conciseness</td><td style="text-align:right">2/4</td></tr><tr><td><strong>B2</strong> Quick Commands</td><td style="text-align:right">4/4</td></tr><tr><td><strong>B3</strong> Key Files</td><td style="text-align:right">2/4</td></tr><tr><td><strong>B4</strong> Non-Obvious Patterns</td><td style="text-align:right">4/4</td></tr><tr><td><strong>B5</strong> See Also / Cross References</td><td style="text-align:right">0/4</td></tr></table>
+</div>
+
+
+<div class="cat-card">
+  <div class="cat-id">C</div>
+  <h3>Tribal Knowledge Externalization</h3>
+  <div class="scoreline"><span class="score">5</span><span class="max">/20</span></div>
+  <div class="bar bar-bad"><div style="width:25%"></div></div>
+  <div class="desc">숨은 규칙, 실패 패턴, human-only knowledge가 구조화되었는가</div>
+  <div class="reason">루트 CLAUDE.md 1개에 일부 gotcha(FSD 의존 방향, dual API, React Query TTL, GameDataLoader 타이밍)가 흩어져 있는 수준. five_question_module_coverage_pct 5개 모두 0.0 — 모듈별 5질문(소유, 수정 패턴, 실패 패턴, 의존, tribal)이 어떤 모듈에서도 답되지 않음. checklist/playbook/ADR 부재.</div>
+  
+</div>
+
+
+<div class="cat-card">
+  <div class="cat-id">D</div>
+  <h3>Cross-Module Dependency &amp; Data Flow Mapping</h3>
+  <div class="scoreline"><span class="score">5</span><span class="max">/15</span></div>
+  <div class="bar bar-warn"><div style="width:33%"></div></div>
+  <div class="desc">변경 영향 범위를 AI가 추적할 수 있는가</div>
+  <div class="reason">has_architecture_doc=false, has_dependency_map=false, 다이어그램 0건. 다만 루트 CLAUDE.md에 'app → views → widgets → features → entities → shared' FSD 의존 방향 텍스트 화살표 + Component → React Query → API 데이터 흐름 텍스트 다이어그램 존재 — 'note 존재' 수준.</div>
+  
+</div>
+
+
+<div class="cat-card">
+  <div class="cat-id">E</div>
+  <h3>Verification &amp; Quality Gates</h3>
+  <div class="scoreline"><span class="score">7</span><span class="max">/15</span></div>
+  <div class="bar bar-warn"><div style="width:47%"></div></div>
+  <div class="desc">AI-generated context와 code changes를 검증하는 체계가 있는가</div>
+  
+  <table style="margin-top:12px; font-size:13px;"><tr><td><strong>E1</strong> Reference Accuracy</td><td style="text-align:right">2/5</td></tr><tr><td><strong>E2</strong> Independent Critic Review</td><td style="text-align:right">1/4</td></tr><tr><td><strong>E3</strong> Task Validation</td><td style="text-align:right">3/4</td></tr><tr><td><strong>E4</strong> Prompt/Workflow Tests</td><td style="text-align:right">1/2</td></tr></table>
+</div>
+
+
+<div class="cat-card">
+  <div class="cat-id">F</div>
+  <h3>Freshness &amp; Self-Maintenance</h3>
+  <div class="scoreline"><span class="score">0</span><span class="max">/10</span></div>
+  <div class="bar bar-bad"><div style="width:0%"></div></div>
+  <div class="desc">context가 stale해지지 않도록 자동 유지되는가. stale context는 없는 context보다 위험.</div>
+  <div class="reason">doc freshness/link check CI 없음. dependabot.yml은 있으나 코드 의존성용. CLAUDE.md/README.md owner 명시 없음, stale 검출 메커니즘 부재. README.md의 docs/* 5건이 누락이지만 자동 검출 못 함이 그 증거.</div>
+  
+</div>
+
+
+<div class="cat-card">
+  <div class="cat-id">G</div>
+  <h3>Agent Performance Outcomes</h3>
+  <div class="scoreline"><span class="score">0</span><span class="max">/5</span></div>
+  <div class="bar bar-bad"><div style="width:0%"></div></div>
+  <div class="desc">실제 AI task 성공률/효율 개선이 측정되는가</div>
+  <div class="reason">AI task pass rate, tool calls, token usage, before/after 비교 등 어떤 agent performance metric도 측정·기록 없음. metrics dashboard 부재.</div>
+  
+</div>
+
+  </div>
+
+  <h2>ROI 우선순위 액션 리스트</h2>
+  <p class="muted">놓친 점수 / 추정 노력으로 정렬. 위에서부터 처리하면 점수 대비 효과가 큰 순서로 개선됩니다.</p>
+  <table>
+    <thead>
+      <tr>
+        <th>#</th><th>항목</th><th>현재</th><th>최대</th><th>놓친 점수</th><th>추정 노력</th><th>권장 액션</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+<tr>
+  <td><span class="roi-rank">1</span></td>
+  <td>B5 · See Also / Cross References</td>
+  <td>0</td>
+  <td>4</td>
+  <td><strong>+4</strong></td>
+  <td class="effort-low">low</td>
+  <td>관련 module/context file/dependency map으로 연결</td>
+</tr>
+
+
+<tr>
+  <td><span class="roi-rank">2</span></td>
+  <td>A · AI Navigation &amp; Coverage</td>
+  <td>5</td>
+  <td>15</td>
+  <td><strong>+10</strong></td>
+  <td class="effort-medium">medium</td>
+  <td>FSD 레이어별 CLAUDE.md (entry point, 책임, 의존 방향) 추가 — 우선 features/, entities/, widgets/ 부터.</td>
+</tr>
+
+
+<tr>
+  <td><span class="roi-rank">3</span></td>
+  <td>F · Freshness &amp; Self-Maintenance</td>
+  <td>0</td>
+  <td>10</td>
+  <td><strong>+10</strong></td>
+  <td class="effort-medium">medium</td>
+  <td>lychee 또는 markdown-link-check를 PR 워크플로우에 추가, audit-codebase 자체를 주간 cron으로 등록.</td>
+</tr>
+
+
+<tr>
+  <td><span class="roi-rank">4</span></td>
+  <td>B1 · Conciseness</td>
+  <td>2</td>
+  <td>4</td>
+  <td><strong>+2</strong></td>
+  <td class="effort-low">low</td>
+  <td>25-35 lines 또는 약 1,000 tokens 내외</td>
+</tr>
+
+
+<tr>
+  <td><span class="roi-rank">5</span></td>
+  <td>B3 · Key Files</td>
+  <td>2</td>
+  <td>4</td>
+  <td><strong>+2</strong></td>
+  <td class="effort-low">low</td>
+  <td>실제 수정에 필요한 3-5개 핵심 파일 제시</td>
+</tr>
+
+
+<tr>
+  <td><span class="roi-rank">6</span></td>
+  <td>C · Tribal Knowledge Externalization</td>
+  <td>5</td>
+  <td>20</td>
+  <td><strong>+15</strong></td>
+  <td class="effort-high">high</td>
+  <td>features/, entities/ 핵심 모듈에 5질문 템플릿 기반 CLAUDE.md 작성. 매치 히스토리·소환사 검색·챔피언 통계 도메인부터.</td>
+</tr>
+
+
+<tr>
+  <td><span class="roi-rank">7</span></td>
+  <td>D · Cross-Module Dependency &amp; Data Flow Mapping</td>
+  <td>5</td>
+  <td>15</td>
+  <td><strong>+10</strong></td>
+  <td class="effort-high">high</td>
+  <td>ARCHITECTURE.md 신설: FSD 레이어 책임, 모듈 간 import 그래프(또는 mermaid), SSR vs CSR 라우트 매핑.</td>
+</tr>
+
+
+<tr>
+  <td><span class="roi-rank">8</span></td>
+  <td>E1 · Reference Accuracy</td>
+  <td>2</td>
+  <td>5</td>
+  <td><strong>+3</strong></td>
+  <td class="effort-medium">medium</td>
+  <td>file path, API, command hallucination 0건</td>
+</tr>
+
+
+<tr>
+  <td><span class="roi-rank">9</span></td>
+  <td>E3 · Task Validation</td>
+  <td>3</td>
+  <td>4</td>
+  <td><strong>+1</strong></td>
+  <td class="effort-low">low</td>
+  <td>build/test/lint/typecheck/e2e 등 변경 유형별 검증 명령 제공</td>
+</tr>
+
+
+<tr>
+  <td><span class="roi-rank">10</span></td>
+  <td>G · Agent Performance Outcomes</td>
+  <td>0</td>
+  <td>5</td>
+  <td><strong>+5</strong></td>
+  <td class="effort-high">high</td>
+  <td>정성적으로 '도움 된다' 수준</td>
+</tr>
+
+
+<tr>
+  <td><span class="roi-rank">11</span></td>
+  <td>E2 · Independent Critic Review</td>
+  <td>1</td>
+  <td>4</td>
+  <td><strong>+3</strong></td>
+  <td class="effort-high">high</td>
+  <td>최소 2-3 round의 독립 review 또는 checklist</td>
+</tr>
+
+
+<tr>
+  <td><span class="roi-rank">12</span></td>
+  <td>E4 · Prompt/Workflow Tests</td>
+  <td>1</td>
+  <td>2</td>
+  <td><strong>+1</strong></td>
+  <td class="effort-high">high</td>
+  <td>대표 AI task query를 실제로 테스트</td>
+</tr>
+
+    </tbody>
+  </table>
+
+  
+<h2>문서 내 의심 참조 (10건)</h2>
+<div class="warn-box">
+  context 문서에서 백틱/링크로 참조된 경로 중 audit이 실제로 찾지 못한 항목입니다.
+  실제로는 깊은 경로에 존재할 수 있으니 <strong>샘플링 검증 필수</strong>.
+  (E1. Reference Accuracy 점수에 영향)
+</div>
+<ul class="ref-list"><li><code>CLAUDE.md</code> → <code>app/GameDataLoader.tsx</code></li><li><code>CLAUDE.md</code> → <code>app/</code></li><li><code>CLAUDE.md</code> → <code>pages/</code></li><li><code>CLAUDE.md</code> → <code>shared/api/server-client.ts</code></li><li><code>CLAUDE.md</code> → <code>shared/api/client.ts</code></li><li><code>README.md</code> → <code>./docs/styling-guide.md</code></li><li><code>README.md</code> → <code>./docs/development-guide.md</code></li><li><code>README.md</code> → <code>./docs/libraries.md</code></li><li><code>README.md</code> → <code>./docs/component-guide.md</code></li><li><code>README.md</code> → <code>./docs/project-structure.md</code></li></ul>
+
+
+  <footer>
+    Generated by ai-ready-audit · rubric v1.0 · scorecard 입력: /home/padosol/lol/.orch/mp-23/worktrees/ui/.ai-ready-audit/2026-05-06/scorecard.json
+  </footer>
+
+</div>
+</body>
+</html>

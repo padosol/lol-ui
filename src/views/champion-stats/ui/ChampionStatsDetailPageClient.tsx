@@ -1,12 +1,14 @@
 "use client";
 
 import {
+  BootBuildStats,
   ChampionOverview,
   ItemBuildStats,
   MatchupStats,
   PositionTabs,
   RuneStats,
   SkillTreeStats,
+  SpellStats,
 } from "@/widgets/champion-stats-panel";
 import { Header, Navigation, Footer } from "@/widgets/layout";
 import {
@@ -17,6 +19,7 @@ import {
 import { useSeasonStore } from "@/entities/season";
 import { ChampionStatsFilters } from "@/features/champion-stats-filter";
 import { useMemo, useState } from "react";
+import { ErrorState, EmptyState, SkeletonStats } from "./ChampionStatsStates";
 
 interface ChampionStatsDetailPageClientProps {
   championId: string;
@@ -55,7 +58,7 @@ export default function ChampionStatsDetailPageClient({
     );
   }, [activePatch, selectedTier, selectedPlatform, initialActivePatch, initialTier, initialPlatformId, initialStatsData]);
 
-  const { data, isLoading, isError } = useChampionStats(
+  const { data, isLoading, isError, errorUpdatedAt, refetch } = useChampionStats(
     championKey,
     activePatch,
     selectedTier,
@@ -67,6 +70,17 @@ export default function ChampionStatsDetailPageClient({
   const availablePositions = useMemo(() => {
     if (!data?.positions) return [];
     return data.positions.map((p) => p.teamPosition);
+  }, [data]);
+
+  // 포지션별 totalGames 비율 (탭 % 표시용)
+  const positionShares = useMemo(() => {
+    if (!data?.positions || data.positions.length === 0) return undefined;
+    const total = data.positions.reduce((sum, p) => sum + (p.totalGames ?? 0), 0);
+    if (total <= 0) return undefined;
+    return data.positions.reduce<Partial<Record<ApiPositionType, number>>>((acc, p) => {
+      acc[p.teamPosition] = (p.totalGames ?? 0) / total;
+      return acc;
+    }, {});
   }, [data]);
 
   // 유효한 포지션 계산: 선택된 포지션이 없거나 목록에 없으면 첫 번째 포지션으로 fallback
@@ -87,7 +101,7 @@ export default function ChampionStatsDetailPageClient({
     <div className="min-h-screen bg-surface">
       <Header />
       <Navigation />
-      <main className="max-w-5xl mx-auto py-8">
+      <main className="max-w-6xl mx-auto px-4 py-8">
         <div className="space-y-6">
           <ChampionStatsFilters
             selectedTier={selectedTier}
@@ -102,16 +116,13 @@ export default function ChampionStatsDetailPageClient({
             selectedPosition={effectivePosition ?? "TOP"}
             onSelectPosition={setSelectedPosition}
             availablePositions={availablePositions.length > 0 ? availablePositions : undefined}
+            positionShares={positionShares}
           />
 
           {isLoading ? (
-            <div className="flex items-center justify-center py-20">
-              <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-            </div>
+            <SkeletonStats />
           ) : isError ? (
-            <div className="text-center py-20 text-loss">
-              통계 데이터를 불러오는 중 오류가 발생했습니다.
-            </div>
+            <ErrorState errorUpdatedAt={errorUpdatedAt} onRetry={() => refetch()} />
           ) : currentPositionStats ? (
             <>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -121,18 +132,24 @@ export default function ChampionStatsDetailPageClient({
                   championId={championId}
                 />
                 <SkillTreeStats
-                  data={currentPositionStats.skillBuilds.slice(0, 1)}
+                  data={currentPositionStats.skillBuilds}
                   championName={championId}
                 />
               </div>
               <ItemBuildStats data={currentPositionStats.itemBuilds} startItemBuilds={currentPositionStats.startItemBuilds} />
+              <BootBuildStats data={currentPositionStats.bootBuilds} />
+              <SpellStats data={currentPositionStats.spellStats} />
               <RuneStats data={currentPositionStats.runeBuilds} />
               <MatchupStats data={currentPositionStats.matchups ?? []} />
             </>
           ) : activePatch ? (
-            <div className="text-center py-20 text-on-surface-medium">
-              해당 패치의 통계 데이터가 없습니다.
-            </div>
+            <EmptyState
+              selectedTier={selectedTier}
+              selectedPatch={activePatch}
+              patchVersions={latestPatches}
+              onTierChange={setSelectedTier}
+              onPatchChange={setSelectedPatch}
+            />
           ) : null}
         </div>
       </main>

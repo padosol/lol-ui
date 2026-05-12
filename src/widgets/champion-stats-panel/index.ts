@@ -1,9 +1,12 @@
 export { default as ChampionListSidebar } from "./ui/ChampionListSidebar";
 export { default as ChampionOverview } from "./ui/ChampionOverview";
 export { default as ItemBuildStats } from "./ui/ItemBuildStats";
+export { default as BootBuildStats } from "./ui/BootBuildStats";
 export { default as MatchupStats } from "./ui/MatchupStats";
 export { default as PositionTabs } from "./ui/PositionTabs";
 export { default as PositionTabsList } from "./ui/PositionTabsList";
 export { default as ChampionStatsTable } from "./ui/ChampionStatsTable";
 export { default as RuneStats } from "./ui/RuneStats";
 export { default as SkillTreeStats } from "./ui/SkillTreeStats";
+export { default as SpellStats } from "./ui/SpellStats";
+export { default as BuildConfidenceIndicator } from "./ui/BuildConfidenceIndicator";

@@ -10,25 +10,30 @@ interface PositionTabsProps {
   selectedPosition: ApiPositionType;
   onSelectPosition: (position: ApiPositionType) => void;
   availablePositions?: ApiPositionType[];
+  positionShares?: Partial<Record<ApiPositionType, number>>;
 }
 
 export default function PositionTabs({
   selectedPosition,
   onSelectPosition,
   availablePositions,
+  positionShares,
 }: PositionTabsProps) {
   const positions = availablePositions ?? ALL_POSITIONS;
 
   return (
-    <div className="flex border-b border-divider">
+    <div className="flex border-b border-divider overflow-x-auto scrollbar-thin">
       {positions.map((pos) => {
         const isActive = pos === selectedPosition;
+        const share = positionShares?.[pos];
+        const sharePercent =
+          share != null && Number.isFinite(share) ? Math.round(share * 100) : null;
         return (
           <button
             key={pos}
             type="button"
             onClick={() => onSelectPosition(pos)}
-            className={`flex items-center gap-1.5 px-4 py-2 text-sm font-medium transition-colors border-b-2 cursor-pointer ${
+            className={`flex items-center gap-1.5 px-4 py-2 text-sm font-medium transition-colors border-b-2 cursor-pointer shrink-0 ${
               isActive
                 ? "text-on-surface border-primary"
                 : "text-on-surface-medium hover:text-on-surface border-transparent"
@@ -43,6 +48,9 @@ export default function PositionTabs({
               className={isActive ? "opacity-100" : "opacity-60"}
             />
             <span className="hidden sm:inline">{getPositionName(pos)}</span>
+            {sharePercent != null && (
+              <span className="text-xs text-on-surface-medium">{sharePercent}%</span>
+            )}
           </button>
         );
       })}

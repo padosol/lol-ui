@@ -29,11 +29,12 @@ export default function ChampionStats({
   const latestSeasonValue = useSeasonStore((s) => s.getLatestSeasonValue());
   const effectiveSeason = season ?? latestSeasonValue ?? "";
 
-  const { data: championStats = [], isLoading } = useChampionRanking(
+  const { data, isLoading } = useChampionRanking(
     puuid || "",
-    effectiveSeason,
-    420
+    effectiveSeason
   );
+
+  const championStats = data?.solo ?? [];
 
   const [sortField, setSortField] = useState<SortField>("playCount");
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");

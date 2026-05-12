@@ -34,13 +34,13 @@ export default function ChampionStatsOverview({
   const effectiveSeason = season ?? latestSeasonValue ?? "";
 
   const [activeQueue, setActiveQueue] = useState<QueueTabType>("solo");
-  const queueId = activeQueue === "solo" ? 420 : 440;
 
-  const { data: championStats = [], isLoading } = useChampionRanking(
+  const { data, isLoading } = useChampionRanking(
     puuid || "",
-    effectiveSeason,
-    queueId
+    effectiveSeason
   );
+
+  const championStats = data?.[activeQueue] ?? [];
 
   // champion.json 데이터 로드 (zustand store 사용)
   const loadChampionData = useGameDataStore((state) => state.loadChampionData);

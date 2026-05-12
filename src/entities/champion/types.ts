@@ -9,27 +9,43 @@ export type PositionType = "TOP" | "JUNGLE" | "MID" | "ADC" | "SUPPORT";
 export type ApiPositionType = "TOP" | "JUNGLE" | "MIDDLE" | "BOTTOM" | "UTILITY";
 
 export interface MatchupData {
+  rankType: "TOP" | "BOTTOM"; // TOP=잘 잡는 상대, BOTTOM=카운터
   opponentChampionId: number;
   games: number;
   winRate: number;
   pickRate: number;
 }
 
-export interface ItemBuildData {
-  itemBuild: string; // "3078,3053,3065"
+// 모든 빌드 타입 공통 신뢰도 메타 (server M2 도입).
+// games 와 sampleSize 는 동일값이지만 sampleSize 가 의미명 명확.
+export interface BuildConfidenceMeta {
+  sampleSize?: number;
+  totalSampleSize?: number;
+  confidenceLowerBound?: number; // Wilson 95% lower bound, 0~1
+}
+
+export interface ItemBuildData extends BuildConfidenceMeta {
+  itemBuild: number[]; // [3078, 3053, 3065]
   games: number;
   winRate: number;
   pickRate: number;
 }
 
-export interface StartItemBuildData {
-  startItems: string; // "1054,2003"
+export interface StartItemBuildData extends BuildConfidenceMeta {
+  startItems: number[]; // [1054, 2003]
   games: number;
   winRate: number;
   pickRate: number;
 }
 
-export interface RuneBuildData {
+export interface BootBuildData extends BuildConfidenceMeta {
+  bootId: number;
+  games: number;
+  winRate: number;
+  pickRate: number;
+}
+
+export interface RuneBuildData extends BuildConfidenceMeta {
   primaryStyleId: number;
   subStyleId: number;
   primaryPerk0: number;
@@ -38,22 +54,19 @@ export interface RuneBuildData {
   primaryPerk3: number;
   subPerk0: number;
   subPerk1: number;
-  statPerkDefense: number;
-  statPerkFlex: number;
-  statPerkOffense: number;
   games: number;
   winRate: number;
   pickRate: number;
 }
 
-export interface SkillBuildData {
-  skillBuild: string; // "Q,E,W,Q,Q,R,Q,E,Q,E,R,E,E,W,W"
+export interface SkillBuildData extends BuildConfidenceMeta {
+  skillBuild: string | null; // BQ: "[1,2,1,2,2,3,...]" / 레거시: "Q,E,W,Q,Q,R,..." / null: 데이터 부족
   games: number;
   winRate: number;
   pickRate: number;
 }
 
-export interface SpellStatsData {
+export interface SpellStatsData extends BuildConfidenceMeta {
   summoner1Id: number;
   summoner2Id: number;
   games: number;
@@ -61,25 +74,32 @@ export interface SpellStatsData {
   pickRate: number;
 }
 
-export interface ItemStatByOrder {
-  itemId: number;
-  itemName: string;
-  games: number;
-  winRate: number;
-  pickRate: number;
+export interface ChampionAverageStats {
+  teamPosition: string;
+  avgKills: number;
+  avgDeaths: number;
+  avgAssists: number;
+  kda: number;
+  avgGoldPerMinute: number;
+  avgLaneCs10m: number;
+  avgJungleCs10m: number;
 }
 
 export interface ChampionPositionStats {
   teamPosition: ApiPositionType;
   winRate: number;
   totalGames: number;
+  pickRate?: number;
+  banRate?: number;
+  tier?: string;
+  averages?: ChampionAverageStats | null;
   matchups: MatchupData[];
   itemBuilds: ItemBuildData[];
   startItemBuilds: StartItemBuildData[];
+  bootBuilds: BootBuildData[];
   runeBuilds: RuneBuildData[];
   skillBuilds: SkillBuildData[];
   spellStats: SpellStatsData[];
-  itemStatsByOrder: Record<string, ItemStatByOrder[]>;
 }
 
 export interface ChampionStatsResponse {

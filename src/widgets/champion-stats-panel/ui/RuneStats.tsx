@@ -1,31 +1,42 @@
 "use client";
 
+import { useState } from "react";
 import { GameTooltip } from "@/shared/ui/tooltip";
 import {
   RUNE_TREE_MAP,
   KEYSTONE_NAMES,
-  STAT_PERK_NAMES,
-  STAT_PERK_ROWS,
-  STAT_PERK_ROW_KEYS,
 } from "@/shared/constants/runes";
 import type { RuneBuildData } from "@/entities/champion";
 import { getPerkImageUrl } from "@/shared/lib/game";
 import { getStyleImageUrl } from "@/shared/lib/styles";
 import { useGameDataStore } from "@/shared/model/game-data";
 import Image from "next/image";
+import StatSectionHeader from "./StatSectionHeader";
+import BuildConfidenceIndicator from "./BuildConfidenceIndicator";
+
+const DEFAULT_VISIBLE = 2;
 
 interface RuneStatsProps {
   data: RuneBuildData[];
 }
 
 export default function RuneStats({ data }: RuneStatsProps) {
+  const [expanded, setExpanded] = useState(false);
   if (data.length === 0) return null;
+
+  const visible = expanded ? data : data.slice(0, DEFAULT_VISIBLE);
 
   return (
     <div className="bg-surface-1 rounded-lg border border-divider p-0 md:p-5">
-      <h3 className="text-base font-bold text-on-surface p-2">룬</h3>
+      <StatSectionHeader
+        title="룬"
+        totalCount={data.length}
+        visibleCount={Math.min(DEFAULT_VISIBLE, data.length)}
+        expanded={expanded}
+        onToggle={() => setExpanded((v) => !v)}
+      />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {data.slice(0, 2).map((build, i) => (
+        {visible.map((build, i) => (
           <RunePageRow key={i} build={build} />
         ))}
       </div>
@@ -171,45 +182,6 @@ function RuneTreeSection({
   );
 }
 
-/* ─── 스탯 퍼크 행 컴포넌트 ─── */
-function StatPerkRow({
-  perks,
-  selectedPerkId,
-}: {
-  perks: number[];
-  selectedPerkId: number;
-}) {
-  return (
-    <div className="flex items-center gap-1.5">
-      {perks.map((perkId) => {
-        const isSelected = perkId === selectedPerkId;
-        return (
-          <GameTooltip
-            key={perkId}
-            type="rune"
-            id={perkId}
-            disabled={!isSelected}
-          >
-            <div
-              className={`w-5 h-5 rounded-full overflow-hidden relative bg-surface-8 ${isSelected ? "ring-1 ring-white/30" : "opacity-25 grayscale"
-                }`}
-            >
-              <Image
-                src={getPerkImageUrl(perkId)}
-                alt={STAT_PERK_NAMES[perkId] ?? `Perk ${perkId}`}
-                fill
-                sizes="20px"
-                className="object-cover"
-                unoptimized
-              />
-            </div>
-          </GameTooltip>
-        );
-      })}
-    </div>
-  );
-}
-
 /* ─── 룬 페이지 행 (빌드 1개) ─── */
 function RunePageRow({ build }: { build: RuneBuildData }) {
   const primaryPerkIds = [
@@ -233,37 +205,12 @@ function RunePageRow({ build }: { build: RuneBuildData }) {
           isPrimary
         />
 
-        {/* 서브룬 트리 + 룬 파편 */}
-        <div className="flex flex-col items-center gap-3">
-          <RuneTreeSection
-            treeId={build.subStyleId}
-            selectedPerkIds={allSelectedIds}
-            isPrimary={false}
-          />
-
-          {/* 룬 파편 */}
-          <div className="flex flex-col items-center gap-1.5">
-            <span className="text-[9px] text-on-surface-medium mb-0.5">
-              룬 파편
-            </span>
-            {STAT_PERK_ROWS.map((row, rowIdx) => {
-              const key = STAT_PERK_ROW_KEYS[rowIdx];
-              const perkMap: Record<string, number> = {
-                offense: build.statPerkOffense,
-                flex: build.statPerkFlex,
-                defense: build.statPerkDefense,
-              };
-              const selectedId = perkMap[key] ?? 0;
-              return (
-                <StatPerkRow
-                  key={key}
-                  perks={row.perks}
-                  selectedPerkId={selectedId}
-                />
-              );
-            })}
-          </div>
-        </div>
+        {/* 서브룬 트리. 룬 파편은 BE BigQuery 미적재로 임시 제거 (MP-8) */}
+        <RuneTreeSection
+          treeId={build.subStyleId}
+          selectedPerkIds={allSelectedIds}
+          isPrimary={false}
+        />
       </div>
 
       {/* 승률/픽률/게임수 */}
@@ -271,8 +218,7 @@ function RunePageRow({ build }: { build: RuneBuildData }) {
         <span>
           <span className="text-on-surface-medium">승률 </span>
           <span
-            className={`font-medium ${winRatePercent >= 50 ? "text-win" : "text-loss"
-              }`}
+            className={`font-medium ${winRatePercent >= 50 ? "text-win" : "text-loss"}`}
           >
             {winRatePercent.toFixed(1)}%
           </span>
@@ -286,6 +232,13 @@ function RunePageRow({ build }: { build: RuneBuildData }) {
         <span className="text-on-surface-medium">
           {build.games.toLocaleString()}게임
         </span>
+      </div>
+      <div className="flex justify-center mt-1.5">
+        <BuildConfidenceIndicator
+          sampleSize={build.sampleSize}
+          totalSampleSize={build.totalSampleSize}
+          confidenceLowerBound={build.confidenceLowerBound}
+        />
       </div>
     </div>
   );

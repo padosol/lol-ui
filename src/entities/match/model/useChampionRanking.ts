@@ -1,16 +1,15 @@
 import { getChampionRanking } from "../api/matchApi";
-import type { ChampionStat } from "../types";
+import type { RankChampionsResponse } from "../types";
 import { useQuery } from "@tanstack/react-query";
 
 export function useChampionRanking(
   puuid: string,
   season: string,
-  queueId?: number,
   platform?: string
 ) {
-  return useQuery<ChampionStat[], Error>({
-    queryKey: ["champion", "ranking", puuid, season, queueId, platform],
-    queryFn: () => getChampionRanking(puuid, season, queueId, platform),
+  return useQuery<RankChampionsResponse, Error>({
+    queryKey: ["champion", "ranking", puuid, season, platform],
+    queryFn: () => getChampionRanking(puuid, season, platform),
     enabled: !!puuid && !!season,
     staleTime: 5 * 60 * 1000,
   });

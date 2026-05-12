@@ -6,6 +6,10 @@ import type { SkillBuildData } from "@/entities/champion";
 import { useGameDataStore } from "@/shared/model/game-data";
 import { IMAGE_HOST } from "@/shared/config/image";
 import { GameTooltip } from "@/shared/ui/tooltip";
+import StatSectionHeader from "./StatSectionHeader";
+import BuildConfidenceIndicator from "./BuildConfidenceIndicator";
+
+const DEFAULT_VISIBLE = 3;
 
 const SLOT_TO_SKILL: Record<string, string> = {
   "1": "Q", "2": "W", "3": "E", "4": "R",
@@ -20,6 +24,16 @@ const SKILL_COLORS: Record<string, string> = {
 };
 
 function normalizeSkills(skillBuild: string): string[] {
+  if (skillBuild.trim().startsWith("[")) {
+    try {
+      const arr = JSON.parse(skillBuild);
+      if (Array.isArray(arr)) {
+        return arr.map((s) => SLOT_TO_SKILL[String(s)] ?? String(s));
+      }
+    } catch {
+      // fall through to legacy parser
+    }
+  }
   return skillBuild.split(",").map((s) => SLOT_TO_SKILL[s] ?? s);
 }
 
@@ -54,16 +68,30 @@ export default function SkillTreeStats({
   data,
   championName,
 }: SkillTreeStatsProps) {
+  const [expanded, setExpanded] = useState(false);
   const championData = useGameDataStore((s) => s.championData);
   const champion = championData?.data[championName];
-  if (data.length === 0) return null;
+
+  const filtered = data.filter(
+    (b): b is SkillBuildData & { skillBuild: string } =>
+      b.skillBuild != null && b.skillBuild.trim() !== "",
+  );
+  if (filtered.length === 0) return null;
+
+  const visible = expanded ? filtered : filtered.slice(0, DEFAULT_VISIBLE);
 
   return (
     <div className="bg-surface-1 rounded-lg border border-divider p-0 md:p-5">
-      <h3 className="text-base font-bold text-on-surface p-2">스킬 트리</h3>
+      <StatSectionHeader
+        title="스킬 트리"
+        totalCount={filtered.length}
+        visibleCount={Math.min(DEFAULT_VISIBLE, filtered.length)}
+        expanded={expanded}
+        onToggle={() => setExpanded((v) => !v)}
+      />
 
       <div className="space-y-2">
-        {data.map((build, i) => {
+        {visible.map((build, i) => {
           const masterOrder = computeMasterOrder(build.skillBuild);
           const sequence = normalizeSkills(build.skillBuild);
           const winRatePercent = build.winRate * 100;
@@ -113,6 +141,13 @@ export default function SkillTreeStats({
                     {skill}
                   </span>
                 ))}
+              </div>
+              <div className="mt-1.5">
+                <BuildConfidenceIndicator
+                  sampleSize={build.sampleSize}
+                  totalSampleSize={build.totalSampleSize}
+                  confidenceLowerBound={build.confidenceLowerBound}
+                />
               </div>
             </div>
           );

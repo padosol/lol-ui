@@ -6,10 +6,12 @@ export { useChampionStats } from "./model/useChampionStats";
 export { useChampionPositionStats } from "./model/useChampionPositionStats";
 export { getChampionById, getChampionsByIds, getChampionImageUrl, getChampionNameByEnglishName } from "./lib/championImage";
 export { WIN_RATE_COLOR_CLASSES, getWinRateTextClass, calcWinRateCeil2 } from "./lib/championStatsUtils";
+export { getTierBadgeClass } from "./lib/tierBadge";
 export type {
   ChampionRotationResponse, PositionType, MatchupData,
-  ItemBuildData, StartItemBuildData, RuneBuildData, SkillBuildData,
-  SpellStatsData, ItemStatByOrder,
+  ItemBuildData, StartItemBuildData, BootBuildData, RuneBuildData, SkillBuildData,
+  SpellStatsData,
+  ChampionAverageStats,
   ChampionPositionStats, ChampionStatsResponse,
   ApiPositionType, PositionChampionEntry, PositionChampionStats,
 } from "./types";

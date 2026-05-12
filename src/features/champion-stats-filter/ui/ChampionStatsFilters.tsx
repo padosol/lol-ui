@@ -4,12 +4,7 @@ import { AVAILABLE_REGIONS } from "@/features/region-select";
 import { useSeasonStore } from "@/entities/season";
 import { ChevronDown } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
-
-const TIER_OPTIONS = [
-  { value: "CHALLENGER", label: "챌린저" },
-  { value: "GRANDMASTER", label: "그랜드마스터" },
-  { value: "MASTER", label: "마스터" },
-] as const;
+import { TIER_OPTIONS } from "../lib/tiers";
 
 interface ChampionStatsFiltersProps {
   selectedTier: string;
@@ -57,13 +52,13 @@ export default function ChampionStatsFilters({
   }, [handleClickOutside]);
 
   return (
-    <div className="flex items-center justify-center gap-2 flex-wrap">
+    <div className="grid grid-cols-3 gap-2 sm:flex sm:items-center sm:justify-center sm:flex-wrap">
       {/* 티어 */}
-      <div ref={tierRef} className="relative">
+      <div ref={tierRef} className="relative w-full sm:w-auto">
         <button
           type="button"
           onClick={() => setTierOpen((v) => !v)}
-          className="bg-surface-4 hover:bg-surface-8 border border-divider rounded-lg px-3 py-1.5 pr-8 text-sm font-medium text-on-surface cursor-pointer focus:outline-none min-w-[130px] text-left"
+          className="w-full sm:min-w-[140px] bg-surface-4 hover:bg-surface-8 border border-divider rounded-lg px-3 py-1.5 pr-8 text-sm font-medium text-on-surface cursor-pointer focus:outline-none text-left"
           aria-haspopup="listbox"
           aria-expanded={tierOpen}
         >
@@ -104,11 +99,11 @@ export default function ChampionStatsFilters({
 
       {/* 패치 */}
       {latestPatches.length > 0 && (
-        <div ref={patchRef} className="relative">
+        <div ref={patchRef} className="relative w-full sm:w-auto">
           <button
             type="button"
             onClick={() => setPatchOpen((v) => !v)}
-            className="bg-surface-4 hover:bg-surface-8 border border-divider rounded-lg px-3 py-1.5 pr-8 text-sm font-medium text-on-surface cursor-pointer focus:outline-none min-w-[80px] text-left"
+            className="w-full sm:min-w-[80px] bg-surface-4 hover:bg-surface-8 border border-divider rounded-lg px-3 py-1.5 pr-8 text-sm font-medium text-on-surface cursor-pointer focus:outline-none text-left"
             aria-haspopup="listbox"
             aria-expanded={patchOpen}
           >
@@ -149,11 +144,11 @@ export default function ChampionStatsFilters({
       )}
 
       {/* 플랫폼 */}
-      <div ref={platformRef} className="relative">
+      <div ref={platformRef} className="relative w-full sm:w-auto">
         <button
           type="button"
           onClick={() => setPlatformOpen((v) => !v)}
-          className="bg-surface-4 hover:bg-surface-8 border border-divider rounded-lg px-3 py-1.5 pr-8 text-sm font-medium text-on-surface cursor-pointer focus:outline-none min-w-[80px] text-left"
+          className="w-full sm:min-w-[80px] bg-surface-4 hover:bg-surface-8 border border-divider rounded-lg px-3 py-1.5 pr-8 text-sm font-medium text-on-surface cursor-pointer focus:outline-none text-left"
           aria-haspopup="listbox"
           aria-expanded={platformOpen}
         >
