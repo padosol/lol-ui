@@ -114,7 +114,7 @@ export default function ChampionStatsTable({
               <Link
                 prefetch={false}
                 key={entry.championId}
-                href={`/champion-stats/${championId}?tier=${tier}&patch=${patch}&platformId=${platformId}`}
+                href={`/champion-stats/${championId}?tier=${encodeURIComponent(tier)}&patch=${patch}&platformId=${platformId}`}
                 className="grid grid-cols-[80px_60px_1fr_1fr_1fr] items-center px-4 py-2.5 hover:bg-surface-4 transition-colors border-b border-divider last:border-b-0"
               >
                 {content}
