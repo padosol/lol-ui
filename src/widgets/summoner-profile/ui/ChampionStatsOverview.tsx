@@ -1,14 +1,13 @@
 "use client";
 
 import { useChampionRanking } from "@/entities/match";
-import { useGameDataStore } from "@/shared/model/game-data";
 import { GameTooltip } from "@/shared/ui/tooltip";
 import { getChampionImageUrl, getChampionNameByEnglishName } from "@/entities/champion";
 import { calcWinRateCeil2, getWinRateTextClass } from "@/entities/champion";
 import { getKDAColorClass } from "@/shared/lib/game";
 import { useSeasonStore } from "@/entities/season";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 type QueueTabType = "solo" | "flex";
 
@@ -41,12 +40,6 @@ export default function ChampionStatsOverview({
   );
 
   const championStats = data?.[activeQueue] ?? [];
-
-  // champion.json 데이터 로드 (zustand store 사용)
-  const loadChampionData = useGameDataStore((state) => state.loadChampionData);
-  useEffect(() => {
-    loadChampionData();
-  }, [loadChampionData]);
 
   // limit이 있으면 제한
   const displayedStats = limit ? championStats.slice(0, limit) : championStats;

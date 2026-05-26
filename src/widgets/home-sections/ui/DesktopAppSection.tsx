@@ -1,41 +1,24 @@
 "use client";
 
-import { useChampionRotate, getChampionImageUrl, getChampionsByIds } from "@/entities/champion";
+import {
+  useChampionRotate,
+  getChampionImageUrl,
+  useChampionsByIds,
+} from "@/entities/champion";
 import Image from "next/image";
-import { useEffect, useState } from "react";
-
-interface ChampionData {
-  id: string;
-  key: string;
-  name: string;
-  title: string;
-  image: {
-    full: string;
-  };
-}
 
 export default function DesktopAppSection() {
   const { data: rotationData, isLoading } = useChampionRotate("kr");
-  const [champions, setChampions] = useState<ChampionData[]>([]);
-  const [hasLoadedChampions, setHasLoadedChampions] = useState(false);
+  const champions = useChampionsByIds(rotationData?.freeChampionIds ?? []);
 
-  useEffect(() => {
-    if (
-      rotationData?.freeChampionIds &&
-      rotationData.freeChampionIds.length > 0
-    ) {
-      getChampionsByIds(rotationData.freeChampionIds)
-        .then(setChampions)
-        .finally(() => setHasLoadedChampions(true));
-    }
-  }, [rotationData]);
+  const hasFreeChampions =
+    !!rotationData?.freeChampionIds &&
+    rotationData.freeChampionIds.length > 0;
 
-  // rotationData가 있고 아직 로드 완료되지 않았으면 로딩 중
+  // rotation 쿼리가 로딩 중이거나, 무료 챔피언 ID는 있는데
+  // 아직 챔피언 데이터가 파생되지 않았으면 로딩 중
   const isChampionsLoading =
-    !isLoading &&
-    rotationData?.freeChampionIds &&
-    rotationData.freeChampionIds.length > 0 &&
-    !hasLoadedChampions;
+    !isLoading && hasFreeChampions && champions.length === 0;
 
   return (
     <div>
