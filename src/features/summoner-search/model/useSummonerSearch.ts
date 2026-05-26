@@ -20,8 +20,14 @@ export function useSummonerSearch() {
   const autocompleteRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const regionRef = useRef<HTMLDivElement>(null);
+  const justSelectedRef = useRef(false);
 
   useEffect(() => {
+    if (justSelectedRef.current) {
+      justSelectedRef.current = false;
+      return;
+    }
+
     const trimmedName = summonerName.trim();
 
     if (trimmedName.length < 2) {
@@ -92,6 +98,7 @@ export function useSummonerSearch() {
     const encodedName = encodeURIComponent(gameName);
     router.push(`/summoners/${region}/${encodedName}`);
     setShowAutocomplete(false);
+    justSelectedRef.current = true;
     setSummonerName(gameName);
   };
 

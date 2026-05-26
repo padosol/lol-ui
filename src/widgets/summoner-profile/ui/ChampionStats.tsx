@@ -1,14 +1,13 @@
 "use client";
 
 import { useChampionRanking } from "@/entities/match";
-import { useGameDataStore } from "@/shared/model/game-data";
 import { GameTooltip } from "@/shared/ui/tooltip";
 import {
   getChampionImageUrl,
 } from "@/entities/champion";
 import Image from "next/image";
 import { useSeasonStore } from "@/entities/season";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 interface ChampionStatsProps {
   puuid?: string | null;
@@ -38,12 +37,6 @@ export default function ChampionStats({
 
   const [sortField, setSortField] = useState<SortField>("playCount");
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
-
-  // champion.json 데이터 로드
-  const loadChampionData = useGameDataStore((state) => state.loadChampionData);
-  useEffect(() => {
-    loadChampionData();
-  }, [loadChampionData]);
 
   // limit이 있으면 제한
   const displayedStats = limit ? championStats.slice(0, limit) : championStats;

@@ -4,6 +4,7 @@ export { getChampionPositionStats } from "./api/championPositionStatsApi";
 export { useChampionRotate } from "./model/useChampionRotate";
 export { useChampionStats } from "./model/useChampionStats";
 export { useChampionPositionStats } from "./model/useChampionPositionStats";
+export { useChampionById, useChampionsByIds } from "./model/useChampion";
 export { getChampionById, getChampionsByIds, getChampionImageUrl, getChampionNameByEnglishName } from "./lib/championImage";
 export { WIN_RATE_COLOR_CLASSES, getWinRateTextClass, calcWinRateCeil2 } from "./lib/championStatsUtils";
 export { getTierBadgeClass } from "./lib/tierBadge";

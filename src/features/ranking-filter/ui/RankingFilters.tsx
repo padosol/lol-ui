@@ -3,9 +3,10 @@
 import { useTierCutoffs } from "@/entities/ranking";
 import { AVAILABLE_REGIONS, type RegionValue } from "@/features/region-select";
 import { getTierImageUrl } from "@/shared/lib/tier";
+import { useClickOutside } from "@/shared/lib/useClickOutside";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 interface RankingFiltersProps {
   region: RegionValue;
@@ -64,27 +65,8 @@ export default function RankingFilters({
   const regionRef = useRef<HTMLDivElement>(null);
   const queueTypeRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        regionRef.current &&
-        !regionRef.current.contains(event.target as Node)
-      ) {
-        setIsRegionOpen(false);
-      }
-      if (
-        queueTypeRef.current &&
-        !queueTypeRef.current.contains(event.target as Node)
-      ) {
-        setIsQueueTypeOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+  useClickOutside(regionRef, () => setIsRegionOpen(false), isRegionOpen);
+  useClickOutside(queueTypeRef, () => setIsQueueTypeOpen(false), isQueueTypeOpen);
 
   const selectedRegion = AVAILABLE_REGIONS.find((r) => r.value === region);
   const selectedQueueTypeLabel =
