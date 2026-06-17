@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import { Plus } from "lucide-react";
 import { useAuthStore } from "@/entities/auth";
-import { useDuoPosts } from "@/entities/duo";
+import { useDuoPosts, useDuoNotifications } from "@/entities/duo";
 import type { Lane, Tier, DuoPostFilters } from "@/entities/duo";
 import { DuoFilters } from "@/features/duo-filter";
 import { DuoRegisterModal } from "@/features/duo-register";
@@ -16,6 +16,9 @@ type DuoTab = "posts" | "my-posts" | "my-requests";
 
 export default function DuoListPanel() {
   const user = useAuthStore((s) => s.user);
+
+  // 듀오 페이지 체류 중 실시간 알림 구독 → 수신 시 듀오 쿼리 자동 갱신
+  useDuoNotifications(!!user);
 
   const [activeTab, setActiveTab] = useState<DuoTab>("posts");
   const [selectedPostId, setSelectedPostId] = useState<number | null>(null);

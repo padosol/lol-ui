@@ -41,6 +41,7 @@ export {
   getPostRequests,
   acceptDuoRequest,
   confirmDuoRequest,
+  getDuoMatchResult,
   rejectDuoRequest,
   cancelDuoRequest,
   getMyDuoRequests,
@@ -49,6 +50,8 @@ export {
 // Hooks
 export { useDuoPosts, useMyDuoPosts, duoKeys } from "./model/useDuoPosts";
 export { useDuoPostDetail } from "./model/useDuoPostDetail";
+export { useDuoMatchResult } from "./model/useDuoMatchResult";
+export { useDuoNotifications } from "./model/useDuoNotifications";
 export {
   useCreateDuoPost,
   useUpdateDuoPost,

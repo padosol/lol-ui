@@ -7,6 +7,7 @@ import {
   LANE_LABELS,
   LANE_IMAGE_KEY,
   REQUEST_STATUS_LABELS,
+  useDuoMatchResult,
 } from "@/entities/duo";
 import { getPositionImageUrl } from "@/shared/lib/position";
 import { getTierName } from "@/shared/lib/tier";
@@ -23,14 +24,20 @@ const STATUS_COLORS: Record<string, string> = {
   CONFIRMED: "text-primary",
   REJECTED: "text-red-400",
   CANCELLED: "text-on-surface-disabled",
+  CLOSED: "text-on-surface-disabled",
 };
 
 export default function DuoRequestCard({ request }: DuoRequestCardProps) {
   const tier = request.tier;
   const isMasterPlus = tier !== null && ["MASTER", "GRANDMASTER", "CHALLENGER"].includes(tier);
 
+  const isConfirmed = request.status === "CONFIRMED";
+  const matchResult = useDuoMatchResult(request.duoPostId, isConfirmed);
+  const partner = matchResult.data;
+
   return (
-    <div className="bg-surface-1 border border-divider rounded-lg p-3 flex items-center gap-3">
+    <div className="bg-surface-1 border border-divider rounded-lg p-3">
+      <div className="flex items-center gap-3">
       {/* 라인 아이콘 */}
       <div className="flex items-center gap-1 shrink-0">
         <Image
@@ -93,6 +100,20 @@ export default function DuoRequestCard({ request }: DuoRequestCardProps) {
           status={request.status}
         />
       </div>
+      </div>
+
+      {/* 매칭 확정 시 파트너 정보 */}
+      {isConfirmed && partner?.partnerGameName && (
+        <div className="mt-2 pt-2 border-t border-divider flex items-center gap-1.5 text-xs">
+          <span className="text-on-surface-disabled">파트너</span>
+          <span className="text-primary font-medium">
+            {partner.partnerGameName}
+            <span className="text-on-surface-disabled">
+              #{partner.partnerTagLine}
+            </span>
+          </span>
+        </div>
+      )}
     </div>
   );
 }
