@@ -29,11 +29,21 @@ export function useDuoNotifications(enabled: boolean) {
       queryClient.invalidateQueries({ queryKey: duoKeys.all });
     };
 
+    // 쿠키 인증이라 토큰 만료 시 EventSource 는 스스로 401→refresh 를 못 한다.
+    // 연속 오류가 임계치를 넘으면 재연결 폭주를 막기 위해 구독을 끊는다.
+    // (이후 갱신은 staleTime/페이지 재진입 시 일반 refetch 로 복구)
+    let consecutiveErrors = 0;
+    const MAX_CONSECUTIVE_ERRORS = 5;
+
     source.addEventListener("duo-notification", handleNotification);
+    source.onopen = () => {
+      consecutiveErrors = 0;
+    };
     source.onerror = () => {
-      // EventSource 는 기본적으로 자동 재연결한다. 닫힌 경우만 로깅.
-      if (source.readyState === EventSource.CLOSED) {
-        logger.warn("Duo SSE connection closed");
+      consecutiveErrors += 1;
+      if (consecutiveErrors >= MAX_CONSECUTIVE_ERRORS) {
+        logger.warn("Duo SSE 연속 오류로 구독 종료 — 새로고침 시 재연결");
+        source.close();
       }
     };
 

@@ -13,5 +13,7 @@ export function useDuoMatchResult(postId: number, enabled: boolean) {
     queryFn: () => getDuoMatchResult(postId),
     enabled,
     staleTime: 5 * 60 * 1000,
+    // 비당사자는 403이 정상 응답이므로 글로벌 retry(1회)를 끈다
+    retry: false,
   });
 }

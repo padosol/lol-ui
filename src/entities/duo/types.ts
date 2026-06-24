@@ -1,12 +1,6 @@
 // === Lane ===
-/** 폼·필터에서 선택 가능한 라인 (서버 Lane enum 중 듀오에서 노출하는 5종) */
 export const LANES = ["TOP", "JUNGLE", "MID", "ADC", "SUPPORT"] as const;
-/**
- * 응답에 담길 수 있는 라인 값. 서버 Lane enum 은 FILL 을 포함하므로
- * 타입을 넓혀 LANE_LABELS / LANE_IMAGE_KEY lookup 을 total 로 유지한다
- * (선택 UI 에는 LANES 만 노출).
- */
-export type Lane = (typeof LANES)[number] | "FILL";
+export type Lane = (typeof LANES)[number];
 
 export const LANE_LABELS: Record<Lane, string> = {
   TOP: "탑",
@@ -14,7 +8,6 @@ export const LANE_LABELS: Record<Lane, string> = {
   MID: "미드",
   ADC: "원딜",
   SUPPORT: "서포터",
-  FILL: "상관없음",
 };
 
 /** Lane → 포지션 이미지 파일 키 (MID→MIDDLE, ADC→BOTTOM, SUPPORT→UTILITY) */
@@ -24,7 +17,6 @@ export const LANE_IMAGE_KEY: Record<Lane, string> = {
   MID: "MIDDLE",
   ADC: "BOTTOM",
   SUPPORT: "UTILITY",
-  FILL: "FILL",
 };
 
 // === Tier ===

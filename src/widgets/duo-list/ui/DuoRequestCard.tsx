@@ -13,6 +13,7 @@ import { getPositionImageUrl } from "@/shared/lib/position";
 import { getTierName } from "@/shared/lib/tier";
 import { getRelativeTime } from "@/shared/lib/date";
 import { RequesterActionButtons } from "@/features/duo-matching";
+import PartnerName from "./PartnerName";
 
 interface DuoRequestCardProps {
   request: DuoRequest;
@@ -106,12 +107,10 @@ export default function DuoRequestCard({ request }: DuoRequestCardProps) {
       {isConfirmed && partner?.partnerGameName && (
         <div className="mt-2 pt-2 border-t border-divider flex items-center gap-1.5 text-xs">
           <span className="text-on-surface-disabled">파트너</span>
-          <span className="text-primary font-medium">
-            {partner.partnerGameName}
-            <span className="text-on-surface-disabled">
-              #{partner.partnerTagLine}
-            </span>
-          </span>
+          <PartnerName
+            gameName={partner.partnerGameName}
+            tagLine={partner.partnerTagLine}
+          />
         </div>
       )}
     </div>
