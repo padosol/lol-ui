@@ -1,0 +1,146 @@
+{
+  "version": "26.7",
+  "url": "https://www.leagueoflegends.com/ko-kr/news/game-updates/league-of-legends-patch-26-7-notes/",
+  "date": "2026-03-31",
+  "rift": {
+    "champions": [
+      {
+        "targetName": "카시오페아",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          {
+            "statName": "기본 마나",
+            "before": "450",
+            "after": "480"
+          },
+          {
+            "statName": "E - 쌍독니 추가 마법 피해량",
+            "before": "20/43/66/89/112",
+            "after": "20/45/70/95/120"
+          }
+        ]
+      },
+      {
+        "targetName": "그레이브즈",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          {
+            "statName": "기본 공격력",
+            "before": "68",
+            "after": "66"
+          }
+        ]
+      },
+      {
+        "targetName": "칼리스타",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          {
+            "statName": "E - 뽑아 찢기 추가 중첩당 추가 피해량 총공격력 계수",
+            "before": "(+공격력의 20/25/30/35/40%)",
+            "after": "(+공격력의 20/27.5/35/42.5/50%)"
+          }
+        ]
+      },
+      {
+        "targetName": "카르마",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          {
+            "statName": "R - 만트라 강화된 E - 저항 주요/2차 대상 추가 보호막",
+            "before": "50/100/150/200 (+주문력의 45%)",
+            "after": "45/85/125/165 (+주문력의 45%)"
+          }
+        ]
+      },
+      {
+        "targetName": "나미",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          {
+            "statName": "W - 밀물 썰물 튕길 시 계수",
+            "before": "튕길 때마다 효과 -10% (+주문력 100당 10%)",
+            "after": "튕길 때마다 효과 -20% (+주문력 100당 15%)"
+          }
+        ]
+      },
+      {
+        "targetName": "오른",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          {
+            "statName": "W - 불꽃 풀무질 불안정 발동 피해량",
+            "before": "10~18% (레벨에 따라)",
+            "after": "9~17% (레벨에 따라)"
+          }
+        ]
+      },
+      {
+        "targetName": "렐",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          {
+            "statName": "E - 전속력 이동 속도",
+            "before": "3초 동안 10%, 강화된 아군 또는 시야에 들어온 적 챔피언과 마주할 때 25%로 증가",
+            "after": "15%, 30%로 증가"
+          },
+          {
+            "statName": "R - 자기 폭풍 피해량",
+            "before": "120/200/280 (+주문력의 110%)",
+            "after": "150/200/350 (+주문력의 110%)"
+          }
+        ]
+      },
+      {
+        "targetName": "쉬바나",
+        "type": "champion",
+        "direction": "adjust",
+        "changes": [
+          {
+            "statName": "R - 용의 강림",
+            "before": "",
+            "after": "이제 궁극기 가속이 초당 0.015 기본 지속 효과 분노를 생성하지 않으며, 대신 궁극기 가속 1당 모든 분노 생성량이 1% 증가합니다."
+          }
+        ]
+      },
+      {
+        "targetName": "신지드",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          {
+            "statName": "R - 광기의 물약 추가 능력치",
+            "before": "25/60/95",
+            "after": "25/55/85"
+          }
+        ]
+      },
+      {
+        "targetName": "베이가",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          {
+            "statName": "R - 태초의 폭발 재사용 대기시간",
+            "before": "100/80/60초",
+            "after": "120/90/60초"
+          }
+        ]
+      }
+    ],
+    "items": [],
+    "systems": []
+  },
+  "arena": {
+    "champions": [],
+    "items": [],
+    "systems": []
+  }
+}

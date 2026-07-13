@@ -1,0 +1,269 @@
+{
+  "version": "26.8",
+  "url": "https://www.leagueoflegends.com/ko-kr/news/game-updates/league-of-legends-patch-26-8-notes/",
+  "date": "2026-04-14",
+  "rift": {
+    "champions": [
+      {
+        "targetName": "문도 박사",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "Q - 오염된 뼈톱 몬스터 대상 최대 피해량", "before": "300/375/450/525/600", "after": "250/325/400/475/550" },
+          { "statName": "E - 둔기에 의한 외상 몬스터 대상 최대 피해량", "before": "200%", "after": "140%" }
+        ]
+      },
+      {
+        "targetName": "흐웨이",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          { "statName": "기본 지속 효과 기본 피해량", "before": "35~230 (레벨에 따라)", "after": "40~285 (레벨에 따라)" },
+          { "statName": "둔화 효과 연계", "before": "흐웨이의 스킬이 유발한 둔화 효과가 서로 중첩되지 않음", "after": "이제 흐웨이의 스킬이 유발한 둔화 효과가 서로 중첩되지만, 대신 그 횟수에 따라 둔화율이 점차 감소합니다." }
+        ]
+      },
+      {
+        "targetName": "카르마",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "기본 공격력", "before": "51", "after": "49" },
+          { "statName": "공격력 증가량", "before": "3.3", "after": "3.0" },
+          { "statName": "E - 고무 마나 소모량", "before": "50/55/60/65/70", "after": "60/65/70/75/80" }
+        ]
+      },
+      {
+        "targetName": "릴리아",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          { "statName": "기본 지속 효과 - 꿈나무 지팡이 몬스터 대상 최대 피해량", "before": "65", "after": "70~180 (레벨에 따라)" }
+        ]
+      },
+      {
+        "targetName": "루시안",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          { "statName": "E - 끈질긴 추격 재사용 대기시간", "before": "18/17/16/15/14초", "after": "16/15.5/15/14.5/14초" },
+          { "statName": "E - 끈질긴 추격 마나 소모량", "before": "40/30/20/10/0", "after": "32/24/16/8/0" }
+        ]
+      },
+      {
+        "targetName": "멜",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "Q - 빛의 세례 첫 번째 폭발 피해량", "before": "60/90/120/150/180 (+주문력의 60%)", "after": "60/85/110/135/160 (+주문력의 55%)" },
+          { "statName": "W - 반박 재사용 대기시간", "before": "35/32/29/26/23초", "after": "38/35/32/29/26초" },
+          { "statName": "W - 반박 추가 이동 속도 지속시간", "before": "1.5초", "after": "0.75초" }
+        ]
+      },
+      {
+        "targetName": "탐 켄치",
+        "type": "champion",
+        "direction": "adjust",
+        "changes": [
+          { "statName": "기본 지속 효과 - 절대 미각 피해량", "before": "6~48 (1~11레벨) (+추가 체력 100당 주문력의 1.5%) (+추가 체력의 4.5%)", "after": "5~60 (1~12레벨) (+추가 체력 100당 주문력의 1.25%) (+추가 체력의 4%)" }
+        ]
+      },
+      {
+        "targetName": "유미",
+        "type": "champion",
+        "direction": "adjust",
+        "changes": [
+          { "statName": "R - 대단원 파동 1회당 체력 회복량", "before": "30/40/50 (+주문력의 10%)", "after": "30/50/70 (+주문력의 12%)" },
+          { "statName": "R - 대단원 단짝 강화된 체력 회복량", "before": "체력 회복량 30% 증가", "after": "체력 회복량 30~60% 증가 (6~12레벨)" }
+        ]
+      },
+      {
+        "targetName": "질리언",
+        "type": "champion",
+        "direction": "adjust",
+        "changes": [
+          { "statName": "W - 되감기 레벨 업", "before": "1레벨에 W - 되감기를 배울 수 있음", "after": "이제 1레벨에 W - 되감기를 배울 수 없습니다." }
+        ]
+      },
+      {
+        "targetName": "자이라",
+        "type": "champion",
+        "direction": "adjust",
+        "changes": [
+          { "statName": "W - 맹렬한 성장 레벨 업", "before": "1레벨에 W - 맹렬한 성장을 배울 수 있음", "after": "이제 1레벨에 W - 맹렬한 성장을 배울 수 없습니다." }
+        ]
+      }
+    ],
+    "items": [],
+    "systems": []
+  },
+  "arena": {
+    "champions": [
+      {
+        "targetName": "트리스타나",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          { "statName": "W - 로켓 점프 주문력 계수", "before": "주문력의 50%", "after": "주문력의 80%" },
+          { "statName": "E - 폭발 화약 주문력 계수", "before": "주문력의 50%", "after": "주문력의 80%" },
+          { "statName": "R - 대구경 탄환 주문력 계수", "before": "주문력의 100%", "after": "주문력의 150%" }
+        ]
+      },
+      {
+        "targetName": "시비르",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          { "statName": "Q - 부메랑 검 주문력 계수", "before": "주문력의 60%", "after": "주문력의 80%" },
+          { "statName": "E - 주문 방어막 주문력 계수", "before": "주문력의 50%", "after": "주문력의 120%" }
+        ]
+      },
+      {
+        "targetName": "자르반 4세",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          { "statName": "E - 데마시아의 깃발 주문력 계수", "before": "주문력의 100%", "after": "주문력의 140%" }
+        ]
+      },
+      {
+        "targetName": "세나",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          { "statName": "Q - 꿰뚫는 어둠 피해량 주문력 계수", "before": "주문력의 50%", "after": "주문력의 80%" },
+          { "statName": "Q - 꿰뚫는 어둠 둔화율 주문력 계수", "before": "주문력의 10%", "after": "주문력의 15%" },
+          { "statName": "E - 검은 안개의 저주 이동 속도 주문력 계수", "before": "주문력의 5%", "after": "주문력의 7%" },
+          { "statName": "R - 여명의 그림자 피해량 주문력 계수", "before": "주문력의 70%", "after": "주문력의 100%" },
+          { "statName": "R - 여명의 그림자 보호막 흡수량 주문력 계수", "before": "주문력의 50%", "after": "주문력의 70%" }
+        ]
+      },
+      {
+        "targetName": "사이온",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          { "statName": "W - 영혼의 용광로 보호막 흡수량 주문력 계수", "before": "주문력의 40%", "after": "주문력의 60%" },
+          { "statName": "W - 영혼의 용광로 피해량 주문력 계수", "before": "주문력의 40%", "after": "주문력의 60%" }
+        ]
+      },
+      {
+        "targetName": "벡스",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          { "statName": "R - 그림자 파동 재사용 대기시간", "before": "140/120/100초", "after": "110/90/70초" }
+        ]
+      },
+      {
+        "targetName": "세라핀",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          { "statName": "Q - 고음 피해량 주문력 계수", "before": "주문력의 50%", "after": "주문력의 65%" },
+          { "statName": "R - 앙코르 재사용 대기시간", "before": "160/140/120초", "after": "100/80/60초" }
+        ]
+      },
+      {
+        "targetName": "벨코즈",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          { "statName": "R - 생물 분해 광선 재사용 대기시간", "before": "100/90/80초", "after": "80/70/60초" }
+        ]
+      },
+      {
+        "targetName": "빅토르",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          { "statName": "R - 아케인 폭풍 재사용 대기시간", "before": "120/100/80초", "after": "100/80/60초" }
+        ]
+      },
+      {
+        "targetName": "카밀",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          { "statName": "W - 전술적 휩쓸기 피해량", "before": "추가 공격력 100당 2.5%", "after": "추가 공격력 100당 3%" },
+          { "statName": "E - 갈고리 발사 재사용 대기시간", "before": "16/15/14/13/12초", "after": "14/13/12/11/10초" }
+        ]
+      },
+      {
+        "targetName": "클레드",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          { "statName": "R - 돌겨어어억!!! 재사용 대기시간", "before": "140/125/110초", "after": "60/45/30초" }
+        ]
+      }
+    ],
+    "items": [],
+    "systems": [
+      {
+        "targetName": "탄환 세례",
+        "type": "augment",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "탄환 1개당 피해량", "before": "10~52.5 (+추가 공격력의 15%)", "after": "8~51 (+추가 공격력의 14%)" }
+        ]
+      },
+      {
+        "targetName": "거인 학살자",
+        "type": "augment",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "이동 속도", "before": "30%", "after": "20%" }
+        ]
+      },
+      {
+        "targetName": "할머니의 고추기름",
+        "type": "augment",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "아군 미니언 체력 회복", "before": "아군 미니언의 체력을 회복시킴", "after": "이제 아군 미니언의 체력을 회복시키지 않습니다." }
+        ]
+      },
+      {
+        "targetName": "이동 속도 능력치 모루",
+        "type": "anvil",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "이동 속도", "before": "18%", "after": "15%" }
+        ]
+      },
+      {
+        "targetName": "민병대",
+        "type": "augment",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "피해를 받은 뒤 추가 이동 속도 재발동 대기시간", "before": "3초", "after": "6초" }
+        ]
+      },
+      {
+        "targetName": "양자 연산",
+        "type": "augment",
+        "direction": "buff",
+        "changes": [
+          { "statName": "범위 바깥쪽 피해량", "before": "200~350 (+추가 공격력의 65%) (+주문력의 40%)", "after": "200~350 (+추가 공격력의 75%) (+주문력의 45%)" }
+        ]
+      },
+      {
+        "targetName": "붉은 봉투",
+        "type": "augment",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "붉은 봉투 획득 시 이동 속도", "before": "150", "after": "100" },
+          { "statName": "이동 속도 지속시간", "before": "4초", "after": "3초" }
+        ]
+      },
+      {
+        "targetName": "속행",
+        "type": "augment",
+        "direction": "nerf",
+        "changes": [
+          { "statName": "스킬 가속으로 얻는 이동 속도", "before": "100%", "after": "70%" }
+        ]
+      }
+    ]
+  }
+}
