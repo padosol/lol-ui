@@ -46,7 +46,9 @@ export default function ProfileSection({
   const pollingIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const pollingStartTimeRef = useRef<number | null>(null);
   const [refreshError, setRefreshError] = useState<string | null>(null);
-  const [now, setNow] = useState(() => Date.now());
+  // SSR/hydration 첫 렌더에서는 시간 계산을 하지 않기 위해 null로 시작한다.
+  // 실제 시간 카운트는 마운트 후 클라이언트에서만 진행 (아래 useEffect에서 setNow).
+  const [now, setNow] = useState<number | null>(null);
 
   // 컴포넌트 언마운트 시 폴링 정리
   useEffect(() => {
@@ -59,10 +61,13 @@ export default function ProfileSection({
   }, []);
 
   // 쿨다운 (2분) 계산 - 서버의 lastRevisionDateTime 기준
-  // lastRevisionClickDateTime이 있을 때만 1초마다 now를 갱신해 재계산을 트리거한다.
+  // lastRevisionClickDateTime이 있을 때만 마운트 직후 now를 세팅하고
+  // 1초마다 갱신해 재계산을 트리거한다. (실제 시간 카운트는 클라이언트 사이드에서만)
   useEffect(() => {
     if (!profileData?.lastRevisionClickDateTime) return;
-    const interval = setInterval(() => setNow(Date.now()), 1000);
+    const updateNow = () => setNow(Date.now());
+    updateNow(); // 마운트 직후 즉시 1회 계산
+    const interval = setInterval(updateNow, 1000);
     return () => clearInterval(interval);
   }, [profileData?.lastRevisionClickDateTime]);
 
@@ -71,7 +76,8 @@ export default function ProfileSection({
     cooldownInfo: { remainingSeconds: number } | null;
     elapsedText: string | null;
   }>(() => {
-    if (!profileData?.lastRevisionClickDateTime) {
+    // now === null 이면 아직 마운트 전(서버/hydration 첫 렌더)이므로 계산하지 않는다.
+    if (!profileData?.lastRevisionClickDateTime || now === null) {
       return { cooldownInfo: null, elapsedText: null };
     }
 
