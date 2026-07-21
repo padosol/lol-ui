@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { ArrowLeft, Pencil, Trash2 } from "lucide-react";
 import {
   usePostDetail,
@@ -12,6 +13,8 @@ import {
 import type { VoteType } from "@/entities/community";
 import { useAuthStore } from "@/entities/auth";
 import { VoteButtons } from "@/shared/ui/vote-buttons";
+import { ConfirmModal } from "@/shared/ui/modal";
+import { toast } from "@/shared/ui/toast";
 import { formatDate } from "@/shared/lib/date";
 import CommentSection from "./CommentSection";
 
@@ -24,6 +27,7 @@ export default function PostDetailPanel({ postId }: PostDetailPanelProps) {
   const user = useAuthStore((s) => s.user);
   const { data: post, isLoading, error } = usePostDetail(postId);
   const deleteMutation = useDeletePost();
+  const [deleteOpen, setDeleteOpen] = useState(false);
   const voteMutation = useVote(postId);
   const removeVoteMutation = useRemoveVote(postId);
 
@@ -44,13 +48,15 @@ export default function PostDetailPanel({ postId }: PostDetailPanelProps) {
     }
   };
 
-  const handleDelete = () => {
+  const confirmDelete = () => {
     if (!post) return;
-    if (confirm("게시글을 삭제하시겠습니까?")) {
-      deleteMutation.mutate(post.id, {
-        onSuccess: () => router.push("/community"),
-      });
-    }
+    deleteMutation.mutate(post.id, {
+      onSuccess: () => {
+        setDeleteOpen(false);
+        router.push("/community");
+      },
+      onError: () => toast.error("게시글 삭제에 실패했습니다."),
+    });
   };
 
   if (isLoading) {
@@ -119,7 +125,7 @@ export default function PostDetailPanel({ postId }: PostDetailPanelProps) {
               </button>
               <button
                 type="button"
-                onClick={handleDelete}
+                onClick={() => setDeleteOpen(true)}
                 disabled={deleteMutation.isPending}
                 className="flex items-center gap-1 text-xs text-on-surface-disabled hover:text-red-400 transition-colors disabled:opacity-50 cursor-pointer"
               >
@@ -148,6 +154,17 @@ export default function PostDetailPanel({ postId }: PostDetailPanelProps) {
       <div className="bg-surface-1 border border-divider rounded-lg p-6">
         <CommentSection postId={post.id} commentCount={post.commentCount} />
       </div>
+
+      <ConfirmModal
+        open={deleteOpen}
+        title="게시글 삭제"
+        description="이 게시글을 삭제하시겠습니까? 삭제한 게시글은 되돌릴 수 없습니다."
+        confirmLabel="삭제"
+        variant="danger"
+        loading={deleteMutation.isPending}
+        onConfirm={confirmDelete}
+        onClose={() => setDeleteOpen(false)}
+      />
     </div>
   );
 }

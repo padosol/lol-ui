@@ -10,7 +10,10 @@ import {
 } from "@/entities/community";
 import { useAuthStore } from "@/entities/auth";
 import { CommentForm, CommentItem } from "@/features/community-comment";
+import { ConfirmModal } from "@/shared/ui/modal";
+import { toast } from "@/shared/ui/toast";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 interface CommentSectionProps {
   postId: number;
@@ -26,6 +29,7 @@ export default function CommentSection({ postId, commentCount }: CommentSectionP
   const deleteMutation = useDeleteComment(postId);
   const voteMutation = useVote(postId);
   const removeVoteMutation = useRemoveVote(postId);
+  const [pendingDeleteId, setPendingDeleteId] = useState<number | null>(null);
 
   const handleCreate = (content: string) => {
     if (!user) {
@@ -48,9 +52,15 @@ export default function CommentSection({ postId, commentCount }: CommentSectionP
   };
 
   const handleDelete = (commentId: number) => {
-    if (confirm("댓글을 삭제하시겠습니까?")) {
-      deleteMutation.mutate(commentId);
-    }
+    setPendingDeleteId(commentId);
+  };
+
+  const confirmDelete = () => {
+    if (pendingDeleteId === null) return;
+    deleteMutation.mutate(pendingDeleteId, {
+      onSuccess: () => setPendingDeleteId(null),
+      onError: () => toast.error("댓글 삭제에 실패했습니다."),
+    });
   };
 
   const handleVote = (targetId: number, voteType: "UPVOTE" | "DOWNVOTE") => {
@@ -98,6 +108,17 @@ export default function CommentSection({ postId, commentCount }: CommentSectionP
           아직 댓글이 없습니다. 첫 댓글을 작성해보세요!
         </div>
       )}
+
+      <ConfirmModal
+        open={pendingDeleteId !== null}
+        title="댓글 삭제"
+        description="이 댓글을 삭제하시겠습니까? 삭제한 댓글은 되돌릴 수 없습니다."
+        confirmLabel="삭제"
+        variant="danger"
+        loading={deleteMutation.isPending}
+        onConfirm={confirmDelete}
+        onClose={() => setPendingDeleteId(null)}
+      />
     </div>
   );
 }
