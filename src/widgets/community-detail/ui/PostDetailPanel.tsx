@@ -13,6 +13,7 @@ import {
 import type { VoteType } from "@/entities/community";
 import { useAuthStore } from "@/entities/auth";
 import { VoteButtons } from "@/shared/ui/vote-buttons";
+import { BookmarkButton } from "@/features/community-bookmark";
 import { ConfirmModal } from "@/shared/ui/modal";
 import { toast } from "@/shared/ui/toast";
 import { formatDate } from "@/shared/lib/date";
@@ -140,13 +141,17 @@ export default function PostDetailPanel({ postId }: PostDetailPanelProps) {
           {post.content}
         </div>
 
-        <div className="flex justify-center">
+        <div className="flex items-center justify-between gap-4">
           <VoteButtons
             upvoteCount={post.upvoteCount}
             downvoteCount={post.downvoteCount}
             currentUserVote={post.currentUserVote}
             onVote={handleVote}
             isPending={isVotePending}
+          />
+          <BookmarkButton
+            postId={post.id}
+            bookmarked={post.currentUserBookmarked}
           />
         </div>
       </div>
