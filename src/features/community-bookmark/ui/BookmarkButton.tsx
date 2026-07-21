@@ -4,6 +4,7 @@ import { Bookmark } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/entities/auth";
 import { useBookmarkToggle } from "@/entities/community";
+import { toast } from "@/shared/ui/toast";
 
 interface BookmarkButtonProps {
   postId: number;
@@ -16,7 +17,11 @@ export default function BookmarkButton({
 }: BookmarkButtonProps) {
   const router = useRouter();
   const user = useAuthStore((s) => s.user);
-  const { toggle } = useBookmarkToggle(postId);
+  // 토스트는 호출부가 붙인다 — entities 훅은 UI 를 모른다
+  // (useVoteMutation 등 기존 뮤테이션과 같은 컨벤션).
+  const { toggle } = useBookmarkToggle(postId, {
+    onError: () => toast.error("북마크 처리에 실패했습니다."),
+  });
 
   const handleClick = () => {
     if (!user) {
