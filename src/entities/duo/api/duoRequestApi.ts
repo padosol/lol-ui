@@ -36,6 +36,16 @@ export async function confirmDuoRequest(
   return response.data.data;
 }
 
+/** 매칭 결과 조회 — 매칭 당사자(소유자 ↔ 확정 요청자)만 호출 가능, 파트너 게임명/태그 반환 */
+export async function getDuoMatchResult(
+  postId: number,
+): Promise<MatchActionResponse> {
+  const response = await apiClient.get<ApiResponse<MatchActionResponse>>(
+    `/duo/posts/${postId}/match-result`,
+  );
+  return response.data.data;
+}
+
 export async function rejectDuoRequest(requestId: number): Promise<void> {
   await apiClient.put(`/duo/requests/${requestId}/reject`);
 }

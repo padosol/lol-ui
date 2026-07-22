@@ -6,6 +6,7 @@ import { X, Mic, MicOff, Trash2, Pencil } from "lucide-react";
 import {
   useDuoPostDetail,
   useDeleteDuoPost,
+  useDuoMatchResult,
   LANE_LABELS,
   LANE_IMAGE_KEY,
   REQUEST_STATUS_LABELS,
@@ -17,6 +18,7 @@ import { getTierName } from "@/shared/lib/tier";
 import { getRelativeTime } from "@/shared/lib/date";
 import { RequestActionButtons } from "@/features/duo-matching";
 import { DuoRequestModal } from "@/features/duo-request";
+import PartnerName from "./PartnerName";
 
 interface DuoPostDetailModalProps {
   postId: number | null;
@@ -234,8 +236,22 @@ function OwnerSection({
   onDelete: () => void;
   isDeleting: boolean;
 }) {
+  const matchResult = useDuoMatchResult(post.id, post.status === "MATCHED");
+  const partner = matchResult.data;
+
   return (
     <div className="space-y-4 border-t border-divider pt-4">
+      {/* 매칭 완료 시 파트너 정보 */}
+      {post.status === "MATCHED" && partner?.partnerGameName && (
+        <div className="bg-primary/10 border border-primary/30 rounded-md p-3 text-sm">
+          <span className="text-on-surface-medium">매칭 완료 · 파트너 </span>
+          <PartnerName
+            gameName={partner.partnerGameName}
+            tagLine={partner.partnerTagLine}
+          />
+        </div>
+      )}
+
       {/* 소유자 액션 */}
       {post.status === "ACTIVE" && (
         <div className="flex gap-2">
