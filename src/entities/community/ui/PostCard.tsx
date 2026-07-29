@@ -1,7 +1,7 @@
 "use client";
 
-import type { PostListItem } from "@/entities/community";
-import { POST_CATEGORY_LABELS } from "@/entities/community";
+import type { PostListItem } from "../types";
+import { POST_CATEGORY_LABELS } from "../types";
 import { Eye, MessageSquare, ThumbsUp } from "lucide-react";
 import Link from "next/link";
 import { getRelativeTime } from "@/shared/lib/date";

@@ -55,7 +55,7 @@ export default function ChampionListSidebar({
           <Link
             prefetch={false}
             key={champ.id}
-            href={`/champion-stats/${champ.id}?tier=${tier}&patch=${patch}&platformId=${platformId}`}
+            href={`/champion-stats/${champ.id}?tier=${encodeURIComponent(tier)}&patch=${patch}&platformId=${platformId}`}
             className="flex flex-col items-center gap-1 p-1 rounded transition-colors text-on-surface-medium hover:bg-surface-4 hover:text-on-surface"
           >
             <Image

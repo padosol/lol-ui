@@ -55,6 +55,7 @@ export interface Post {
   commentCount: number;
   author: Author;
   currentUserVote: VoteType | null;
+  currentUserBookmarked: boolean;
   createdAt: string;
   updatedAt: string;
 }

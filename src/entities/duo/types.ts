@@ -41,7 +41,8 @@ export type RequestStatus =
   | "ACCEPTED"
   | "CONFIRMED"
   | "REJECTED"
-  | "CANCELLED";
+  | "CANCELLED"
+  | "CLOSED";
 
 export const POST_STATUS_LABELS: Record<PostStatus, string> = {
   ACTIVE: "모집 중",
@@ -56,6 +57,7 @@ export const REQUEST_STATUS_LABELS: Record<RequestStatus, string> = {
   CONFIRMED: "확정됨",
   REJECTED: "거절됨",
   CANCELLED: "취소됨",
+  CLOSED: "종료됨",
 };
 
 // === 챔피언 통계 ===

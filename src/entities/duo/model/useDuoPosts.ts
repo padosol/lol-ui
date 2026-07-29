@@ -8,6 +8,8 @@ export const duoKeys = {
   postList: (params: Omit<DuoPostFilters, "page">) =>
     [...duoKeys.posts(), params] as const,
   postDetail: (id: number) => [...duoKeys.posts(), "detail", id] as const,
+  matchResult: (postId: number) =>
+    [...duoKeys.posts(), "match-result", postId] as const,
   myPosts: () => [...duoKeys.all, "my-posts"] as const,
   myRequests: () => [...duoKeys.all, "my-requests"] as const,
 };

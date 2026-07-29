@@ -12,7 +12,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { RefreshCw } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 interface ProfileSectionProps {
   summonerName: string; // gameName 형식: "name-tagLine"
@@ -45,12 +45,10 @@ export default function ProfileSection({
   const [isPolling, setIsPolling] = useState(false);
   const pollingIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const pollingStartTimeRef = useRef<number | null>(null);
-  const [cooldownInfo, setCooldownInfo] = useState<{
-    remainingSeconds: number;
-  } | null>(null);
   const [refreshError, setRefreshError] = useState<string | null>(null);
-  const [elapsedText, setElapsedText] = useState<string | null>(null);
-  const [cooldownReady, setCooldownReady] = useState(false);
+  // SSR/hydration 첫 렌더에서는 시간 계산을 하지 않기 위해 null로 시작한다.
+  // 실제 시간 카운트는 마운트 후 클라이언트에서만 진행 (아래 useEffect에서 setNow).
+  const [now, setNow] = useState<number | null>(null);
 
   // 컴포넌트 언마운트 시 폴링 정리
   useEffect(() => {
@@ -63,50 +61,52 @@ export default function ProfileSection({
   }, []);
 
   // 쿨다운 (2분) 계산 - 서버의 lastRevisionDateTime 기준
+  // lastRevisionClickDateTime이 있을 때만 마운트 직후 now를 세팅하고
+  // 1초마다 갱신해 재계산을 트리거한다. (실제 시간 카운트는 클라이언트 사이드에서만)
   useEffect(() => {
-    const updateCooldownInfo = () => {
-      if (!profileData?.lastRevisionClickDateTime) {
-        setCooldownInfo(null);
-        setElapsedText(null);
-        if (!cooldownReady) setCooldownReady(true);
-        return;
-      }
-
-      const raw = profileData.lastRevisionClickDateTime;
-      const lastRevisionTime = dayjs(raw.replace(' ', 'T') + '+09:00').valueOf();
-      const elapsed = Date.now() - lastRevisionTime;
-      const remaining = Math.max(0, 120000 - elapsed);
-
-      if (remaining > 0) {
-        setCooldownInfo({ remainingSeconds: Math.ceil(remaining / 1000) });
-      } else {
-        setCooldownInfo(null);
-      }
-
-      // 상대 시간 텍스트 계산
-      const elapsedMinutes = Math.floor(elapsed / 60000);
-      const elapsedHours = Math.floor(elapsed / 3600000);
-      const elapsedDays = Math.floor(elapsed / 86400000);
-
-      let timeText: string;
-      if (elapsedMinutes < 1) {
-        timeText = '1분 미만';
-      } else if (elapsedMinutes < 60) {
-        timeText = `${elapsedMinutes}분 전`;
-      } else if (elapsedHours < 24) {
-        timeText = `${elapsedHours}시간 전`;
-      } else {
-        timeText = `${elapsedDays}일 전`;
-      }
-
-      setElapsedText(timeText);
-      if (!cooldownReady) setCooldownReady(true);
-    };
-
-    updateCooldownInfo();
-    const interval = setInterval(updateCooldownInfo, 1000);
+    if (!profileData?.lastRevisionClickDateTime) return;
+    const updateNow = () => setNow(Date.now());
+    updateNow(); // 마운트 직후 즉시 1회 계산
+    const interval = setInterval(updateNow, 1000);
     return () => clearInterval(interval);
-  }, [profileData?.lastRevisionClickDateTime, cooldownReady]);
+  }, [profileData?.lastRevisionClickDateTime]);
+
+  // now + lastRevisionClickDateTime 기준으로 렌더 중 파생값 계산
+  const { cooldownInfo, elapsedText } = useMemo<{
+    cooldownInfo: { remainingSeconds: number } | null;
+    elapsedText: string | null;
+  }>(() => {
+    // now === null 이면 아직 마운트 전(서버/hydration 첫 렌더)이므로 계산하지 않는다.
+    if (!profileData?.lastRevisionClickDateTime || now === null) {
+      return { cooldownInfo: null, elapsedText: null };
+    }
+
+    const raw = profileData.lastRevisionClickDateTime;
+    const lastRevisionTime = dayjs(raw.replace(' ', 'T') + '+09:00').valueOf();
+    const elapsed = now - lastRevisionTime;
+    const remaining = Math.max(0, 120000 - elapsed);
+
+    const cooldownInfo =
+      remaining > 0 ? { remainingSeconds: Math.ceil(remaining / 1000) } : null;
+
+    // 상대 시간 텍스트 계산
+    const elapsedMinutes = Math.floor(elapsed / 60000);
+    const elapsedHours = Math.floor(elapsed / 3600000);
+    const elapsedDays = Math.floor(elapsed / 86400000);
+
+    let elapsedText: string;
+    if (elapsedMinutes < 1) {
+      elapsedText = '1분 미만';
+    } else if (elapsedMinutes < 60) {
+      elapsedText = `${elapsedMinutes}분 전`;
+    } else if (elapsedHours < 24) {
+      elapsedText = `${elapsedHours}시간 전`;
+    } else {
+      elapsedText = `${elapsedDays}일 전`;
+    }
+
+    return { cooldownInfo, elapsedText };
+  }, [profileData?.lastRevisionClickDateTime, now]);
 
   // 에러 메시지 5초 후 자동 소멸
   useEffect(() => {
@@ -117,7 +117,6 @@ export default function ProfileSection({
 
   // 갱신 버튼 비활성화 여부 확인
   const isRefreshDisabled = () => {
-    if (!cooldownReady) return true;
     if (isRefreshing || isPolling) return true;
     if (cooldownInfo !== null) return true;
     return false;

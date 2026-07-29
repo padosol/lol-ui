@@ -2,10 +2,11 @@
 
 import { GameTooltip } from "@/shared/ui/tooltip";
 import type { SpectatorParticipant } from "@/entities/spectator";
-import { getChampionById, getChampionImageUrl } from "@/entities/champion";
-import { getPerkImageUrl, getSpellImageUrlAsync } from "@/shared/lib/game";
+import { getChampionImageUrl, useChampionById } from "@/entities/champion";
+import { getPerkImageUrl, getSpellImageUrl } from "@/shared/lib/game";
+import { useGameDataStore } from "@/shared/model/game-data";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 
 interface IngamePlayerProps {
   participant: SpectatorParticipant;
@@ -14,35 +15,16 @@ interface IngamePlayerProps {
 export default function IngamePlayer({
   participant,
 }: IngamePlayerProps) {
-  const [champId, setChampId] = useState<string>("");
-  const [champName, setChampName] = useState<string>("");
-  const [spell1Url, setSpell1Url] = useState<string>("");
-  const [spell2Url, setSpell2Url] = useState<string>("");
+  const champion = useChampionById(participant.championId);
+  const champId = champion?.id ?? ""; // 이미지 URL용 (영문 이름)
+  const champName = champion?.name ?? ""; // 표시용 (한글 이름)
 
-  useEffect(() => {
-    const loadChampion = async () => {
-      const champion = await getChampionById(participant.championId);
-      if (champion) {
-        setChampId(champion.id); // 이미지 URL용 (영문 이름)
-        setChampName(champion.name); // 표시용 (한글 이름)
-      }
-    };
-    loadChampion();
-  }, [participant.championId]);
-
-  useEffect(() => {
-    const loadSpellUrls = async () => {
-      if (participant.spell1Id > 0) {
-        const url = await getSpellImageUrlAsync(participant.spell1Id);
-        setSpell1Url(url);
-      }
-      if (participant.spell2Id > 0) {
-        const url = await getSpellImageUrlAsync(participant.spell2Id);
-        setSpell2Url(url);
-      }
-    };
-    loadSpellUrls();
-  }, [participant.spell1Id, participant.spell2Id]);
+  // getSpellImageUrl은 store.getState() 간접참조라 비반응형 → summonerData 구독으로 hydration 갱신
+  const summonerData = useGameDataStore((s) => s.summonerData);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const spell1Url = useMemo(() => getSpellImageUrl(participant.spell1Id), [participant.spell1Id, summonerData]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const spell2Url = useMemo(() => getSpellImageUrl(participant.spell2Id), [participant.spell2Id, summonerData]);
 
   const championImageUrl = champId
     ? getChampionImageUrl(champId)

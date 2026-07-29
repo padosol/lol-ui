@@ -14,7 +14,7 @@ import {
 import type { PostCategory, PostSort, PostPeriod } from "@/entities/community";
 import { useAuthStore } from "@/entities/auth";
 import { CommunitySearchBar } from "@/features/community-search";
-import PostCard from "./PostCard";
+import { PostCard } from "@/entities/community";
 
 const CATEGORIES: (PostCategory | "ALL")[] = ["ALL", ...POST_CATEGORIES];
 const SORTS: PostSort[] = ["HOT", "NEW", "TOP"];

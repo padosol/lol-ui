@@ -1,6 +1,7 @@
 import { QueryProvider } from "@/shared/providers/QueryProvider";
 import GameDataLoader from "./GameDataLoader";
 import { ThemeProvider } from "@/shared/providers/ThemeProvider";
+import { Toaster } from "@/shared/ui/toast";
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import "./globals.css";
@@ -38,6 +39,7 @@ export default function RootLayout({
           <ThemeProvider>
             <GameDataLoader />
             {children}
+            <Toaster />
           </ThemeProvider>
         </QueryProvider>
       </body>

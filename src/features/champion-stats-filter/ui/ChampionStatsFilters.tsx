@@ -3,7 +3,8 @@
 import { AVAILABLE_REGIONS } from "@/features/region-select";
 import { useSeasonStore } from "@/entities/season";
 import { ChevronDown } from "lucide-react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
+import { useClickOutside } from "@/shared/lib/useClickOutside";
 import { TIER_OPTIONS } from "../lib/tiers";
 
 interface ChampionStatsFiltersProps {
@@ -34,22 +35,9 @@ export default function ChampionStatsFilters({
   const latestPatches = latestSeason?.patchVersions ?? [];
   const activePatch = selectedPatch || latestPatches[0] || "";
 
-  const handleClickOutside = useCallback((e: MouseEvent) => {
-    if (tierRef.current && !tierRef.current.contains(e.target as Node)) {
-      setTierOpen(false);
-    }
-    if (patchRef.current && !patchRef.current.contains(e.target as Node)) {
-      setPatchOpen(false);
-    }
-    if (platformRef.current && !platformRef.current.contains(e.target as Node)) {
-      setPlatformOpen(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [handleClickOutside]);
+  useClickOutside(tierRef, () => setTierOpen(false), tierOpen);
+  useClickOutside(patchRef, () => setPatchOpen(false), patchOpen);
+  useClickOutside(platformRef, () => setPlatformOpen(false), platformOpen);
 
   return (
     <div className="grid grid-cols-3 gap-2 sm:flex sm:items-center sm:justify-center sm:flex-wrap">
