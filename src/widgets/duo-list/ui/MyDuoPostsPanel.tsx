@@ -30,7 +30,7 @@ export default function MyDuoPostsPanel({
   if (posts.length === 0) {
     return (
       <div className="text-center py-16 text-on-surface-disabled">
-        작성한 게시글이 없습니다
+        등록한 듀오가 없습니다
       </div>
     );
   }

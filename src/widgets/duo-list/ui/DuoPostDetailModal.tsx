@@ -54,7 +54,7 @@ export default function DuoPostDetailModal({
   if (postId === null) return null;
 
   const handleDelete = () => {
-    if (!confirm("게시글을 삭제하시겠습니까?")) return;
+    if (!confirm("듀오 등록을 삭제하시겠습니까?")) return;
     deletePost.mutate(postId, {
       onSuccess: () => onClose(),
     });
@@ -71,7 +71,7 @@ export default function DuoPostDetailModal({
         <div className="bg-surface-4 rounded-lg border border-divider w-full max-w-lg mx-4 max-h-[90vh] overflow-y-auto p-6">
           {/* 헤더 */}
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-lg font-bold text-on-surface">게시글 상세</h2>
+            <h2 className="text-lg font-bold text-on-surface">듀오 상세</h2>
             <button
               type="button"
               onClick={onClose}
@@ -98,7 +98,7 @@ export default function DuoPostDetailModal({
             />
           ) : (
             <p className="text-on-surface-disabled text-center py-8">
-              게시글을 찾을 수 없습니다
+              듀오 정보를 찾을 수 없습니다
             </p>
           )}
         </div>
