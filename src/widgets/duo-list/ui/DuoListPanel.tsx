@@ -42,8 +42,8 @@ export default function DuoListPanel() {
   );
 
   const tabs: { key: DuoTab; label: string; requireAuth: boolean }[] = [
-    { key: "posts", label: "게시글 목록", requireAuth: false },
-    { key: "my-posts", label: "내 게시글", requireAuth: true },
+    { key: "posts", label: "듀오 목록", requireAuth: false },
+    { key: "my-posts", label: "내 등록", requireAuth: true },
     { key: "my-requests", label: "내 요청", requireAuth: true },
   ];
 
