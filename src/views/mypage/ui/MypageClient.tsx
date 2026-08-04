@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/shared/i18n/navigation";
 import { useAuthStore } from "@/entities/auth";
 import { useHasHydrated } from "@/shared/lib/useHasHydrated";
 import { Header, Navigation, Footer } from "@/widgets/layout";

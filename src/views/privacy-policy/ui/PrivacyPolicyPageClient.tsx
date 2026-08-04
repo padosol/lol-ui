@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/shared/i18n/navigation";
 
 const CONTACT_FORM_URL = "https://forms.gle/a5eF1Wapwirawq936";
 

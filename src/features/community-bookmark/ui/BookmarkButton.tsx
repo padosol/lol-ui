@@ -1,7 +1,7 @@
 "use client";
 
 import { Bookmark } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/shared/i18n/navigation";
 import { useAuthStore } from "@/entities/auth";
 import { useBookmarkToggle } from "@/entities/community";
 import { toast } from "@/shared/ui/toast";

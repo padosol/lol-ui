@@ -8,7 +8,7 @@ import {
 } from "@/entities/champion";
 import { useGameDataStore } from "@/shared/model/game-data";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/shared/i18n/navigation";
 import { useMemo } from "react";
 
 interface ChampionStatsTableProps {

@@ -3,7 +3,7 @@
 import type { PostListItem } from "../types";
 import { POST_CATEGORY_LABELS } from "../types";
 import { Eye, MessageSquare, ThumbsUp } from "lucide-react";
-import Link from "next/link";
+import { Link } from "@/shared/i18n/navigation";
 import { getRelativeTime } from "@/shared/lib/date";
 
 interface PostCardProps {

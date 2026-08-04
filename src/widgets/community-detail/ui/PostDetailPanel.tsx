@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/shared/i18n/navigation";
 import { useState } from "react";
 import { ArrowLeft, Pencil, Trash2 } from "lucide-react";
 import {

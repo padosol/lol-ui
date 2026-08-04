@@ -3,7 +3,7 @@
 import { useGameDataStore } from "@/shared/model/game-data";
 import { getChampionImageUrl, getChampionNameByEnglishName } from "@/entities/champion";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/shared/i18n/navigation";
 import { Search } from "lucide-react";
 import { useMemo, useState } from "react";
 

@@ -1,0 +1,15 @@
+{
+  "common": {
+    "loading": "불러오는 중",
+    "retry": "다시 시도",
+    "cancel": "취소",
+    "confirm": "확인",
+    "close": "닫기",
+    "save": "저장",
+    "delete": "삭제",
+    "edit": "수정",
+    "search": "검색",
+    "more": "더보기",
+    "empty": "데이터가 없습니다"
+  }
+}

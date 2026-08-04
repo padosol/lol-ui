@@ -2,7 +2,7 @@
 
 import type { ParticipantData } from "@/entities/match";
 import { normalizeRegion } from "@/entities/summoner";
-import Link from "next/link";
+import { Link } from "@/shared/i18n/navigation";
 
 interface SummonerNameLinkProps {
   participant: ParticipantData;

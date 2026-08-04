@@ -12,7 +12,7 @@ import { useAuthStore } from "@/entities/auth";
 import { CommentForm, CommentItem } from "@/features/community-comment";
 import { ConfirmModal } from "@/shared/ui/modal";
 import { toast } from "@/shared/ui/toast";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/shared/i18n/navigation";
 import { useState } from "react";
 
 interface CommentSectionProps {

@@ -2,8 +2,9 @@
 
 import { Suspense } from "react";
 import Image from "next/image";
-import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { Link } from "@/shared/i18n/navigation";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "@/shared/i18n/navigation";
 import { GoogleLoginButton } from "@/features/auth";
 
 function LoginPageContent() {

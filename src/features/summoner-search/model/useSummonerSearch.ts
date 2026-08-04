@@ -3,7 +3,7 @@
 import { searchSummonerAutocomplete } from "@/entities/summoner";
 import { useRegionStore } from "@/features/region-select";
 import type { SummonerAutocompleteItem } from "@/entities/summoner";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/shared/i18n/navigation";
 import { useEffect, useRef, useState } from "react";
 
 export function useSummonerSearch() {

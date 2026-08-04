@@ -2,8 +2,8 @@
 
 import { SearchBar } from "@/features/summoner-search";
 import { Search, X } from "lucide-react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { Link } from "@/shared/i18n/navigation";
+import { usePathname } from "@/shared/i18n/navigation";
 import { useState } from "react";
 
 export default function Navigation() {

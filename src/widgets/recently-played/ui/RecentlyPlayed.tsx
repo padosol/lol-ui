@@ -9,7 +9,7 @@ import { getSummonerHref } from "@/widgets/match-detail/ui/SummonerNameLink";
 import type { ParticipantData } from "@/entities/match";
 import { aggregateTeammates } from "../lib/aggregateTeammates";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/shared/i18n/navigation";
 import { useMemo } from "react";
 
 interface RecentlyPlayedProps {

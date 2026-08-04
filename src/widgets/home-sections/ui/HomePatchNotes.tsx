@@ -1,7 +1,7 @@
 "use client";
 
 import { usePatchVersions } from "@/entities/patch-note";
-import Link from "next/link";
+import { Link } from "@/shared/i18n/navigation";
 
 export default function HomePatchNotes() {
   const { data: patches, isLoading, error } = usePatchVersions();

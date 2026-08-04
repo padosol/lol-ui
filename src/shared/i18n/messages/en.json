@@ -1,0 +1,15 @@
+{
+  "common": {
+    "loading": "Loading",
+    "retry": "Retry",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "close": "Close",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "search": "Search",
+    "more": "More",
+    "empty": "No data available"
+  }
+}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/shared/i18n/navigation";
 import { ArrowLeft } from "lucide-react";
 import { Header, Navigation, Footer } from "@/widgets/layout";
 import { usePostDetail, useUpdatePost } from "@/entities/community";

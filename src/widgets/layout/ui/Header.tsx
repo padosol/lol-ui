@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/shared/i18n/navigation";
 import Image from "next/image";
 import { ThemeToggle } from "@/features/theme-toggle";
 import { useLogout } from "@/features/auth";

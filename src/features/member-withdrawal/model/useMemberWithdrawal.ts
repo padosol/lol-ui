@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/shared/i18n/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { useAuthStore, withdrawMember } from "@/entities/auth";
 import axios from "axios";

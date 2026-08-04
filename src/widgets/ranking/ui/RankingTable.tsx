@@ -6,7 +6,7 @@ import { getChampionImageUrl } from "@/entities/champion";
 import { getTierImageUrl, getTierName } from "@/shared/lib/tier";
 import { ChevronDown, ChevronUp, Crown, Minus } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/shared/i18n/navigation";
 import { useState } from "react";
 
 interface RankingTableProps {

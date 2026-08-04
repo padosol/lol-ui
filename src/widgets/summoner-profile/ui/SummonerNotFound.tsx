@@ -7,7 +7,7 @@ import { getProfileIconImageUrl } from "@/shared/lib/profile";
 import { getTierColor, getTierImageUrl, getTierInitial } from "@/shared/lib/tier";
 import { ChevronDown, Home, Search, UserX } from "lucide-react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/shared/i18n/navigation";
 import { useEffect, useRef, useState } from "react";
 
 interface SummonerNotFoundProps {
