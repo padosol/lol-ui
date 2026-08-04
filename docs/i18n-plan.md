@@ -1,6 +1,7 @@
 # METAPICK 다국어(i18n) 도입 계획
 
 > 상태: 계획 (미착수)
+> 이슈: [MP-107](https://linear.app/metapick/issue/MP-107) — UI 다국어 도입 (이 문서) / [MP-106](https://linear.app/metapick/issue/MP-106) — 다국어 게임 데이터 API (후속)
 > 대상 언어: 한국어(`ko`), 영어(`en`) — 1차
 > 작성 기준: Next.js 16.1.6 / next-intl 4.13.5 / FSD 구조
 
