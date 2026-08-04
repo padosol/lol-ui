@@ -18,9 +18,12 @@ export const config = {
   matcher: "/((?!api|auth|_next|_vercel|.*\\..*).*)",
 };
 
-/** 로케일 리다이렉트를 301(영구)로 승격할지 여부. 경로 규칙이 확정된 프로덕션에서만 켠다. */
-const USE_PERMANENT_REDIRECT =
-  process.env.NEXT_PUBLIC_I18N_PERMANENT_REDIRECT === "true";
+/**
+ * 로케일 리다이렉트를 301(영구)로 승격할지 여부.
+ * 301은 브라우저가 영구 캐시하므로 경로 규칙이 확정된 프로덕션에서만 켠다.
+ * 프록시에서만 읽으므로 클라이언트 노출용 NEXT_PUBLIC_ 접두사를 붙이지 않는다.
+ */
+const USE_PERMANENT_REDIRECT = process.env.I18N_PERMANENT_REDIRECT === "true";
 
 export default function proxy(request: NextRequest) {
   const response = handleI18nRouting(request);
