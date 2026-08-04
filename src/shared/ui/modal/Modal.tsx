@@ -9,6 +9,7 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export type ModalSize = "sm" | "md" | "lg" | "xl";
 
@@ -104,6 +105,7 @@ export function Modal({
   footer,
   children,
 }: ModalProps) {
+  const t = useTranslations("common");
   const instanceId = useId();
   const panelRef = useRef<HTMLDivElement>(null);
   const restoreFocusRef = useRef<HTMLElement | null>(null);
@@ -199,7 +201,7 @@ export function Modal({
               <button
                 type="button"
                 onClick={onClose}
-                aria-label="닫기"
+                aria-label={t("close")}
                 className="text-on-surface-disabled hover:text-on-surface transition-colors disabled:opacity-50"
               >
                 <X className="w-5 h-5" />

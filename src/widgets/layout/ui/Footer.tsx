@@ -1,8 +1,11 @@
+import { useTranslations } from "next-intl";
 import { Link } from "@/shared/i18n/navigation";
 
 const CONTACT_FORM_URL = "https://forms.gle/a5eF1Wapwirawq936";
 
 export default function Footer() {
+  const t = useTranslations("nav");
+
   return (
     <footer className="bg-surface-1 text-on-surface-medium">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -13,13 +16,13 @@ export default function Footer() {
               href="/terms-of-service"
               className="underline underline-offset-4 transition-opacity hover:opacity-80"
             >
-              이용약관
+              {t("terms")}
             </Link>
             <Link
               href="/privacy-policy"
               className="underline underline-offset-4 transition-opacity hover:opacity-80"
             >
-              개인정보처리방침
+              {t("privacy")}
             </Link>
             <a
               href={CONTACT_FORM_URL}
@@ -27,7 +30,7 @@ export default function Footer() {
               rel="noopener noreferrer"
               className="underline underline-offset-4 transition-opacity hover:opacity-80"
             >
-              문의하기
+              {t("contact")}
             </a>
           </div>
           <p className="text-sm text-on-surface-medium text-center">

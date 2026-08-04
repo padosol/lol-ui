@@ -10,6 +10,65 @@
     "edit": "Edit",
     "search": "Search",
     "more": "More",
-    "empty": "No data available"
+    "empty": "No data available",
+    "processing": "Processing..."
+  },
+  "nav": {
+    "home": "Home",
+    "championStats": "Champions",
+    "leaderboards": "Leaderboards",
+    "patchNotes": "Patch Notes",
+    "community": "Community",
+    "duo": "Find Duo",
+    "login": "Sign in",
+    "logout": "Sign out",
+    "terms": "Terms of Service",
+    "privacy": "Privacy Policy",
+    "contact": "Contact"
+  },
+  "localeSwitcher": {
+    "label": "Select language"
+  },
+  "theme": {
+    "toLight": "Switch to light mode",
+    "toDark": "Switch to dark mode"
+  },
+  "tooltip": {
+    "noSpellInfo": "No spell data",
+    "noPassiveInfo": "No passive data",
+    "noItemInfo": "No item data",
+    "noSkillInfo": "No ability data",
+    "cooldown": "Cooldown: {value}s",
+    "cost": "Cost: {value} ({resource})",
+    "rune": "Rune {id}"
+  },
+  "domain": {
+    "championTag": {
+      "Fighter": "Fighter",
+      "Tank": "Tank",
+      "Mage": "Mage",
+      "Assassin": "Assassin",
+      "Marksman": "Marksman",
+      "Support": "Support"
+    },
+    "championInfo": {
+      "attack": "Attack",
+      "defense": "Defense",
+      "magic": "Magic",
+      "difficulty": "Difficulty"
+    },
+    "championStat": {
+      "armor": "Armor",
+      "magicResist": "Magic Resist",
+      "moveSpeed": "Move Speed",
+      "range": "Range",
+      "attackDamage": "Attack Damage"
+    }
+  },
+  "errors": {
+    "network": "Unable to connect to the server",
+    "timeout": "The request timed out",
+    "unknown": "An unexpected error occurred",
+    "notFound": "The requested data could not be found"
   }
 }

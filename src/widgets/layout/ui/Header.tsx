@@ -1,13 +1,16 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { Link } from "@/shared/i18n/navigation";
 import Image from "next/image";
 import { ThemeToggle } from "@/features/theme-toggle";
+import { LocaleSwitcher } from "@/features/locale-switcher";
 import { useLogout } from "@/features/auth";
 import { useAuthStore } from "@/entities/auth";
 import { useHasHydrated } from "@/shared/lib/useHasHydrated";
 
 export default function Header() {
+  const t = useTranslations("nav");
   const user = useAuthStore((s) => s.user);
   const hasHydrated = useHasHydrated(useAuthStore);
   const { handleLogout } = useLogout();
@@ -30,6 +33,7 @@ export default function Header() {
               </Link>
             </div>
             <div className="flex items-center gap-4">
+              <LocaleSwitcher />
               <ThemeToggle />
               {!hasHydrated ? null : user ? (
                 <>
@@ -43,7 +47,7 @@ export default function Header() {
                     onClick={handleLogout}
                     className="text-on-surface-medium hover:text-on-surface"
                   >
-                    로그아웃
+                    {t("logout")}
                   </button>
                 </>
               ) : (
@@ -51,7 +55,7 @@ export default function Header() {
                   href="/login"
                   className="text-on-surface-medium hover:text-on-surface"
                 >
-                  로그인
+                  {t("login")}
                 </Link>
               )}
             </div>

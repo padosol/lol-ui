@@ -1,6 +1,7 @@
 "use client";
 
 import { AlertTriangle } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Modal, type ModalSize } from "./Modal";
 
 export interface ConfirmModalProps {
@@ -29,14 +30,15 @@ export function ConfirmModal({
   open,
   title,
   description,
-  confirmLabel = "확인",
-  cancelLabel = "취소",
+  confirmLabel,
+  cancelLabel,
   variant = "default",
   loading = false,
   size = "sm",
   onConfirm,
   onClose,
 }: ConfirmModalProps) {
+  const t = useTranslations("common");
   const isDanger = variant === "danger";
 
   return (
@@ -56,7 +58,7 @@ export function ConfirmModal({
             disabled={loading}
             className="flex-1 py-2.5 bg-surface-4 border border-divider text-on-surface-medium rounded-lg text-sm font-medium hover:bg-surface-1 transition-colors disabled:opacity-50"
           >
-            {cancelLabel}
+            {cancelLabel ?? t("cancel")}
           </button>
           <button
             type="button"
@@ -68,7 +70,7 @@ export function ConfirmModal({
                 : "bg-primary hover:bg-primary/90"
             }`}
           >
-            {loading ? "처리 중..." : confirmLabel}
+            {loading ? t("processing") : (confirmLabel ?? t("confirm"))}
           </button>
         </>
       }
