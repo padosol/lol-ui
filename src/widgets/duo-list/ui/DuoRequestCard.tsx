@@ -11,7 +11,7 @@ import {
 } from "@/entities/duo";
 import { getPositionImageUrl } from "@/shared/lib/position";
 import { getTierName } from "@/shared/lib/tier";
-import { getRelativeTime } from "@/shared/lib/date";
+import { useFormatter } from "next-intl";
 import { RequesterActionButtons } from "@/features/duo-matching";
 import PartnerName from "./PartnerName";
 
@@ -29,6 +29,7 @@ const STATUS_COLORS: Record<string, string> = {
 };
 
 export default function DuoRequestCard({ request }: DuoRequestCardProps) {
+  const format = useFormatter();
   const tier = request.tier;
   const isMasterPlus = tier !== null && ["MASTER", "GRANDMASTER", "CHALLENGER"].includes(tier);
 
@@ -91,7 +92,7 @@ export default function DuoRequestCard({ request }: DuoRequestCardProps) {
 
       {/* 시간 */}
       <span className="shrink-0 text-xs text-on-surface-disabled hidden sm:inline">
-        {getRelativeTime(request.createdAt)}
+        {format.relativeTime(new Date(request.createdAt))}
       </span>
 
       {/* 액션 버튼 */}

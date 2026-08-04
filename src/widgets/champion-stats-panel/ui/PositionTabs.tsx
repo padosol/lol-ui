@@ -1,7 +1,8 @@
 "use client";
 
 import type { ApiPositionType } from "@/entities/champion";
-import { getPositionImageUrl, getPositionName } from "@/shared/lib/position";
+import { useTranslations } from "next-intl";
+import { getPositionImageUrl, normalizePosition } from "@/shared/lib/position";
 import Image from "next/image";
 
 const ALL_POSITIONS: ApiPositionType[] = ["TOP", "JUNGLE", "MIDDLE", "BOTTOM", "UTILITY"];
@@ -19,6 +20,7 @@ export default function PositionTabs({
   availablePositions,
   positionShares,
 }: PositionTabsProps) {
+  const t = useTranslations("domain");
   const positions = availablePositions ?? ALL_POSITIONS;
 
   return (
@@ -41,13 +43,13 @@ export default function PositionTabs({
           >
             <Image
               src={getPositionImageUrl(pos)}
-              alt={getPositionName(pos)}
+              alt={t(`position.${normalizePosition(pos)}`)}
               width={20}
               height={20}
               unoptimized
               className={isActive ? "opacity-100" : "opacity-60"}
             />
-            <span className="hidden sm:inline">{getPositionName(pos)}</span>
+            <span className="hidden sm:inline">{t(`position.${normalizePosition(pos)}`)}</span>
             {sharePercent != null && (
               <span className="text-xs text-on-surface-medium">{sharePercent}%</span>
             )}

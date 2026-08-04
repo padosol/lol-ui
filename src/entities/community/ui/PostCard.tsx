@@ -4,13 +4,14 @@ import type { PostListItem } from "../types";
 import { POST_CATEGORY_LABELS } from "../types";
 import { Eye, MessageSquare, ThumbsUp } from "lucide-react";
 import { Link } from "@/shared/i18n/navigation";
-import { getRelativeTime } from "@/shared/lib/date";
+import { useFormatter } from "next-intl";
 
 interface PostCardProps {
   post: PostListItem;
 }
 
 export default function PostCard({ post }: PostCardProps) {
+  const format = useFormatter();
   const netVotes = post.upvoteCount - post.downvoteCount;
 
   return (
@@ -23,7 +24,7 @@ export default function PostCard({ post }: PostCardProps) {
           {POST_CATEGORY_LABELS[post.category]}
         </span>
         <span className="text-xs text-on-surface-disabled">
-          {getRelativeTime(post.createdAt)}
+          {format.relativeTime(new Date(post.createdAt))}
         </span>
       </div>
 

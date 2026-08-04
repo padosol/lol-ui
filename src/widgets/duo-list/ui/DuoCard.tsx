@@ -6,7 +6,7 @@ import type { DuoPost } from "@/entities/duo";
 import { LANE_LABELS, LANE_IMAGE_KEY, POST_STATUS_LABELS } from "@/entities/duo";
 import { getPositionImageUrl } from "@/shared/lib/position";
 import { getTierName } from "@/shared/lib/tier";
-import { getRelativeTime } from "@/shared/lib/date";
+import { useFormatter } from "next-intl";
 
 const TIER_COLORS: Record<string, string> = {
   IRON: "text-gray-400",
@@ -27,6 +27,7 @@ interface DuoCardProps {
 }
 
 export default function DuoCard({ post, onSelect }: DuoCardProps) {
+  const format = useFormatter();
   const tier = post.tier;
   const isMasterPlus = tier !== null && ["MASTER", "GRANDMASTER", "CHALLENGER"].includes(tier);
   const tierDisplay = tier !== null ? getTierName(tier) : "언랭크";
@@ -100,7 +101,7 @@ export default function DuoCard({ post, onSelect }: DuoCardProps) {
           <Clock className="w-3 h-3" />
           {getExpiryText(post.expiresAt)}
         </span>
-        <span className="hidden sm:inline">{getRelativeTime(post.createdAt)}</span>
+        <span className="hidden sm:inline">{format.relativeTime(new Date(post.createdAt))}</span>
       </div>
     </button>
   );

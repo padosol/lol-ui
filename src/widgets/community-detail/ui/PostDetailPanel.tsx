@@ -16,7 +16,7 @@ import { VoteButtons } from "@/shared/ui/vote-buttons";
 import { BookmarkButton } from "@/features/community-bookmark";
 import { ConfirmModal } from "@/shared/ui/modal";
 import { toast } from "@/shared/ui/toast";
-import { formatDate } from "@/shared/lib/date";
+import { useFormatter } from "next-intl";
 import CommentSection from "./CommentSection";
 
 interface PostDetailPanelProps {
@@ -24,6 +24,7 @@ interface PostDetailPanelProps {
 }
 
 export default function PostDetailPanel({ postId }: PostDetailPanelProps) {
+  const format = useFormatter();
   const router = useRouter();
   const user = useAuthStore((s) => s.user);
   const { data: post, isLoading, error } = usePostDetail(postId);
@@ -107,7 +108,7 @@ export default function PostDetailPanel({ postId }: PostDetailPanelProps) {
               {post.author.nickname}
             </span>
             <span className="text-xs text-on-surface-disabled">
-              {formatDate(post.createdAt, { withTime: true })}
+              {format.dateTime(new Date(post.createdAt), { dateStyle: "long", timeStyle: "short" })}
             </span>
             {post.updatedAt !== post.createdAt && (
               <span className="text-xs text-on-surface-disabled">(수정됨)</span>

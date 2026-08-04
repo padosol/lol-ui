@@ -5,7 +5,7 @@ import { Reply, Pencil, Trash2 } from "lucide-react";
 import type { Comment } from "@/entities/community";
 import { useAuthStore } from "@/entities/auth";
 import { VoteButtons } from "@/shared/ui/vote-buttons";
-import { getRelativeTime } from "@/shared/lib/date";
+import { useFormatter } from "next-intl";
 import CommentForm from "./CommentForm";
 
 interface CommentItemProps {
@@ -29,6 +29,7 @@ export default function CommentItem({
   isUpdatePending,
   isVotePending,
 }: CommentItemProps) {
+  const format = useFormatter();
   const user = useAuthStore((s) => s.user);
   const [showReplyForm, setShowReplyForm] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
@@ -66,7 +67,7 @@ export default function CommentItem({
               {comment.author.nickname}
             </span>
             <span className="text-xs text-on-surface-disabled">
-              {getRelativeTime(comment.createdAt)}
+              {format.relativeTime(new Date(comment.createdAt))}
             </span>
             {comment.updatedAt !== comment.createdAt && (
               <span className="text-xs text-on-surface-disabled">(수정됨)</span>

@@ -8,7 +8,8 @@ import {
   getSpellImageUrl,
 } from "@/shared/lib/game";
 import { getStyleImageUrl } from "@/shared/lib/styles";
-import { getPositionName } from "@/shared/lib/position";
+import { useTranslations } from "next-intl";
+import { normalizePosition } from "@/shared/lib/position";
 import Image from "next/image";
 
 interface PlayerInfoProps {
@@ -44,6 +45,7 @@ export default function PlayerInfo({
   subRuneStyleId,
   isArena = false,
 }: PlayerInfoProps) {
+  const t = useTranslations("domain");
   return (
     <div className="space-y-3">
       {/* 챔피언 포트레이트 */}
@@ -77,7 +79,7 @@ export default function PlayerInfo({
         <div className="text-center">
           <div className="text-on-surface font-semibold text-sm">{champion}</div>
           <div className="text-on-surface-medium text-xs">
-            {getPositionName(position)}
+            {t(`position.${normalizePosition(position)}`)}
           </div>
         </div>
       )}

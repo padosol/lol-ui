@@ -33,6 +33,26 @@
     "toLight": "Switch to light mode",
     "toDark": "Switch to dark mode"
   },
+  "championStats": {
+    "tierSelect": "Select tier",
+    "patchSelect": "Select patch",
+    "platformSelect": "Select region",
+    "emptyTitle": "No stats match the selected filters.",
+    "latestPatch": "Latest",
+    "viewTier": "View {tier}",
+    "viewPreviousPatch": "View previous patch ({patch})",
+    "loadError": "Failed to load champion stats.",
+    "lastAttempt": "Last attempt {time}"
+  },
+  "league": {
+    "title": "Ranked",
+    "needSummoner": "A summoner is required.",
+    "empty": "No ranked data.",
+    "tierAlt": "{tier} tier",
+    "winRate": "Win rate",
+    "wins": "{count}W",
+    "losses": "{count}L"
+  },
   "tooltip": {
     "noSpellInfo": "No spell data",
     "noPassiveInfo": "No passive data",
@@ -63,6 +83,30 @@
       "moveSpeed": "Move Speed",
       "range": "Range",
       "attackDamage": "Attack Damage"
+    },
+    "position": {
+      "TOP": "Top",
+      "JUNGLE": "Jungle",
+      "MID": "Mid",
+      "ADC": "Bot",
+      "SUPPORT": "Support",
+      "UNKNOWN": "Unknown"
+    },
+    "tier": {
+      "CHALLENGER": "Challenger",
+      "GRANDMASTER": "Grandmaster",
+      "MASTER": "Master",
+      "DIAMOND": "Diamond",
+      "EMERALD": "Emerald",
+      "PLATINUM": "Platinum",
+      "GOLD": "Gold",
+      "SILVER": "Silver",
+      "BRONZE": "Bronze",
+      "IRON": "Iron"
+    },
+    "leagueType": {
+      "RANKED_SOLO_5x5": "Ranked Solo",
+      "RANKED_FLEX_SR": "Ranked Flex"
     }
   },
   "errors": {

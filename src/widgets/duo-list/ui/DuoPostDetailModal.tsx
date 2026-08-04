@@ -15,7 +15,7 @@ import type { DuoPost, DuoRequest } from "@/entities/duo";
 import { useAuthStore } from "@/entities/auth";
 import { getPositionImageUrl } from "@/shared/lib/position";
 import { getTierName } from "@/shared/lib/tier";
-import { getRelativeTime } from "@/shared/lib/date";
+import { useFormatter } from "next-intl";
 import { RequestActionButtons } from "@/features/duo-matching";
 import { DuoRequestModal } from "@/features/duo-request";
 import PartnerName from "./PartnerName";
@@ -130,6 +130,7 @@ function PostContent({
   isDeleting: boolean;
   onRequestClick: () => void;
 }) {
+  const format = useFormatter();
   const tier = post.tier;
   const isMasterPlus = tier !== null && ["MASTER", "GRANDMASTER", "CHALLENGER"].includes(tier);
 
@@ -195,7 +196,7 @@ function PostContent({
 
         {/* 작성 시간 */}
         <p className="text-xs text-on-surface-disabled">
-          {getRelativeTime(post.createdAt)}
+          {format.relativeTime(new Date(post.createdAt))}
         </p>
       </div>
 
