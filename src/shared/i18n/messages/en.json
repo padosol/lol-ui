@@ -615,6 +615,263 @@
       "CLASH": "Clash"
     }
   },
+  "legal": {
+    "backToLogin": "Back to sign-in",
+    "terms": {
+      "title": "Terms of Service",
+      "effectiveDate": "Effective March 18, 2026",
+      "sections": [
+        {
+          "heading": "Article 1 (Purpose)",
+          "body": [
+            "These Terms govern the rights, obligations, and responsibilities between METAPICK (the \"Service\") and its users in connection with the League of Legends match-lookup service the Service provides."
+          ]
+        },
+        {
+          "heading": "Article 2 (Definitions)",
+          "listType": "bullet",
+          "list": [
+            {
+              "term": "\"Service\"",
+              "text": "means the League of Legends match lookup, champion statistics, patch notes, and related web services provided by METAPICK."
+            },
+            {
+              "term": "\"Member\"",
+              "text": "means a person who has signed in to the Service and entered into a usage agreement under these Terms."
+            },
+            {
+              "term": "\"Non-member\"",
+              "text": "means a person who uses the Service without signing in."
+            }
+          ]
+        },
+        {
+          "heading": "Article 3 (Effect and Amendment of the Terms)",
+          "listType": "number",
+          "list": [
+            { "text": "These Terms take effect when posted within the Service." },
+            {
+              "text": "The Service may amend these Terms where there is a reasonable ground to do so, and will announce any amendment within the Service."
+            },
+            {
+              "text": "A Member who does not agree to the amended Terms may delete their account. Continuing to use the Service after the amended Terms take effect is deemed acceptance of the amendment."
+            }
+          ]
+        },
+        {
+          "heading": "Article 4 (Provision of the Service)",
+          "body": ["The Service provides the following features."],
+          "listType": "bullet",
+          "list": [
+            { "text": "League of Legends summoner match lookup" },
+            { "text": "Champion statistics and analysis" },
+            { "text": "Patch note information" },
+            { "text": "Leaderboard information" },
+            { "text": "Other features the Service may develop" }
+          ]
+        },
+        {
+          "heading": "Article 5 (Use of the Service)",
+          "listType": "number",
+          "list": [
+            {
+              "text": "The Service is provided 24 hours a day, year-round in principle, but may be suspended temporarily where operationally necessary, such as for system maintenance."
+            },
+            {
+              "text": "Non-members may use basic features such as match lookup; some features may be available only to signed-in Members."
+            }
+          ]
+        },
+        {
+          "heading": "Article 6 (Sign-up and Accounts)",
+          "listType": "number",
+          "list": [
+            {
+              "text": "Sign-up is performed through Google OAuth. Signing in is deemed acceptance of these Terms and the Privacy Policy."
+            },
+            {
+              "text": "Members are responsible for keeping their account information accurate."
+            },
+            {
+              "text": "Members may not transfer or lend their account to any third party."
+            }
+          ]
+        },
+        {
+          "heading": "Article 7 (Account Deletion and Loss of Membership)",
+          "listType": "number",
+          "list": [
+            {
+              "text": "A Member may request account deletion at any time, and the Service will process it immediately."
+            },
+            {
+              "text": "The Service may restrict or revoke membership in the following cases.",
+              "sub": [
+                "Misappropriating another person's information",
+                "Intentionally interfering with the operation of the Service",
+                "Violating applicable law or these Terms"
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Article 8 (Suspension of the Service)",
+          "body": [
+            "Where the Service cannot be provided due to system maintenance, natural disaster, or other force majeure, the Service may be suspended temporarily after prior notice. Where prior notice is not feasible, notice may be given after the fact."
+          ]
+        },
+        {
+          "heading": "Article 9 (Limitation of Liability)",
+          "listType": "number",
+          "list": [
+            {
+              "text": "The Service is provided free of charge, and is liable for damages arising from use of the Service only to the extent provided by applicable law."
+            },
+            {
+              "text": "Match and statistical data provided by the Service is based on the Riot Games API, and its accuracy and completeness are not guaranteed."
+            },
+            {
+              "text": "The Service is not liable if a user fails to obtain the profit or outcome they expected from using the Service."
+            }
+          ]
+        },
+        {
+          "heading": "Article 10 (Intellectual Property)",
+          "listType": "number",
+          "list": [
+            {
+              "text": "Copyright in content created by the Service belongs to the Service."
+            },
+            {
+              "text": "League of Legends and related trademarks are the property of Riot Games, Inc. METAPICK is not endorsed by Riot Games and does not reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends."
+            }
+          ]
+        },
+        {
+          "heading": "Article 11 (Dispute Resolution)",
+          "listType": "number",
+          "list": [
+            {
+              "text": "Disputes between the Service and a user shall in principle be resolved through mutual consultation."
+            },
+            {
+              "text": "If consultation fails, the laws of the Republic of Korea shall govern, and jurisdiction shall be determined under the Civil Procedure Act."
+            }
+          ]
+        }
+      ]
+    },
+    "privacy": {
+      "title": "Privacy Policy",
+      "effectiveDate": "Effective March 18, 2026",
+      "sections": [
+        {
+          "heading": "1. Purposes of Collection and Use",
+          "body": [
+            "METAPICK (the \"Service\") collects and uses personal information for the following purposes."
+          ],
+          "listType": "bullet",
+          "list": [
+            { "text": "Member identification and sign-in authentication" },
+            { "text": "Providing the League of Legends match-lookup service" },
+            { "text": "Usage analytics and quality improvement" },
+            { "text": "Preventing abuse and maintaining service stability" }
+          ]
+        },
+        {
+          "heading": "2. Personal Information Collected",
+          "groups": [
+            {
+              "heading": "a. Collected on Google OAuth sign-in",
+              "items": ["Email address", "Name (nickname)", "Profile image URL"]
+            },
+            {
+              "heading": "b. Collected automatically during use",
+              "items": [
+                "Cookies",
+                "IP address",
+                "Access timestamp",
+                "Browser type and version"
+              ]
+            },
+            {
+              "heading": "c. Information entered by the user",
+              "items": [
+                "League of Legends summoner name and tag (when linked by the user)"
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "3. Retention and Use Period",
+          "body": [
+            "Personal information is destroyed without delay when the account is deleted or the purpose of collection is fulfilled. Where retention is required by law, it is kept for the period required."
+          ],
+          "listType": "bullet",
+          "list": [
+            { "text": "Sign-in records: until the account is deleted" },
+            { "text": "Access logs: 3 months" }
+          ]
+        },
+        {
+          "heading": "4. Provision to Third Parties",
+          "body": [
+            "The Service does not provide users' personal information to third parties, except where required by law."
+          ]
+        },
+        {
+          "heading": "5. Destruction Procedure and Method",
+          "listType": "bullet",
+          "list": [
+            {
+              "term": "Procedure:",
+              "text": "Information is destroyed without delay once the retention period expires or the account is deleted."
+            },
+            {
+              "term": "Method:",
+              "text": "Electronic files are permanently deleted by unrecoverable means; paper documents are shredded or incinerated."
+            }
+          ]
+        },
+        {
+          "heading": "6. User Rights and How to Exercise Them",
+          "body": ["Users may exercise the following rights at any time."],
+          "listType": "bullet",
+          "list": [
+            { "text": "Request access to personal information" },
+            { "text": "Request correction or deletion of personal information" },
+            { "text": "Request suspension of processing" },
+            { "text": "Request account deletion" }
+          ],
+          "footer": [
+            "You can exercise these rights through the contact below, and we will act without delay."
+          ]
+        },
+        {
+          "heading": "7. Cookies",
+          "body": [
+            "The Service uses cookies to maintain sign-in sessions and improve the user experience. You may refuse cookie storage through your browser settings, but some features such as sign-in may then be unavailable."
+          ]
+        },
+        {
+          "heading": "8. Privacy Officer and Contact",
+          "body": [
+            "This Service is operated by an individual. Please submit privacy-related inquiries through the link below."
+          ],
+          "link": {
+            "label": "Contact us (Google Forms)",
+            "href": "https://forms.gle/a5eF1Wapwirawq936"
+          }
+        },
+        {
+          "heading": "9. Changes to This Policy",
+          "body": [
+            "This Privacy Policy may be revised in response to changes in law or service policy, and any change will be announced within the Service."
+          ]
+        }
+      ]
+    }
+  },
   "errors": {
     "network": "Unable to connect to the server",
     "timeout": "The request timed out",
