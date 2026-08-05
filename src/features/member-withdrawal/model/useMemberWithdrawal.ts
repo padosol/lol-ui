@@ -5,8 +5,10 @@ import { useRouter } from "@/shared/i18n/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { useAuthStore, withdrawMember } from "@/entities/auth";
 import axios from "axios";
+import { useTranslations } from "next-intl";
 
 export function useMemberWithdrawal() {
+  const t = useTranslations("mypage.withdrawModal");
   const router = useRouter();
   const clearAuth = useAuthStore((s) => s.clearAuth);
   const [error, setError] = useState<string | null>(null);
@@ -21,7 +23,7 @@ export function useMemberWithdrawal() {
       if (axios.isAxiosError(err) && err.response?.data?.errorMessage) {
         setError(err.response.data.errorMessage);
       } else {
-        setError("회원 탈퇴에 실패했습니다. 다시 시도해주세요.");
+        setError(t("error"));
       }
     },
   });

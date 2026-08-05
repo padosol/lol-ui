@@ -3,7 +3,8 @@
 import { GameTooltip } from "@/shared/ui/tooltip";
 import { useRanking } from "@/entities/ranking";
 import { getChampionImageUrl } from "@/entities/champion";
-import { getTierImageUrl, getTierName } from "@/shared/lib/tier";
+import { getTierImageUrl } from "@/shared/lib/tier";
+import { useTierName } from "@/shared/lib/useTierName";
 import { ChevronDown, ChevronUp, Crown, Minus } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
@@ -17,6 +18,7 @@ interface RankingTableProps {
 
 export default function RankingTable({ region, queueType }: RankingTableProps) {
   const t = useTranslations("leaderboards");
+  const getTierName = useTierName();
   const [currentPage, setCurrentPage] = useState(1);
 
   // queueType을 API의 rankType으로 변환

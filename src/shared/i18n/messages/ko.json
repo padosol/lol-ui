@@ -375,6 +375,27 @@
       "linked": "연동됨",
       "withdraw": "회원 탈퇴"
     },
+    "withdrawModal": {
+      "title": "회원 탈퇴",
+      "confirmQuestion": "정말 탈퇴하시겠습니까?",
+      "description": "탈퇴 시 모든 데이터가 삭제되며, 30일 이내에는 동일 계정으로 재가입할 수 없습니다.",
+      "submit": "탈퇴하기",
+      "error": "회원 탈퇴에 실패했습니다. 다시 시도해주세요."
+    },
+    "riotLink": {
+      "description": "라이엇 계정을 연동하여 전적 검색에 활용할 수 있습니다.",
+      "link": "연동하기",
+      "linked": "연동됨",
+      "unlink": "해제",
+      "unlinking": "해제 중..."
+    },
+    "nickname": {
+      "saving": "저장 중...",
+      "error": "닉네임 변경에 실패했습니다. 다시 시도해주세요.",
+      "required": "닉네임을 입력해주세요.",
+      "tooShort": "닉네임은 2자 이상이어야 합니다.",
+      "tooLong": "닉네임은 16자 이하여야 합니다."
+    },
     "bookmarks": {
       "title": "북마크한 글",
       "loadError": "북마크를 불러오지 못했습니다.",
@@ -398,6 +419,7 @@
     "emailLogin": "이메일로 계속하기 (준비중)",
     "emailLoginForm": "이메일 로그인 (준비중)",
     "back": "돌아가기",
+    "processingLogin": "로그인 처리 중...",
     "termsNotice": "로그인 시 <terms>이용약관</terms> 및 <privacy>개인정보처리방침</privacy>에 동의합니다.",
     "rejoinBlocked": "탈퇴 후 30일 이내에는 재가입할 수 없습니다.",
     "validation": {
@@ -536,7 +558,8 @@
       "GOLD": "골드",
       "SILVER": "실버",
       "BRONZE": "브론즈",
-      "IRON": "아이언"
+      "IRON": "아이언",
+      "UNRANKED": "언랭크"
     },
     "leagueType": {
       "RANKED_SOLO_5x5": "솔로 랭크",

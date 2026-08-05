@@ -375,6 +375,27 @@
       "linked": "Linked",
       "withdraw": "Delete account"
     },
+    "withdrawModal": {
+      "title": "Delete account",
+      "confirmQuestion": "Delete your account?",
+      "description": "All of your data will be removed, and you cannot sign up again with the same account for 30 days.",
+      "submit": "Delete account",
+      "error": "Failed to delete the account. Please try again."
+    },
+    "riotLink": {
+      "description": "Link your Riot account to use it for match lookups.",
+      "link": "Link",
+      "linked": "Linked",
+      "unlink": "Unlink",
+      "unlinking": "Unlinking..."
+    },
+    "nickname": {
+      "saving": "Saving...",
+      "error": "Failed to change the nickname. Please try again.",
+      "required": "Enter a nickname.",
+      "tooShort": "The nickname must be at least 2 characters.",
+      "tooLong": "The nickname must be 16 characters or fewer."
+    },
     "bookmarks": {
       "title": "Bookmarked posts",
       "loadError": "Failed to load bookmarks.",
@@ -398,6 +419,7 @@
     "emailLogin": "Continue with email (coming soon)",
     "emailLoginForm": "Email sign-in (coming soon)",
     "back": "Back",
+    "processingLogin": "Signing you in...",
     "termsNotice": "By signing in you agree to the <terms>Terms of Service</terms> and <privacy>Privacy Policy</privacy>.",
     "rejoinBlocked": "You cannot sign up again within 30 days of deleting your account.",
     "validation": {
@@ -536,7 +558,8 @@
       "GOLD": "Gold",
       "SILVER": "Silver",
       "BRONZE": "Bronze",
-      "IRON": "Iron"
+      "IRON": "Iron",
+      "UNRANKED": "Unranked"
     },
     "leagueType": {
       "RANKED_SOLO_5x5": "Ranked Solo",

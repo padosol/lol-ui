@@ -5,7 +5,7 @@ import { Mic, MicOff, Clock, Users } from "lucide-react";
 import type { DuoPost } from "@/entities/duo";
 import { LANE_IMAGE_KEY } from "@/entities/duo";
 import { getPositionImageUrl } from "@/shared/lib/position";
-import { getTierName } from "@/shared/lib/tier";
+import { useTierName } from "@/shared/lib/useTierName";
 import { useFormatter, useTranslations } from "next-intl";
 
 const TIER_COLORS: Record<string, string> = {
@@ -29,6 +29,7 @@ interface DuoCardProps {
 export default function DuoCard({ post, onSelect }: DuoCardProps) {
   const format = useFormatter();
   const t = useTranslations("duo");
+  const getTierName = useTierName();
   const tLane = useTranslations("domain.position");
   const tStatus = useTranslations("domain.duoPostStatus");
   const tier = post.tier;

@@ -12,7 +12,7 @@ import {
 import type { DuoPost, DuoRequest } from "@/entities/duo";
 import { useAuthStore } from "@/entities/auth";
 import { getPositionImageUrl } from "@/shared/lib/position";
-import { getTierName } from "@/shared/lib/tier";
+import { useTierName } from "@/shared/lib/useTierName";
 import { useFormatter, useTranslations } from "next-intl";
 import { RequestActionButtons } from "@/features/duo-matching";
 import { DuoRequestModal } from "@/features/duo-request";
@@ -133,6 +133,7 @@ function PostContent({
   const t = useTranslations("duo");
   const tDetail = useTranslations("duo.detail");
   const tLane = useTranslations("domain.position");
+  const getTierName = useTierName();
   const tier = post.tier;
   const isMasterPlus = tier !== null && ["MASTER", "GRANDMASTER", "CHALLENGER"].includes(tier);
 
@@ -299,6 +300,7 @@ function RequestItem({ request }: { request: DuoRequest }) {
   const t = useTranslations("duo");
   const tLane = useTranslations("domain.position");
   const tStatus = useTranslations("domain.duoRequestStatus");
+  const getTierName = useTierName();
   const tier = request.tier;
   const isMasterPlus = tier !== null && ["MASTER", "GRANDMASTER", "CHALLENGER"].includes(tier);
 

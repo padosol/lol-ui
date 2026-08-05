@@ -5,7 +5,7 @@ import { Mic, MicOff } from "lucide-react";
 import type { DuoRequest } from "@/entities/duo";
 import { LANE_IMAGE_KEY, useDuoMatchResult } from "@/entities/duo";
 import { getPositionImageUrl } from "@/shared/lib/position";
-import { getTierName } from "@/shared/lib/tier";
+import { useTierName } from "@/shared/lib/useTierName";
 import { useFormatter, useTranslations } from "next-intl";
 import { RequesterActionButtons } from "@/features/duo-matching";
 import PartnerName from "./PartnerName";
@@ -26,6 +26,7 @@ const STATUS_COLORS: Record<string, string> = {
 export default function DuoRequestCard({ request }: DuoRequestCardProps) {
   const format = useFormatter();
   const t = useTranslations("duo");
+  const getTierName = useTierName();
   const tLane = useTranslations("domain.position");
   const tStatus = useTranslations("domain.duoRequestStatus");
   const tier = request.tier;

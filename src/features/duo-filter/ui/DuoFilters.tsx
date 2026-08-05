@@ -6,7 +6,7 @@ import { ChevronDown } from "lucide-react";
 import type { Lane, Tier } from "@/entities/duo";
 import { LANES, LANE_IMAGE_KEY, TIERS } from "@/entities/duo";
 import { getPositionImageUrl } from "@/shared/lib/position";
-import { getTierName } from "@/shared/lib/tier";
+import { useTierName } from "@/shared/lib/useTierName";
 import { useTranslations } from "next-intl";
 
 interface DuoFiltersProps {
@@ -23,6 +23,7 @@ export default function DuoFilters({
   onTierChange,
 }: DuoFiltersProps) {
   const tDuo = useTranslations("duo");
+  const getTierName = useTierName();
   const tLane = useTranslations("domain.position");
   const [tierOpen, setTierOpen] = useState(false);
   const tierRef = useRef<HTMLDivElement>(null);

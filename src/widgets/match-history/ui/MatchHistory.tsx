@@ -14,7 +14,8 @@ import {
 import { sortByPosition } from "@/shared/lib/position";
 import { normalizeRunes, parseRuneStyle } from "@/shared/lib/rune";
 import { getStyleImageUrl } from "@/shared/lib/styles";
-import { getTierImageUrl, getTierName } from "@/shared/lib/tier";
+import { getTierImageUrl } from "@/shared/lib/tier";
+import { useTierName } from "@/shared/lib/useTierName";
 import { SummonerSpellImage, RuneImage } from "@/shared/ui/game";
 import { GameTooltip } from "@/shared/ui/tooltip";
 import { ArrowUp, ChevronDown } from "lucide-react";
@@ -60,6 +61,7 @@ export default function MatchHistory({
   refreshKey,
 }: MatchHistoryProps) {
   const t = useTranslations("match");
+  const getTierName = useTierName();
   const tGameMode = useTranslations("domain.gameMode");
   const format = useFormatter();
   const queryClient = useQueryClient();
