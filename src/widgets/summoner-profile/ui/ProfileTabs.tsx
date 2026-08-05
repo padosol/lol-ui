@@ -1,6 +1,7 @@
 "use client";
 
 import type { LeagueInfoResponse } from "@/entities/league";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import ChampionStats from "./ChampionStats";
 import ChampionStatsOverview from "./ChampionStatsOverview";
@@ -27,14 +28,11 @@ export default function ProfileTabs({
   initialLeagueData,
   refreshKey,
 }: ProfileTabsProps) {
+  const t = useTranslations("summoner.tabs");
   const [activeTab, setActiveTab] = useState<TabType>("overview");
 
-  const tabs = [
-    { id: "overview" as TabType, label: "종합" },
-    { id: "champions" as TabType, label: "챔피언 통계" },
-    { id: "ingame" as TabType, label: "인게임" },
-    // { id: "fanletter" as TabType, label: "팬 래터" },
-  ];
+  // "fanletter" 는 아직 노출하지 않는다.
+  const tabs = ["overview", "champions", "ingame"] as const;
 
   return (
     <div className="mt-6">
@@ -43,15 +41,15 @@ export default function ProfileTabs({
         <div className="flex gap-0">
           {tabs.map((tab) => (
             <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
+              key={tab}
+              onClick={() => setActiveTab(tab)}
               className={`px-6 py-3 font-medium text-sm transition-colors border-b-2 cursor-pointer ${
-                activeTab === tab.id
+                activeTab === tab
                   ? "text-on-surface border-on-surface-medium bg-surface-1"
                   : "text-on-surface-medium border-transparent hover:text-on-surface"
               }`}
             >
-              {tab.label}
+              {t(tab)}
             </button>
           ))}
         </div>

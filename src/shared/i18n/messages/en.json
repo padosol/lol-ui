@@ -55,6 +55,32 @@
   },
   "summoner": {
     "level": "Level {level}",
+    "tabs": {
+      "overview": "Overview",
+      "champions": "Champions",
+      "ingame": "Live Game"
+    },
+    "refresh": {
+      "action": "Refresh",
+      "pending": "Refreshing...",
+      "retryInMinutes": "Retry in {minutes}m {seconds}s",
+      "retryInSeconds": "Retry in {seconds}s",
+      "lastRefresh": "Last updated {time}",
+      "cooldownError": "Please try again in a moment",
+      "requestError": "Refresh request failed"
+    },
+    "championStats": {
+      "title": "Champion Stats",
+      "needSummoner": "A summoner is required.",
+      "empty": "No champion stats available.",
+      "emptyForQueue": "No {queue} champion stats available.",
+      "columnChampion": "Champion",
+      "columnGames": "Games",
+      "columnWins": "Wins",
+      "columnLosses": "Losses",
+      "columnWinRate": "Win rate",
+      "games": "{count} games"
+    },
     "notFound": {
       "title": "Summoner not found",
       "body": "<highlight>{name}</highlight> could not be found on the Rift.",
@@ -74,6 +100,51 @@
     "viewPreviousPatch": "View previous patch ({patch})",
     "loadError": "Failed to load champion stats.",
     "lastAttempt": "Last attempt {time}"
+  },
+  "match": {
+    "title": "Recent Matches",
+    "needSummoner": "A summoner is required.",
+    "loading": "Loading matches...",
+    "empty": "No match data available.",
+    "loadMore": "Load more",
+    "scrollTop": "Back to top",
+    "filter": {
+      "ALL": "All",
+      "RANKED": "Solo",
+      "FLEX": "Flex",
+      "NORMAL": "Normal",
+      "ARENA": "Arena",
+      "ARAM": "ARAM"
+    },
+    "result": {
+      "win": "Victory",
+      "loss": "Defeat",
+      "remake": "Remake",
+      "placement": "#{rank}",
+      "unknownPlacement": "???"
+    },
+    "kdaRating": "{kda}:1 KDA",
+    "averageTier": "Avg",
+    "summary": {
+      "title": "Summary",
+      "winRate": "Win rate",
+      "totalGames": "{count} games total",
+      "topChampions": "Top champions",
+      "championGames": "{games} games · {winRate}% WR",
+      "winLoss": "{wins}W {losses}L",
+      "positions": "Positions",
+      "gameCount": "Games",
+      "activity": "Activity over the last 3 months",
+      "chartTooltip": "{label}: {count} games ({percentage}%)",
+      "positionTooltip": "{position}: {count} games",
+      "noGames": "0 games"
+    },
+    "contributionGraph": {
+      "games": "{date} — {count} games",
+      "noGames": "{date} — no games",
+      "less": "Less",
+      "more": "More"
+    }
   },
   "leaderboards": {
     "region": "Region",
@@ -151,6 +222,16 @@
     "leagueType": {
       "RANKED_SOLO_5x5": "Ranked Solo",
       "RANKED_FLEX_SR": "Ranked Flex"
+    },
+    "gameMode": {
+      "RANKED_SOLO": "Ranked",
+      "RANKED_FLEX": "Ranked Flex",
+      "NORMAL": "Normal",
+      "ARAM": "ARAM",
+      "ARENA": "Arena",
+      "URF": "U.R.F.",
+      "TFT": "Teamfight Tactics",
+      "SWIFTPLAY": "Swiftplay"
     }
   },
   "errors": {

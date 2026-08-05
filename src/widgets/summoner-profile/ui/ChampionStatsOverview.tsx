@@ -6,6 +6,7 @@ import { getChampionImageUrl, getChampionNameByEnglishName } from "@/entities/ch
 import { calcWinRateCeil2, getWinRateTextClass } from "@/entities/champion";
 import { getKDAColorClass } from "@/shared/lib/game";
 import { useSeasonStore } from "@/entities/season";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -18,10 +19,10 @@ interface ChampionStatsOverviewProps {
   limit?: number;
 }
 
-const queueTabs: { id: QueueTabType; label: string }[] = [
-  { id: "solo", label: "솔로 랭크" },
-  { id: "flex", label: "자유 랭크" },
-];
+const queueTabs = [
+  { id: "solo", messageKey: "RANKED_SOLO_5x5" },
+  { id: "flex", messageKey: "RANKED_FLEX_SR" },
+] as const satisfies readonly { id: QueueTabType; messageKey: string }[];
 
 export default function ChampionStatsOverview({
   puuid,
@@ -29,6 +30,8 @@ export default function ChampionStatsOverview({
   showTitle = true,
   limit = 5,
 }: ChampionStatsOverviewProps) {
+  const t = useTranslations("summoner.championStats");
+  const tQueue = useTranslations("domain.leagueType");
   const latestSeasonValue = useSeasonStore((s) => s.getLatestSeasonValue());
   const effectiveSeason = season ?? latestSeasonValue ?? "";
 
@@ -56,7 +59,7 @@ export default function ChampionStatsOverview({
             : "text-on-surface-medium hover:text-on-surface"
             }`}
         >
-          {tab.label}
+          {tQueue(tab.messageKey)}
         </button>
       ))}
     </div>
@@ -81,7 +84,7 @@ export default function ChampionStatsOverview({
         {showTitle && renderTabHeader()}
         <div className="p-3">
           <div className="text-center py-12 text-on-surface-medium">
-            소환사 정보가 필요합니다.
+            {t("needSummoner")}
           </div>
         </div>
       </div>
@@ -94,7 +97,11 @@ export default function ChampionStatsOverview({
         {showTitle && renderTabHeader()}
         <div className="p-3">
           <div className="text-center text-on-surface-medium border border-divider rounded-lg py-4">
-            {activeQueue === "solo" ? "솔로 랭크" : "자유 랭크"} 챔피언 통계 데이터가 없습니다.
+            {t("emptyForQueue", {
+              queue: tQueue(
+                activeQueue === "solo" ? "RANKED_SOLO_5x5" : "RANKED_FLEX_SR"
+              ),
+            })}
           </div>
         </div>
       </div>
@@ -167,7 +174,7 @@ export default function ChampionStatsOverview({
                     </span>
                   </div>
                   <div className="shrink-0 text-on-surface-medium text-xs">
-                    {champion.playCount}게임
+                    {t("games", { count: champion.playCount })}
                   </div>
                 </div>
               </div>

@@ -18,12 +18,33 @@ import { getTierImageUrl, getTierName } from "@/shared/lib/tier";
 import { SummonerSpellImage, RuneImage } from "@/shared/ui/game";
 import { GameTooltip } from "@/shared/ui/tooltip";
 import { ArrowUp, ChevronDown } from "lucide-react";
+import { useFormatter, useTranslations } from "next-intl";
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ArenaTeamInfo, MatchDetailInfo, TeamInfo } from "@/widgets/match-detail";
 import MatchSummary from "./MatchSummary";
 
 type GameModeFilter = "ALL" | "RANKED" | "FLEX" | "NORMAL" | "ARENA" | "ARAM";
+
+const GAME_MODE_FILTERS: GameModeFilter[] = [
+  "ALL",
+  "RANKED",
+  "FLEX",
+  "NORMAL",
+  "ARENA",
+  "ARAM",
+];
+
+// messages 의 domain.gameMode 키
+type GameModeKey =
+  | "RANKED_SOLO"
+  | "RANKED_FLEX"
+  | "NORMAL"
+  | "ARAM"
+  | "ARENA"
+  | "URF"
+  | "TFT"
+  | "SWIFTPLAY";
 
 interface MatchHistoryProps {
   puuid?: string | null;
@@ -38,6 +59,9 @@ export default function MatchHistory({
   showTitle = true,
   refreshKey,
 }: MatchHistoryProps) {
+  const t = useTranslations("match");
+  const tGameMode = useTranslations("domain.gameMode");
+  const format = useFormatter();
   const queryClient = useQueryClient();
   const rootRef = useRef<HTMLDivElement | null>(null);
   const scrollTargetRef = useRef<Window | HTMLElement | null>(null);
@@ -231,9 +255,11 @@ export default function MatchHistory({
         // myData나 gameInfo가 없으면 null 반환
         if (!myData || !gameInfo) return null;
 
-        // 날짜 포맷팅
+        // 날짜 포맷팅 (로케일별)
         const gameDate = gameInfo.gameStartTimestamp
-          ? new Date(gameInfo.gameStartTimestamp).toLocaleDateString("ko-KR")
+          ? format.dateTime(new Date(gameInfo.gameStartTimestamp), {
+            dateStyle: "short",
+          })
           : "";
 
         const gameDuration = gameInfo.gameDuration || 0;
@@ -260,7 +286,7 @@ export default function MatchHistory({
         } as Match;
       })
       .filter((match): match is Match => match !== null);
-  }, [accMatchDetails, puuid]);
+  }, [accMatchDetails, puuid, format]);
 
   // MatchDetail 리스트 (상세 정보용)
   const matchDetails = accMatchDetails;
@@ -314,106 +340,67 @@ export default function MatchHistory({
     return (
       <div className="space-y-4">
         {showTitle && (
-          <h2 className="text-2xl font-bold text-on-surface mb-2">최근 전적</h2>
+          <h2 className="text-2xl font-bold text-on-surface mb-2">{t("title")}</h2>
         )}
         <div className="bg-surface-4/50 rounded-lg border border-divider/50 p-12 text-center">
-          <div className="text-on-surface-medium text-lg">소환사 정보가 필요합니다.</div>
+          <div className="text-on-surface-medium text-lg">
+            {t("needSummoner")}
+          </div>
         </div>
       </div>
     );
   }
 
-  // 게임 모드 이름 변환
+  // 게임 모드 이름 변환 — queueId / gameMode 를 messages 의 domain.gameMode 키로 매핑한다.
   const getGameModeName = (gameMode: string, queueId?: number): string => {
-    if (queueId !== undefined) {
-      const queueMap: Record<number, string> = {
-        420: "랭크",
-        440: "자유랭크",
-        400: "일반",
-        430: "일반",
-        450: "무작위 총력전",
-        100: "무작위 총력전",
-        1700: "아레나",
-        1710: "아레나",
-      };
-      if (queueMap[queueId]) return queueMap[queueId];
+    const queueMap: Record<number, GameModeKey> = {
+      420: "RANKED_SOLO",
+      440: "RANKED_FLEX",
+      400: "NORMAL",
+      430: "NORMAL",
+      450: "ARAM",
+      100: "ARAM",
+      1700: "ARENA",
+      1710: "ARENA",
+    };
+    if (queueId !== undefined && queueMap[queueId]) {
+      return tGameMode(queueMap[queueId]);
     }
 
-    const modeMap: Record<string, string> = {
-      CLASSIC: "일반",
-      RANKED: "랭크",
-      ARAM: "무작위 총력전",
-      URF: "U.R.F.",
-      TFT: "전략적 팀 전투",
-      ARENA: "아레나",
-      CHERRY: "아레나",
-      SWIFTPLAY: "신속",
+    const modeMap: Record<string, GameModeKey> = {
+      CLASSIC: "NORMAL",
+      RANKED: "RANKED_SOLO",
+      ARAM: "ARAM",
+      URF: "URF",
+      TFT: "TFT",
+      ARENA: "ARENA",
+      CHERRY: "ARENA",
+      SWIFTPLAY: "SWIFTPLAY",
     };
-    return modeMap[gameMode] || gameMode;
+    const key = modeMap[gameMode];
+    return key ? tGameMode(key) : gameMode;
   };
 
   return (
     <div ref={rootRef} className="space-y-4">
       {showTitle && (
-        <h2 className="text-2xl font-bold text-on-surface mb-2">최근 전적</h2>
+        <h2 className="text-2xl font-bold text-on-surface mb-2">{t("title")}</h2>
       )}
 
       {/* 게임 모드 필터 탭 */}
       <div className="flex gap-1 mb-4 bg-surface-2/50 rounded-lg p-1 border border-divider/50 overflow-x-auto">
-        <button
-          onClick={() => setGameModeFilter("ALL")}
-          className={`px-4 py-2 text-sm font-medium transition-all whitespace-nowrap rounded-md cursor-pointer ${gameModeFilter === "ALL"
-            ? "text-on-surface bg-surface-8 shadow-lg shadow-surface-8/20"
-            : "text-on-surface-medium hover:text-on-surface hover:bg-surface-8/50"
-            }`}
-        >
-          전체
-        </button>
-        <button
-          onClick={() => setGameModeFilter("RANKED")}
-          className={`px-4 py-2 text-sm font-medium transition-all whitespace-nowrap rounded-md cursor-pointer ${gameModeFilter === "RANKED"
-            ? "text-on-surface bg-surface-8 shadow-lg shadow-surface-8/20"
-            : "text-on-surface-medium hover:text-on-surface hover:bg-surface-8/50"
-            }`}
-        >
-          솔로랭크
-        </button>
-        <button
-          onClick={() => setGameModeFilter("FLEX")}
-          className={`px-4 py-2 text-sm font-medium transition-all whitespace-nowrap rounded-md cursor-pointer ${gameModeFilter === "FLEX"
-            ? "text-on-surface bg-surface-8 shadow-lg shadow-surface-8/20"
-            : "text-on-surface-medium hover:text-on-surface hover:bg-surface-8/50"
-            }`}
-        >
-          자유랭크
-        </button>
-        <button
-          onClick={() => setGameModeFilter("NORMAL")}
-          className={`px-4 py-2 text-sm font-medium transition-all whitespace-nowrap rounded-md cursor-pointer ${gameModeFilter === "NORMAL"
-            ? "text-on-surface bg-surface-8 shadow-lg shadow-surface-8/20"
-            : "text-on-surface-medium hover:text-on-surface hover:bg-surface-8/50"
-            }`}
-        >
-          일반
-        </button>
-        <button
-          onClick={() => setGameModeFilter("ARENA")}
-          className={`px-4 py-2 text-sm font-medium transition-all whitespace-nowrap rounded-md cursor-pointer ${gameModeFilter === "ARENA"
-            ? "text-on-surface bg-surface-8 shadow-lg shadow-surface-8/20"
-            : "text-on-surface-medium hover:text-on-surface hover:bg-surface-8/50"
-            }`}
-        >
-          아레나
-        </button>
-        <button
-          onClick={() => setGameModeFilter("ARAM")}
-          className={`px-4 py-2 text-sm font-medium transition-all whitespace-nowrap rounded-md cursor-pointer ${gameModeFilter === "ARAM"
-            ? "text-on-surface bg-surface-8 shadow-lg shadow-surface-8/20"
-            : "text-on-surface-medium hover:text-on-surface hover:bg-surface-8/50"
-            }`}
-        >
-          무작위총력전
-        </button>
+        {GAME_MODE_FILTERS.map((filter) => (
+          <button
+            key={filter}
+            onClick={() => setGameModeFilter(filter)}
+            className={`px-4 py-2 text-sm font-medium transition-all whitespace-nowrap rounded-md cursor-pointer ${gameModeFilter === filter
+              ? "text-on-surface bg-surface-8 shadow-lg shadow-surface-8/20"
+              : "text-on-surface-medium hover:text-on-surface hover:bg-surface-8/50"
+              }`}
+          >
+            {t(`filter.${filter}`)}
+          </button>
+        ))}
       </div>
 
       {/* 매치 요약 */}
@@ -429,12 +416,12 @@ export default function MatchHistory({
         <div className="bg-surface-4/50 rounded-lg border border-divider/50 p-12 flex items-center justify-center">
           <div className="flex flex-col items-center gap-3">
             <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-            <div className="text-on-surface-medium text-sm">전적을 불러오는 중...</div>
+            <div className="text-on-surface-medium text-sm">{t("loading")}</div>
           </div>
         </div>
       ) : allMatches.length === 0 && !isLoading && !matchesData?.content?.length ? (
         <div className="bg-surface-4/50 rounded-lg border border-divider/50 p-12 text-center">
-          <div className="text-on-surface-medium text-lg">전적 데이터가 없습니다.</div>
+          <div className="text-on-surface-medium text-lg">{t("empty")}</div>
         </div>
       ) : (
         <div className="space-y-3">
@@ -544,12 +531,14 @@ export default function MatchHistory({
                       <div className="flex items-center gap-1">
                         <strong className={`text-sm font-bold ${textColor}`}>
                           {isArena
-                            ? (myData.placement > 0 ? `${myData.placement}위` : "???")
+                            ? (myData.placement > 0
+                              ? t("result.placement", { rank: myData.placement })
+                              : t("result.unknownPlacement"))
                             : match.result === "REMAKE"
-                              ? "다시하기"
+                              ? t("result.remake")
                               : match.result === "WIN"
-                                ? "승리"
-                                : "패배"}
+                                ? t("result.win")
+                                : t("result.loss")}
                         </strong>
                       </div>
                       <span className="text-on-surface-medium text-xs">
@@ -648,7 +637,7 @@ export default function MatchHistory({
                             >
                               {calculateKDA(match.kda) === "perfect"
                                 ? "perfect"
-                                : `${calculateKDA(match.kda)}:1 평점`}
+                                : t("kdaRating", { kda: calculateKDA(match.kda) })}
                             </span>
                           </div>
                           <div className="text-on-surface-medium text-xs font-medium">
@@ -703,7 +692,9 @@ export default function MatchHistory({
                   <div className="flex flex-col items-center justify-start py-2 w-[60px]">
                     {gameInfo?.averageTier != null ? (
                       <div className="flex flex-col items-center gap-0.5">
-                        <span className="text-[10px] text-on-surface-disabled">평균</span>
+                        <span className="text-[10px] text-on-surface-disabled">
+                          {t("averageTier")}
+                        </span>
                         {getTierImageUrl(gameInfo.averageTier) && (
                           <Image
                             src={getTierImageUrl(gameInfo.averageTier)}
@@ -719,7 +710,9 @@ export default function MatchHistory({
                       </div>
                     ) : (
                       <div className="flex flex-col items-center gap-0.5">
-                        <span className="text-[10px] text-on-surface-disabled">평균</span>
+                        <span className="text-[10px] text-on-surface-disabled">
+                          {t("averageTier")}
+                        </span>
                         <span className="text-[10px] text-on-surface-disabled">-</span>
                       </div>
                     )}
@@ -773,12 +766,14 @@ export default function MatchHistory({
                     <div className="flex items-center gap-2">
                       <span className={`font-bold text-sm ${textColor}`}>
                         {isArena
-                          ? (myData.placement > 0 ? `${myData.placement}위` : "???")
+                          ? (myData.placement > 0
+                            ? t("result.placement", { rank: myData.placement })
+                            : t("result.unknownPlacement"))
                           : match.result === "REMAKE"
-                            ? "다시하기"
+                            ? t("result.remake")
                             : match.result === "WIN"
-                              ? "승리"
-                              : "패배"}
+                              ? t("result.win")
+                              : t("result.loss")}
                       </span>
                       <span className={`text-xs ${textColor}`}>{gameModeName}</span>
                       <span className="text-on-surface-medium text-xs">
@@ -869,7 +864,7 @@ export default function MatchHistory({
                         <span className={getKDAColorClass(calculateKDA(match.kda))}>
                           {calculateKDA(match.kda) === "perfect"
                             ? "perfect"
-                            : `${calculateKDA(match.kda)}:1 평점`}
+                            : t("kdaRating", { kda: calculateKDA(match.kda) })}
                         </span>
                       </div>
                     </div>
@@ -969,10 +964,10 @@ export default function MatchHistory({
             {isLoadingMore ? (
               <span className="flex items-center gap-2">
                 <div className="w-4 h-4 border-2 border-on-surface-disabled border-t-on-surface rounded-full animate-spin"></div>
-                전적을 불러오는 중...
+                {t("loading")}
               </span>
             ) : (
-              "더 보기"
+              t("loadMore")
             )}
           </button>
         </div>
@@ -983,7 +978,7 @@ export default function MatchHistory({
         <button
           type="button"
           onClick={scrollToTop}
-          aria-label="맨 위로"
+          aria-label={t("scrollTop")}
           className="fixed bottom-6 right-10 z-50 w-11 h-11 rounded-full bg-surface-4/90 hover:bg-surface-8 text-on-surface border border-divider/60 shadow-lg backdrop-blur flex items-center justify-center transition-all cursor-pointer"
         >
           <ArrowUp className="w-5 h-5" />

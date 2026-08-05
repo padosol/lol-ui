@@ -55,6 +55,32 @@
   },
   "summoner": {
     "level": "레벨 {level}",
+    "tabs": {
+      "overview": "종합",
+      "champions": "챔피언 통계",
+      "ingame": "인게임"
+    },
+    "refresh": {
+      "action": "갱신",
+      "pending": "갱신 중...",
+      "retryInMinutes": "{minutes}분 {seconds}초 후 재시도",
+      "retryInSeconds": "{seconds}초 후 재시도",
+      "lastRefresh": "마지막 갱신: {time}",
+      "cooldownError": "잠시 후 다시 시도해주세요",
+      "requestError": "갱신 요청에 실패했습니다"
+    },
+    "championStats": {
+      "title": "챔피언 통계",
+      "needSummoner": "소환사 정보가 필요합니다.",
+      "empty": "챔피언 통계 데이터가 없습니다.",
+      "emptyForQueue": "{queue} 챔피언 통계 데이터가 없습니다.",
+      "columnChampion": "챔피언",
+      "columnGames": "게임",
+      "columnWins": "승리",
+      "columnLosses": "패배",
+      "columnWinRate": "승률",
+      "games": "{count}게임"
+    },
     "notFound": {
       "title": "소환사를 찾을 수 없습니다",
       "body": "<highlight>{name}</highlight> 소환사가 소환사의 협곡에서 발견되지 않았습니다.",
@@ -74,6 +100,51 @@
     "viewPreviousPatch": "이전 패치 ({patch}) 보기",
     "loadError": "통계 데이터를 불러오지 못했습니다.",
     "lastAttempt": "마지막 시도 {time}"
+  },
+  "match": {
+    "title": "최근 전적",
+    "needSummoner": "소환사 정보가 필요합니다.",
+    "loading": "전적을 불러오는 중...",
+    "empty": "전적 데이터가 없습니다.",
+    "loadMore": "더 보기",
+    "scrollTop": "맨 위로",
+    "filter": {
+      "ALL": "전체",
+      "RANKED": "솔로랭크",
+      "FLEX": "자유랭크",
+      "NORMAL": "일반",
+      "ARENA": "아레나",
+      "ARAM": "무작위총력전"
+    },
+    "result": {
+      "win": "승리",
+      "loss": "패배",
+      "remake": "다시하기",
+      "placement": "{rank}위",
+      "unknownPlacement": "???"
+    },
+    "kdaRating": "{kda}:1 평점",
+    "averageTier": "평균",
+    "summary": {
+      "title": "전적 요약",
+      "winRate": "승률",
+      "totalGames": "총 {count}게임",
+      "topChampions": "주요 챔피언",
+      "championGames": "{games}게임 · 승률 {winRate}%",
+      "winLoss": "{wins}승 {losses}패",
+      "positions": "포지션",
+      "gameCount": "게임 수",
+      "activity": "최근 3개월 게임 활동",
+      "chartTooltip": "{label}: {count}게임 ({percentage}%)",
+      "positionTooltip": "{position}: {count}게임",
+      "noGames": "0게임"
+    },
+    "contributionGraph": {
+      "games": "{date} — {count}게임",
+      "noGames": "{date} — 게임 없음",
+      "less": "적음",
+      "more": "많음"
+    }
   },
   "leaderboards": {
     "region": "지역",
@@ -151,6 +222,16 @@
     "leagueType": {
       "RANKED_SOLO_5x5": "솔로 랭크",
       "RANKED_FLEX_SR": "자유 랭크"
+    },
+    "gameMode": {
+      "RANKED_SOLO": "랭크",
+      "RANKED_FLEX": "자유랭크",
+      "NORMAL": "일반",
+      "ARAM": "무작위 총력전",
+      "ARENA": "아레나",
+      "URF": "U.R.F.",
+      "TFT": "전략적 팀 전투",
+      "SWIFTPLAY": "신속"
     }
   },
   "errors": {
