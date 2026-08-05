@@ -15,28 +15,16 @@ export type PostPeriod = "DAILY" | "WEEKLY" | "MONTHLY" | "ALL";
 export type VoteType = "UPVOTE" | "DOWNVOTE";
 export type VoteTargetType = "POST" | "COMMENT";
 
-export const POST_CATEGORY_LABELS: Record<PostCategory, string> = {
-  CHAMPION_DISCUSSION: "챔피언 토론",
-  PATCH_NOTES: "패치노트",
-  TIPS_AND_GUIDES: "팁과 가이드",
-  META_DISCUSSION: "메타 토론",
-  COMMUNITY: "커뮤니티",
-  HUMOR: "유머",
-  GENERAL: "자유",
-};
+// 표시 라벨은 messages 의 domain.postCategory / domain.postSort /
+// domain.postPeriod 에서 가져온다.
 
-export const POST_SORT_LABELS: Record<PostSort, string> = {
-  HOT: "인기",
-  NEW: "최신",
-  TOP: "추천",
-};
-
-export const POST_PERIOD_LABELS: Record<PostPeriod, string> = {
-  DAILY: "오늘",
-  WEEKLY: "이번 주",
-  MONTHLY: "이번 달",
-  ALL: "전체",
-};
+export const POST_SORTS: readonly PostSort[] = ["HOT", "NEW", "TOP"];
+export const POST_PERIODS: readonly PostPeriod[] = [
+  "DAILY",
+  "WEEKLY",
+  "MONTHLY",
+  "ALL",
+];
 
 export interface Author {
   id: number;

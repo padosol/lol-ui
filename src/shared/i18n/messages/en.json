@@ -231,6 +231,67 @@
     "wins": "{count}W",
     "losses": "{count}L"
   },
+  "community": {
+    "title": "Community",
+    "write": "New post",
+    "edit": "Edit post",
+    "allCategories": "All",
+    "sortSelect": "Select sorting",
+    "periodSelect": "Select period",
+    "searchResult": "Results for “{keyword}”",
+    "resetSearch": "Clear search",
+    "loading": "Loading...",
+    "emptySearch": "No results found",
+    "empty": "No posts yet",
+    "loadMore": "Load more",
+    "searchPlaceholder": "Search posts...",
+    "bookmark": "Save",
+    "bookmarked": "Saved",
+    "bookmarkError": "Failed to update the bookmark.",
+    "backToList": "Back to list",
+    "back": "Back",
+    "submit": "Post",
+    "submitEdit": "Save",
+    "post": {
+      "notFound": "Post not found.",
+      "viewCount": "{count} views",
+      "edited": "(edited)",
+      "deleteTitle": "Delete post",
+      "deleteDescription": "Delete this post? This cannot be undone.",
+      "deleteError": "Failed to delete the post."
+    },
+    "editor": {
+      "category": "Category",
+      "categorySelect": "Select category",
+      "categoryPlaceholder": "Choose a category",
+      "postTitle": "Title",
+      "titlePlaceholder": "Enter a title (up to 300 characters)",
+      "content": "Content",
+      "contentPlaceholder": "Write your post",
+      "validation": {
+        "titleRequired": "Enter a title",
+        "titleTooLong": "The title must be 300 characters or fewer",
+        "contentRequired": "Enter some content",
+        "categoryRequired": "Choose a category"
+      }
+    },
+    "comment": {
+      "count": "{count} comments",
+      "placeholder": "Write a comment...",
+      "loginRequired": "Sign in to leave a comment.",
+      "loading": "Loading comments...",
+      "empty": "No comments yet. Be the first to comment!",
+      "submit": "Post",
+      "submitting": "Posting...",
+      "deleted": "This comment was deleted.",
+      "edited": "(edited)",
+      "reply": "Reply",
+      "replyPlaceholder": "Reply to {nickname}...",
+      "deleteTitle": "Delete comment",
+      "deleteDescription": "Delete this comment? This cannot be undone.",
+      "deleteError": "Failed to delete the comment."
+    }
+  },
   "duo": {
     "title": "Find Duo",
     "register": "Post a duo",
@@ -394,6 +455,26 @@
     "team": {
       "blue": "Blue Team",
       "red": "Red Team"
+    },
+    "postCategory": {
+      "CHAMPION_DISCUSSION": "Champion Discussion",
+      "PATCH_NOTES": "Patch Notes",
+      "TIPS_AND_GUIDES": "Tips & Guides",
+      "META_DISCUSSION": "Meta Discussion",
+      "COMMUNITY": "Community",
+      "HUMOR": "Humor",
+      "GENERAL": "General"
+    },
+    "postSort": {
+      "HOT": "Hot",
+      "NEW": "New",
+      "TOP": "Top"
+    },
+    "postPeriod": {
+      "DAILY": "Today",
+      "WEEKLY": "This week",
+      "MONTHLY": "This month",
+      "ALL": "All time"
     },
     "duoPostStatus": {
       "ACTIVE": "Open",

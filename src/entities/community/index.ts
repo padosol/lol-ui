@@ -19,12 +19,7 @@ export type {
   PostSearchParams,
 } from "./types";
 
-export {
-  POST_CATEGORIES,
-  POST_CATEGORY_LABELS,
-  POST_SORT_LABELS,
-  POST_PERIOD_LABELS,
-} from "./types";
+export { POST_CATEGORIES, POST_SORTS, POST_PERIODS } from "./types";
 
 export { getPosts, getPostDetail, createPost, updatePost, deletePost, searchPosts, getMyPosts } from "./api/communityApi";
 export { getComments, createComment, updateComment, deleteComment } from "./api/commentApi";

@@ -5,7 +5,7 @@ import { Reply, Pencil, Trash2 } from "lucide-react";
 import type { Comment } from "@/entities/community";
 import { useAuthStore } from "@/entities/auth";
 import { VoteButtons } from "@/shared/ui/vote-buttons";
-import { useFormatter } from "next-intl";
+import { useFormatter, useTranslations } from "next-intl";
 import CommentForm from "./CommentForm";
 
 interface CommentItemProps {
@@ -30,6 +30,8 @@ export default function CommentItem({
   isVotePending,
 }: CommentItemProps) {
   const format = useFormatter();
+  const t = useTranslations("community.comment");
+  const tCommon = useTranslations("common");
   const user = useAuthStore((s) => s.user);
   const [showReplyForm, setShowReplyForm] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
@@ -39,7 +41,7 @@ export default function CommentItem({
     return (
       <div className={`${comment.depth > 0 ? "ml-8" : ""}`}>
         <div className="py-3 text-sm text-on-surface-disabled italic">
-          삭제된 댓글입니다.
+          {t("deleted")}
         </div>
         {comment.children.map((child) => (
           <CommentItem
@@ -70,7 +72,9 @@ export default function CommentItem({
               {format.relativeTime(new Date(comment.createdAt))}
             </span>
             {comment.updatedAt !== comment.createdAt && (
-              <span className="text-xs text-on-surface-disabled">(수정됨)</span>
+              <span className="text-xs text-on-surface-disabled">
+                {t("edited")}
+              </span>
             )}
           </div>
         </div>
@@ -84,7 +88,7 @@ export default function CommentItem({
             }}
             onCancel={() => setShowEditForm(false)}
             isPending={isUpdatePending}
-            buttonText="수정"
+            buttonText={tCommon("edit")}
           />
         ) : (
           <p className="text-sm text-on-surface-medium mb-2 whitespace-pre-wrap">
@@ -108,7 +112,7 @@ export default function CommentItem({
                 className="flex items-center gap-1 text-xs text-on-surface-disabled hover:text-on-surface transition-colors cursor-pointer"
               >
                 <Reply className="w-3.5 h-3.5" />
-                답글
+                {t("reply")}
               </button>
             )}
             {isAuthor && (
@@ -119,7 +123,7 @@ export default function CommentItem({
                   className="flex items-center gap-1 text-xs text-on-surface-disabled hover:text-on-surface transition-colors cursor-pointer"
                 >
                   <Pencil className="w-3 h-3" />
-                  수정
+                  {tCommon("edit")}
                 </button>
                 <button
                   type="button"
@@ -127,7 +131,7 @@ export default function CommentItem({
                   className="flex items-center gap-1 text-xs text-on-surface-disabled hover:text-red-400 transition-colors cursor-pointer"
                 >
                   <Trash2 className="w-3 h-3" />
-                  삭제
+                  {tCommon("delete")}
                 </button>
               </>
             )}
@@ -137,14 +141,16 @@ export default function CommentItem({
         {showReplyForm && (
           <div className="mt-3">
             <CommentForm
-              placeholder={`${comment.author.nickname}에게 답글...`}
+              placeholder={t("replyPlaceholder", {
+                nickname: comment.author.nickname,
+              })}
               onSubmit={(content) => {
                 onReply(content, comment.id);
                 setShowReplyForm(false);
               }}
               onCancel={() => setShowReplyForm(false)}
               isPending={isReplyPending}
-              buttonText="답글"
+              buttonText={t("reply")}
             />
           </div>
         )}

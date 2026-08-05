@@ -1,12 +1,16 @@
 "use client";
 
-import { useRef, useState, useEffect, useCallback } from "react";
+import { useRef, useState, useEffect, useCallback, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronDown } from "lucide-react";
-import { POST_CATEGORIES, POST_CATEGORY_LABELS } from "@/entities/community";
+import { POST_CATEGORIES } from "@/entities/community";
 import type { PostCategory } from "@/entities/community";
-import { postEditorSchema, type PostEditorFormData } from "../model/postEditorSchema";
+import { useTranslations } from "next-intl";
+import {
+  createPostEditorSchema,
+  type PostEditorFormData,
+} from "../model/postEditorSchema";
 
 interface PostEditorFormProps {
   defaultValues?: Partial<PostEditorFormData>;
@@ -19,8 +23,19 @@ export default function PostEditorForm({
   defaultValues,
   onSubmit,
   isPending = false,
-  submitLabel = "등록",
+  submitLabel,
 }: PostEditorFormProps) {
+  const t = useTranslations("community.editor");
+  const tCommunity = useTranslations("community");
+  const tCommon = useTranslations("common");
+  const tCategory = useTranslations("domain.postCategory");
+  const tValidation = useTranslations("community.editor.validation");
+
+  const schema = useMemo(
+    () => createPostEditorSchema(tValidation),
+    [tValidation]
+  );
+
   const {
     register,
     handleSubmit,
@@ -28,7 +43,7 @@ export default function PostEditorForm({
     watch,
     formState: { errors },
   } = useForm<PostEditorFormData>({
-    resolver: zodResolver(postEditorSchema),
+    resolver: zodResolver(schema),
     defaultValues: {
       title: "",
       content: "",
@@ -56,7 +71,7 @@ export default function PostEditorForm({
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div>
         <label className="block text-sm font-medium text-on-surface-medium mb-1">
-          카테고리 <span className="text-red-400">*</span>
+          {t("category")} <span className="text-red-400">*</span>
         </label>
         <input type="hidden" {...register("category")} />
         <div ref={categoryRef} className="relative">
@@ -68,15 +83,15 @@ export default function PostEditorForm({
             aria-expanded={categoryOpen}
           >
             {selectedCategory
-              ? POST_CATEGORY_LABELS[selectedCategory]
-              : <span className="text-on-surface-disabled">카테고리를 선택해주세요</span>}
+              ? tCategory(selectedCategory)
+              : <span className="text-on-surface-disabled">{t("categoryPlaceholder")}</span>}
             <ChevronDown
               className={`absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-on-surface-medium transition-transform ${categoryOpen ? "rotate-180" : ""}`}
             />
           </button>
           {categoryOpen && (
             <div className="absolute top-full left-0 mt-1 w-full bg-surface-4 border border-divider rounded-lg shadow-lg z-50 overflow-hidden">
-              <div className="py-1 max-h-[280px] overflow-y-auto" role="listbox" aria-label="카테고리 선택">
+              <div className="py-1 max-h-[280px] overflow-y-auto" role="listbox" aria-label={t("categorySelect")}>
                 {POST_CATEGORIES.map((cat) => {
                   const selected = cat === selectedCategory;
                   return (
@@ -95,7 +110,7 @@ export default function PostEditorForm({
                       role="option"
                       aria-selected={selected}
                     >
-                      {POST_CATEGORY_LABELS[cat]}
+                      {tCategory(cat)}
                     </button>
                   );
                 })}
@@ -110,11 +125,11 @@ export default function PostEditorForm({
 
       <div>
         <label className="block text-sm font-medium text-on-surface-medium mb-1">
-          제목 <span className="text-red-400">*</span>
+          {t("postTitle")} <span className="text-red-400">*</span>
         </label>
         <input
           {...register("title")}
-          placeholder="제목을 입력해주세요 (최대 300자)"
+          placeholder={t("titlePlaceholder")}
           maxLength={300}
           className="w-full bg-surface-4 border border-divider rounded-md px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-disabled focus:outline-none focus:border-primary"
         />
@@ -125,11 +140,11 @@ export default function PostEditorForm({
 
       <div>
         <label className="block text-sm font-medium text-on-surface-medium mb-1">
-          내용 <span className="text-red-400">*</span>
+          {t("content")} <span className="text-red-400">*</span>
         </label>
         <textarea
           {...register("content")}
-          placeholder="내용을 입력해주세요"
+          placeholder={t("contentPlaceholder")}
           rows={12}
           className="w-full bg-surface-4 border border-divider rounded-md px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-disabled focus:outline-none focus:border-primary resize-none"
         />
@@ -144,7 +159,9 @@ export default function PostEditorForm({
           disabled={isPending}
           className="px-6 py-2.5 bg-primary hover:bg-primary/80 text-on-surface font-medium rounded-md transition-colors disabled:opacity-50 cursor-pointer"
         >
-          {isPending ? "처리 중..." : submitLabel}
+          {isPending
+            ? tCommon("processing")
+            : (submitLabel ?? tCommunity("submit"))}
         </button>
       </div>
     </form>

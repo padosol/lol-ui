@@ -231,6 +231,67 @@
     "wins": "{count}승",
     "losses": "{count}패"
   },
+  "community": {
+    "title": "커뮤니티",
+    "write": "글쓰기",
+    "edit": "글 수정",
+    "allCategories": "전체",
+    "sortSelect": "정렬 선택",
+    "periodSelect": "기간 선택",
+    "searchResult": "“{keyword}” 검색 결과",
+    "resetSearch": "검색 초기화",
+    "loading": "로딩 중...",
+    "emptySearch": "검색 결과가 없습니다",
+    "empty": "게시글이 없습니다",
+    "loadMore": "더 보기",
+    "searchPlaceholder": "게시글 검색...",
+    "bookmark": "저장",
+    "bookmarked": "저장됨",
+    "bookmarkError": "북마크 처리에 실패했습니다.",
+    "backToList": "목록으로",
+    "back": "돌아가기",
+    "submit": "등록",
+    "submitEdit": "수정",
+    "post": {
+      "notFound": "게시글을 찾을 수 없습니다.",
+      "viewCount": "조회 {count}",
+      "edited": "(수정됨)",
+      "deleteTitle": "게시글 삭제",
+      "deleteDescription": "이 게시글을 삭제하시겠습니까? 삭제한 게시글은 되돌릴 수 없습니다.",
+      "deleteError": "게시글 삭제에 실패했습니다."
+    },
+    "editor": {
+      "category": "카테고리",
+      "categorySelect": "카테고리 선택",
+      "categoryPlaceholder": "카테고리를 선택해주세요",
+      "postTitle": "제목",
+      "titlePlaceholder": "제목을 입력해주세요 (최대 300자)",
+      "content": "내용",
+      "contentPlaceholder": "내용을 입력해주세요",
+      "validation": {
+        "titleRequired": "제목을 입력해주세요",
+        "titleTooLong": "제목은 최대 300자까지 입력 가능합니다",
+        "contentRequired": "내용을 입력해주세요",
+        "categoryRequired": "카테고리를 선택해주세요"
+      }
+    },
+    "comment": {
+      "count": "댓글 {count}",
+      "placeholder": "댓글을 입력하세요...",
+      "loginRequired": "로그인 후 댓글을 작성할 수 있습니다.",
+      "loading": "댓글 로딩 중...",
+      "empty": "아직 댓글이 없습니다. 첫 댓글을 작성해보세요!",
+      "submit": "등록",
+      "submitting": "등록 중...",
+      "deleted": "삭제된 댓글입니다.",
+      "edited": "(수정됨)",
+      "reply": "답글",
+      "replyPlaceholder": "{nickname}에게 답글...",
+      "deleteTitle": "댓글 삭제",
+      "deleteDescription": "이 댓글을 삭제하시겠습니까? 삭제한 댓글은 되돌릴 수 없습니다.",
+      "deleteError": "댓글 삭제에 실패했습니다."
+    }
+  },
   "duo": {
     "title": "듀오 찾기",
     "register": "듀오 등록",
@@ -394,6 +455,26 @@
     "team": {
       "blue": "블루팀",
       "red": "레드팀"
+    },
+    "postCategory": {
+      "CHAMPION_DISCUSSION": "챔피언 토론",
+      "PATCH_NOTES": "패치노트",
+      "TIPS_AND_GUIDES": "팁과 가이드",
+      "META_DISCUSSION": "메타 토론",
+      "COMMUNITY": "커뮤니티",
+      "HUMOR": "유머",
+      "GENERAL": "자유"
+    },
+    "postSort": {
+      "HOT": "인기",
+      "NEW": "최신",
+      "TOP": "추천"
+    },
+    "postPeriod": {
+      "DAILY": "오늘",
+      "WEEKLY": "이번 주",
+      "MONTHLY": "이번 달",
+      "ALL": "전체"
     },
     "duoPostStatus": {
       "ACTIVE": "모집 중",
