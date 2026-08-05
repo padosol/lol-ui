@@ -3,6 +3,7 @@
 import { useGameDataStore } from "@/shared/model/game-data";
 import type { MatchupData } from "@/entities/champion";
 import { getChampionImageUrl } from "@/entities/champion";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useMemo } from "react";
 
@@ -11,6 +12,7 @@ interface MatchupStatsProps {
 }
 
 export default function MatchupStats({ data }: MatchupStatsProps) {
+  const t = useTranslations("championStats");
   const bestMatchups = useMemo(
     () =>
       [...data]
@@ -33,15 +35,17 @@ export default function MatchupStats({ data }: MatchupStatsProps) {
 
   return (
     <div className="bg-surface-1 rounded-lg border border-divider p-5">
-      <h3 className="text-base font-bold text-on-surface mb-4">상대 상성</h3>
+      <h3 className="text-base font-bold text-on-surface mb-4">
+        {t("sections.matchup")}
+      </h3>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <MatchupColumn
-          title="유리한 상대"
+          title={t("sections.favorable")}
           entries={bestMatchups}
           type="best"
         />
         <MatchupColumn
-          title="불리한 상대"
+          title={t("sections.unfavorable")}
           entries={worstMatchups}
           type="worst"
         />
@@ -59,6 +63,7 @@ function MatchupColumn({
   entries: MatchupData[];
   type: "best" | "worst";
 }) {
+  const t = useTranslations("championStats");
   const championData = useGameDataStore((s) => s.championData);
   const colorClass = type === "best" ? "text-win" : "text-loss";
 
@@ -117,14 +122,14 @@ function MatchupColumn({
               </div>
 
               <span className="text-xs text-on-surface-medium w-14 text-right">
-                {entry.games.toLocaleString()}게임
+                {t("games", { count: entry.games })}
               </span>
             </div>
           );
         })}
         {entries.length === 0 && (
           <p className="text-center text-on-surface-medium text-sm py-4">
-            데이터 없음
+            {t("noData")}
           </p>
         )}
       </div>

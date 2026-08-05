@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { GameTooltip } from "@/shared/ui/tooltip";
 import type { ItemBuildData, StartItemBuildData } from "@/entities/champion";
 import { getItemImageUrl } from "@/shared/lib/game";
@@ -16,6 +17,7 @@ interface ItemBuildStatsProps {
 }
 
 export default function ItemBuildStats({ data, startItemBuilds }: ItemBuildStatsProps) {
+  const t = useTranslations("championStats");
   const [startExpanded, setStartExpanded] = useState(false);
   const [coreExpanded, setCoreExpanded] = useState(false);
   if (data.length === 0 && (!startItemBuilds || startItemBuilds.length === 0)) return null;
@@ -29,13 +31,15 @@ export default function ItemBuildStats({ data, startItemBuilds }: ItemBuildStats
 
   return (
     <div className="bg-surface-1 rounded-lg border border-divider p-0 md:p-5">
-      <h3 className="text-base font-bold text-on-surface p-2">아이템 빌드</h3>
+      <h3 className="text-base font-bold text-on-surface p-2">
+        {t("sections.itemBuild")}
+      </h3>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {startItemBuilds && startItemBuilds.length > 0 && (
           <div>
             <StatSectionHeader
-              title="시작 아이템"
+              title={t("sections.startingItems")}
               totalCount={startItemBuilds.length}
               visibleCount={Math.min(DEFAULT_VISIBLE, startItemBuilds.length)}
               expanded={startExpanded}
@@ -62,7 +66,7 @@ export default function ItemBuildStats({ data, startItemBuilds }: ItemBuildStats
         {data.length > 0 && (
           <div>
             <StatSectionHeader
-              title="코어 빌드"
+              title={t("sections.coreBuild")}
               totalCount={data.length}
               visibleCount={Math.min(DEFAULT_VISIBLE, data.length)}
               expanded={coreExpanded}
@@ -107,6 +111,7 @@ function BuildRow({
   totalSampleSize?: number;
   confidenceLowerBound?: number;
 }) {
+  const t = useTranslations("championStats");
   const winRatePercent = winRate * 100;
   return (
     <div className="bg-surface rounded-lg px-3 py-2">
@@ -127,7 +132,7 @@ function BuildRow({
         </div>
         <div className="flex items-center gap-4 ml-auto text-xs">
           <span>
-            <span className="text-on-surface-medium">승률 </span>
+            <span className="text-on-surface-medium">{t("winRate")} </span>
             <span
               className={`font-medium ${winRatePercent >= 50 ? "text-win" : "text-loss"}`}
             >
@@ -135,13 +140,13 @@ function BuildRow({
             </span>
           </span>
           <span>
-            <span className="text-on-surface-medium">픽률 </span>
+            <span className="text-on-surface-medium">{t("pickRate")} </span>
             <span className="font-medium text-on-surface">
               {(pickRate * 100).toFixed(1)}%
             </span>
           </span>
           <span className="text-on-surface-medium">
-            {games.toLocaleString()}게임
+            {t("games", { count: games })}
           </span>
         </div>
       </div>

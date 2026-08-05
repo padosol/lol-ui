@@ -5,6 +5,7 @@ import { useRanking } from "@/entities/ranking";
 import { getChampionImageUrl } from "@/entities/champion";
 import { getTierImageUrl, getTierName } from "@/shared/lib/tier";
 import { ChevronDown, ChevronUp, Crown, Minus } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { Link } from "@/shared/i18n/navigation";
 import { useState } from "react";
@@ -15,6 +16,7 @@ interface RankingTableProps {
 }
 
 export default function RankingTable({ region, queueType }: RankingTableProps) {
+  const t = useTranslations("leaderboards");
   const [currentPage, setCurrentPage] = useState(1);
 
   // queueType을 API의 rankType으로 변환
@@ -47,7 +49,7 @@ export default function RankingTable({ region, queueType }: RankingTableProps) {
       <div className="bg-surface-4 rounded-lg overflow-hidden">
         <div className="flex items-center justify-center py-20">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-          <span className="ml-3 text-on-surface-medium">랭킹 로딩 중...</span>
+          <span className="ml-3 text-on-surface-medium">{t("loading")}</span>
         </div>
       </div>
     );
@@ -57,7 +59,7 @@ export default function RankingTable({ region, queueType }: RankingTableProps) {
     return (
       <div className="bg-surface-4 rounded-lg overflow-hidden">
         <div className="flex flex-col items-center justify-center py-20">
-          <p className="text-lose mb-2">랭킹을 불러오는 데 실패했습니다.</p>
+          <p className="text-lose mb-2">{t("loadError")}</p>
           <p className="text-on-surface-disabled text-sm">{error.message}</p>
         </div>
       </div>
@@ -68,7 +70,7 @@ export default function RankingTable({ region, queueType }: RankingTableProps) {
     return (
       <div className="bg-surface-4 rounded-lg overflow-hidden">
         <div className="flex items-center justify-center py-20">
-          <p className="text-on-surface-medium">랭킹 데이터가 없습니다.</p>
+          <p className="text-on-surface-medium">{t("empty")}</p>
         </div>
       </div>
     );
@@ -82,31 +84,31 @@ export default function RankingTable({ region, queueType }: RankingTableProps) {
           <thead className="bg-surface-8">
             <tr>
               <th className="px-1 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-on-surface uppercase tracking-wider">
-                순위
+                {t("columnRank")}
               </th>
               <th className="px-1 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-on-surface uppercase tracking-wider">
-                소환사
+                {t("columnSummoner")}
               </th>
               <th className="px-1 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-on-surface uppercase tracking-wider">
-                <span className="sm:hidden">승</span>
-                <span className="hidden sm:inline">승리</span>
+                <span className="sm:hidden">{t("columnWinsShort")}</span>
+                <span className="hidden sm:inline">{t("columnWins")}</span>
               </th>
               <th className="px-1 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-on-surface uppercase tracking-wider">
-                <span className="sm:hidden">패</span>
-                <span className="hidden sm:inline">패배</span>
+                <span className="sm:hidden">{t("columnLossesShort")}</span>
+                <span className="hidden sm:inline">{t("columnLosses")}</span>
               </th>
               <th className="px-1 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-on-surface uppercase tracking-wider">
-                승률
+                {t("columnWinRate")}
               </th>
               <th className="px-1 sm:px-2 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-on-surface uppercase tracking-wider">
-                티어
+                {t("columnTier")}
               </th>
               <th className="px-1 sm:px-2 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-on-surface uppercase tracking-wider">
                 LP
               </th>
               <th className="px-1 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-on-surface uppercase tracking-wider">
-                <span className="sm:hidden">모스트</span>
-                <span className="hidden sm:inline">모스트 챔피언</span>
+                <span className="sm:hidden">{t("columnTopChampionsShort")}</span>
+                <span className="hidden sm:inline">{t("columnTopChampions")}</span>
               </th>
             </tr>
           </thead>
@@ -230,21 +232,25 @@ export default function RankingTable({ region, queueType }: RankingTableProps) {
             disabled={currentPage === 1}
             className="relative inline-flex items-center px-4 py-2 border border-divider text-sm font-medium rounded-md text-on-surface bg-surface-4 hover:bg-surface-6 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            이전
+            {t("previous")}
           </button>
           <button
             onClick={() => setCurrentPage((prev) => prev + 1)}
             disabled={data.isLast}
             className="ml-3 relative inline-flex items-center px-4 py-2 border border-divider text-sm font-medium rounded-md text-on-surface bg-surface-4 hover:bg-surface-6 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            다음
+            {t("next")}
           </button>
         </div>
         <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
           <div>
             <p className="text-sm text-on-surface">
-              페이지 <span className="font-medium">{currentPage}</span> / <span className="font-medium">{data.totalPages}</span>
-              <span className="ml-2 text-on-surface-disabled">(총 {data.totalElements}명)</span>
+              {t("pageInfo")}{" "}
+              <span className="font-medium">{currentPage}</span> /{" "}
+              <span className="font-medium">{data.totalPages}</span>
+              <span className="ml-2 text-on-surface-disabled">
+                {t("totalCount", { count: data.totalElements })}
+              </span>
             </p>
           </div>
           <div>
@@ -257,7 +263,7 @@ export default function RankingTable({ region, queueType }: RankingTableProps) {
                 disabled={currentPage === 1}
                 className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-divider bg-surface-4 text-sm font-medium text-on-surface hover:bg-surface-6 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                이전
+                {t("previous")}
               </button>
               {Array.from({ length: 5 }, (_, i) => {
                 let pageNum;
@@ -287,7 +293,7 @@ export default function RankingTable({ region, queueType }: RankingTableProps) {
                 disabled={data.isLast}
                 className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-divider bg-surface-4 text-sm font-medium text-on-surface hover:bg-surface-6 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                다음
+                {t("next")}
               </button>
             </nav>
           </div>

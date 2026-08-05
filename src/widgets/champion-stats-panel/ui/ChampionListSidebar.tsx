@@ -5,6 +5,7 @@ import { getChampionImageUrl, getChampionNameByEnglishName } from "@/entities/ch
 import Image from "next/image";
 import { Link } from "@/shared/i18n/navigation";
 import { Search } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 
 interface ChampionListSidebarProps {
@@ -18,6 +19,7 @@ export default function ChampionListSidebar({
   patch,
   platformId,
 }: ChampionListSidebarProps) {
+  const t = useTranslations("championStats");
   const [search, setSearch] = useState("");
   const championData = useGameDataStore((s) => s.championData);
 
@@ -44,7 +46,7 @@ export default function ChampionListSidebar({
           type="text"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          placeholder="챔피언 검색..."
+          placeholder={t("searchPlaceholder")}
           className="w-full pl-9 pr-3 py-2 bg-surface-4 border border-divider rounded-lg text-sm text-on-surface placeholder:text-on-surface-medium focus:outline-none focus:border-primary"
         />
       </div>

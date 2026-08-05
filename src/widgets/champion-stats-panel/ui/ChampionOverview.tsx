@@ -11,6 +11,7 @@ import { getChampionPassiveImageUrl } from "@/shared/lib/game";
 import { IMAGE_HOST } from "@/shared/config/image";
 import { GameTooltip } from "@/shared/ui/tooltip";
 import { useGameDataStore } from "@/shared/model/game-data";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 
 const SKILL_KEYS = ["Q", "W", "E", "R"] as const;
@@ -53,6 +54,7 @@ export default function ChampionOverview({
   tier,
   championId,
 }: ChampionOverviewProps) {
+  const t = useTranslations("championStats");
   const championData = useGameDataStore((s) => s.championData);
   const champion = championData?.data[championId];
   const championDisplayName = getChampionNameByEnglishName(championId);
@@ -64,7 +66,7 @@ export default function ChampionOverview({
 
   const kdaLabel = hasAverages
     ? `${formatAvg(averages?.avgKills)} / ${formatAvg(averages?.avgDeaths)} / ${formatAvg(averages?.avgAssists)}`
-    : "표본 부족";
+    : t("confidence.unknown");
   const kdaScore = hasAverages ? `KDA ${formatAvg(averages?.kda, 2)}` : "";
 
   const wins = Math.round(data.totalGames * data.winRate);
@@ -132,21 +134,21 @@ export default function ChampionOverview({
 
       <div className="grid grid-cols-3 gap-2 mt-3 pt-3 border-t border-divider/50">
         <StatCard
-          label="승률"
+          label={t("winRate")}
           value={formatRate(data.winRate)}
           valueClass={data.winRate >= 0.5 ? "text-win" : "text-loss"}
         />
-        <StatCard label="픽률" value={formatRate(data.pickRate)} />
-        <StatCard label="밴률" value={formatRate(data.banRate)} />
+        <StatCard label={t("pickRate")} value={formatRate(data.pickRate)} />
+        <StatCard label={t("banRate")} value={formatRate(data.banRate)} />
       </div>
 
       <div className="grid grid-cols-3 gap-2 mt-2">
         <StatCard
-          label="게임수"
+          label={t("gameCount")}
           value={data.totalGames.toLocaleString()}
         />
-        <StatCard label="승리" value={wins.toLocaleString()} />
-        <StatCard label="패배" value={losses.toLocaleString()} />
+        <StatCard label={t("wins")} value={wins.toLocaleString()} />
+        <StatCard label={t("losses")} value={losses.toLocaleString()} />
       </div>
 
       <div className="grid grid-cols-3 gap-2 mt-2">
@@ -156,11 +158,11 @@ export default function ChampionOverview({
           subValue={kdaScore}
         />
         <StatCard
-          label="분당 골드"
+          label={t("goldPerMinute")}
           value={formatGpm(averages?.avgGoldPerMinute)}
         />
         <StatCard
-          label="10분 CS"
+          label={t("csAt10")}
           value={formatCs(data.teamPosition, averages?.avgLaneCs10m, averages?.avgJungleCs10m)}
         />
       </div>

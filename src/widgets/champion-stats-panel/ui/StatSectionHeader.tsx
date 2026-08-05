@@ -1,7 +1,10 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 interface StatSectionHeaderProps {
   title: string;
+  /** 미지정 시 "픽률 순" 을 로케일에 맞춰 사용한다. */
   sortLabel?: string;
   totalCount: number;
   visibleCount: number;
@@ -12,13 +15,15 @@ interface StatSectionHeaderProps {
 
 export default function StatSectionHeader({
   title,
-  sortLabel = "픽률 순",
+  sortLabel,
   totalCount,
   visibleCount,
   expanded,
   onToggle,
   size = "default",
 }: StatSectionHeaderProps) {
+  const t = useTranslations("championStats");
+  const effectiveSortLabel = sortLabel ?? t("sortByPickRate");
   const canExpand = totalCount > visibleCount;
   const showButton = canExpand || expanded;
   const titleClass =
@@ -33,7 +38,7 @@ export default function StatSectionHeader({
         <Tag className={titleClass}>{title}</Tag>
         {totalCount > 0 && (
           <span className="text-[11px] text-on-surface-medium">
-            {sortLabel} 상위 {totalCount}개
+            {t("topN", { label: effectiveSortLabel, count: totalCount })}
           </span>
         )}
       </div>
@@ -43,7 +48,9 @@ export default function StatSectionHeader({
           onClick={onToggle}
           className="text-xs text-primary hover:underline cursor-pointer"
         >
-          {expanded ? "접기" : `더보기 (${totalCount - visibleCount})`}
+          {expanded
+            ? t("collapse")
+            : t("expand", { count: totalCount - visibleCount })}
         </button>
       )}
     </div>
