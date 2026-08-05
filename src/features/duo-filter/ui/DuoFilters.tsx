@@ -4,9 +4,10 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { ChevronDown } from "lucide-react";
 import type { Lane, Tier } from "@/entities/duo";
-import { LANES, LANE_LABELS, LANE_IMAGE_KEY, TIERS } from "@/entities/duo";
+import { LANES, LANE_IMAGE_KEY, TIERS } from "@/entities/duo";
 import { getPositionImageUrl } from "@/shared/lib/position";
 import { getTierName } from "@/shared/lib/tier";
+import { useTranslations } from "next-intl";
 
 interface DuoFiltersProps {
   lane: Lane | "ALL";
@@ -21,6 +22,8 @@ export default function DuoFilters({
   onLaneChange,
   onTierChange,
 }: DuoFiltersProps) {
+  const tDuo = useTranslations("duo");
+  const tLane = useTranslations("domain.position");
   const [tierOpen, setTierOpen] = useState(false);
   const tierRef = useRef<HTMLDivElement>(null);
 
@@ -36,7 +39,7 @@ export default function DuoFilters({
     }
   }, [tierOpen]);
 
-  const tierLabel = tier === "ALL" ? "전체 티어" : getTierName(tier);
+  const tierLabel = tier === "ALL" ? tDuo("allTiers") : getTierName(tier);
 
   return (
     <div className="flex flex-wrap items-center gap-3">
@@ -51,7 +54,7 @@ export default function DuoFilters({
               : "bg-surface-4 text-on-surface-medium hover:bg-surface-8"
           }`}
         >
-          전체
+          {tDuo("allLanes")}
         </button>
         {LANES.map((l) => (
           <button
@@ -66,12 +69,12 @@ export default function DuoFilters({
           >
             <Image
               src={getPositionImageUrl(LANE_IMAGE_KEY[l])}
-              alt={LANE_LABELS[l]}
+              alt={tLane(l)}
               width={14}
               height={14}
               className={lane === l ? "brightness-200" : "opacity-70"}
             />
-            <span className="hidden sm:inline">{LANE_LABELS[l]}</span>
+            <span className="hidden sm:inline">{tLane(l)}</span>
           </button>
         ))}
       </div>
@@ -102,7 +105,7 @@ export default function DuoFilters({
                   : "text-on-surface-medium hover:bg-surface-8"
               }`}
             >
-              전체 티어
+              {tDuo("allTiers")}
             </div>
             {TIERS.map((t) => (
               <div

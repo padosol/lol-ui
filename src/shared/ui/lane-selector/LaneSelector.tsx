@@ -1,9 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { LANES, LANE_LABELS, LANE_IMAGE_KEY } from "@/entities/duo";
+import { LANES, LANE_IMAGE_KEY } from "@/entities/duo";
 import type { Lane } from "@/entities/duo";
 import { getPositionImageUrl } from "@/shared/lib/position";
+import { useTranslations } from "next-intl";
 
 interface LaneSelectorProps {
   label: string;
@@ -18,6 +19,8 @@ export default function LaneSelector({
   onChange,
   error,
 }: LaneSelectorProps) {
+  const tLane = useTranslations("domain.position");
+
   return (
     <div>
       <label className="block text-sm text-on-surface-medium mb-2">
@@ -39,12 +42,12 @@ export default function LaneSelector({
             >
               <Image
                 src={getPositionImageUrl(LANE_IMAGE_KEY[lane])}
-                alt={LANE_LABELS[lane]}
+                alt={tLane(lane)}
                 width={16}
                 height={16}
                 className={isSelected ? "brightness-200" : "opacity-70"}
               />
-              <span>{LANE_LABELS[lane]}</span>
+              <span>{tLane(lane)}</span>
             </button>
           );
         })}

@@ -3,10 +3,10 @@
 import Image from "next/image";
 import { Mic, MicOff, Clock, Users } from "lucide-react";
 import type { DuoPost } from "@/entities/duo";
-import { LANE_LABELS, LANE_IMAGE_KEY, POST_STATUS_LABELS } from "@/entities/duo";
+import { LANE_IMAGE_KEY } from "@/entities/duo";
 import { getPositionImageUrl } from "@/shared/lib/position";
 import { getTierName } from "@/shared/lib/tier";
-import { useFormatter } from "next-intl";
+import { useFormatter, useTranslations } from "next-intl";
 
 const TIER_COLORS: Record<string, string> = {
   IRON: "text-gray-400",
@@ -28,9 +28,12 @@ interface DuoCardProps {
 
 export default function DuoCard({ post, onSelect }: DuoCardProps) {
   const format = useFormatter();
+  const t = useTranslations("duo");
+  const tLane = useTranslations("domain.position");
+  const tStatus = useTranslations("domain.duoPostStatus");
   const tier = post.tier;
   const isMasterPlus = tier !== null && ["MASTER", "GRANDMASTER", "CHALLENGER"].includes(tier);
-  const tierDisplay = tier !== null ? getTierName(tier) : "언랭크";
+  const tierDisplay = tier !== null ? getTierName(tier) : t("unranked");
   const rankDisplay = tier === null || isMasterPlus ? "" : ` ${post.rank}`;
   const lpDisplay = tier !== null ? ` ${post.leaguePoints}LP` : "";
   const isActive = post.status === "ACTIVE";
@@ -45,14 +48,14 @@ export default function DuoCard({ post, onSelect }: DuoCardProps) {
       <div className="flex items-center gap-1 shrink-0">
         <Image
           src={getPositionImageUrl(LANE_IMAGE_KEY[post.primaryLane])}
-          alt={LANE_LABELS[post.primaryLane]}
+          alt={tLane(post.primaryLane)}
           width={18}
           height={18}
         />
         <span className="text-on-surface-disabled text-xs">/</span>
         <Image
           src={getPositionImageUrl(LANE_IMAGE_KEY[post.desiredLane])}
-          alt={LANE_LABELS[post.desiredLane]}
+          alt={tLane(post.desiredLane)}
           width={16}
           height={16}
           className="opacity-70"
@@ -80,7 +83,7 @@ export default function DuoCard({ post, onSelect }: DuoCardProps) {
       {/* 상태 배지 */}
       {!isActive && (
         <span className="shrink-0 text-xs bg-surface-4 border border-divider rounded px-2 py-0.5 text-on-surface-disabled">
-          {POST_STATUS_LABELS[post.status]}
+          {tStatus(post.status)}
         </span>
       )}
 
@@ -99,7 +102,7 @@ export default function DuoCard({ post, onSelect }: DuoCardProps) {
         )}
         <span className="inline-flex items-center gap-0.5">
           <Clock className="w-3 h-3" />
-          {getExpiryText(post.expiresAt)}
+          {getExpiryText(post.expiresAt, t)}
         </span>
         <span className="hidden sm:inline">{format.relativeTime(new Date(post.createdAt))}</span>
       </div>
@@ -107,11 +110,14 @@ export default function DuoCard({ post, onSelect }: DuoCardProps) {
   );
 }
 
-function getExpiryText(expiresAt: string): string {
+function getExpiryText(
+  expiresAt: string,
+  t: ReturnType<typeof useTranslations<"duo">>
+): string {
   const diff = new Date(expiresAt).getTime() - Date.now();
-  if (diff <= 0) return "만료됨";
+  if (diff <= 0) return t("expired");
   const hours = Math.floor(diff / (1000 * 60 * 60));
   const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-  if (hours > 0) return `${hours}시간 ${minutes}분`;
-  return `${minutes}분`;
+  if (hours > 0) return t("remainingHours", { hours, minutes });
+  return t("remainingMinutes", { minutes });
 }

@@ -17,14 +17,7 @@ export type {
   RecentGameSummary,
 } from "./types";
 
-export {
-  LANES,
-  LANE_LABELS,
-  LANE_IMAGE_KEY,
-  TIERS,
-  POST_STATUS_LABELS,
-  REQUEST_STATUS_LABELS,
-} from "./types";
+export { LANES, LANE_IMAGE_KEY, TIERS } from "./types";
 
 // API
 export {

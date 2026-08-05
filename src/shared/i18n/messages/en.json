@@ -231,6 +231,72 @@
     "wins": "{count}W",
     "losses": "{count}L"
   },
+  "duo": {
+    "title": "Find Duo",
+    "register": "Post a duo",
+    "tabs": {
+      "posts": "Duo posts",
+      "myPosts": "My posts",
+      "myRequests": "My requests"
+    },
+    "unranked": "Unranked",
+    "allLanes": "All",
+    "allTiers": "All tiers",
+    "expired": "Expired",
+    "remainingHours": "{hours}h {minutes}m",
+    "remainingMinutes": "{minutes}m",
+    "micOn": "Mic on",
+    "micOff": "Mic off",
+    "mic": "Microphone",
+    "memo": "Note",
+    "memoPlaceholder": "Add a note (up to 500 characters)",
+    "primaryLane": "Primary lane",
+    "secondaryLane": "Secondary lane",
+    "partner": "Partner",
+    "emptyPosts": "No duo posts yet",
+    "emptyMyPosts": "You haven't posted a duo yet",
+    "emptyMyRequests": "You haven't sent any requests",
+    "loadMore": "Load more",
+    "loadingMore": "Loading...",
+    "detail": {
+      "title": "Duo details",
+      "notFound": "Duo post not found",
+      "deleteConfirm": "Delete this duo post?",
+      "deleting": "Deleting...",
+      "matchedWithPartner": "Matched · Partner ",
+      "receivedRequests": "Requests received ({count})",
+      "noRequests": "No requests yet",
+      "requestDuo": "Request duo",
+      "loginRequired": "Sign in to request a duo"
+    },
+    "registerModal": {
+      "title": "Post a duo",
+      "submit": "Post",
+      "submitting": "Posting...",
+      "error": "Failed to create the post."
+    },
+    "requestModal": {
+      "title": "Duo request",
+      "submit": "Request duo",
+      "submitting": "Sending...",
+      "error": "Failed to send the request."
+    },
+    "actions": {
+      "accept": "Accept",
+      "accepting": "Accepting...",
+      "reject": "Decline",
+      "rejecting": "Declining...",
+      "confirm": "Confirm",
+      "confirming": "Confirming...",
+      "cancel": "Cancel",
+      "cancelling": "Cancelling..."
+    },
+    "validation": {
+      "primaryLaneRequired": "Select a primary lane",
+      "secondaryLaneRequired": "Select a secondary lane",
+      "memoTooLong": "The note must be 500 characters or fewer"
+    }
+  },
   "leaderboards": {
     "region": "Region",
     "regionSelect": "Select region",
@@ -328,6 +394,20 @@
     "team": {
       "blue": "Blue Team",
       "red": "Red Team"
+    },
+    "duoPostStatus": {
+      "ACTIVE": "Open",
+      "MATCHED": "Matched",
+      "DELETED": "Deleted",
+      "EXPIRED": "Expired"
+    },
+    "duoRequestStatus": {
+      "PENDING": "Pending",
+      "ACCEPTED": "Accepted",
+      "CONFIRMED": "Confirmed",
+      "REJECTED": "Declined",
+      "CANCELLED": "Cancelled",
+      "CLOSED": "Closed"
     },
     "gameMode": {
       "RANKED_SOLO": "Ranked",

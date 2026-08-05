@@ -7,15 +7,13 @@ import {
   useDuoPostDetail,
   useDeleteDuoPost,
   useDuoMatchResult,
-  LANE_LABELS,
   LANE_IMAGE_KEY,
-  REQUEST_STATUS_LABELS,
 } from "@/entities/duo";
 import type { DuoPost, DuoRequest } from "@/entities/duo";
 import { useAuthStore } from "@/entities/auth";
 import { getPositionImageUrl } from "@/shared/lib/position";
 import { getTierName } from "@/shared/lib/tier";
-import { useFormatter } from "next-intl";
+import { useFormatter, useTranslations } from "next-intl";
 import { RequestActionButtons } from "@/features/duo-matching";
 import { DuoRequestModal } from "@/features/duo-request";
 import PartnerName from "./PartnerName";
@@ -29,6 +27,7 @@ export default function DuoPostDetailModal({
   postId,
   onClose,
 }: DuoPostDetailModalProps) {
+  const t = useTranslations("duo.detail");
   const { data: post, isLoading } = useDuoPostDetail(postId);
   const deletePost = useDeleteDuoPost();
   const user = useAuthStore((s) => s.user);
@@ -54,7 +53,7 @@ export default function DuoPostDetailModal({
   if (postId === null) return null;
 
   const handleDelete = () => {
-    if (!confirm("듀오 등록을 삭제하시겠습니까?")) return;
+    if (!confirm(t("deleteConfirm"))) return;
     deletePost.mutate(postId, {
       onSuccess: () => onClose(),
     });
@@ -71,7 +70,7 @@ export default function DuoPostDetailModal({
         <div className="bg-surface-4 rounded-lg border border-divider w-full max-w-lg mx-4 max-h-[90vh] overflow-y-auto p-6">
           {/* 헤더 */}
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-lg font-bold text-on-surface">듀오 상세</h2>
+            <h2 className="text-lg font-bold text-on-surface">{t("title")}</h2>
             <button
               type="button"
               onClick={onClose}
@@ -98,7 +97,7 @@ export default function DuoPostDetailModal({
             />
           ) : (
             <p className="text-on-surface-disabled text-center py-8">
-              듀오 정보를 찾을 수 없습니다
+              {t("notFound")}
             </p>
           )}
         </div>
@@ -131,6 +130,9 @@ function PostContent({
   onRequestClick: () => void;
 }) {
   const format = useFormatter();
+  const t = useTranslations("duo");
+  const tDetail = useTranslations("duo.detail");
+  const tLane = useTranslations("domain.position");
   const tier = post.tier;
   const isMasterPlus = tier !== null && ["MASTER", "GRANDMASTER", "CHALLENGER"].includes(tier);
 
@@ -143,25 +145,25 @@ function PostContent({
           <div className="flex items-center gap-1.5">
             <Image
               src={getPositionImageUrl(LANE_IMAGE_KEY[post.primaryLane])}
-              alt={LANE_LABELS[post.primaryLane]}
+              alt={tLane(post.primaryLane)}
               width={24}
               height={24}
             />
             <span className="font-medium text-on-surface">
-              {LANE_LABELS[post.primaryLane]}
+              {tLane(post.primaryLane)}
             </span>
           </div>
           <span className="text-on-surface-disabled">/</span>
           <div className="flex items-center gap-1.5">
             <Image
               src={getPositionImageUrl(LANE_IMAGE_KEY[post.desiredLane])}
-              alt={LANE_LABELS[post.desiredLane]}
+              alt={tLane(post.desiredLane)}
               width={20}
               height={20}
               className="opacity-70"
             />
             <span className="text-sm text-on-surface-medium">
-              {LANE_LABELS[post.desiredLane]}
+              {tLane(post.desiredLane)}
             </span>
           </div>
         </div>
@@ -171,7 +173,7 @@ function PostContent({
           {tier !== null ? (
             <>{getTierName(tier)} {isMasterPlus ? "" : post.rank}{" "}{post.leaguePoints}LP</>
           ) : (
-            <span className="text-on-surface-disabled">언랭크</span>
+            <span className="text-on-surface-disabled">{t("unranked")}</span>
           )}
         </p>
 
@@ -184,7 +186,7 @@ function PostContent({
           ) : (
             <MicOff className="w-4 h-4" />
           )}
-          {post.hasMicrophone ? "마이크 사용" : "마이크 미사용"}
+          {post.hasMicrophone ? t("micOn") : t("micOff")}
         </div>
 
         {/* 메모 */}
@@ -215,13 +217,13 @@ function PostContent({
               onClick={onRequestClick}
               className="cursor-pointer w-full bg-primary hover:bg-primary/80 text-on-surface font-medium py-2.5 rounded-md transition-colors"
             >
-              듀오 신청하기
+              {tDetail("requestDuo")}
             </button>
           )}
         </div>
       ) : (
         <p className="text-sm text-on-surface-disabled text-center py-4 border-t border-divider">
-          로그인 후 듀오 신청이 가능합니다
+          {tDetail("loginRequired")}
         </p>
       )}
     </div>
@@ -237,6 +239,8 @@ function OwnerSection({
   onDelete: () => void;
   isDeleting: boolean;
 }) {
+  const t = useTranslations("duo.detail");
+  const tCommon = useTranslations("common");
   const matchResult = useDuoMatchResult(post.id, post.status === "MATCHED");
   const partner = matchResult.data;
 
@@ -245,7 +249,9 @@ function OwnerSection({
       {/* 매칭 완료 시 파트너 정보 */}
       {post.status === "MATCHED" && partner?.partnerGameName && (
         <div className="bg-primary/10 border border-primary/30 rounded-md p-3 text-sm">
-          <span className="text-on-surface-medium">매칭 완료 · 파트너 </span>
+          <span className="text-on-surface-medium">
+            {t("matchedWithPartner")}
+          </span>
           <PartnerName
             gameName={partner.partnerGameName}
             tagLine={partner.partnerTagLine}
@@ -263,7 +269,7 @@ function OwnerSection({
             className="cursor-pointer flex items-center gap-1 px-3 py-1.5 text-xs font-medium rounded-md bg-surface-4 border border-divider text-red-400 hover:bg-red-400/10 transition-colors disabled:opacity-50"
           >
             <Trash2 className="w-3 h-3" />
-            {isDeleting ? "삭제 중..." : "삭제"}
+            {isDeleting ? t("deleting") : tCommon("delete")}
           </button>
         </div>
       )}
@@ -271,11 +277,11 @@ function OwnerSection({
       {/* 받은 요청 목록 */}
       <div>
         <h3 className="text-sm font-medium text-on-surface mb-3">
-          받은 요청 ({post.requests?.length ?? 0})
+          {t("receivedRequests", { count: post.requests?.length ?? 0 })}
         </h3>
         {!post.requests || post.requests.length === 0 ? (
           <p className="text-xs text-on-surface-disabled">
-            아직 받은 요청이 없습니다
+            {t("noRequests")}
           </p>
         ) : (
           <div className="space-y-3">
@@ -290,6 +296,9 @@ function OwnerSection({
 }
 
 function RequestItem({ request }: { request: DuoRequest }) {
+  const t = useTranslations("duo");
+  const tLane = useTranslations("domain.position");
+  const tStatus = useTranslations("domain.duoRequestStatus");
   const tier = request.tier;
   const isMasterPlus = tier !== null && ["MASTER", "GRANDMASTER", "CHALLENGER"].includes(tier);
 
@@ -299,14 +308,14 @@ function RequestItem({ request }: { request: DuoRequest }) {
       <div className="flex items-center gap-1 shrink-0">
         <Image
           src={getPositionImageUrl(LANE_IMAGE_KEY[request.primaryLane])}
-          alt={LANE_LABELS[request.primaryLane]}
+          alt={tLane(request.primaryLane)}
           width={16}
           height={16}
         />
         <span className="text-on-surface-disabled text-xs">/</span>
         <Image
           src={getPositionImageUrl(LANE_IMAGE_KEY[request.desiredLane])}
-          alt={LANE_LABELS[request.desiredLane]}
+          alt={tLane(request.desiredLane)}
           width={14}
           height={14}
           className="opacity-70"
@@ -318,7 +327,7 @@ function RequestItem({ request }: { request: DuoRequest }) {
         {tier !== null ? (
           <>{getTierName(tier)} {isMasterPlus ? "" : request.rank} {request.leaguePoints}LP</>
         ) : (
-          <span className="text-on-surface-disabled">언랭크</span>
+          <span className="text-on-surface-disabled">{t("unranked")}</span>
         )}
       </span>
 
@@ -340,7 +349,7 @@ function RequestItem({ request }: { request: DuoRequest }) {
 
       {/* 상태 */}
       <span className="shrink-0 text-xs text-on-surface-disabled">
-        {REQUEST_STATUS_LABELS[request.status]}
+        {tStatus(request.status)}
       </span>
 
       {/* 액션 버튼 */}

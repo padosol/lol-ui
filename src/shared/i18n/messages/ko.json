@@ -231,6 +231,72 @@
     "wins": "{count}승",
     "losses": "{count}패"
   },
+  "duo": {
+    "title": "듀오 찾기",
+    "register": "듀오 등록",
+    "tabs": {
+      "posts": "듀오 목록",
+      "myPosts": "내 등록",
+      "myRequests": "내 요청"
+    },
+    "unranked": "언랭크",
+    "allLanes": "전체",
+    "allTiers": "전체 티어",
+    "expired": "만료됨",
+    "remainingHours": "{hours}시간 {minutes}분",
+    "remainingMinutes": "{minutes}분",
+    "micOn": "마이크 사용",
+    "micOff": "마이크 미사용",
+    "mic": "마이크",
+    "memo": "메모",
+    "memoPlaceholder": "하고 싶은 말을 적어주세요 (최대 500자)",
+    "primaryLane": "주 라인",
+    "secondaryLane": "부 라인",
+    "partner": "파트너",
+    "emptyPosts": "등록된 듀오가 없습니다",
+    "emptyMyPosts": "등록한 듀오가 없습니다",
+    "emptyMyRequests": "보낸 요청이 없습니다",
+    "loadMore": "더 보기",
+    "loadingMore": "로딩 중...",
+    "detail": {
+      "title": "듀오 상세",
+      "notFound": "듀오 정보를 찾을 수 없습니다",
+      "deleteConfirm": "듀오 등록을 삭제하시겠습니까?",
+      "deleting": "삭제 중...",
+      "matchedWithPartner": "매칭 완료 · 파트너 ",
+      "receivedRequests": "받은 요청 ({count})",
+      "noRequests": "아직 받은 요청이 없습니다",
+      "requestDuo": "듀오 신청하기",
+      "loginRequired": "로그인 후 듀오 신청이 가능합니다"
+    },
+    "registerModal": {
+      "title": "듀오 등록",
+      "submit": "등록하기",
+      "submitting": "등록 중...",
+      "error": "등록에 실패했습니다."
+    },
+    "requestModal": {
+      "title": "듀오 신청",
+      "submit": "듀오 신청하기",
+      "submitting": "신청 중...",
+      "error": "신청에 실패했습니다."
+    },
+    "actions": {
+      "accept": "수락",
+      "accepting": "수락 중...",
+      "reject": "거절",
+      "rejecting": "거절 중...",
+      "confirm": "확정하기",
+      "confirming": "확정 중...",
+      "cancel": "취소",
+      "cancelling": "취소 중..."
+    },
+    "validation": {
+      "primaryLaneRequired": "주 라인을 선택해주세요",
+      "secondaryLaneRequired": "부 라인을 선택해주세요",
+      "memoTooLong": "메모는 500자 이내로 입력해주세요"
+    }
+  },
   "leaderboards": {
     "region": "지역",
     "regionSelect": "지역 선택",
@@ -328,6 +394,20 @@
     "team": {
       "blue": "블루팀",
       "red": "레드팀"
+    },
+    "duoPostStatus": {
+      "ACTIVE": "모집 중",
+      "MATCHED": "매칭 완료",
+      "DELETED": "삭제됨",
+      "EXPIRED": "만료됨"
+    },
+    "duoRequestStatus": {
+      "PENDING": "대기 중",
+      "ACCEPTED": "수락됨",
+      "CONFIRMED": "확정됨",
+      "REJECTED": "거절됨",
+      "CANCELLED": "취소됨",
+      "CLOSED": "종료됨"
     },
     "gameMode": {
       "RANKED_SOLO": "랭크",
