@@ -6,8 +6,10 @@ import { useAuthStore } from "@/entities/auth";
 import { useHasHydrated } from "@/shared/lib/useHasHydrated";
 import { Header, Navigation, Footer } from "@/widgets/layout";
 import { MypagePanel } from "@/widgets/mypage-panel";
+import { useTranslations } from "next-intl";
 
 export default function MypageClient() {
+  const t = useTranslations("mypage");
   const user = useAuthStore((s) => s.user);
   const hasHydrated = useHasHydrated(useAuthStore);
   const router = useRouter();
@@ -32,7 +34,9 @@ export default function MypageClient() {
       <Navigation />
       <main className="flex-1 w-full max-w-[1080px] mx-auto py-8 sm:px-4">
         <div className="px-4 sm:px-0">
-          <h1 className="text-2xl font-bold text-on-surface mb-8">내 계정</h1>
+          <h1 className="text-2xl font-bold text-on-surface mb-8">
+            {t("title")}
+          </h1>
           <MypagePanel />
         </div>
       </main>

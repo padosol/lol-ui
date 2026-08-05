@@ -1,4 +1,5 @@
 import type { PatchVersionListItem } from "@/entities/patch-note";
+import { useTranslations } from "next-intl";
 import PatchListItem from "./PatchListItem";
 
 interface PatchListProps {
@@ -10,12 +11,12 @@ export default function PatchList({
   patches,
   selectedVersion,
 }: PatchListProps) {
+  const t = useTranslations("patchNotes");
+
   if (patches.length === 0) {
     return (
       <div className="p-4 bg-surface-2 rounded-lg border border-divider/50">
-        <p className="text-on-surface-medium text-sm">
-          패치노트가 없습니다.
-        </p>
+        <p className="text-on-surface-medium text-sm">{t("empty")}</p>
       </div>
     );
   }

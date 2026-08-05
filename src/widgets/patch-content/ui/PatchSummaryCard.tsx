@@ -2,6 +2,7 @@
 
 import type { PatchSummary } from "@/entities/patch-note";
 import { BarChart3 } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface PatchSummaryCardProps {
   summary: PatchSummary;
@@ -55,6 +56,7 @@ function SummaryRow({ label, buffs, nerfs, adjusts }: SummaryRowProps) {
 }
 
 export default function PatchSummaryCard({ summary }: PatchSummaryCardProps) {
+  const t = useTranslations("patchNotes");
   const championTotal = summary.championBuffs + summary.championNerfs + summary.championAdjusts;
   const itemTotal = summary.itemBuffs + summary.itemNerfs + summary.itemAdjusts;
   const arenaTotal = summary.arenaBuffs + summary.arenaNerfs + summary.arenaAdjusts;
@@ -71,7 +73,7 @@ export default function PatchSummaryCard({ summary }: PatchSummaryCardProps) {
     <div className="bg-surface-1 rounded-lg border border-divider/50 overflow-hidden">
       <div className="flex items-center gap-2 p-4 border-b border-divider/30">
         <BarChart3 className="w-5 h-5 text-primary" />
-        <h3 className="text-lg font-bold text-on-surface">패치 요약</h3>
+        <h3 className="text-lg font-bold text-on-surface">{t("summary")}</h3>
       </div>
 
       <div className="overflow-x-auto">
@@ -79,26 +81,26 @@ export default function PatchSummaryCard({ summary }: PatchSummaryCardProps) {
           <thead>
             <tr className="bg-surface-2/50">
               <th className="py-2.5 px-3 text-left text-sm font-semibold text-on-surface-medium">
-                카테고리
+                {t("summaryTable.category")}
               </th>
               <th className="py-2.5 px-3 text-center text-sm font-semibold text-win">
-                상향
+                {t("summaryTable.buff")}
               </th>
               <th className="py-2.5 px-3 text-center text-sm font-semibold text-loss">
-                하향
+                {t("summaryTable.nerf")}
               </th>
               <th className="py-2.5 px-3 text-center text-sm font-semibold text-primary">
-                조정
+                {t("summaryTable.adjust")}
               </th>
               <th className="py-2.5 px-3 text-center text-sm font-semibold text-on-surface-medium">
-                합계
+                {t("summaryTable.total")}
               </th>
             </tr>
           </thead>
           <tbody>
             {hasChampions && (
               <SummaryRow
-                label="챔피언"
+                label={t("summaryTable.champion")}
                 buffs={summary.championBuffs}
                 nerfs={summary.championNerfs}
                 adjusts={summary.championAdjusts}
@@ -106,7 +108,7 @@ export default function PatchSummaryCard({ summary }: PatchSummaryCardProps) {
             )}
             {hasItems && (
               <SummaryRow
-                label="아이템"
+                label={t("summaryTable.item")}
                 buffs={summary.itemBuffs}
                 nerfs={summary.itemNerfs}
                 adjusts={summary.itemAdjusts}
@@ -114,7 +116,7 @@ export default function PatchSummaryCard({ summary }: PatchSummaryCardProps) {
             )}
             {hasArena && (
               <SummaryRow
-                label="아레나"
+                label={t("summaryTable.arena")}
                 buffs={summary.arenaBuffs}
                 nerfs={summary.arenaNerfs}
                 adjusts={summary.arenaAdjusts}

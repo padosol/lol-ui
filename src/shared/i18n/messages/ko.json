@@ -358,6 +358,96 @@
       "memoTooLong": "메모는 500자 이내로 입력해주세요"
     }
   },
+  "mypage": {
+    "title": "내 계정",
+    "nav": {
+      "account": "계정 관리",
+      "bookmarks": "북마크한 글"
+    },
+    "logout": "로그아웃",
+    "account": {
+      "title": "기본정보",
+      "password": "비밀번호",
+      "socialOnly": "소셜 로그인으로 가입된 계정입니다.",
+      "nickname": "닉네임",
+      "linkAccount": "계정 연동하기",
+      "google": "구글",
+      "linked": "연동됨",
+      "withdraw": "회원 탈퇴"
+    },
+    "bookmarks": {
+      "title": "북마크한 글",
+      "loadError": "북마크를 불러오지 못했습니다.",
+      "loading": "불러오는 중...",
+      "empty": "북마크한 글이 없습니다",
+      "emptyPage": "이 페이지에는 글이 없습니다",
+      "remove": "북마크 해제",
+      "removeError": "북마크 해제에 실패했습니다.",
+      "previous": "이전",
+      "next": "다음"
+    }
+  },
+  "auth": {
+    "login": "로그인",
+    "welcome": "METAPICK에 오신 것을 환영합니다",
+    "or": "또는",
+    "google": "Google로 계속하기",
+    "email": "이메일",
+    "emailPlaceholder": "이메일 주소",
+    "password": "비밀번호",
+    "emailLogin": "이메일로 계속하기 (준비중)",
+    "emailLoginForm": "이메일 로그인 (준비중)",
+    "back": "돌아가기",
+    "termsNotice": "로그인 시 <terms>이용약관</terms> 및 <privacy>개인정보처리방침</privacy>에 동의합니다.",
+    "rejoinBlocked": "탈퇴 후 30일 이내에는 재가입할 수 없습니다.",
+    "validation": {
+      "invalidEmail": "올바른 이메일을 입력하세요",
+      "passwordRequired": "비밀번호를 입력하세요"
+    }
+  },
+  "patchNotes": {
+    "title": "패치노트",
+    "subtitle": "리그 오브 레전드 패치 변경사항을 확인하세요",
+    "empty": "패치노트가 없습니다.",
+    "noChanges": "변경사항이 없습니다.",
+    "patchVersion": "패치 {version}",
+    "readFull": "전체 내용 보러가기",
+    "summary": "패치 요약",
+    "metaPredictions": "메타 영향 예측",
+    "tabs": {
+      "rift": "협곡",
+      "aram": "무작위 총력전",
+      "arena": "아레나",
+      "system": "시스템"
+    },
+    "sections": {
+      "champions": "챔피언 변경사항",
+      "items": "아이템 변경사항",
+      "systems": "시스템 변경사항",
+      "arena": "아레나 변경사항",
+      "aram": "무작위 총력전 변경사항",
+      "championCount": "챔피언 ({count})",
+      "systemCount": "시스템 ({count})"
+    },
+    "summaryTable": {
+      "category": "카테고리",
+      "buff": "상향",
+      "nerf": "하향",
+      "adjust": "조정",
+      "total": "합계",
+      "champion": "챔피언",
+      "item": "아이템",
+      "arena": "아레나"
+    },
+    "changeType": {
+      "BUFF": "버프",
+      "NERF": "너프",
+      "ADJUST": "조정",
+      "NEW": "신규",
+      "REWORK": "리워크",
+      "BUGFIX": "버그 수정"
+    }
+  },
   "leaderboards": {
     "region": "지역",
     "regionSelect": "지역 선택",

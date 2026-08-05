@@ -2,6 +2,7 @@
 
 import type { AramChanges as AramChangesType } from "@/entities/patch-note";
 import { getChampionImageUrl } from "@/entities/champion";
+import { useTranslations } from "next-intl";
 import ChangeCard from "./ChangeCard";
 
 interface AramChangesProps {
@@ -9,6 +10,7 @@ interface AramChangesProps {
 }
 
 export default function AramChanges({ changes }: AramChangesProps) {
+  const t = useTranslations("patchNotes");
   const hasChampions = changes.champions.length > 0;
   const hasSystems = changes.systems.length > 0;
 
@@ -21,7 +23,7 @@ export default function AramChanges({ changes }: AramChangesProps) {
       {hasChampions && (
         <div className="space-y-2">
           <h4 className="text-sm font-semibold text-on-surface-medium px-1">
-            챔피언 ({changes.champions.length})
+            {t("sections.championCount", { count: changes.champions.length })}
           </h4>
           {changes.champions.map((change, index) => (
             <ChangeCard
@@ -40,7 +42,7 @@ export default function AramChanges({ changes }: AramChangesProps) {
       {hasSystems && (
         <div className="space-y-2">
           <h4 className="text-sm font-semibold text-on-surface-medium px-1">
-            시스템 ({changes.systems.length})
+            {t("sections.systemCount", { count: changes.systems.length })}
           </h4>
           {changes.systems.map((change, index) => (
             <ChangeCard

@@ -2,6 +2,7 @@ import { Header, Navigation, Footer } from "@/widgets/layout";
 import { PatchContentInner, PatchList } from "@/widgets/patch-content";
 import { getPatchVersions } from "@/entities/patch-note";
 import { fetchPatchNoteServer } from "@/entities/patch-note/lib/serverPatchnotes";
+import { getTranslations } from "next-intl/server";
 import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
@@ -23,12 +24,13 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function PatchNotesPage() {
+  const t = await getTranslations("patchNotes");
   const patches = await getPatchVersions();
 
   if (patches.length === 0) {
     return (
       <div className="min-h-screen bg-surface flex items-center justify-center">
-        <p className="text-on-surface-medium">패치노트가 없습니다.</p>
+        <p className="text-on-surface-medium">{t("empty")}</p>
       </div>
     );
   }
@@ -43,10 +45,10 @@ export default async function PatchNotesPage() {
       <main className="max-w-[1080px] mx-auto py-8">
         <div className="max-w-[1024px]">
           <div className="mb-6">
-            <h1 className="text-3xl font-bold text-on-surface mb-2">패치노트</h1>
-            <p className="text-on-surface-medium">
-              리그 오브 레전드 패치 변경사항을 확인하세요
-            </p>
+            <h1 className="text-3xl font-bold text-on-surface mb-2">
+              {t("title")}
+            </h1>
+            <p className="text-on-surface-medium">{t("subtitle")}</p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">

@@ -2,6 +2,7 @@
 
 import type { SystemChange } from "@/entities/patch-note";
 import { ChevronDown, Settings } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import ChangeBadge from "./ChangeBadge";
 
@@ -10,6 +11,7 @@ interface SystemChangesProps {
 }
 
 export default function SystemChanges({ changes }: SystemChangesProps) {
+  const t = useTranslations("patchNotes");
   const [isExpanded, setIsExpanded] = useState(true);
 
   if (changes.length === 0) {
@@ -25,7 +27,7 @@ export default function SystemChanges({ changes }: SystemChangesProps) {
       >
         <div className="flex items-center gap-2">
           <span className="text-lg font-bold text-on-surface">
-            시스템 변경사항
+            {t("sections.systems")}
           </span>
           <span className="text-sm text-on-surface-medium px-2 py-0.5 rounded-full bg-surface-4">
             {changes.length}
