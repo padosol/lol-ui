@@ -1,0 +1,330 @@
+{
+  "version": "26.9",
+  "url": "https://www.leagueoflegends.com/ko-kr/news/game-updates/league-of-legends-patch-26-9-notes/",
+  "date": "2026-04-28",
+  "rift": {
+    "champions": [
+      {
+        "targetName": "암베사",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          {
+            "statName": "스킬 사용 시간",
+            "before": "0.55",
+            "after": "0.70"
+          }
+        ]
+      },
+      {
+        "targetName": "브라이어",
+        "type": "champion",
+        "direction": "nerf",
+        "changes": [
+          {
+            "statName": "체력 증가량",
+            "before": "100",
+            "after": "95"
+          }
+        ]
+      },
+      {
+        "targetName": "이즈리얼",
+        "type": "champion",
+        "direction": "adjust",
+        "changes": [
+          {
+            "statName": "주문력 계수",
+            "before": "주문력의 15%",
+            "after": "주문력의 40%"
+          },
+          {
+            "statName": "주문력 계수",
+            "before": "70~90%",
+            "after": "90%"
+          },
+          {
+            "statName": "주문력 계수",
+            "before": "90%",
+            "after": "110%"
+          },
+          {
+            "statName": "미니언 / 에픽 몬스터를 제외한 몬스터 대상 피해량",
+            "before": "175/275/375 (+추가 공격력의 50%) (+주문력의 45%)",
+            "after": "150/225/300 (+추가 공격력의 100%) (+주문력의 110%)"
+          }
+        ]
+      },
+      {
+        "targetName": "그라가스",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          {
+            "statName": "받는 피해량 감소",
+            "before": "10/12/14/16/18% (+주문력 100당 4%)",
+            "after": "10/14/18/22/26 (+주문력 100당 4%)"
+          }
+        ]
+      },
+      {
+        "targetName": "케넨",
+        "type": "champion",
+        "direction": "adjust",
+        "changes": [
+          {
+            "statName": "[신규] 기본 지속 효과",
+            "before": "",
+            "after": "준비되면 기본 지속 효과가 첫 적중 시에만 적용되는 대신, 이제 공격 전체에 적중 시 효과가 적용됩니다."
+          },
+          {
+            "statName": "[신규] 기본 지속 효과 피해량",
+            "before": "",
+            "after": "이제 치명타가 적용되며 치명타로 140%(+추가 치명타 피해량의 40%)의 피해를 입힙니다."
+          },
+          {
+            "statName": "[신규] 공격 속도 증가 효과",
+            "before": "",
+            "after": "이제 치명타가 E - 번개 질주의 공격 속도 증가 효과 지속시간을 1초 늘리며, 기본 지속시간인 4초까지 증가합니다. 이 효과는 여러 번 발동할 수 있습니다."
+          }
+        ]
+      },
+      {
+        "targetName": "쉬바나",
+        "type": "champion",
+        "direction": "adjust",
+        "changes": [
+          {
+            "statName": "공격 속도",
+            "before": "0.625",
+            "after": "0.638"
+          },
+          {
+            "statName": "공격 속도 계수",
+            "before": "0.69",
+            "after": "0.638"
+          },
+          {
+            "statName": "공격력 증가량",
+            "before": "3",
+            "after": "4"
+          },
+          {
+            "statName": "기본 지속 효과",
+            "before": "대상 최대 체력의 1% (+추가 공격력 100당 1.1%) (+주문력 100당 1.1%)",
+            "after": "대상 최대 체력의 1% (+추가 공격력 100당 1.1%)"
+          },
+          {
+            "statName": "타격 시 재사용 대기시간 감소",
+            "before": "1초",
+            "after": "0.5초"
+          },
+          {
+            "statName": "범위 물리 피해량",
+            "before": "10/15/20/25/30 (+공격력의 110%) (+주문력의 25%)",
+            "after": "10/15/20/25/30 (+공격력의 110%) (+주문력의 30%)"
+          },
+          {
+            "statName": "재사용 대기시간",
+            "before": "14/13.5/13/12.5/12초",
+            "after": "13/12/11/10/9초"
+          },
+          {
+            "statName": "보호막",
+            "before": "60/80/100/120/140 (+최대 체력의 5%)",
+            "after": "75/95/115/135/155 (+추가 체력의 12%)"
+          },
+          {
+            "statName": "피해량",
+            "before": "80/100/120/140/160 (+추가 공격력의 40%) (+주문력의 20%)",
+            "after": "80/100/120/140/160 (+주문력의 65%)"
+          },
+          {
+            "statName": "용 형상 체력 회복량",
+            "before": "75~214.71 (레벨에 따라) (+추가 공격력의 10%) (+주문력의 5%), (쉬바나가 잃은 체력에 따라 0%~100% 증가하여 최대 150~429.41 (레벨에 따라) (+추가 공격력의 20%) (+주문력의 10%) 체력 회복",
+            "after": "60~100 + 잃은 체력의 4~8% (레벨에 따라)"
+          },
+          {
+            "statName": "재사용 대기시간",
+            "before": "12/11.5/11/10.5/10초",
+            "after": "12/11/10/9/8초"
+          },
+          {
+            "statName": "마법 피해량",
+            "before": "80/110/140/170/200 (+추가 공격력의 35%) (+주문력의 70%)",
+            "after": "50/65/80/95/110 (+주문력의 60/65/70/75/80%) + 대상 최대 체력의 5%"
+          },
+          {
+            "statName": "동일한 대상에게 적용되는 연속 폭발 피해량",
+            "before": "50%",
+            "after": "40%"
+          },
+          {
+            "statName": "둔화율",
+            "before": "20/25/30/35/40%",
+            "after": "30%"
+          }
+        ]
+      },
+      {
+        "targetName": "탐 켄치",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          {
+            "statName": "회색 체력에서 체력으로 전환 비율",
+            "before": "45~100% (레벨에 따라)",
+            "after": "60~100% (레벨에 따라)"
+          },
+          {
+            "statName": "아군 집어삼키기 시 이동 속도",
+            "before": "3초 동안 40%",
+            "after": "3초 동안 60%"
+          }
+        ]
+      },
+      {
+        "targetName": "탈리야",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          {
+            "statName": "기본 피해량",
+            "before": "50/67.5/85/102.5/120",
+            "after": "55/72.5/90/107.5/125"
+          },
+          {
+            "statName": "몬스터 대상 추가 피해량",
+            "before": "23/28/33/38/43",
+            "after": "20/25/30/35/40"
+          }
+        ]
+      },
+      {
+        "targetName": "티모",
+        "type": "champion",
+        "direction": "adjust",
+        "changes": [
+          {
+            "statName": "[신규] 최초 피해량 추가 공격력 계수",
+            "before": "",
+            "after": "추가 공격력의 10%"
+          },
+          {
+            "statName": "[신규] 지속 피해량 추가 공격력 계수",
+            "before": "",
+            "after": "4초 동안 추가 공격력의 30%"
+          }
+        ]
+      },
+      {
+        "targetName": "우디르",
+        "type": "champion",
+        "direction": "adjust",
+        "changes": [
+          {
+            "statName": "첫 2회 기본 공격 시 추가 피해량",
+            "before": "대상 최대 체력의 3/4/5/6/7/8% (+추가 공격력 100당 4%)",
+            "after": "대상 최대 체력의 3/4/5/6/7/8% (+추가 공격력 100당 3.5%)"
+          },
+          {
+            "statName": "4초 동안 적중 시 추가 피해량",
+            "before": "5/13/21/29/37/45 (+추가 공격력의 25%)",
+            "after": "6/12/18/24/30/36 (+추가 공격력의 20%) (+추가 체력의 1~2%)"
+          },
+          {
+            "statName": "각성 첫 2회 기본 공격 시 추가 피해량",
+            "before": "추가로 대상 최대 체력의 2~4% (레벨에 따라) (+추가 공격력 100당 3%)",
+            "after": "추가로 대상 최대 체력의 2~4% (레벨에 따라) (+추가 공격력 100당 1.5%) (+추가 체력 1,000당 1%)"
+          },
+          {
+            "statName": "각성 연쇄 번개 반동당 피해량",
+            "before": "1.5~3% (레벨에 따라) (+주문력 100당 0.8%)",
+            "after": "1.5~3% (레벨에 따라) (+주문력 100당 0.6%)"
+          },
+          {
+            "statName": "[신규] 보호막 공격력 계수",
+            "before": "",
+            "after": "추가 공격력의 50%"
+          },
+          {
+            "statName": "[신규] 각성 보호막 공격력 계수",
+            "before": "",
+            "after": "추가 공격력의 100%"
+          },
+          {
+            "statName": "[신규] 각성 체력 회복량 공격력 계수",
+            "before": "",
+            "after": "추가 공격력의 50%"
+          },
+          {
+            "statName": "[신규] 이동 속도 공격력 계수",
+            "before": "",
+            "after": "추가 공격력 100당 이동 속도 5%"
+          },
+          {
+            "statName": "[신규] 각성 이동 속도 공격력 계수",
+            "before": "",
+            "after": "추가 공격력 100당 이동 속도 10%"
+          }
+        ]
+      },
+      {
+        "targetName": "워윅",
+        "type": "champion",
+        "direction": "buff",
+        "changes": [
+          {
+            "statName": "적중 시 피해량",
+            "before": "6/16/26/36/46",
+            "after": "6/18.25/30.5/42.75/55"
+          }
+        ]
+      },
+      {
+        "targetName": "신 짜오",
+        "type": "champion",
+        "direction": "adjust",
+        "changes": [
+          {
+            "statName": "체력 회복량",
+            "before": "최대 체력의 3/4/5% (+주문력의 65%) (1/6/11레벨에서)",
+            "after": "최대 체력의 3/4/5% (+주문력의 50/65/90%) (1/6/11레벨에서)"
+          }
+        ]
+      },
+      {
+        "targetName": "제리",
+        "type": "champion",
+        "direction": "adjust",
+        "changes": []
+      },
+      {
+        "targetName": "조이",
+        "type": "champion",
+        "direction": "adjust",
+        "changes": []
+      }
+    ],
+    "items": [
+      {
+        "targetName": "죽음불꽃 손길",
+        "type": "item",
+        "direction": "nerf",
+        "changes": [
+          {
+            "statName": "초당 적응형 피해량",
+            "before": "4~12 (레벨에 따라) + 추가 공격력의 8% + 주문력의 3%, 3초 후 피해량 100% 증가",
+            "after": "4~12 (레벨에 따라) + 추가 공격력의 7% + 주문력의 2.5%, 3초 후 피해량 75% 증가"
+          }
+        ]
+      }
+    ],
+    "systems": []
+  },
+  "arena": {
+    "champions": [],
+    "items": [],
+    "systems": []
+  }
+}
