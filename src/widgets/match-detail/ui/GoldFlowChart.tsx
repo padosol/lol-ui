@@ -10,6 +10,7 @@ import {
   Tooltip,
 } from "chart.js";
 import type { ChartData, ChartOptions } from "chart.js";
+import { useTranslations } from "next-intl";
 import { Line } from "react-chartjs-2";
 
 ChartJS.register(
@@ -32,6 +33,7 @@ export default function GoldFlowChart({
   redGoldTimeline,
   timestamps,
 }: GoldFlowChartProps) {
+  const t = useTranslations("matchDetail");
   const labels = timestamps.map((ts) => `${Math.floor(ts / 60000)}m`);
   const goldDiffs = blueGoldTimeline.map(
     (blue, i) => blue - (redGoldTimeline[i] ?? 0)
@@ -87,9 +89,9 @@ export default function GoldFlowChart({
           label: (ctx) => {
             const diff = ctx.parsed.y ?? 0;
             const absDiff = Math.abs(diff).toLocaleString();
-            if (diff > 0) return `블루팀 +${absDiff}g`;
-            if (diff < 0) return `레드팀 +${absDiff}g`;
-            return "동일";
+            if (diff > 0) return t("goldBlueLead", { gold: absDiff });
+            if (diff < 0) return t("goldRedLead", { gold: absDiff });
+            return t("goldEven");
           },
         },
       },

@@ -146,6 +146,52 @@
       "more": "많음"
     }
   },
+  "matchDetail": {
+    "tabs": {
+      "overview": "종합",
+      "build": "빌드"
+    },
+    "noParticipants": "참가자 데이터 없음",
+    "itemBuildOrder": "아이템 빌드 순서",
+    "noItemBuildOrder": "아이템 빌드 순서 정보 없음",
+    "skillOrder": "스킬 순서",
+    "noSkillOrder": "스킬 순서 정보 없음",
+    "runes": "룬",
+    "noRunes": "룬 정보 없음",
+    "runeShards": "룬 파편",
+    "kdaRating": "{kda} 평점",
+    "damage": "피해",
+    "damageTaken": "받은 피해",
+    "damageTooltip": "적에게 가한 피해량",
+    "damageTakenTooltip": "받은 피해량",
+    "teamResult": "{team} {result}",
+    "objectives": {
+      "baron": "바론",
+      "dragon": "드래곤",
+      "turret": "타워",
+      "inhibitor": "억제기"
+    },
+    "goldBlueLead": "블루팀 +{gold}g",
+    "goldRedLead": "레드팀 +{gold}g",
+    "goldEven": "동일"
+  },
+  "ingame": {
+    "loading": "인게임 정보를 불러오는 중...",
+    "error": "오류: {message}",
+    "errorFallback": "데이터를 불러올 수 없습니다",
+    "notInGame": "현재 게임 중이 아닙니다",
+    "notInGameHint": "소환사가 게임을 시작하면 여기에 정보가 표시됩니다",
+    "gameTime": "게임시간: {time}",
+    "unknownQueue": "큐 ID: {id}",
+    "noBans": "없음"
+  },
+  "recentlyPlayed": {
+    "title": "함께 플레이한 소환사",
+    "needSummoner": "소환사 정보가 필요합니다.",
+    "empty": "함께 플레이한 소환사가 없습니다.",
+    "wins": "{count}승",
+    "losses": "{count}패"
+  },
   "leaderboards": {
     "region": "지역",
     "regionSelect": "지역 선택",
@@ -223,6 +269,10 @@
       "RANKED_SOLO_5x5": "솔로 랭크",
       "RANKED_FLEX_SR": "자유 랭크"
     },
+    "team": {
+      "blue": "블루팀",
+      "red": "레드팀"
+    },
     "gameMode": {
       "RANKED_SOLO": "랭크",
       "RANKED_FLEX": "자유랭크",
@@ -231,7 +281,8 @@
       "ARENA": "아레나",
       "URF": "U.R.F.",
       "TFT": "전략적 팀 전투",
-      "SWIFTPLAY": "신속"
+      "SWIFTPLAY": "신속",
+      "CLASH": "격전"
     }
   },
   "errors": {

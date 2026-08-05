@@ -146,6 +146,52 @@
       "more": "More"
     }
   },
+  "matchDetail": {
+    "tabs": {
+      "overview": "Overview",
+      "build": "Build"
+    },
+    "noParticipants": "No participant data",
+    "itemBuildOrder": "Item build order",
+    "noItemBuildOrder": "No item build order data",
+    "skillOrder": "Skill order",
+    "noSkillOrder": "No skill order data",
+    "runes": "Runes",
+    "noRunes": "No rune data",
+    "runeShards": "Rune shards",
+    "kdaRating": "{kda} KDA",
+    "damage": "Damage",
+    "damageTaken": "Taken",
+    "damageTooltip": "Damage dealt to champions",
+    "damageTakenTooltip": "Damage taken",
+    "teamResult": "{team} {result}",
+    "objectives": {
+      "baron": "Baron",
+      "dragon": "Dragon",
+      "turret": "Turret",
+      "inhibitor": "Inhibitor"
+    },
+    "goldBlueLead": "Blue Team +{gold}g",
+    "goldRedLead": "Red Team +{gold}g",
+    "goldEven": "Even"
+  },
+  "ingame": {
+    "loading": "Loading live game...",
+    "error": "Error: {message}",
+    "errorFallback": "Unable to load data",
+    "notInGame": "Not in a game right now",
+    "notInGameHint": "Live game details will appear here once the summoner starts a match",
+    "gameTime": "Game time: {time}",
+    "unknownQueue": "Queue ID: {id}",
+    "noBans": "None"
+  },
+  "recentlyPlayed": {
+    "title": "Recently played with",
+    "needSummoner": "A summoner is required.",
+    "empty": "No recent teammates.",
+    "wins": "{count}W",
+    "losses": "{count}L"
+  },
   "leaderboards": {
     "region": "Region",
     "regionSelect": "Select region",
@@ -223,6 +269,10 @@
       "RANKED_SOLO_5x5": "Ranked Solo",
       "RANKED_FLEX_SR": "Ranked Flex"
     },
+    "team": {
+      "blue": "Blue Team",
+      "red": "Red Team"
+    },
     "gameMode": {
       "RANKED_SOLO": "Ranked",
       "RANKED_FLEX": "Ranked Flex",
@@ -231,7 +281,8 @@
       "ARENA": "Arena",
       "URF": "U.R.F.",
       "TFT": "Teamfight Tactics",
-      "SWIFTPLAY": "Swiftplay"
+      "SWIFTPLAY": "Swiftplay",
+      "CLASH": "Clash"
     }
   },
   "errors": {

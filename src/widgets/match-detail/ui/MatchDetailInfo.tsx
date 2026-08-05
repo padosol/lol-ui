@@ -1,6 +1,7 @@
 "use client";
 
 import type { Match, MatchDetail, ParticipantData } from "@/entities/match";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import BuildTab from "./BuildTab";
 import MatchDetailOverview from "./MatchDetailOverview";
@@ -26,12 +27,10 @@ export default function MatchDetailInfo({
   puuid,
   region,
 }: MatchDetailInfoProps) {
+  const t = useTranslations("matchDetail.tabs");
   const [activeTab, setActiveTab] = useState<DetailTab>("overview");
 
-  const tabs: { id: DetailTab; label: string }[] = [
-    { id: "overview", label: "종합" },
-    { id: "build", label: "빌드" },
-  ];
+  const tabs: DetailTab[] = ["overview", "build"];
 
   return (
     <div
@@ -43,14 +42,14 @@ export default function MatchDetailInfo({
         <div className="flex gap-0 border-b border-divider/50">
           {tabs.map((tab) => (
             <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`px-4 py-1.5 text-xs font-medium transition-colors border-b-2 cursor-pointer ${activeTab === tab.id
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`px-4 py-1.5 text-xs font-medium transition-colors border-b-2 cursor-pointer ${activeTab === tab
                   ? "text-on-surface border-on-surface-medium"
                   : "text-on-surface-medium border-transparent hover:text-on-surface"
                 }`}
             >
-              {tab.label}
+              {t(tab)}
             </button>
           ))}
         </div>

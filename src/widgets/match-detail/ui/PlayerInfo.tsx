@@ -46,6 +46,7 @@ export default function PlayerInfo({
   isArena = false,
 }: PlayerInfoProps) {
   const t = useTranslations("domain");
+  const tDetail = useTranslations("matchDetail");
   return (
     <div className="space-y-3">
       {/* 챔피언 포트레이트 */}
@@ -157,7 +158,7 @@ export default function PlayerInfo({
           </div>
           <div className="text-xs">
             <span className={getKDAColorClass(kdaRating)}>
-              {kdaRating} 평점
+              {tDetail("kdaRating", { kda: kdaRating })}
             </span>
           </div>
         </div>

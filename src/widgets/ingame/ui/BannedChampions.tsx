@@ -3,6 +3,7 @@
 import type { SpectatorBannedChampion } from "@/entities/spectator";
 import { useChampionsByIds } from "@/entities/champion";
 import { getChampionImageUrl } from "@/entities/champion";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useMemo } from "react";
 
@@ -22,6 +23,7 @@ export default function BannedChampions({
   bannedChampions,
   align = "left",
 }: BannedChampionsProps) {
+  const t = useTranslations("ingame");
   const championIds = useMemo(
     () =>
       bannedChampions
@@ -81,7 +83,7 @@ export default function BannedChampions({
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center text-on-surface-disabled text-xs">
-              없음
+              {t("noBans")}
             </div>
           )}
         </div>
