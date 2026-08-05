@@ -33,6 +33,37 @@
     "toLight": "Switch to light mode",
     "toDark": "Switch to dark mode"
   },
+  "home": {
+    "freeChampions": {
+      "title": "Free Champion Rotation",
+      "subtitle": "Check which champions are free to play this week",
+      "error": "Unable to load the champion rotation."
+    },
+    "patchNotes": {
+      "title": "Patch Notes",
+      "subtitle": "Catch up on the latest patch",
+      "error": "Failed to load patch notes.",
+      "empty": "No patch notes available."
+    }
+  },
+  "search": {
+    "placeholder": "Summoner name + #KR1",
+    "regionSelect": "Select region",
+    "searching": "Searching...",
+    "noResults": "No results found.",
+    "tierAlt": "{tier} tier"
+  },
+  "summoner": {
+    "level": "Level {level}",
+    "notFound": {
+      "title": "Summoner not found",
+      "body": "<highlight>{name}</highlight> could not be found on the Rift.",
+      "searchPrompt": "Try searching for another summoner",
+      "hintName": "• Make sure the summoner name and tagline are exact",
+      "hintExample": "• Example: HideOnBush#KR1",
+      "goHome": "Back to home"
+    }
+  },
   "championStats": {
     "tierSelect": "Select tier",
     "patchSelect": "Select patch",
@@ -43,6 +74,14 @@
     "viewPreviousPatch": "View previous patch ({patch})",
     "loadError": "Failed to load champion stats.",
     "lastAttempt": "Last attempt {time}"
+  },
+  "leaderboards": {
+    "region": "Region",
+    "regionSelect": "Select region",
+    "queueType": "Queue",
+    "queueTypeSelect": "Select queue",
+    "cutoffError": "Unable to load tier cutoffs",
+    "userCount": "{count} players"
   },
   "league": {
     "title": "Ranked",
@@ -83,6 +122,11 @@
       "moveSpeed": "Move Speed",
       "range": "Range",
       "attackDamage": "Attack Damage"
+    },
+    "region": {
+      "kr": "Korea",
+      "jp": "Japan",
+      "na": "North America"
     },
     "position": {
       "TOP": "Top",

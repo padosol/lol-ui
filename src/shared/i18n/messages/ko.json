@@ -33,6 +33,37 @@
     "toLight": "라이트 모드로 전환",
     "toDark": "다크 모드로 전환"
   },
+  "home": {
+    "freeChampions": {
+      "title": "이번 주 무료 챔피언",
+      "subtitle": "무료로 플레이할 수 있는 챔피언을 확인하세요",
+      "error": "챔피언 로테이션 정보를 불러올 수 없습니다."
+    },
+    "patchNotes": {
+      "title": "패치노트",
+      "subtitle": "최신 패치노트를 확인하세요",
+      "error": "패치노트를 불러오는데 실패했습니다.",
+      "empty": "패치노트가 없습니다."
+    }
+  },
+  "search": {
+    "placeholder": "소환사 명 + #KR1",
+    "regionSelect": "리전 선택",
+    "searching": "검색 중...",
+    "noResults": "검색 결과가 없습니다.",
+    "tierAlt": "{tier} 티어"
+  },
+  "summoner": {
+    "level": "레벨 {level}",
+    "notFound": {
+      "title": "소환사를 찾을 수 없습니다",
+      "body": "<highlight>{name}</highlight> 소환사가 소환사의 협곡에서 발견되지 않았습니다.",
+      "searchPrompt": "다른 소환사를 검색해보세요",
+      "hintName": "• 소환사명과 태그라인을 정확히 입력해주세요",
+      "hintExample": "• 예시: HideOnBush#KR1",
+      "goHome": "홈으로 돌아가기"
+    }
+  },
   "championStats": {
     "tierSelect": "티어 선택",
     "patchSelect": "패치 선택",
@@ -43,6 +74,14 @@
     "viewPreviousPatch": "이전 패치 ({patch}) 보기",
     "loadError": "통계 데이터를 불러오지 못했습니다.",
     "lastAttempt": "마지막 시도 {time}"
+  },
+  "leaderboards": {
+    "region": "지역",
+    "regionSelect": "지역 선택",
+    "queueType": "랭킹 타입",
+    "queueTypeSelect": "랭킹 타입 선택",
+    "cutoffError": "커트라인 정보를 불러올 수 없습니다",
+    "userCount": "{count}명"
   },
   "league": {
     "title": "리그 정보",
@@ -83,6 +122,11 @@
       "moveSpeed": "이동속도",
       "range": "사거리",
       "attackDamage": "공격력"
+    },
+    "region": {
+      "kr": "한국",
+      "jp": "일본",
+      "na": "북미"
     },
     "position": {
       "TOP": "탑",

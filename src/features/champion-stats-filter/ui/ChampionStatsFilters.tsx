@@ -27,6 +27,7 @@ export default function ChampionStatsFilters({
   onPlatformChange,
 }: ChampionStatsFiltersProps) {
   const t = useTranslations("championStats");
+  const tRegion = useTranslations("domain.region");
   const tierLabel = useTierLabel();
   const [tierOpen, setTierOpen] = useState(false);
   const [patchOpen, setPatchOpen] = useState(false);
@@ -170,7 +171,7 @@ export default function ChampionStatsFilters({
                     role="option"
                     aria-selected={selected}
                   >
-                    {region.label} ({region.subLabel})
+                    {tRegion(region.value)} ({region.subLabel})
                   </button>
                 );
               })}

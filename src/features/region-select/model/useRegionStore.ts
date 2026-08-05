@@ -1,10 +1,11 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
+// 표시 이름은 messages 의 domain.region.<value> 에서 가져온다.
 export const AVAILABLE_REGIONS = [
-  { value: "kr", label: "한국", subLabel: "KR" },
-  { value: "jp", label: "일본", subLabel: "JP" },
-  { value: "na", label: "북미", subLabel: "NA" },
+  { value: "kr", subLabel: "KR" },
+  { value: "jp", subLabel: "JP" },
+  { value: "na", subLabel: "NA" },
 ] as const
 
 export type RegionValue = typeof AVAILABLE_REGIONS[number]['value']

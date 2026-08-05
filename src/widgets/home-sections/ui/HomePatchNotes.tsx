@@ -2,17 +2,17 @@
 
 import { usePatchVersions } from "@/entities/patch-note";
 import { Link } from "@/shared/i18n/navigation";
+import { useTranslations } from "next-intl";
 
 export default function HomePatchNotes() {
+  const t = useTranslations("home.patchNotes");
   const { data: patches, isLoading, error } = usePatchVersions();
 
   return (
     <div>
       <div className="text-left mb-4">
-        <h2 className="text-lg font-bold text-on-surface mb-1">패치노트</h2>
-        <p className="text-on-surface-medium text-xs">
-          최신 패치노트를 확인하세요
-        </p>
+        <h2 className="text-lg font-bold text-on-surface mb-1">{t("title")}</h2>
+        <p className="text-on-surface-medium text-xs">{t("subtitle")}</p>
       </div>
 
       {isLoading ? (
@@ -26,15 +26,11 @@ export default function HomePatchNotes() {
         </div>
       ) : error ? (
         <div className="p-4 bg-surface-2 rounded-lg border border-divider/50">
-          <p className="text-on-surface-medium text-sm">
-            패치노트를 불러오는데 실패했습니다.
-          </p>
+          <p className="text-on-surface-medium text-sm">{t("error")}</p>
         </div>
       ) : !patches || patches.length === 0 ? (
         <div className="p-4 bg-surface-2 rounded-lg border border-divider/50">
-          <p className="text-on-surface-medium text-sm">
-            패치노트가 없습니다.
-          </p>
+          <p className="text-on-surface-medium text-sm">{t("empty")}</p>
         </div>
       ) : (
         <div className="space-y-2">
