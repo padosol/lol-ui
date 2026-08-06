@@ -1,11 +1,25 @@
 import type { Metadata } from "next";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import { localeAlternates } from "@/shared/i18n/alternates";
+import { toLocale } from "@/shared/i18n/locale";
 import { CommunityWritePageClient } from "@/views/community";
 
-export const metadata: Metadata = {
-  title: "글쓰기 | 커뮤니티 | METAPICK.ME",
-  description: "리그 오브 레전드 커뮤니티에 게시글을 작성하세요.",
-};
+interface Props {
+  params: Promise<{ locale: string }>;
+}
 
-export default function CommunityWritePage() {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale: toLocale(locale), namespace: "meta.communityWrite" });
+  return {
+    title: t("title"),
+    description: t("description"),
+    alternates: localeAlternates(locale, "/community/write"),
+  };
+}
+
+export default async function CommunityWritePage({ params }: Props) {
+  const { locale } = await params;
+  setRequestLocale(toLocale(locale));
   return <CommunityWritePageClient />;
 }

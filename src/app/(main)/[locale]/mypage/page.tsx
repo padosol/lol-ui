@@ -1,11 +1,25 @@
 import type { Metadata } from "next";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import { localeAlternates } from "@/shared/i18n/alternates";
+import { toLocale } from "@/shared/i18n/locale";
 import { MypageClient } from "@/views/mypage";
 
-export const metadata: Metadata = {
-  title: "마이페이지 | METAPICK.ME",
-  description: "계정 관리 및 연결된 앱을 관리할 수 있습니다.",
-};
+interface Props {
+  params: Promise<{ locale: string }>;
+}
 
-export default function MypagePage() {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale: toLocale(locale), namespace: "meta.mypage" });
+  return {
+    title: t("title"),
+    description: t("description"),
+    alternates: localeAlternates(locale, "/mypage"),
+  };
+}
+
+export default async function MypagePage({ params }: Props) {
+  const { locale } = await params;
+  setRequestLocale(toLocale(locale));
   return <MypageClient />;
 }

@@ -1,11 +1,25 @@
 import type { Metadata } from "next";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import { localeAlternates } from "@/shared/i18n/alternates";
+import { toLocale } from "@/shared/i18n/locale";
 import { LeaderboardsPageClient } from "@/views/leaderboards";
 
-export const metadata: Metadata = {
-  title: "랭킹, 천상계 커트라인 | METAPICK.ME",
-  description: "리그 오브 레전드 솔로 랭크 랭킹, 천상계 커트라인을 확인하세요.",
-};
+interface Props {
+  params: Promise<{ locale: string }>;
+}
 
-export default function LeaderboardsPage() {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale: toLocale(locale), namespace: "meta.leaderboards" });
+  return {
+    title: t("title"),
+    description: t("description"),
+    alternates: localeAlternates(locale, "/leaderboards"),
+  };
+}
+
+export default async function LeaderboardsPage({ params }: Props) {
+  const { locale } = await params;
+  setRequestLocale(toLocale(locale));
   return <LeaderboardsPageClient />;
 }

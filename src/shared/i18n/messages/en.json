@@ -615,6 +615,67 @@
       "CLASH": "Clash"
     }
   },
+  "meta": {
+    "home": {
+      "title": "LoL Match Lookup & Champion Stats | METAPICK.ME",
+      "description": "Look up your recent League of Legends matches on METAPICK and optimize your champion builds with in-depth champion analysis."
+    },
+    "championStats": {
+      "title": "Champion Stats - METAPICK",
+      "description": "Check champion pick counts by position and click a champion for detailed statistics."
+    },
+    "championDetail": {
+      "title": "{champion} Champion Stats - METAPICK",
+      "description": "See {champion}'s win rate, item builds, runes, skill order, and matchup stats."
+    },
+    "leaderboards": {
+      "title": "Leaderboards & Apex Tier Cutoffs | METAPICK.ME",
+      "description": "Check the League of Legends solo queue leaderboard and apex tier cutoffs."
+    },
+    "patchNotes": {
+      "title": "League of Legends Patch Notes",
+      "titleWithVersion": "League of Legends Patch Notes {version}",
+      "description": "See what changed in the latest League of Legends patch",
+      "descriptionWithVersion": "League of Legends patch {version} changes - champions, items, and system updates at a glance"
+    },
+    "summoner": {
+      "title": "{name} Match History | METAPICK",
+      "descriptionWithTier": "{name}'s League of Legends match history - {tier} | Win rate, champion stats, match history",
+      "description": "{name}'s League of Legends match history | Win rate, champion stats, match history",
+      "fallbackTitle": "Summoner Match Lookup | METAPICK",
+      "fallbackDescription": "League of Legends summoner lookup - win rate, champion stats, match history | METAPICK"
+    },
+    "community": {
+      "title": "Community | METAPICK.ME",
+      "description": "The League of Legends community. Share champion discussion, patch note takes, tips, and guides."
+    },
+    "communityWrite": {
+      "title": "New Post | Community | METAPICK.ME",
+      "description": "Write a post in the League of Legends community."
+    },
+    "communityEdit": {
+      "title": "Edit Post | Community | METAPICK.ME",
+      "description": "Edit your post."
+    },
+    "duo": {
+      "title": "Find Duo | METAPICK.ME",
+      "description": "Find a League of Legends duo partner. Send match requests and confirm a partner."
+    },
+    "login": {
+      "title": "Sign in | METAPICK.ME"
+    },
+    "mypage": {
+      "title": "My Account | METAPICK.ME",
+      "description": "Manage your account and linked apps."
+    },
+    "terms": {
+      "title": "Terms of Service | METAPICK.ME"
+    },
+    "privacy": {
+      "title": "Privacy Policy | METAPICK.ME"
+    },
+    "championNotFound": "Champion not found:"
+  },
   "legal": {
     "backToLogin": "Back to sign-in",
     "terms": {

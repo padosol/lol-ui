@@ -1,16 +1,24 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
+import { localeAlternates } from "@/shared/i18n/alternates";
+import { toLocale } from "@/shared/i18n/locale";
 import { CommunityEditPageClient } from "@/views/community";
 
-export const metadata: Metadata = {
-  title: "글 수정 | 커뮤니티 | METAPICK.ME",
-  description: "게시글을 수정합니다.",
-};
-
-interface CommunityEditPageProps {
-  params: Promise<{ postId: string }>;
+interface Props {
+  params: Promise<{ locale: string; postId: string }>;
 }
 
-export default async function CommunityEditPage({ params }: CommunityEditPageProps) {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale, postId } = await params;
+  const t = await getTranslations({ locale: toLocale(locale), namespace: "meta.communityEdit" });
+  return {
+    title: t("title"),
+    description: t("description"),
+    alternates: localeAlternates(locale, `/community/${postId}/edit`),
+  };
+}
+
+export default async function CommunityEditPage({ params }: Props) {
   const { postId } = await params;
   return <CommunityEditPageClient postId={Number(postId)} />;
 }

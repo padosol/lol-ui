@@ -3,22 +3,24 @@ import { PatchContentInner, PatchList } from "@/widgets/patch-content";
 import { getPatchVersions } from "@/entities/patch-note";
 import { fetchPatchNoteServer } from "@/entities/patch-note/lib/serverPatchnotes";
 import { getTranslations } from "next-intl/server";
+import { localeAlternates } from "@/shared/i18n/alternates";
+import { toLocale } from "@/shared/i18n/locale";
 import type { Metadata } from "next";
 
 interface Props {
-  params: Promise<{ versionId: string }>;
+  params: Promise<{ locale: string; versionId: string }>;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { versionId } = await params;
-  const title = `리그오브레전드 패치노트 ${versionId}`;
+  const { locale, versionId } = await params;
+  const tMeta = await getTranslations({ locale: toLocale(locale), namespace: "meta.patchNotes" });
+  const title = tMeta("titleWithVersion", { version: versionId });
+  const description = tMeta("descriptionWithVersion", { version: versionId });
   return {
     title,
-    description: `리그 오브 레전드 패치 ${versionId} 변경사항 - 챔피언, 아이템, 시스템 변경사항을 한눈에 확인하세요`,
-    openGraph: {
-      title,
-      description: `리그 오브 레전드 패치 ${versionId} 변경사항 - 챔피언, 아이템, 시스템 변경사항을 한눈에 확인하세요`,
-    },
+    description,
+    alternates: localeAlternates(locale, `/patch-notes/${versionId}`),
+    openGraph: { title, description },
   };
 }
 

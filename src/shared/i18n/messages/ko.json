@@ -615,6 +615,67 @@
       "CLASH": "격전"
     }
   },
+  "meta": {
+    "home": {
+      "title": "롤 전적 검색, 메타픽, 라이엇 | METAPICK.ME",
+      "description": "롤 전적 검색, 메타픽을 사용하여 나의 최근 전적을 확인하고, 챔피언 분석을 통해 챔피언 빌드를 최적화하세요!"
+    },
+    "championStats": {
+      "title": "챔피언 분석 - METAPICK",
+      "description": "포지션별 챔피언 게임수를 확인하고, 챔피언을 클릭하여 상세 통계를 확인하세요."
+    },
+    "championDetail": {
+      "title": "{champion} 챔피언 통계 - METAPICK",
+      "description": "{champion}의 승률, 아이템 빌드, 룬, 스킬 트리, 상성 통계를 확인하세요."
+    },
+    "leaderboards": {
+      "title": "랭킹, 천상계 커트라인 | METAPICK.ME",
+      "description": "리그 오브 레전드 솔로 랭크 랭킹, 천상계 커트라인을 확인하세요."
+    },
+    "patchNotes": {
+      "title": "리그오브레전드 패치노트",
+      "titleWithVersion": "리그오브레전드 패치노트 {version}",
+      "description": "리그 오브 레전드 패치 변경사항을 확인하세요",
+      "descriptionWithVersion": "리그 오브 레전드 패치 {version} 변경사항 - 챔피언, 아이템, 시스템 변경사항을 한눈에 확인하세요"
+    },
+    "summoner": {
+      "title": "{name} 전적 검색 | METAPICK",
+      "descriptionWithTier": "{name}님의 리그 오브 레전드 전적 - {tier} | 승률, 챔피언 통계, 매치 히스토리",
+      "description": "{name}님의 리그 오브 레전드 전적 | 승률, 챔피언 통계, 매치 히스토리",
+      "fallbackTitle": "소환사 전적 검색 | METAPICK",
+      "fallbackDescription": "리그 오브 레전드 소환사 전적 검색 - 승률, 챔피언 통계, 매치 히스토리 | METAPICK"
+    },
+    "community": {
+      "title": "커뮤니티 | METAPICK.ME",
+      "description": "리그 오브 레전드 커뮤니티. 챔피언 토론, 패치노트 의견, 팁과 가이드를 공유하세요."
+    },
+    "communityWrite": {
+      "title": "글쓰기 | 커뮤니티 | METAPICK.ME",
+      "description": "리그 오브 레전드 커뮤니티에 게시글을 작성하세요."
+    },
+    "communityEdit": {
+      "title": "글 수정 | 커뮤니티 | METAPICK.ME",
+      "description": "게시글을 수정합니다."
+    },
+    "duo": {
+      "title": "듀오 찾기 | METAPICK.ME",
+      "description": "리그 오브 레전드 듀오 파트너를 찾아보세요. 매칭 요청을 보내고 파트너를 확정할 수 있습니다."
+    },
+    "login": {
+      "title": "로그인 | METAPICK.ME"
+    },
+    "mypage": {
+      "title": "마이페이지 | METAPICK.ME",
+      "description": "계정 관리 및 연결된 앱을 관리할 수 있습니다."
+    },
+    "terms": {
+      "title": "이용약관 | METAPICK.ME"
+    },
+    "privacy": {
+      "title": "개인정보 처리방침 | METAPICK.ME"
+    },
+    "championNotFound": "챔피언을 찾을 수 없습니다:"
+  },
   "legal": {
     "backToLogin": "로그인으로 돌아가기",
     "terms": {

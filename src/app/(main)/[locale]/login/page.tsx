@@ -1,10 +1,24 @@
 import type { Metadata } from "next";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import { localeAlternates } from "@/shared/i18n/alternates";
+import { toLocale } from "@/shared/i18n/locale";
 import { LoginPageClient } from "@/views/login";
 
-export const metadata: Metadata = {
-  title: "로그인 | METAPICK.ME",
-};
+interface Props {
+  params: Promise<{ locale: string }>;
+}
 
-export default function LoginPage() {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale: toLocale(locale), namespace: "meta.login" });
+  return {
+    title: t("title"),
+    alternates: localeAlternates(locale, "/login"),
+  };
+}
+
+export default async function LoginPage({ params }: Props) {
+  const { locale } = await params;
+  setRequestLocale(toLocale(locale));
   return <LoginPageClient />;
 }

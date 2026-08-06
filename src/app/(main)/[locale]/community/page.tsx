@@ -1,11 +1,25 @@
 import type { Metadata } from "next";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import { localeAlternates } from "@/shared/i18n/alternates";
+import { toLocale } from "@/shared/i18n/locale";
 import { CommunityPageClient } from "@/views/community";
 
-export const metadata: Metadata = {
-  title: "커뮤니티 | METAPICK.ME",
-  description: "리그 오브 레전드 커뮤니티. 챔피언 토론, 패치노트 의견, 팁과 가이드를 공유하세요.",
-};
+interface Props {
+  params: Promise<{ locale: string }>;
+}
 
-export default function CommunityPage() {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale: toLocale(locale), namespace: "meta.community" });
+  return {
+    title: t("title"),
+    description: t("description"),
+    alternates: localeAlternates(locale, "/community"),
+  };
+}
+
+export default async function CommunityPage({ params }: Props) {
+  const { locale } = await params;
+  setRequestLocale(toLocale(locale));
   return <CommunityPageClient />;
 }

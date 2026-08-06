@@ -1,12 +1,25 @@
 import type { Metadata } from "next";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import { localeAlternates } from "@/shared/i18n/alternates";
+import { toLocale } from "@/shared/i18n/locale";
 import { ChampionStatsPageClient } from "@/views/champion-stats";
 
-export const metadata: Metadata = {
-  title: "챔피언 분석 - METAPICK",
-  description:
-    "포지션별 챔피언 게임수를 확인하고, 챔피언을 클릭하여 상세 통계를 확인하세요.",
-};
+interface Props {
+  params: Promise<{ locale: string }>;
+}
 
-export default function ChampionStatsPage() {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale: toLocale(locale), namespace: "meta.championStats" });
+  return {
+    title: t("title"),
+    description: t("description"),
+    alternates: localeAlternates(locale, "/champion-stats"),
+  };
+}
+
+export default async function ChampionStatsPage({ params }: Props) {
+  const { locale } = await params;
+  setRequestLocale(toLocale(locale));
   return <ChampionStatsPageClient />;
 }

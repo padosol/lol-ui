@@ -5,10 +5,13 @@ import { getChampionStats, getChampionImageUrl } from "@/entities/champion";
 import { getChampionKeyFromId } from "@/entities/champion/lib/serverChampionData";
 import { getSeasons } from "@/entities/season";
 import { logger } from "@/shared/lib/logger";
+import { getTranslations } from "next-intl/server";
+import { localeAlternates } from "@/shared/i18n/alternates";
+import { toLocale } from "@/shared/i18n/locale";
 import { ChampionStatsDetailPageClient } from "@/views/champion-stats";
 
 interface PageProps {
-  params: Promise<{ championId: string }>;
+  params: Promise<{ locale: string; championId: string }>;
   searchParams: Promise<{ tier?: string; patch?: string; platformId?: string }>;
 }
 
@@ -26,17 +29,19 @@ async function resolveLatestPatch(): Promise<string | null> {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { championId } = await params;
+  const { locale, championId } = await params;
   const championInfo = await getChampionKeyFromId(championId);
   const championName = championInfo?.name ?? championId;
   const imageUrl = getChampionImageUrl(championId);
 
-  const title = `${championName} 챔피언 통계 - METAPICK`;
-  const description = `${championName}의 승률, 아이템 빌드, 룬, 스킬 트리, 상성 통계를 확인하세요.`;
+  const t = await getTranslations({ locale: toLocale(locale), namespace: "meta.championDetail" });
+  const title = t("title", { champion: championName });
+  const description = t("description", { champion: championName });
 
   return {
     title,
     description,
+    alternates: localeAlternates(locale, `/champion-stats/${championId}`),
     openGraph: {
       title,
       description,

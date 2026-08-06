@@ -4,8 +4,10 @@ import { ThemeProvider } from "@/shared/providers/ThemeProvider";
 import { Toaster } from "@/shared/ui/toast";
 import { routing } from "@/shared/i18n/routing";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
+import { localeAlternates, SITE_URL } from "@/shared/i18n/alternates";
+import { toLocale } from "@/shared/i18n/locale";
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import "../../globals.css";
@@ -15,19 +17,30 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "롤 전적 검색, 메타픽, 라이엇 | METAPICK.ME",
-  description: "롤 전적 검색, 메타픽을 사용하여 나의 최근 전적을 확인하고, 챔피언 분석을 통해 챔피언 빌드를 최적화하세요!",
-  icons: {
-    icon: "/favicon.ico",
-  },
-  verification: {
-    google: "xR-MUvBKROkou2kxGMHdh3JQmgSMyL20SnZLWf0VMk8",
-  },
-  other: {
-    "google-adsense-account": "ca-pub-1999181347503274",
-  },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale: toLocale(locale), namespace: "meta.home" });
+
+  return {
+    metadataBase: new URL(SITE_URL),
+    title: t("title"),
+    description: t("description"),
+    alternates: localeAlternates(locale),
+    icons: {
+      icon: "/favicon.ico",
+    },
+    verification: {
+      google: "xR-MUvBKROkou2kxGMHdh3JQmgSMyL20SnZLWf0VMk8",
+    },
+    other: {
+      "google-adsense-account": "ca-pub-1999181347503274",
+    },
+  };
+}
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -47,7 +60,7 @@ export default async function LocaleLayout({
   }
 
   // 정적 렌더링을 위해 요청 로케일을 고정한다
-  setRequestLocale(locale);
+  setRequestLocale(toLocale(locale));
 
   return (
     <html lang={locale} suppressHydrationWarning>

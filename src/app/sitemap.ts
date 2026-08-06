@@ -1,24 +1,9 @@
 import { MetadataRoute } from "next";
+import { localizedSitemapEntries } from "@/shared/i18n/sitemap";
 
-const BASE_URL = "https://metapick.me";
+const PATHS = ["", "/champion-stats", "/leaderboards", "/patch-notes"];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return [
-    {
-      url: BASE_URL,
-      lastModified: new Date(),
-    },
-    {
-      url: `${BASE_URL}/champion-stats`,
-      lastModified: new Date(),
-    },
-    {
-      url: `${BASE_URL}/leaderboards`,
-      lastModified: new Date(),
-    },
-    {
-      url: `${BASE_URL}/patch-notes`,
-      lastModified: new Date(),
-    },
-  ];
+  const lastModified = new Date();
+  return PATHS.flatMap((path) => localizedSitemapEntries(path, lastModified));
 }

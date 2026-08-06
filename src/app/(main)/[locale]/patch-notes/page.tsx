@@ -3,22 +3,31 @@ import { PatchContentInner, PatchList } from "@/widgets/patch-content";
 import { getPatchVersions } from "@/entities/patch-note";
 import { fetchPatchNoteServer } from "@/entities/patch-note/lib/serverPatchnotes";
 import { getTranslations } from "next-intl/server";
+import { localeAlternates } from "@/shared/i18n/alternates";
+import { toLocale } from "@/shared/i18n/locale";
 import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
 
-export async function generateMetadata(): Promise<Metadata> {
+interface Props {
+  params: Promise<{ locale: string }>;
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const tMeta = await getTranslations({ locale: toLocale(locale), namespace: "meta.patchNotes" });
   const patches = await getPatchVersions();
   const versionId = patches.length > 0 ? patches[0].versionId : "";
   const title = versionId
-    ? `리그오브레전드 패치노트 ${versionId}`
-    : "리그오브레전드 패치노트";
+    ? tMeta("titleWithVersion", { version: versionId })
+    : tMeta("title");
   const description = versionId
-    ? `리그 오브 레전드 패치 ${versionId} 변경사항 - 챔피언, 아이템, 시스템 변경사항을 한눈에 확인하세요`
-    : "리그 오브 레전드 패치 변경사항을 확인하세요";
+    ? tMeta("descriptionWithVersion", { version: versionId })
+    : tMeta("description");
   return {
     title,
     description,
+    alternates: localeAlternates(locale, "/patch-notes"),
     openGraph: { title, description },
   };
 }

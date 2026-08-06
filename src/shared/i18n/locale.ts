@@ -31,3 +31,12 @@ export const DDRAGON_LOCALE: Record<Locale, string> = {
 export function isLocale(value: unknown): value is Locale {
   return typeof value === "string" && LOCALES.includes(value as Locale);
 }
+
+/**
+ * 라우트 파라미터의 `string` 로케일을 좁힌다.
+ * 유효하지 않은 로케일은 proxy/layout 이 이미 걸러내므로
+ * 여기서는 기본 로케일로 떨어뜨려 메타데이터 생성이 깨지지 않게만 한다.
+ */
+export function toLocale(value: string): Locale {
+  return isLocale(value) ? value : DEFAULT_LOCALE;
+}
