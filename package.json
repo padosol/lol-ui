@@ -8,6 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "i18n:check": "node scripts/check-i18n-keys.mjs",
     "prepare": "husky"
   },
   "dependencies": {
@@ -29,7 +30,8 @@
     "zustand": "^5.0.11"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": "eslint --fix"
+    "*.{js,jsx,ts,tsx}": "eslint --fix",
+    "src/shared/i18n/messages/*.json": "node scripts/check-i18n-keys.mjs --"
   },
   "devDependencies": {
     "@playwright/test": "^1.58.2",

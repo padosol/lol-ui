@@ -173,6 +173,7 @@ export default function ProfileSection({
                   return;
                 }
               } catch (error) {
+                // eslint-disable-next-line no-restricted-syntax -- 개발자 로그, 사용자 노출 아님
                 console.error("갱신 상태 확인 중 오류:", error);
                 stopPolling();
               }

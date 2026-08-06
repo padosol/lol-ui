@@ -43,6 +43,7 @@ export function useSummonerSearch() {
         setAutocompleteResults(results);
         setShowAutocomplete(results.length > 0);
       } catch (error) {
+        // eslint-disable-next-line no-restricted-syntax -- 개발자 로그, 사용자 노출 아님
         console.error("자동완성 검색 오류:", error);
         setAutocompleteResults([]);
         setShowAutocomplete(false);

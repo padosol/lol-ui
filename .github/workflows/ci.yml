@@ -26,6 +26,9 @@ jobs:
       - name: Run lint
         run: pnpm lint
 
+      - name: Check i18n message keys
+        run: pnpm i18n:check
+
   build:
     name: Build
     runs-on: ubuntu-latest
