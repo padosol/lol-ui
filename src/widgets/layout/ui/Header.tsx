@@ -15,8 +15,11 @@ export default function Header() {
   const hasHydrated = useHasHydrated(useAuthStore);
   const { handleLogout } = useLogout();
 
+  // Navigation 이 sticky z-50 이라 z-index 가 같으면 DOM 순서상 뒤에 오는
+  // Navigation 이 위로 올라가 헤더의 드롭다운(언어 선택)을 가린다.
+  // 헤더를 한 단계 위 레이어로 올려 드롭다운이 항상 보이게 한다.
   return (
-    <header className="bg-surface-1 border-b border-divider">
+    <header className="relative z-[60] bg-surface-1 border-b border-divider">
       {/* 상단 헤더 */}
       <div className="bg-[#272727] border-b border-divider">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
