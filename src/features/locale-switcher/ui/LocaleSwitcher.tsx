@@ -53,7 +53,7 @@ export function LocaleSwitcher() {
         <ul
           role="listbox"
           aria-label={t("label")}
-          className="absolute right-0 mt-2 min-w-32 rounded-lg bg-surface-3 shadow-lg py-1 z-50"
+          className="absolute right-0 mt-2 min-w-32 rounded-lg bg-surface-4 border border-divider shadow-lg py-1 z-50"
         >
           {LOCALES.map((locale) => (
             <li key={locale}>
