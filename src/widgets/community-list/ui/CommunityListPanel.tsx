@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useMemo, useRef, useEffect, useCallback } from "react";
-import { PenLine, ChevronDown } from "lucide-react";
+import { useState, useMemo } from "react";
+import { PenLine } from "lucide-react";
 import { useRouter } from "@/shared/i18n/navigation";
 import { useTranslations } from "next-intl";
 import {
@@ -9,10 +9,9 @@ import {
   useSearchPosts,
   POST_CATEGORIES,
   POST_SORTS,
-  POST_PERIODS,
   PostRow,
 } from "@/entities/community";
-import type { PostCategory } from "@/entities/community";
+import type { PostCategory, PostPeriod } from "@/entities/community";
 import { useAuthStore } from "@/entities/auth";
 import {
   CommunitySearchBar,
@@ -28,40 +27,25 @@ type PostSortValue = (typeof POST_SORTS)[number];
 const CATEGORIES: CategoryValue[] = ["ALL", ...POST_CATEGORIES];
 /** 노출 순서는 인기 → 추천 → 최신 (POST_SORTS 의 선언 순서와 다르다) */
 const SORTS: PostSortValue[] = ["HOT", "TOP", "NEW"];
-const PERIODS = POST_PERIODS;
+/** 기간 필터를 화면에서 뺐으므로 목록은 항상 전체 기간으로 조회한다. */
+const LIST_PERIOD: PostPeriod = "ALL";
 
 export default function CommunityListPanel() {
   const t = useTranslations("community");
   const tCategory = useTranslations("domain.postCategory");
   const tSort = useTranslations("domain.postSort");
-  const tPeriod = useTranslations("domain.postPeriod");
   const router = useRouter();
   const user = useAuthStore((s) => s.user);
   const [category, setCategory] = useState<CategoryValue>("ALL");
   const [sort, setSort] = useState<PostSortValue>("HOT");
-  const [period, setPeriod] = useState<(typeof PERIODS)[number]>("ALL");
   const [searchKeyword, setSearchKeyword] = useState("");
   // 검색 범위는 아직 서버가 받지 않아 화면 표시용으로만 들고 있는다.
   const [, setSearchScope] = useState<SearchScope>(DEFAULT_SEARCH_SCOPE);
 
-  const [periodOpen, setPeriodOpen] = useState(false);
-  const periodRef = useRef<HTMLDivElement>(null);
-
-  const handleClickOutside = useCallback((e: MouseEvent) => {
-    if (periodRef.current && !periodRef.current.contains(e.target as Node)) {
-      setPeriodOpen(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [handleClickOutside]);
-
   const postsQuery = usePosts({
     category: category === "ALL" ? undefined : category,
     sort,
-    period,
+    period: LIST_PERIOD,
   });
 
   const searchQuery = useSearchPosts(searchKeyword);
@@ -160,49 +144,6 @@ export default function CommunityListPanel() {
                 </button>
               );
             })}
-          </div>
-
-          <div ref={periodRef} className="relative shrink-0">
-            <button
-              type="button"
-              onClick={() => setPeriodOpen((v) => !v)}
-              className="bg-surface-4 hover:bg-surface-8 border border-divider rounded-lg px-3 py-1.5 pr-8 text-[13px] font-medium text-on-surface cursor-pointer focus:outline-none min-w-[86px] text-left"
-              aria-haspopup="listbox"
-              aria-expanded={periodOpen}
-            >
-              {tPeriod(period)}
-              <ChevronDown
-                className={`absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-on-surface-medium transition-transform ${periodOpen ? "rotate-180" : ""}`}
-              />
-            </button>
-            {periodOpen && (
-              <div className="absolute top-full left-0 mt-1 w-full bg-surface-4 border border-divider rounded-lg shadow-lg z-50 overflow-hidden">
-                <div className="py-1" role="listbox" aria-label={t("periodSelect")}>
-                  {PERIODS.map((p) => {
-                    const selected = p === period;
-                    return (
-                      <button
-                        key={p}
-                        type="button"
-                        onClick={() => {
-                          setPeriod(p);
-                          setPeriodOpen(false);
-                        }}
-                        className={`w-full px-3 py-1.5 text-left text-sm transition-colors cursor-pointer ${
-                          selected
-                            ? "bg-surface-8 text-on-surface font-medium"
-                            : "text-on-surface hover:bg-surface-8"
-                        }`}
-                        role="option"
-                        aria-selected={selected}
-                      >
-                        {tPeriod(p)}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
           </div>
 
           <div className="flex-1" />
