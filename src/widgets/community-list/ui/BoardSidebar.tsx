@@ -102,7 +102,7 @@ export default function BoardSidebar({ category, onSelect }: BoardSidebarProps) 
           {tBoard("myPosts")}
         </Link>
         <Link
-          href="/mypage"
+          href="/mypage?tab=bookmarks"
           className="rounded-md px-2.5 py-2 pl-4 text-sm text-on-surface-medium hover:bg-surface-4 hover:text-on-surface transition-colors"
         >
           {tBoard("bookmarks")}
