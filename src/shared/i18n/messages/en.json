@@ -259,8 +259,21 @@
       "upvotes": "Upvotes",
       "views": "Views"
     },
+    "search": {
+      "scopeSelect": "Select search scope",
+      "TITLE_CONTENT": "Title + content",
+      "TITLE": "Title",
+      "CONTENT": "Content",
+      "AUTHOR": "Author"
+    },
     "board": {
       "sectionTitle": "Boards",
+      "group": {
+        "community": "Community",
+        "info": "Info",
+        "esports": "Esports",
+        "comingSoon": "Coming soon"
+      },
       "myActivity": "My activity",
       "myPosts": "My posts",
       "bookmarks": "Saved posts",

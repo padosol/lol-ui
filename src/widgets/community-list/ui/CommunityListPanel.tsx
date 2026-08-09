@@ -14,14 +14,20 @@ import {
 } from "@/entities/community";
 import type { PostCategory } from "@/entities/community";
 import { useAuthStore } from "@/entities/auth";
-import { CommunitySearchBar } from "@/features/community-search";
+import {
+  CommunitySearchBar,
+  DEFAULT_SEARCH_SCOPE,
+  type SearchScope,
+} from "@/features/community-search";
 import BoardSidebar from "./BoardSidebar";
 import CommunityAside from "./CommunityAside";
 
 type CategoryValue = PostCategory | "ALL";
+type PostSortValue = (typeof POST_SORTS)[number];
 
 const CATEGORIES: CategoryValue[] = ["ALL", ...POST_CATEGORIES];
-const SORTS = POST_SORTS;
+/** 노출 순서는 인기 → 추천 → 최신 (POST_SORTS 의 선언 순서와 다르다) */
+const SORTS: PostSortValue[] = ["HOT", "TOP", "NEW"];
 const PERIODS = POST_PERIODS;
 
 export default function CommunityListPanel() {
@@ -32,9 +38,11 @@ export default function CommunityListPanel() {
   const router = useRouter();
   const user = useAuthStore((s) => s.user);
   const [category, setCategory] = useState<CategoryValue>("ALL");
-  const [sort, setSort] = useState<(typeof SORTS)[number]>("HOT");
+  const [sort, setSort] = useState<PostSortValue>("HOT");
   const [period, setPeriod] = useState<(typeof PERIODS)[number]>("ALL");
   const [searchKeyword, setSearchKeyword] = useState("");
+  // 검색 범위는 아직 서버가 받지 않아 화면 표시용으로만 들고 있는다.
+  const [, setSearchScope] = useState<SearchScope>(DEFAULT_SEARCH_SCOPE);
 
   const [periodOpen, setPeriodOpen] = useState(false);
   const periodRef = useRef<HTMLDivElement>(null);
@@ -72,6 +80,11 @@ export default function CommunityListPanel() {
   const handleSelectCategory = (next: CategoryValue) => {
     setCategory(next);
     setSearchKeyword("");
+  };
+
+  const handleSearch = (keyword: string, scope: SearchScope) => {
+    setSearchScope(scope);
+    setSearchKeyword(keyword);
   };
 
   const handleWriteClick = () => {
@@ -115,6 +128,19 @@ export default function CommunityListPanel() {
         <div className="flex flex-wrap items-center gap-3">
           <h1 className="text-xl font-bold text-on-surface">{boardTitle}</h1>
 
+          <div className="flex-1" />
+
+          <button
+            type="button"
+            onClick={handleWriteClick}
+            className="flex items-center gap-1.5 rounded-lg bg-primary hover:bg-primary/80 text-surface font-bold px-4 py-2 text-[13.5px] transition-colors cursor-pointer"
+          >
+            <PenLine className="w-4 h-4" />
+            {t("write")}
+          </button>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2">
           <div className="flex gap-0.5">
             {SORTS.map((value) => {
               const active = value === sort;
@@ -136,28 +162,11 @@ export default function CommunityListPanel() {
             })}
           </div>
 
-          <div className="flex-1" />
-
-          <button
-            type="button"
-            onClick={handleWriteClick}
-            className="flex items-center gap-1.5 rounded-lg bg-primary hover:bg-primary/80 text-surface font-bold px-4 py-2 text-[13.5px] transition-colors cursor-pointer"
-          >
-            <PenLine className="w-4 h-4" />
-            {t("write")}
-          </button>
-        </div>
-
-        <div className="flex flex-wrap items-center gap-2">
-          <div className="flex-1 min-w-[180px]">
-            <CommunitySearchBar onSearch={setSearchKeyword} />
-          </div>
-
           <div ref={periodRef} className="relative shrink-0">
             <button
               type="button"
               onClick={() => setPeriodOpen((v) => !v)}
-              className="bg-surface-4 hover:bg-surface-8 border border-divider rounded-lg px-3 py-2 pr-8 text-sm font-medium text-on-surface cursor-pointer focus:outline-none min-w-[90px] text-left"
+              className="bg-surface-4 hover:bg-surface-8 border border-divider rounded-lg px-3 py-1.5 pr-8 text-[13px] font-medium text-on-surface cursor-pointer focus:outline-none min-w-[86px] text-left"
               aria-haspopup="listbox"
               aria-expanded={periodOpen}
             >
@@ -167,7 +176,7 @@ export default function CommunityListPanel() {
               />
             </button>
             {periodOpen && (
-              <div className="absolute top-full right-0 mt-1 w-full bg-surface-4 border border-divider rounded-lg shadow-lg z-50 overflow-hidden">
+              <div className="absolute top-full left-0 mt-1 w-full bg-surface-4 border border-divider rounded-lg shadow-lg z-50 overflow-hidden">
                 <div className="py-1" role="listbox" aria-label={t("periodSelect")}>
                   {PERIODS.map((p) => {
                     const selected = p === period;
@@ -194,6 +203,12 @@ export default function CommunityListPanel() {
                 </div>
               </div>
             )}
+          </div>
+
+          <div className="flex-1" />
+
+          <div className="w-full sm:w-auto sm:min-w-[280px]">
+            <CommunitySearchBar onSearch={handleSearch} />
           </div>
         </div>
 

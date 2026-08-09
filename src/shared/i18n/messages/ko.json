@@ -259,8 +259,21 @@
       "upvotes": "추천",
       "views": "조회"
     },
+    "search": {
+      "scopeSelect": "검색 범위 선택",
+      "TITLE_CONTENT": "제목+내용",
+      "TITLE": "제목",
+      "CONTENT": "내용",
+      "AUTHOR": "작성자"
+    },
     "board": {
       "sectionTitle": "게시판",
+      "group": {
+        "community": "커뮤니티",
+        "info": "정보",
+        "esports": "e-스포츠",
+        "comingSoon": "준비 중"
+      },
       "myActivity": "내 활동",
       "myPosts": "내가 쓴 글",
       "bookmarks": "스크랩",
