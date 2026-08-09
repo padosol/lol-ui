@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useLeagueInfo } from "@/entities/league";
 import type { LeagueInfoResponse } from "@/entities/league";
 import { getTierImageUrl } from "@/shared/lib/tier";
@@ -16,13 +17,15 @@ export default function LeagueInfo({
   showTitle = true,
   initialData,
 }: LeagueInfoProps) {
+  const t = useTranslations("league");
+  const tDomain = useTranslations("domain");
   const { data: leagueInfo, isLoading } = useLeagueInfo(puuid || "", { initialData });
 
   if (isLoading) {
     return (
       <div>
         {showTitle && (
-          <h2 className="text-xl font-bold text-on-surface mb-4">리그 정보</h2>
+          <h2 className="text-xl font-bold text-on-surface mb-4">{t("title")}</h2>
         )}
         <div className="flex items-center justify-center py-12">
           <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
@@ -35,10 +38,10 @@ export default function LeagueInfo({
     return (
       <div>
         {showTitle && (
-          <h2 className="text-xl font-bold text-on-surface mb-4">리그 정보</h2>
+          <h2 className="text-xl font-bold text-on-surface mb-4">{t("title")}</h2>
         )}
         <div className="text-center py-12 text-on-surface-medium">
-          소환사 정보가 필요합니다.
+          {t("needSummoner")}
         </div>
       </div>
     );
@@ -54,10 +57,10 @@ export default function LeagueInfo({
     return (
       <div>
         {showTitle && (
-          <h2 className="text-xl font-bold text-on-surface mb-4">리그 정보</h2>
+          <h2 className="text-xl font-bold text-on-surface mb-4">{t("title")}</h2>
         )}
         <div className="text-center text-on-surface-medium border border-divider rounded-lg">
-          리그 정보가 없습니다.
+          {t("empty")}
         </div>
       </div>
     );
@@ -96,13 +99,15 @@ export default function LeagueInfo({
   };
 
   const getQueueTypeName = (leagueType: string) => {
-    return leagueType === "RANKED_SOLO_5x5" ? "솔로 랭크" : "자유 랭크";
+    return leagueType === "RANKED_SOLO_5x5"
+      ? tDomain("leagueType.RANKED_SOLO_5x5")
+      : tDomain("leagueType.RANKED_FLEX_SR");
   };
 
   return (
     <div>
       {showTitle && (
-        <h2 className="text-xl font-bold text-on-surface mb-4">리그 정보</h2>
+        <h2 className="text-xl font-bold text-on-surface mb-4">{t("title")}</h2>
       )}
       <div className="space-y-2">
         {leagues.map((league, index) => (
@@ -123,7 +128,7 @@ export default function LeagueInfo({
                   {getTierImageUrl(league.tier) ? (
                     <Image
                       src={getTierImageUrl(league.tier)}
-                      alt={`${league.tier} 티어`}
+                      alt={t("tierAlt", { tier: league.tier })}
                       fill
                       sizes="48px"
                       className="object-contain"
@@ -153,18 +158,18 @@ export default function LeagueInfo({
                 </div>
                 <div className="flex items-center gap-3 text-xs">
                   <div>
-                    <span className="text-on-surface-medium">승률 </span>
+                    <span className="text-on-surface-medium">{t("winRate")} </span>
                     <span className="text-on-surface font-semibold">
                       {league.oow}
                     </span>
                   </div>
                   <div>
                     <span className="text-win font-semibold">
-                      {league.wins}승
+                      {t("wins", { count: league.wins })}
                     </span>
                     <span className="text-on-surface-disabled mx-1">/</span>
                     <span className="text-loss font-semibold">
-                      {league.losses}패
+                      {t("losses", { count: league.losses })}
                     </span>
                   </div>
                 </div>

@@ -1,0 +1,938 @@
+{
+  "common": {
+    "loading": "불러오는 중",
+    "retry": "다시 시도",
+    "cancel": "취소",
+    "confirm": "확인",
+    "close": "닫기",
+    "save": "저장",
+    "delete": "삭제",
+    "edit": "수정",
+    "search": "검색",
+    "more": "더보기",
+    "empty": "데이터가 없습니다",
+    "processing": "처리 중..."
+  },
+  "nav": {
+    "home": "홈",
+    "championStats": "챔피언 분석",
+    "leaderboards": "랭킹",
+    "patchNotes": "패치노트",
+    "community": "커뮤니티",
+    "duo": "듀오 찾기",
+    "login": "로그인",
+    "logout": "로그아웃",
+    "terms": "이용약관",
+    "privacy": "개인정보처리방침",
+    "contact": "문의하기"
+  },
+  "localeSwitcher": {
+    "label": "언어 선택"
+  },
+  "theme": {
+    "toLight": "라이트 모드로 전환",
+    "toDark": "다크 모드로 전환"
+  },
+  "home": {
+    "freeChampions": {
+      "title": "이번 주 무료 챔피언",
+      "subtitle": "무료로 플레이할 수 있는 챔피언을 확인하세요",
+      "error": "챔피언 로테이션 정보를 불러올 수 없습니다."
+    },
+    "patchNotes": {
+      "title": "패치노트",
+      "subtitle": "최신 패치노트를 확인하세요",
+      "error": "패치노트를 불러오는데 실패했습니다.",
+      "empty": "패치노트가 없습니다."
+    }
+  },
+  "search": {
+    "placeholder": "소환사 명 + #KR1",
+    "regionSelect": "리전 선택",
+    "searching": "검색 중...",
+    "noResults": "검색 결과가 없습니다.",
+    "tierAlt": "{tier} 티어"
+  },
+  "summoner": {
+    "level": "레벨 {level}",
+    "tabs": {
+      "overview": "종합",
+      "champions": "챔피언 통계",
+      "ingame": "인게임"
+    },
+    "refresh": {
+      "action": "갱신",
+      "pending": "갱신 중...",
+      "retryInMinutes": "{minutes}분 {seconds}초 후 재시도",
+      "retryInSeconds": "{seconds}초 후 재시도",
+      "lastRefresh": "마지막 갱신: {time}",
+      "cooldownError": "잠시 후 다시 시도해주세요",
+      "requestError": "갱신 요청에 실패했습니다"
+    },
+    "championStats": {
+      "title": "챔피언 통계",
+      "needSummoner": "소환사 정보가 필요합니다.",
+      "empty": "챔피언 통계 데이터가 없습니다.",
+      "emptyForQueue": "{queue} 챔피언 통계 데이터가 없습니다.",
+      "columnChampion": "챔피언",
+      "columnGames": "게임",
+      "columnWins": "승리",
+      "columnLosses": "패배",
+      "columnWinRate": "승률",
+      "games": "{count}게임"
+    },
+    "notFound": {
+      "title": "소환사를 찾을 수 없습니다",
+      "body": "<highlight>{name}</highlight> 소환사가 소환사의 협곡에서 발견되지 않았습니다.",
+      "searchPrompt": "다른 소환사를 검색해보세요",
+      "hintName": "• 소환사명과 태그라인을 정확히 입력해주세요",
+      "hintExample": "• 예시: HideOnBush#KR1",
+      "goHome": "홈으로 돌아가기"
+    }
+  },
+  "championStats": {
+    "tierSelect": "티어 선택",
+    "patchSelect": "패치 선택",
+    "platformSelect": "플랫폼 선택",
+    "emptyTitle": "선택한 조건의 통계가 없습니다.",
+    "latestPatch": "최신",
+    "viewTier": "{tier} 보기",
+    "viewPreviousPatch": "이전 패치 ({patch}) 보기",
+    "loadError": "통계 데이터를 불러오지 못했습니다.",
+    "lastAttempt": "마지막 시도 {time}",
+    "searchPlaceholder": "챔피언 검색...",
+    "winRate": "승률",
+    "pickRate": "픽률",
+    "banRate": "밴률",
+    "ranking": "랭킹",
+    "tier": "티어",
+    "games": "{count}게임",
+    "gameCount": "게임수",
+    "wins": "승리",
+    "losses": "패배",
+    "goldPerMinute": "분당 골드",
+    "csAt10": "10분 CS",
+    "empty": "데이터가 없습니다.",
+    "noData": "데이터 없음",
+    "sortByPickRate": "픽률 순",
+    "topN": "{label} 상위 {count}개",
+    "collapse": "접기",
+    "expand": "더보기 ({count})",
+    "sections": {
+      "itemBuild": "아이템 빌드",
+      "startingItems": "시작 아이템",
+      "coreBuild": "코어 빌드",
+      "boots": "신발 빌드",
+      "runes": "룬",
+      "spells": "소환사 주문",
+      "skillTree": "스킬 트리",
+      "matchup": "상대 상성",
+      "favorable": "유리한 상대",
+      "unfavorable": "불리한 상대"
+    },
+    "confidence": {
+      "label": "신뢰도 {level} ({value}%)",
+      "sample": "표본 {count}",
+      "ratio": "· 전체의 {value}%",
+      "low": "낮음",
+      "mid": "보통",
+      "high": "높음",
+      "unknown": "표본 부족"
+    }
+  },
+  "match": {
+    "title": "최근 전적",
+    "needSummoner": "소환사 정보가 필요합니다.",
+    "loading": "전적을 불러오는 중...",
+    "empty": "전적 데이터가 없습니다.",
+    "loadMore": "더 보기",
+    "scrollTop": "맨 위로",
+    "filter": {
+      "ALL": "전체",
+      "RANKED": "솔로랭크",
+      "FLEX": "자유랭크",
+      "NORMAL": "일반",
+      "ARENA": "아레나",
+      "ARAM": "무작위총력전"
+    },
+    "result": {
+      "win": "승리",
+      "loss": "패배",
+      "remake": "다시하기",
+      "placement": "{rank}위",
+      "unknownPlacement": "???"
+    },
+    "kdaRating": "{kda}:1 평점",
+    "averageTier": "평균",
+    "summary": {
+      "title": "전적 요약",
+      "winRate": "승률",
+      "totalGames": "총 {count}게임",
+      "topChampions": "주요 챔피언",
+      "championGames": "{games}게임 · 승률 {winRate}%",
+      "winLoss": "{wins}승 {losses}패",
+      "positions": "포지션",
+      "gameCount": "게임 수",
+      "activity": "최근 3개월 게임 활동",
+      "chartTooltip": "{label}: {count}게임 ({percentage}%)",
+      "positionTooltip": "{position}: {count}게임",
+      "noGames": "0게임"
+    },
+    "contributionGraph": {
+      "games": "{date} — {count}게임",
+      "noGames": "{date} — 게임 없음",
+      "less": "적음",
+      "more": "많음"
+    }
+  },
+  "matchDetail": {
+    "tabs": {
+      "overview": "종합",
+      "build": "빌드"
+    },
+    "noParticipants": "참가자 데이터 없음",
+    "itemBuildOrder": "아이템 빌드 순서",
+    "noItemBuildOrder": "아이템 빌드 순서 정보 없음",
+    "skillOrder": "스킬 순서",
+    "noSkillOrder": "스킬 순서 정보 없음",
+    "runes": "룬",
+    "noRunes": "룬 정보 없음",
+    "runeShards": "룬 파편",
+    "kdaRating": "{kda} 평점",
+    "damage": "피해",
+    "damageTaken": "받은 피해",
+    "damageTooltip": "적에게 가한 피해량",
+    "damageTakenTooltip": "받은 피해량",
+    "teamResult": "{team} {result}",
+    "objectives": {
+      "baron": "바론",
+      "dragon": "드래곤",
+      "turret": "타워",
+      "inhibitor": "억제기"
+    },
+    "goldBlueLead": "블루팀 +{gold}g",
+    "goldRedLead": "레드팀 +{gold}g",
+    "goldEven": "동일"
+  },
+  "ingame": {
+    "loading": "인게임 정보를 불러오는 중...",
+    "error": "오류: {message}",
+    "errorFallback": "데이터를 불러올 수 없습니다",
+    "notInGame": "현재 게임 중이 아닙니다",
+    "notInGameHint": "소환사가 게임을 시작하면 여기에 정보가 표시됩니다",
+    "gameTime": "게임시간: {time}",
+    "unknownQueue": "큐 ID: {id}",
+    "noBans": "없음"
+  },
+  "recentlyPlayed": {
+    "title": "함께 플레이한 소환사",
+    "needSummoner": "소환사 정보가 필요합니다.",
+    "empty": "함께 플레이한 소환사가 없습니다.",
+    "wins": "{count}승",
+    "losses": "{count}패"
+  },
+  "community": {
+    "title": "커뮤니티",
+    "write": "글쓰기",
+    "edit": "글 수정",
+    "allCategories": "전체",
+    "sortSelect": "정렬 선택",
+    "periodSelect": "기간 선택",
+    "searchResult": "“{keyword}” 검색 결과",
+    "resetSearch": "검색 초기화",
+    "loading": "로딩 중...",
+    "emptySearch": "검색 결과가 없습니다",
+    "empty": "게시글이 없습니다",
+    "loadMore": "더 보기",
+    "searchPlaceholder": "게시글 검색...",
+    "bookmark": "저장",
+    "bookmarked": "저장됨",
+    "bookmarkError": "북마크 처리에 실패했습니다.",
+    "backToList": "목록으로",
+    "back": "돌아가기",
+    "submit": "등록",
+    "submitEdit": "수정",
+    "post": {
+      "notFound": "게시글을 찾을 수 없습니다.",
+      "viewCount": "조회 {count}",
+      "edited": "(수정됨)",
+      "deleteTitle": "게시글 삭제",
+      "deleteDescription": "이 게시글을 삭제하시겠습니까? 삭제한 게시글은 되돌릴 수 없습니다.",
+      "deleteError": "게시글 삭제에 실패했습니다."
+    },
+    "editor": {
+      "category": "카테고리",
+      "categorySelect": "카테고리 선택",
+      "categoryPlaceholder": "카테고리를 선택해주세요",
+      "postTitle": "제목",
+      "titlePlaceholder": "제목을 입력해주세요 (최대 300자)",
+      "content": "내용",
+      "contentPlaceholder": "내용을 입력해주세요",
+      "validation": {
+        "titleRequired": "제목을 입력해주세요",
+        "titleTooLong": "제목은 최대 300자까지 입력 가능합니다",
+        "contentRequired": "내용을 입력해주세요",
+        "categoryRequired": "카테고리를 선택해주세요"
+      }
+    },
+    "comment": {
+      "count": "댓글 {count}",
+      "placeholder": "댓글을 입력하세요...",
+      "loginRequired": "로그인 후 댓글을 작성할 수 있습니다.",
+      "loading": "댓글 로딩 중...",
+      "empty": "아직 댓글이 없습니다. 첫 댓글을 작성해보세요!",
+      "submit": "등록",
+      "submitting": "등록 중...",
+      "deleted": "삭제된 댓글입니다.",
+      "edited": "(수정됨)",
+      "reply": "답글",
+      "replyPlaceholder": "{nickname}에게 답글...",
+      "deleteTitle": "댓글 삭제",
+      "deleteDescription": "이 댓글을 삭제하시겠습니까? 삭제한 댓글은 되돌릴 수 없습니다.",
+      "deleteError": "댓글 삭제에 실패했습니다."
+    }
+  },
+  "duo": {
+    "title": "듀오 찾기",
+    "register": "듀오 등록",
+    "tabs": {
+      "posts": "듀오 목록",
+      "myPosts": "내 등록",
+      "myRequests": "내 요청"
+    },
+    "unranked": "언랭크",
+    "allLanes": "전체",
+    "allTiers": "전체 티어",
+    "expired": "만료됨",
+    "remainingHours": "{hours}시간 {minutes}분",
+    "remainingMinutes": "{minutes}분",
+    "micOn": "마이크 사용",
+    "micOff": "마이크 미사용",
+    "mic": "마이크",
+    "memo": "메모",
+    "memoPlaceholder": "하고 싶은 말을 적어주세요 (최대 500자)",
+    "primaryLane": "주 라인",
+    "secondaryLane": "부 라인",
+    "partner": "파트너",
+    "emptyPosts": "등록된 듀오가 없습니다",
+    "emptyMyPosts": "등록한 듀오가 없습니다",
+    "emptyMyRequests": "보낸 요청이 없습니다",
+    "loadMore": "더 보기",
+    "loadingMore": "로딩 중...",
+    "detail": {
+      "title": "듀오 상세",
+      "notFound": "듀오 정보를 찾을 수 없습니다",
+      "deleteConfirm": "듀오 등록을 삭제하시겠습니까?",
+      "deleting": "삭제 중...",
+      "matchedWithPartner": "매칭 완료 · 파트너 ",
+      "receivedRequests": "받은 요청 ({count})",
+      "noRequests": "아직 받은 요청이 없습니다",
+      "requestDuo": "듀오 신청하기",
+      "loginRequired": "로그인 후 듀오 신청이 가능합니다"
+    },
+    "registerModal": {
+      "title": "듀오 등록",
+      "submit": "등록하기",
+      "submitting": "등록 중...",
+      "error": "등록에 실패했습니다."
+    },
+    "requestModal": {
+      "title": "듀오 신청",
+      "submit": "듀오 신청하기",
+      "submitting": "신청 중...",
+      "error": "신청에 실패했습니다."
+    },
+    "actions": {
+      "accept": "수락",
+      "accepting": "수락 중...",
+      "reject": "거절",
+      "rejecting": "거절 중...",
+      "confirm": "확정하기",
+      "confirming": "확정 중...",
+      "cancel": "취소",
+      "cancelling": "취소 중..."
+    },
+    "validation": {
+      "primaryLaneRequired": "주 라인을 선택해주세요",
+      "secondaryLaneRequired": "부 라인을 선택해주세요",
+      "memoTooLong": "메모는 500자 이내로 입력해주세요"
+    }
+  },
+  "mypage": {
+    "title": "내 계정",
+    "nav": {
+      "account": "계정 관리",
+      "bookmarks": "북마크한 글"
+    },
+    "logout": "로그아웃",
+    "account": {
+      "title": "기본정보",
+      "password": "비밀번호",
+      "socialOnly": "소셜 로그인으로 가입된 계정입니다.",
+      "nickname": "닉네임",
+      "linkAccount": "계정 연동하기",
+      "google": "구글",
+      "linked": "연동됨",
+      "withdraw": "회원 탈퇴"
+    },
+    "withdrawModal": {
+      "title": "회원 탈퇴",
+      "confirmQuestion": "정말 탈퇴하시겠습니까?",
+      "description": "탈퇴 시 모든 데이터가 삭제되며, 30일 이내에는 동일 계정으로 재가입할 수 없습니다.",
+      "submit": "탈퇴하기",
+      "error": "회원 탈퇴에 실패했습니다. 다시 시도해주세요."
+    },
+    "riotLink": {
+      "description": "라이엇 계정을 연동하여 전적 검색에 활용할 수 있습니다.",
+      "link": "연동하기",
+      "linked": "연동됨",
+      "unlink": "해제",
+      "unlinking": "해제 중..."
+    },
+    "nickname": {
+      "saving": "저장 중...",
+      "error": "닉네임 변경에 실패했습니다. 다시 시도해주세요.",
+      "required": "닉네임을 입력해주세요.",
+      "tooShort": "닉네임은 2자 이상이어야 합니다.",
+      "tooLong": "닉네임은 16자 이하여야 합니다."
+    },
+    "bookmarks": {
+      "title": "북마크한 글",
+      "loadError": "북마크를 불러오지 못했습니다.",
+      "loading": "불러오는 중...",
+      "empty": "북마크한 글이 없습니다",
+      "emptyPage": "이 페이지에는 글이 없습니다",
+      "remove": "북마크 해제",
+      "removeError": "북마크 해제에 실패했습니다.",
+      "previous": "이전",
+      "next": "다음"
+    }
+  },
+  "auth": {
+    "login": "로그인",
+    "welcome": "METAPICK에 오신 것을 환영합니다",
+    "or": "또는",
+    "google": "Google로 계속하기",
+    "email": "이메일",
+    "emailPlaceholder": "이메일 주소",
+    "password": "비밀번호",
+    "emailLogin": "이메일로 계속하기 (준비중)",
+    "emailLoginForm": "이메일 로그인 (준비중)",
+    "back": "돌아가기",
+    "processingLogin": "로그인 처리 중...",
+    "termsNotice": "로그인 시 <terms>이용약관</terms> 및 <privacy>개인정보처리방침</privacy>에 동의합니다.",
+    "rejoinBlocked": "탈퇴 후 30일 이내에는 재가입할 수 없습니다.",
+    "validation": {
+      "invalidEmail": "올바른 이메일을 입력하세요",
+      "passwordRequired": "비밀번호를 입력하세요"
+    }
+  },
+  "patchNotes": {
+    "title": "패치노트",
+    "subtitle": "리그 오브 레전드 패치 변경사항을 확인하세요",
+    "empty": "패치노트가 없습니다.",
+    "noChanges": "변경사항이 없습니다.",
+    "patchVersion": "패치 {version}",
+    "readFull": "전체 내용 보러가기",
+    "summary": "패치 요약",
+    "metaPredictions": "메타 영향 예측",
+    "tabs": {
+      "rift": "협곡",
+      "aram": "무작위 총력전",
+      "arena": "아레나",
+      "system": "시스템"
+    },
+    "sections": {
+      "champions": "챔피언 변경사항",
+      "items": "아이템 변경사항",
+      "systems": "시스템 변경사항",
+      "arena": "아레나 변경사항",
+      "aram": "무작위 총력전 변경사항",
+      "championCount": "챔피언 ({count})",
+      "systemCount": "시스템 ({count})"
+    },
+    "summaryTable": {
+      "category": "카테고리",
+      "buff": "상향",
+      "nerf": "하향",
+      "adjust": "조정",
+      "total": "합계",
+      "champion": "챔피언",
+      "item": "아이템",
+      "arena": "아레나"
+    },
+    "changeType": {
+      "BUFF": "버프",
+      "NERF": "너프",
+      "ADJUST": "조정",
+      "NEW": "신규",
+      "REWORK": "리워크",
+      "BUGFIX": "버그 수정"
+    }
+  },
+  "leaderboards": {
+    "region": "지역",
+    "regionSelect": "지역 선택",
+    "queueType": "랭킹 타입",
+    "queueTypeSelect": "랭킹 타입 선택",
+    "cutoffError": "커트라인 정보를 불러올 수 없습니다",
+    "userCount": "{count}명",
+    "loading": "랭킹 로딩 중...",
+    "loadError": "랭킹을 불러오는 데 실패했습니다.",
+    "empty": "랭킹 데이터가 없습니다.",
+    "columnRank": "순위",
+    "columnSummoner": "소환사",
+    "columnWinsShort": "승",
+    "columnWins": "승리",
+    "columnLossesShort": "패",
+    "columnLosses": "패배",
+    "columnWinRate": "승률",
+    "columnTier": "티어",
+    "columnTopChampionsShort": "모스트",
+    "columnTopChampions": "모스트 챔피언",
+    "previous": "이전",
+    "next": "다음",
+    "pageInfo": "페이지",
+    "totalCount": "(총 {count}명)"
+  },
+  "league": {
+    "title": "리그 정보",
+    "needSummoner": "소환사 정보가 필요합니다.",
+    "empty": "리그 정보가 없습니다.",
+    "tierAlt": "{tier} 티어",
+    "winRate": "승률",
+    "wins": "{count}승",
+    "losses": "{count}패"
+  },
+  "tooltip": {
+    "noSpellInfo": "주문 정보 없음",
+    "noPassiveInfo": "패시브 정보 없음",
+    "noItemInfo": "아이템 정보 없음",
+    "noSkillInfo": "스킬 정보 없음",
+    "cooldown": "쿨다운: {value}초",
+    "cost": "소모: {value} ({resource})",
+    "rune": "룬 {id}"
+  },
+  "domain": {
+    "championTag": {
+      "Fighter": "전사",
+      "Tank": "탱커",
+      "Mage": "마법사",
+      "Assassin": "암살자",
+      "Marksman": "원거리 딜러",
+      "Support": "서포터"
+    },
+    "championInfo": {
+      "attack": "공격",
+      "defense": "방어",
+      "magic": "마법",
+      "difficulty": "난이도"
+    },
+    "championStat": {
+      "armor": "방어력",
+      "magicResist": "마법저항",
+      "moveSpeed": "이동속도",
+      "range": "사거리",
+      "attackDamage": "공격력"
+    },
+    "region": {
+      "kr": "한국",
+      "jp": "일본",
+      "na": "북미"
+    },
+    "position": {
+      "TOP": "탑",
+      "JUNGLE": "정글",
+      "MID": "미드",
+      "ADC": "원딜",
+      "SUPPORT": "서포터",
+      "UNKNOWN": "알 수 없음"
+    },
+    "tier": {
+      "CHALLENGER": "챌린저",
+      "GRANDMASTER": "그랜드마스터",
+      "MASTER": "마스터",
+      "DIAMOND": "다이아몬드",
+      "EMERALD": "에메랄드",
+      "PLATINUM": "플래티넘",
+      "GOLD": "골드",
+      "SILVER": "실버",
+      "BRONZE": "브론즈",
+      "IRON": "아이언",
+      "UNRANKED": "언랭크"
+    },
+    "leagueType": {
+      "RANKED_SOLO_5x5": "솔로 랭크",
+      "RANKED_FLEX_SR": "자유 랭크"
+    },
+    "team": {
+      "blue": "블루팀",
+      "red": "레드팀"
+    },
+    "postCategory": {
+      "CHAMPION_DISCUSSION": "챔피언 토론",
+      "PATCH_NOTES": "패치노트",
+      "TIPS_AND_GUIDES": "팁과 가이드",
+      "META_DISCUSSION": "메타 토론",
+      "COMMUNITY": "커뮤니티",
+      "HUMOR": "유머",
+      "GENERAL": "자유"
+    },
+    "postSort": {
+      "HOT": "인기",
+      "NEW": "최신",
+      "TOP": "추천"
+    },
+    "postPeriod": {
+      "DAILY": "오늘",
+      "WEEKLY": "이번 주",
+      "MONTHLY": "이번 달",
+      "ALL": "전체"
+    },
+    "duoPostStatus": {
+      "ACTIVE": "모집 중",
+      "MATCHED": "매칭 완료",
+      "DELETED": "삭제됨",
+      "EXPIRED": "만료됨"
+    },
+    "duoRequestStatus": {
+      "PENDING": "대기 중",
+      "ACCEPTED": "수락됨",
+      "CONFIRMED": "확정됨",
+      "REJECTED": "거절됨",
+      "CANCELLED": "취소됨",
+      "CLOSED": "종료됨"
+    },
+    "gameMode": {
+      "RANKED_SOLO": "랭크",
+      "RANKED_FLEX": "자유랭크",
+      "NORMAL": "일반",
+      "ARAM": "무작위 총력전",
+      "ARENA": "아레나",
+      "URF": "U.R.F.",
+      "TFT": "전략적 팀 전투",
+      "SWIFTPLAY": "신속",
+      "CLASH": "격전"
+    }
+  },
+  "meta": {
+    "home": {
+      "title": "롤 전적 검색, 메타픽, 라이엇 | METAPICK.ME",
+      "description": "롤 전적 검색, 메타픽을 사용하여 나의 최근 전적을 확인하고, 챔피언 분석을 통해 챔피언 빌드를 최적화하세요!"
+    },
+    "championStats": {
+      "title": "챔피언 분석 - METAPICK",
+      "description": "포지션별 챔피언 게임수를 확인하고, 챔피언을 클릭하여 상세 통계를 확인하세요."
+    },
+    "championDetail": {
+      "title": "{champion} 챔피언 통계 - METAPICK",
+      "description": "{champion}의 승률, 아이템 빌드, 룬, 스킬 트리, 상성 통계를 확인하세요."
+    },
+    "leaderboards": {
+      "title": "랭킹, 천상계 커트라인 | METAPICK.ME",
+      "description": "리그 오브 레전드 솔로 랭크 랭킹, 천상계 커트라인을 확인하세요."
+    },
+    "patchNotes": {
+      "title": "리그오브레전드 패치노트",
+      "titleWithVersion": "리그오브레전드 패치노트 {version}",
+      "description": "리그 오브 레전드 패치 변경사항을 확인하세요",
+      "descriptionWithVersion": "리그 오브 레전드 패치 {version} 변경사항 - 챔피언, 아이템, 시스템 변경사항을 한눈에 확인하세요"
+    },
+    "summoner": {
+      "title": "{name} 전적 검색 | METAPICK",
+      "descriptionWithTier": "{name}님의 리그 오브 레전드 전적 - {tier} | 승률, 챔피언 통계, 매치 히스토리",
+      "description": "{name}님의 리그 오브 레전드 전적 | 승률, 챔피언 통계, 매치 히스토리",
+      "fallbackTitle": "소환사 전적 검색 | METAPICK",
+      "fallbackDescription": "리그 오브 레전드 소환사 전적 검색 - 승률, 챔피언 통계, 매치 히스토리 | METAPICK"
+    },
+    "community": {
+      "title": "커뮤니티 | METAPICK.ME",
+      "description": "리그 오브 레전드 커뮤니티. 챔피언 토론, 패치노트 의견, 팁과 가이드를 공유하세요."
+    },
+    "communityWrite": {
+      "title": "글쓰기 | 커뮤니티 | METAPICK.ME",
+      "description": "리그 오브 레전드 커뮤니티에 게시글을 작성하세요."
+    },
+    "communityEdit": {
+      "title": "글 수정 | 커뮤니티 | METAPICK.ME",
+      "description": "게시글을 수정합니다."
+    },
+    "duo": {
+      "title": "듀오 찾기 | METAPICK.ME",
+      "description": "리그 오브 레전드 듀오 파트너를 찾아보세요. 매칭 요청을 보내고 파트너를 확정할 수 있습니다."
+    },
+    "login": {
+      "title": "로그인 | METAPICK.ME"
+    },
+    "mypage": {
+      "title": "마이페이지 | METAPICK.ME",
+      "description": "계정 관리 및 연결된 앱을 관리할 수 있습니다."
+    },
+    "terms": {
+      "title": "이용약관 | METAPICK.ME"
+    },
+    "privacy": {
+      "title": "개인정보 처리방침 | METAPICK.ME"
+    },
+    "championNotFound": "챔피언을 찾을 수 없습니다:"
+  },
+  "legal": {
+    "backToLogin": "로그인으로 돌아가기",
+    "terms": {
+      "title": "이용약관",
+      "effectiveDate": "시행일: 2026년 3월 18일",
+      "sections": [
+        {
+          "heading": "제1조 (목적)",
+          "body": [
+            "본 약관은 METAPICK(이하 \"서비스\")이 제공하는 리그 오브 레전드 전적 검색 서비스의 이용과 관련하여 서비스와 이용자 간의 권리, 의무 및 책임 사항을 규정함을 목적으로 합니다."
+          ]
+        },
+        {
+          "heading": "제2조 (정의)",
+          "listType": "bullet",
+          "list": [
+            {
+              "term": "\"서비스\"",
+              "text": "란 METAPICK이 제공하는 리그 오브 레전드 전적 검색, 챔피언 통계, 패치노트 등 관련 웹 서비스를 말합니다."
+            },
+            {
+              "term": "\"회원\"",
+              "text": "이란 서비스에 로그인하여 본 약관에 따라 이용 계약을 체결한 자를 말합니다."
+            },
+            {
+              "term": "\"비회원\"",
+              "text": "이란 로그인하지 않고 서비스를 이용하는 자를 말합니다."
+            }
+          ]
+        },
+        {
+          "heading": "제3조 (약관의 효력 및 변경)",
+          "listType": "number",
+          "list": [
+            { "text": "본 약관은 서비스 화면에 게시함으로써 효력이 발생합니다." },
+            {
+              "text": "서비스는 합리적인 사유가 발생할 경우 약관을 변경할 수 있으며, 변경된 약관은 서비스 내 공지를 통해 안내합니다."
+            },
+            {
+              "text": "회원이 변경된 약관에 동의하지 않을 경우 회원 탈퇴를 할 수 있으며, 변경된 약관의 효력 발생일 이후에도 서비스를 계속 이용하는 경우 약관 변경에 동의한 것으로 봅니다."
+            }
+          ]
+        },
+        {
+          "heading": "제4조 (서비스의 제공)",
+          "body": ["서비스는 다음과 같은 기능을 제공합니다."],
+          "listType": "bullet",
+          "list": [
+            { "text": "리그 오브 레전드 소환사 전적 검색" },
+            { "text": "챔피언 통계 및 분석 정보" },
+            { "text": "패치노트 정보 제공" },
+            { "text": "랭킹(리더보드) 정보 제공" },
+            { "text": "기타 서비스가 추가 개발하는 기능" }
+          ]
+        },
+        {
+          "heading": "제5조 (서비스 이용)",
+          "listType": "number",
+          "list": [
+            {
+              "text": "서비스는 연중무휴 24시간 제공을 원칙으로 하나, 시스템 점검 등 운영상 필요한 경우 일시적으로 중단될 수 있습니다."
+            },
+            {
+              "text": "비회원도 전적 검색 등 기본 기능을 이용할 수 있으며, 일부 기능은 로그인한 회원에게만 제공될 수 있습니다."
+            }
+          ]
+        },
+        {
+          "heading": "제6조 (회원가입 및 계정)",
+          "listType": "number",
+          "list": [
+            {
+              "text": "회원가입은 Google OAuth를 통해 이루어지며, 로그인 시 본 약관 및 개인정보 처리방침에 동의한 것으로 간주합니다."
+            },
+            { "text": "회원은 자신의 계정 정보를 정확하게 유지할 책임이 있습니다." },
+            { "text": "회원은 자신의 계정을 제3자에게 양도하거나 대여할 수 없습니다." }
+          ]
+        },
+        {
+          "heading": "제7조 (회원 탈퇴 및 자격 상실)",
+          "listType": "number",
+          "list": [
+            {
+              "text": "회원은 언제든지 서비스에 탈퇴를 요청할 수 있으며, 서비스는 즉시 회원 탈퇴를 처리합니다."
+            },
+            {
+              "text": "다음의 경우 서비스는 회원 자격을 제한 또는 상실시킬 수 있습니다.",
+              "sub": [
+                "타인의 정보를 도용한 경우",
+                "서비스 운영을 고의로 방해한 경우",
+                "관련 법령 또는 본 약관을 위반한 경우"
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "제8조 (서비스 중단)",
+          "body": [
+            "서비스는 시스템 유지보수, 천재지변, 기타 불가항력적 사유로 인해 서비스 제공이 어려운 경우 사전 공지 후 서비스를 일시적으로 중단할 수 있습니다. 불가피한 경우 사후 공지로 대체할 수 있습니다."
+          ]
+        },
+        {
+          "heading": "제9조 (책임의 제한)",
+          "listType": "number",
+          "list": [
+            {
+              "text": "서비스는 무료로 제공되며, 서비스 이용과 관련하여 발생하는 손해에 대해 관련 법령에서 정하는 범위 내에서만 책임을 집니다."
+            },
+            {
+              "text": "서비스에서 제공하는 전적, 통계 등의 데이터는 Riot Games API를 기반으로 하며, 데이터의 정확성이나 완전성을 보장하지 않습니다."
+            },
+            {
+              "text": "이용자가 서비스를 이용하여 기대하는 수익이나 결과를 얻지 못하였더라도 서비스에 책임을 물을 수 없습니다."
+            }
+          ]
+        },
+        {
+          "heading": "제10조 (지적재산권)",
+          "listType": "number",
+          "list": [
+            {
+              "text": "서비스가 자체적으로 제작한 콘텐츠에 대한 저작권은 서비스에 귀속됩니다."
+            },
+            {
+              "text": "리그 오브 레전드 및 관련 상표는 Riot Games, Inc.의 자산입니다. METAPICK은 Riot Games가 보증하지 않으며, Riot Games 또는 리그 오브 레전드의 제작·관리에 공식적으로 관여하는 어떤 주체의 의견도 반영하지 않습니다."
+            }
+          ]
+        },
+        {
+          "heading": "제11조 (분쟁 해결)",
+          "listType": "number",
+          "list": [
+            {
+              "text": "서비스와 이용자 간에 발생한 분쟁은 상호 협의하여 해결하는 것을 원칙으로 합니다."
+            },
+            {
+              "text": "협의가 이루어지지 않을 경우 대한민국 법률을 준거법으로 하며, 관할 법원은 민사소송법에 따릅니다."
+            }
+          ]
+        }
+      ]
+    },
+    "privacy": {
+      "title": "개인정보 처리방침",
+      "effectiveDate": "시행일: 2026년 3월 18일",
+      "sections": [
+        {
+          "heading": "1. 개인정보의 수집 및 이용 목적",
+          "body": [
+            "METAPICK(이하 \"서비스\")은 다음의 목적을 위해 개인정보를 수집 및 이용합니다."
+          ],
+          "listType": "bullet",
+          "list": [
+            { "text": "회원 식별 및 로그인 인증" },
+            { "text": "리그 오브 레전드 전적 검색 서비스 제공" },
+            { "text": "서비스 이용 통계 분석 및 품질 개선" },
+            { "text": "부정 이용 방지 및 서비스 안정성 확보" }
+          ]
+        },
+        {
+          "heading": "2. 수집하는 개인정보 항목",
+          "groups": [
+            {
+              "heading": "가. Google OAuth 로그인 시 수집 항목",
+              "items": ["이메일 주소", "이름(닉네임)", "프로필 사진 URL"]
+            },
+            {
+              "heading": "나. 서비스 이용 시 자동 수집 항목",
+              "items": [
+                "쿠키(Cookie)",
+                "IP 주소",
+                "접속 일시",
+                "브라우저 종류 및 버전"
+              ]
+            },
+            {
+              "heading": "다. 사용자 입력 정보",
+              "items": [
+                "리그 오브 레전드 소환사명 및 태그 (사용자가 직접 연동한 경우)"
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "3. 개인정보의 보유 및 이용 기간",
+          "body": [
+            "회원 탈퇴 시 또는 수집 목적 달성 시 지체 없이 파기합니다. 단, 관련 법령에 따라 보존이 필요한 경우 해당 기간 동안 보관합니다."
+          ],
+          "listType": "bullet",
+          "list": [
+            { "text": "로그인 기록: 회원 탈퇴 시까지" },
+            { "text": "접속 로그: 3개월" }
+          ]
+        },
+        {
+          "heading": "4. 개인정보의 제3자 제공",
+          "body": [
+            "서비스는 이용자의 개인정보를 제3자에게 제공하지 않습니다. 다만, 법령에 의해 요구되는 경우는 예외로 합니다."
+          ]
+        },
+        {
+          "heading": "5. 개인정보의 파기 절차 및 방법",
+          "listType": "bullet",
+          "list": [
+            {
+              "term": "파기 절차:",
+              "text": "보유 기간 만료 또는 회원 탈퇴 시 지체 없이 파기합니다."
+            },
+            {
+              "term": "파기 방법:",
+              "text": "전자적 파일은 복구 불가능한 방법으로 영구 삭제하며, 종이 문서는 분쇄 또는 소각합니다."
+            }
+          ]
+        },
+        {
+          "heading": "6. 이용자의 권리와 행사 방법",
+          "body": ["이용자는 언제든지 다음의 권리를 행사할 수 있습니다."],
+          "listType": "bullet",
+          "list": [
+            { "text": "개인정보 열람 요구" },
+            { "text": "개인정보 정정·삭제 요구" },
+            { "text": "개인정보 처리 정지 요구" },
+            { "text": "회원 탈퇴(계정 삭제) 요구" }
+          ],
+          "footer": [
+            "권리 행사는 아래 연락처를 통해 요청하실 수 있으며, 지체 없이 조치하겠습니다."
+          ]
+        },
+        {
+          "heading": "7. 쿠키(Cookie) 운영 및 관리",
+          "body": [
+            "서비스는 로그인 세션 유지 및 사용자 경험 향상을 위해 쿠키를 사용합니다. 이용자는 브라우저 설정을 통해 쿠키 저장을 거부할 수 있으나, 이 경우 로그인 등 일부 기능 이용이 제한될 수 있습니다."
+          ]
+        },
+        {
+          "heading": "8. 개인정보 보호책임자 및 연락처",
+          "body": [
+            "본 서비스는 개인이 운영하는 사이트입니다. 개인정보 관련 문의는 아래 링크를 통해 접수해 주세요."
+          ],
+          "link": {
+            "label": "문의하기 (Google Forms)",
+            "href": "https://forms.gle/a5eF1Wapwirawq936"
+          }
+        },
+        {
+          "heading": "9. 방침 변경에 관한 사항",
+          "body": [
+            "본 개인정보 처리방침은 법령 변경 또는 서비스 정책 변경에 따라 수정될 수 있으며, 변경 시 서비스 내 공지를 통해 안내합니다."
+          ]
+        }
+      ]
+    }
+  },
+  "errors": {
+    "network": "서버에 연결할 수 없습니다",
+    "timeout": "요청 시간이 초과되었습니다",
+    "unknown": "알 수 없는 오류가 발생했습니다",
+    "notFound": "요청하신 정보를 찾을 수 없습니다"
+  }
+}

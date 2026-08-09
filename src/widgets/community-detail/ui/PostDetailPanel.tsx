@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/shared/i18n/navigation";
 import { useState } from "react";
 import { ArrowLeft, Pencil, Trash2 } from "lucide-react";
 import {
@@ -8,7 +8,6 @@ import {
   useDeletePost,
   useVote,
   useRemoveVote,
-  POST_CATEGORY_LABELS,
 } from "@/entities/community";
 import type { VoteType } from "@/entities/community";
 import { useAuthStore } from "@/entities/auth";
@@ -16,7 +15,7 @@ import { VoteButtons } from "@/shared/ui/vote-buttons";
 import { BookmarkButton } from "@/features/community-bookmark";
 import { ConfirmModal } from "@/shared/ui/modal";
 import { toast } from "@/shared/ui/toast";
-import { formatDate } from "@/shared/lib/date";
+import { useFormatter, useTranslations } from "next-intl";
 import CommentSection from "./CommentSection";
 
 interface PostDetailPanelProps {
@@ -24,6 +23,11 @@ interface PostDetailPanelProps {
 }
 
 export default function PostDetailPanel({ postId }: PostDetailPanelProps) {
+  const format = useFormatter();
+  const t = useTranslations("community");
+  const tPost = useTranslations("community.post");
+  const tCommon = useTranslations("common");
+  const tCategory = useTranslations("domain.postCategory");
   const router = useRouter();
   const user = useAuthStore((s) => s.user);
   const { data: post, isLoading, error } = usePostDetail(postId);
@@ -56,14 +60,14 @@ export default function PostDetailPanel({ postId }: PostDetailPanelProps) {
         setDeleteOpen(false);
         router.push("/community");
       },
-      onError: () => toast.error("게시글 삭제에 실패했습니다."),
+      onError: () => toast.error(tPost("deleteError")),
     });
   };
 
   if (isLoading) {
     return (
       <div className="text-center py-16 text-on-surface-disabled">
-        로딩 중...
+        {t("loading")}
       </div>
     );
   }
@@ -71,7 +75,7 @@ export default function PostDetailPanel({ postId }: PostDetailPanelProps) {
   if (error || !post) {
     return (
       <div className="text-center py-16 text-on-surface-disabled">
-        게시글을 찾을 수 없습니다.
+        {tPost("notFound")}
       </div>
     );
   }
@@ -84,16 +88,16 @@ export default function PostDetailPanel({ postId }: PostDetailPanelProps) {
         className="flex items-center gap-1 text-sm text-on-surface-medium hover:text-on-surface transition-colors cursor-pointer"
       >
         <ArrowLeft className="w-4 h-4" />
-        목록으로
+        {t("backToList")}
       </button>
 
       <div className="bg-surface-1 border border-divider rounded-lg p-6">
         <div className="flex items-center gap-2 mb-3">
           <span className="text-xs bg-surface-4 border border-divider rounded px-2 py-0.5 text-on-surface-medium">
-            {POST_CATEGORY_LABELS[post.category]}
+            {tCategory(post.category)}
           </span>
           <span className="text-xs text-on-surface-disabled">
-            조회 {post.viewCount}
+            {tPost("viewCount", { count: post.viewCount })}
           </span>
         </div>
 
@@ -107,10 +111,12 @@ export default function PostDetailPanel({ postId }: PostDetailPanelProps) {
               {post.author.nickname}
             </span>
             <span className="text-xs text-on-surface-disabled">
-              {formatDate(post.createdAt, { withTime: true })}
+              {format.dateTime(new Date(post.createdAt), { dateStyle: "long", timeStyle: "short" })}
             </span>
             {post.updatedAt !== post.createdAt && (
-              <span className="text-xs text-on-surface-disabled">(수정됨)</span>
+              <span className="text-xs text-on-surface-disabled">
+                {tPost("edited")}
+              </span>
             )}
           </div>
 
@@ -122,7 +128,7 @@ export default function PostDetailPanel({ postId }: PostDetailPanelProps) {
                 className="flex items-center gap-1 text-xs text-on-surface-disabled hover:text-on-surface transition-colors cursor-pointer"
               >
                 <Pencil className="w-3.5 h-3.5" />
-                수정
+                {tCommon("edit")}
               </button>
               <button
                 type="button"
@@ -131,7 +137,7 @@ export default function PostDetailPanel({ postId }: PostDetailPanelProps) {
                 className="flex items-center gap-1 text-xs text-on-surface-disabled hover:text-red-400 transition-colors disabled:opacity-50 cursor-pointer"
               >
                 <Trash2 className="w-3.5 h-3.5" />
-                삭제
+                {tCommon("delete")}
               </button>
             </div>
           )}
@@ -162,9 +168,9 @@ export default function PostDetailPanel({ postId }: PostDetailPanelProps) {
 
       <ConfirmModal
         open={deleteOpen}
-        title="게시글 삭제"
-        description="이 게시글을 삭제하시겠습니까? 삭제한 게시글은 되돌릴 수 없습니다."
-        confirmLabel="삭제"
+        title={tPost("deleteTitle")}
+        description={tPost("deleteDescription")}
+        confirmLabel={tCommon("delete")}
         variant="danger"
         loading={deleteMutation.isPending}
         onConfirm={confirmDelete}

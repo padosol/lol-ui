@@ -26,6 +26,9 @@ jobs:
       - name: Run lint
         run: pnpm lint
 
+      - name: Check i18n message keys
+        run: pnpm i18n:check
+
   build:
     name: Build
     runs-on: ubuntu-latest
@@ -45,10 +48,42 @@ jobs:
       - name: Build
         run: pnpm build
 
+  e2e:
+    name: E2E (i18n)
+    runs-on: ubuntu-latest
+    # 브라우저가 미리 설치된 공식 이미지 — 별도 playwright install 스텝이 필요 없다.
+    # 태그는 package.json 의 @playwright/test 버전과 맞춰 올린다.
+    container:
+      image: mcr.microsoft.com/playwright:v1.58.2-noble
+    steps:
+      - uses: actions/checkout@v6
+
+      # 서드파티 액션은 태그가 옮겨질 수 있어 커밋 SHA 로 고정한다.
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile --ignore-scripts
+
+      # 백엔드가 없어도 도는 로케일 라우팅·번역·SEO 회귀만 검증한다.
+      - name: Run i18n E2E
+        run: pnpm exec playwright test tests/i18n.spec.ts
+
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
+
   notify:
     name: Slack Notification
     runs-on: ubuntu-latest
-    needs: [lint, build]
+    needs: [lint, build, e2e]
     if: always()
     steps:
       - name: Notify Slack
@@ -63,4 +98,4 @@ jobs:
               - type: "section"
                 text:
                   type: "mrkdwn"
-                  text: "${{ contains(needs.*.result, 'failure') && '❌ *CI 실패*' || '✅ *CI 성공*' }}\n*Repo:* ${{ github.repository }}\n*Branch:* ${{ github.head_ref || github.ref_name }}\n*PR:* <${{ github.event.pull_request.html_url || format('{0}/{1}/commit/{2}', github.server_url, github.repository, github.sha) }}|링크>\n*Author:* ${{ github.actor }}\n*Lint:* ${{ needs.lint.result }}\n*Build:* ${{ needs.build.result }}"
+                  text: "${{ contains(needs.*.result, 'failure') && '❌ *CI 실패*' || '✅ *CI 성공*' }}\n*Repo:* ${{ github.repository }}\n*Branch:* ${{ github.head_ref || github.ref_name }}\n*PR:* <${{ github.event.pull_request.html_url || format('{0}/{1}/commit/{2}', github.server_url, github.repository, github.sha) }}|링크>\n*Author:* ${{ github.actor }}\n*Lint:* ${{ needs.lint.result }}\n*Build:* ${{ needs.build.result }}\n*E2E:* ${{ needs.e2e.result }}"

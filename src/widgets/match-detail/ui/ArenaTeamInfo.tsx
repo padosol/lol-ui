@@ -2,6 +2,7 @@
 
 import type { ParticipantData } from "@/entities/match";
 import { getChampionImageUrl } from "@/entities/champion";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import SummonerNameLink from "./SummonerNameLink";
 
@@ -18,6 +19,7 @@ export default function ArenaTeamInfo({
   myPlacement: _myPlacement,
   region = "kr",
 }: ArenaTeamInfoProps) {
+  const tResult = useTranslations("match.result");
   // placement가 유효한지 확인
   const hasValidPlacement = participants.some(p => p.placement > 0);
 
@@ -71,7 +73,9 @@ export default function ArenaTeamInfo({
                       : "text-on-surface-medium"
                   }`}
                 >
-                  {placement != null ? `${placement}위` : "-"}
+                  {placement != null
+                    ? tResult("placement", { rank: placement })
+                    : "-"}
                 </div>
                 {team.slice(0, 2).map((participant) => (
                   <div

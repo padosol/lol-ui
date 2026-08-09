@@ -10,6 +10,7 @@ import { getChampionImageUrl } from "@/entities/champion";
 import { getItemImageUrl } from "@/shared/lib/game";
 import { ArrowDown, ArrowUp, ChevronDown, RefreshCw } from "lucide-react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 
 type ChampionChangeUnion = ChampionChange | ArenaChampionChange | AramChampionChange;
@@ -136,6 +137,7 @@ export default function PatchVisualSummary({
   champions,
   items = [],
 }: PatchVisualSummaryProps) {
+  const t = useTranslations("patchNotes");
   const [isExpanded, setIsExpanded] = useState(true);
   const { buffs, nerfs, adjusts } = groupChanges(champions, items);
 
@@ -156,7 +158,7 @@ export default function PatchVisualSummary({
       >
         <div className="flex items-center gap-2">
           <h3 className="text-sm font-semibold text-on-surface-medium">
-            패치 요약
+            {t("summary")}
           </h3>
           <span className="text-xs text-on-surface-medium px-2 py-0.5 rounded-full bg-surface-4">
             {totalCount}
@@ -173,19 +175,19 @@ export default function PatchVisualSummary({
       {isExpanded && (
         <div className="px-4 pb-4 divide-y divide-divider/30">
           <SummaryRow
-            label="상향"
+            label={t("summaryTable.buff")}
             icon={<ArrowUp className="w-3.5 h-3.5 text-buff" />}
             iconBgClass="bg-buff/10 text-buff"
             items={buffs}
           />
           <SummaryRow
-            label="하향"
+            label={t("summaryTable.nerf")}
             icon={<ArrowDown className="w-3.5 h-3.5 text-nerf" />}
             iconBgClass="bg-nerf/10 text-nerf"
             items={nerfs}
           />
           <SummaryRow
-            label="조정"
+            label={t("summaryTable.adjust")}
             icon={<RefreshCw className="w-3.5 h-3.5 text-adjust" />}
             iconBgClass="bg-adjust/10 text-adjust"
             items={adjusts}

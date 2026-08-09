@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { useNicknameEdit } from "../model/useNicknameEdit";
 
@@ -10,6 +11,8 @@ interface NicknameEditFormProps {
 export default function NicknameEditForm({
   currentNickname,
 }: NicknameEditFormProps) {
+  const t = useTranslations("mypage.nickname");
+  const tCommon = useTranslations("common");
   const [isEditing, setIsEditing] = useState(false);
   const [value, setValue] = useState(currentNickname);
   const { updateNickname, isPending, error, setError, validate } =
@@ -51,7 +54,7 @@ export default function NicknameEditForm({
           onClick={handleEdit}
           className="text-sm text-primary hover:text-primary/80 transition-colors font-medium"
         >
-          수정
+          {tCommon("edit")}
         </button>
       </div>
     );
@@ -78,7 +81,7 @@ export default function NicknameEditForm({
           disabled={isPending}
           className="px-4 py-2 bg-primary text-on-surface rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors disabled:opacity-50"
         >
-          {isPending ? "저장 중..." : "저장"}
+          {isPending ? t("saving") : tCommon("save")}
         </button>
         <button
           type="button"
@@ -86,7 +89,7 @@ export default function NicknameEditForm({
           disabled={isPending}
           className="px-4 py-2 bg-surface-4 text-on-surface-medium rounded-lg text-sm font-medium hover:bg-surface-2 transition-colors disabled:opacity-50"
         >
-          취소
+          {tCommon("cancel")}
         </button>
       </div>
       {error && <p className="text-sm text-error">{error}</p>}

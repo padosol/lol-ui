@@ -1,8 +1,7 @@
 import { MetadataRoute } from "next";
 import fs from "fs/promises";
 import path from "path";
-
-const BASE_URL = "https://metapick.me";
+import { localizedSitemapEntries } from "@/shared/i18n/sitemap";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const versionsFile = await fs.readFile(
@@ -10,9 +9,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "utf-8"
   );
   const versions: { version: string }[] = JSON.parse(versionsFile);
+  const lastModified = new Date();
 
-  return versions.map((v) => ({
-    url: `${BASE_URL}/patch-notes/${v.version}`,
-    lastModified: new Date(),
-  }));
+  return versions.flatMap((v) =>
+    localizedSitemapEntries(`/patch-notes/${v.version}`, lastModified)
+  );
 }

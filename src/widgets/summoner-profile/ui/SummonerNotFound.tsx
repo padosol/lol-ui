@@ -6,8 +6,9 @@ import type { SummonerAutocompleteItem } from "@/entities/summoner";
 import { getProfileIconImageUrl } from "@/shared/lib/profile";
 import { getTierColor, getTierImageUrl, getTierInitial } from "@/shared/lib/tier";
 import { ChevronDown, Home, Search, UserX } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/shared/i18n/navigation";
 import { useEffect, useRef, useState } from "react";
 
 interface SummonerNotFoundProps {
@@ -21,6 +22,10 @@ export default function SummonerNotFound({
   tagline,
   region: initialRegion,
 }: SummonerNotFoundProps) {
+  const t = useTranslations("summoner.notFound");
+  const tSummoner = useTranslations("summoner");
+  const tSearch = useTranslations("search");
+  const tRegion = useTranslations("domain.region");
   const router = useRouter();
   const { region: storeRegion, setRegion } = useRegionStore();
   const [isRegionOpen, setIsRegionOpen] = useState(false);
@@ -63,6 +68,7 @@ export default function SummonerNotFound({
         setAutocompleteResults(results);
         setShowAutocomplete(results.length > 0);
       } catch (error) {
+        // eslint-disable-next-line no-restricted-syntax -- 개발자 로그, 사용자 노출 아님
         console.error("자동완성 검색 오류:", error);
         setAutocompleteResults([]);
         setShowAutocomplete(false);
@@ -150,20 +156,22 @@ export default function SummonerNotFound({
         {/* 텍스트 영역 */}
         <div className="mb-8">
           <h1 className="text-2xl sm:text-3xl font-bold text-on-surface mb-3">
-            소환사를 찾을 수 없습니다
+            {t("title")}
           </h1>
-          <p className="text-on-surface-medium text-base mb-2">
-            <span className="text-primary font-medium">&quot;{displayName}&quot;</span> 소환사가
-          </p>
           <p className="text-on-surface-medium text-base">
-            소환사의 협곡에서 발견되지 않았습니다.
+            {t.rich("body", {
+              name: displayName,
+              highlight: (chunks) => (
+                <span className="text-primary font-medium">{chunks}</span>
+              ),
+            })}
           </p>
         </div>
 
         {/* 검색 영역 */}
         <div className="w-full mb-8">
           <p className="text-on-surface-disabled text-sm mb-4">
-            다른 소환사를 검색해보세요
+            {t("searchPrompt")}
           </p>
           <form onSubmit={handleSearch} className="flex gap-0 items-stretch">
             {/* 리전 선택 */}
@@ -177,8 +185,7 @@ export default function SummonerNotFound({
               >
                 <span className="flex items-center gap-2 min-w-0">
                   <span className="text-on-surface">
-                    {AVAILABLE_REGIONS.find((o) => o.value === currentRegion)?.label ??
-                      currentRegion}
+                    {tRegion(currentRegion)}
                   </span>
                   <span className="text-[10px] text-on-surface-medium">
                     {AVAILABLE_REGIONS.find((o) => o.value === currentRegion)
@@ -194,7 +201,11 @@ export default function SummonerNotFound({
 
               {isRegionOpen && (
                 <div className="absolute top-full left-0 mt-1 w-full bg-surface-4 border border-divider rounded-lg shadow-lg z-50 overflow-hidden">
-                  <div className="py-1" role="listbox" aria-label="리전 선택">
+                  <div
+                    className="py-1"
+                    role="listbox"
+                    aria-label={tSearch("regionSelect")}
+                  >
                     {AVAILABLE_REGIONS.map((opt) => {
                       const selected = opt.value === currentRegion;
                       return (
@@ -214,7 +225,7 @@ export default function SummonerNotFound({
                           aria-selected={selected}
                         >
                           <span className="font-medium text-sm">
-                            {opt.label}
+                            {tRegion(opt.value)}
                           </span>
                           <span className="text-xs text-on-surface-medium">
                             {opt.subLabel}
@@ -259,7 +270,7 @@ export default function SummonerNotFound({
                 >
                   {isLoadingAutocomplete ? (
                     <div className="p-4 text-center text-on-surface-medium">
-                      검색 중...
+                      {tSearch("searching")}
                     </div>
                   ) : autocompleteResults.length > 0 ? (
                     <div className="py-1">
@@ -305,7 +316,9 @@ export default function SummonerNotFound({
                               </div>
                               {item.summonerLevel && (
                                 <div className="text-on-surface-medium text-xs">
-                                  레벨 {item.summonerLevel}
+                                  {tSummoner("level", {
+                                    level: item.summonerLevel,
+                                  })}
                                 </div>
                               )}
                             </div>
@@ -317,7 +330,9 @@ export default function SummonerNotFound({
                                   {getTierImageUrl(item.tier) ? (
                                     <Image
                                       src={getTierImageUrl(item.tier)}
-                                      alt={`${item.tier} 티어`}
+                                      alt={tSearch("tierAlt", {
+                                        tier: item.tier,
+                                      })}
                                       fill
                                       sizes="40px"
                                       className="object-cover"
@@ -353,7 +368,7 @@ export default function SummonerNotFound({
                     </div>
                   ) : (
                     <div className="p-4 text-center text-on-surface-medium">
-                      검색 결과가 없습니다.
+                      {tSearch("noResults")}
                     </div>
                   )}
                 </div>
@@ -372,8 +387,8 @@ export default function SummonerNotFound({
 
         {/* 안내 메시지 */}
         <div className="mb-8 text-on-surface-disabled text-sm space-y-1">
-          <p>• 소환사명과 태그라인을 정확히 입력해주세요</p>
-          <p>• 예시: HideOnBush#KR1</p>
+          <p>{t("hintName")}</p>
+          <p>{t("hintExample")}</p>
         </div>
 
         {/* 홈으로 돌아가기 버튼 */}
@@ -382,7 +397,7 @@ export default function SummonerNotFound({
           className="inline-flex items-center gap-2 px-6 py-3 bg-surface-4 hover:bg-surface-6 cursor-pointer text-on-surface rounded-lg font-medium transition-colors border border-divider"
         >
           <Home className="w-5 h-5" />
-          홈으로 돌아가기
+          {t("goHome")}
         </button>
       </div>
     </div>

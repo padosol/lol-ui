@@ -1,8 +1,7 @@
 import { MetadataRoute } from "next";
 import fs from "fs/promises";
 import path from "path";
-
-const BASE_URL = "https://metapick.me";
+import { localizedSitemapEntries } from "@/shared/i18n/sitemap";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const championFile = await fs.readFile(
@@ -10,9 +9,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "utf-8"
   );
   const championData = JSON.parse(championFile);
+  const lastModified = new Date();
 
-  return Object.keys(championData.data).map((championId) => ({
-    url: `${BASE_URL}/champion-stats/${championId}`,
-    lastModified: new Date(),
-  }));
+  return Object.keys(championData.data).flatMap((championId) =>
+    localizedSitemapEntries(`/champion-stats/${championId}`, lastModified)
+  );
 }

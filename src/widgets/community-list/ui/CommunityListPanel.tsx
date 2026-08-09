@@ -2,25 +2,29 @@
 
 import { useState, useMemo, useRef, useEffect, useCallback } from "react";
 import { Plus, ChevronDown } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/shared/i18n/navigation";
 import {
   usePosts,
   useSearchPosts,
   POST_CATEGORIES,
-  POST_CATEGORY_LABELS,
-  POST_SORT_LABELS,
-  POST_PERIOD_LABELS,
+  POST_SORTS,
+  POST_PERIODS,
 } from "@/entities/community";
 import type { PostCategory, PostSort, PostPeriod } from "@/entities/community";
 import { useAuthStore } from "@/entities/auth";
 import { CommunitySearchBar } from "@/features/community-search";
 import { PostCard } from "@/entities/community";
+import { useTranslations } from "next-intl";
 
 const CATEGORIES: (PostCategory | "ALL")[] = ["ALL", ...POST_CATEGORIES];
-const SORTS: PostSort[] = ["HOT", "NEW", "TOP"];
-const PERIODS: PostPeriod[] = ["DAILY", "WEEKLY", "MONTHLY", "ALL"];
+const SORTS = POST_SORTS;
+const PERIODS = POST_PERIODS;
 
 export default function CommunityListPanel() {
+  const t = useTranslations("community");
+  const tCategory = useTranslations("domain.postCategory");
+  const tSort = useTranslations("domain.postSort");
+  const tPeriod = useTranslations("domain.postPeriod");
   const router = useRouter();
   const user = useAuthStore((s) => s.user);
   const [category, setCategory] = useState<PostCategory | "ALL">("ALL");
@@ -85,14 +89,14 @@ export default function CommunityListPanel() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-bold text-on-surface">커뮤니티</h1>
+        <h1 className="text-xl font-bold text-on-surface">{t("title")}</h1>
         <button
           type="button"
           onClick={handleWriteClick}
           className="flex items-center gap-1.5 bg-primary hover:bg-primary/80 text-on-surface font-medium px-4 py-2 rounded-md text-sm transition-colors cursor-pointer"
         >
           <Plus className="w-4 h-4" />
-          글쓰기
+          {t("write")}
         </button>
       </div>
 
@@ -112,7 +116,7 @@ export default function CommunityListPanel() {
                 : "bg-surface-4 hover:bg-surface-8 border border-divider text-on-surface-medium"
             }`}
           >
-            {cat === "ALL" ? "전체" : POST_CATEGORY_LABELS[cat]}
+            {cat === "ALL" ? t("allCategories") : tCategory(cat)}
           </button>
         ))}
       </div>
@@ -128,14 +132,14 @@ export default function CommunityListPanel() {
             aria-haspopup="listbox"
             aria-expanded={sortOpen}
           >
-            {POST_SORT_LABELS[sort]}
+            {tSort(sort)}
             <ChevronDown
               className={`absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-on-surface-medium transition-transform ${sortOpen ? "rotate-180" : ""}`}
             />
           </button>
           {sortOpen && (
             <div className="absolute top-full left-0 mt-1 w-full bg-surface-4 border border-divider rounded-lg shadow-lg z-50 overflow-hidden">
-              <div className="py-1" role="listbox" aria-label="정렬 선택">
+              <div className="py-1" role="listbox" aria-label={t("sortSelect")}>
                 {SORTS.map((s) => {
                   const selected = s === sort;
                   return (
@@ -154,7 +158,7 @@ export default function CommunityListPanel() {
                       role="option"
                       aria-selected={selected}
                     >
-                      {POST_SORT_LABELS[s]}
+                      {tSort(s)}
                     </button>
                   );
                 })}
@@ -172,14 +176,18 @@ export default function CommunityListPanel() {
             aria-haspopup="listbox"
             aria-expanded={periodOpen}
           >
-            {POST_PERIOD_LABELS[period]}
+            {tPeriod(period)}
             <ChevronDown
               className={`absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-on-surface-medium transition-transform ${periodOpen ? "rotate-180" : ""}`}
             />
           </button>
           {periodOpen && (
             <div className="absolute top-full left-0 mt-1 w-full bg-surface-4 border border-divider rounded-lg shadow-lg z-50 overflow-hidden">
-              <div className="py-1" role="listbox" aria-label="기간 선택">
+              <div
+                className="py-1"
+                role="listbox"
+                aria-label={t("periodSelect")}
+              >
                 {PERIODS.map((p) => {
                   const selected = p === period;
                   return (
@@ -198,7 +206,7 @@ export default function CommunityListPanel() {
                       role="option"
                       aria-selected={selected}
                     >
-                      {POST_PERIOD_LABELS[p]}
+                      {tPeriod(p)}
                     </button>
                   );
                 })}
@@ -215,13 +223,13 @@ export default function CommunityListPanel() {
       {/* 검색 상태 표시 */}
       {isSearching && (
         <div className="flex items-center gap-2 text-sm text-on-surface-medium">
-          <span>&ldquo;{searchKeyword}&rdquo; 검색 결과</span>
+          <span>{t("searchResult", { keyword: searchKeyword })}</span>
           <button
             type="button"
             onClick={handleClearSearch}
             className="text-primary hover:underline cursor-pointer"
           >
-            검색 초기화
+            {t("resetSearch")}
           </button>
         </div>
       )}
@@ -229,11 +237,11 @@ export default function CommunityListPanel() {
       {/* 게시글 목록 */}
       {isLoading ? (
         <div className="text-center py-16 text-on-surface-disabled">
-          로딩 중...
+          {t("loading")}
         </div>
       ) : posts.length === 0 ? (
         <div className="text-center py-16 text-on-surface-disabled">
-          {isSearching ? "검색 결과가 없습니다" : "게시글이 없습니다"}
+          {isSearching ? t("emptySearch") : t("empty")}
         </div>
       ) : (
         <div className="space-y-3">
@@ -252,7 +260,7 @@ export default function CommunityListPanel() {
             disabled={postsQuery.isFetchingNextPage}
             className="px-6 py-2 bg-surface-4 hover:bg-surface-8 border border-divider rounded-md text-sm text-on-surface-medium transition-colors disabled:opacity-50 cursor-pointer"
           >
-            {postsQuery.isFetchingNextPage ? "로딩 중..." : "더 보기"}
+            {postsQuery.isFetchingNextPage ? t("loading") : t("loadMore")}
           </button>
         </div>
       )}

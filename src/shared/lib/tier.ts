@@ -8,22 +8,7 @@ export function getTierImageUrl(tier: string): string {
   return `${IMAGE_HOST}/tier/${normalizedTier}.png`;
 }
 
-export function getTierName(tier: string): string {
-  const tierMap: Record<string, string> = {
-    IRON: "아이언",
-    BRONZE: "브론즈",
-    SILVER: "실버",
-    GOLD: "골드",
-    PLATINUM: "플래티넘",
-    EMERALD: "에메랄드",
-    DIAMOND: "다이아몬드",
-    MASTER: "마스터",
-    GRANDMASTER: "그랜드마스터",
-    CHALLENGER: "챌린저",
-    UNRANKED: "언랭크",
-  };
-  return tierMap[tier.toUpperCase()] || tier;
-}
+// 티어 표시 이름은 useTierName() 훅(messages 의 domain.tier)에서 가져온다.
 
 export function getTierInitial(tier: string): string {
   const initials: Record<string, string> = {

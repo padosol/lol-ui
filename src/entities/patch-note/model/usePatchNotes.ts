@@ -19,7 +19,7 @@ async function fetchPatchNote(versionId: string): Promise<PatchNoteExtended> {
     await loadChampionData();
     champData = useGameDataStore.getState().championData;
   }
-  if (!champData) throw new Error("챔피언 데이터를 로드할 수 없습니다.");
+  if (!champData) throw new Error("Champion data is not loaded");
   const response = await getPatchNote(versionId);
   const metadata: PatchNoteMetadata = { patchUrl: response.patchUrl, createdAt: response.createdAt };
   return transformPatchNote(response.content, champData, metadata);

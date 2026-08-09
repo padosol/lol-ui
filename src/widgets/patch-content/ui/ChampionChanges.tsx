@@ -3,6 +3,7 @@
 import type { ChampionChange } from "@/entities/patch-note";
 import { getChampionImageUrl } from "@/entities/champion";
 import { ChevronDown } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import ChangeCard from "./ChangeCard";
 
@@ -11,6 +12,7 @@ interface ChampionChangesProps {
 }
 
 export default function ChampionChanges({ changes }: ChampionChangesProps) {
+  const t = useTranslations("patchNotes");
   const [isExpanded, setIsExpanded] = useState(true);
 
   if (changes.length === 0) {
@@ -26,7 +28,7 @@ export default function ChampionChanges({ changes }: ChampionChangesProps) {
       >
         <div className="flex items-center gap-2">
           <span className="text-lg font-bold text-on-surface">
-            챔피언 변경사항
+            {t("sections.champions")}
           </span>
           <span className="text-sm text-on-surface-medium px-2 py-0.5 rounded-full bg-surface-4">
             {changes.length}

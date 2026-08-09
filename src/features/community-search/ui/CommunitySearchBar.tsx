@@ -1,6 +1,7 @@
 "use client";
 
 import { Search } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 
 interface CommunitySearchBarProps {
@@ -8,6 +9,7 @@ interface CommunitySearchBarProps {
 }
 
 export default function CommunitySearchBar({ onSearch }: CommunitySearchBarProps) {
+  const t = useTranslations("community");
   const [value, setValue] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -24,7 +26,7 @@ export default function CommunitySearchBar({ onSearch }: CommunitySearchBarProps
         type="text"
         value={value}
         onChange={(e) => setValue(e.target.value)}
-        placeholder="게시글 검색..."
+        placeholder={t("searchPlaceholder")}
         className="w-full bg-surface-4 border border-divider rounded-md pl-3 pr-10 py-2 text-sm text-on-surface placeholder:text-on-surface-disabled focus:outline-none focus:border-primary"
       />
       <button

@@ -2,12 +2,15 @@
 
 import type { MetaPrediction } from "@/entities/patch-note";
 import { TrendingUp } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface MetaPredictionsProps {
   predictions: MetaPrediction[];
 }
 
 export default function MetaPredictions({ predictions }: MetaPredictionsProps) {
+  const t = useTranslations("patchNotes");
+
   if (predictions.length === 0) {
     return null;
   }
@@ -16,7 +19,9 @@ export default function MetaPredictions({ predictions }: MetaPredictionsProps) {
     <div className="bg-surface-1 rounded-lg border border-divider/50 overflow-hidden">
       <div className="flex items-center gap-2 p-4 border-b border-divider/30">
         <TrendingUp className="w-5 h-5 text-secondary" />
-        <h3 className="text-lg font-bold text-on-surface">메타 영향 예측</h3>
+        <h3 className="text-lg font-bold text-on-surface">
+          {t("metaPredictions")}
+        </h3>
       </div>
 
       <div className="divide-y divide-divider/30">

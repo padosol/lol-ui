@@ -1,5 +1,5 @@
 import type { PatchVersionListItem } from "@/entities/patch-note";
-import Link from "next/link";
+import { Link } from "@/shared/i18n/navigation";
 
 interface PatchListItemProps {
   patch: PatchVersionListItem;

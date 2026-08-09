@@ -1,13 +1,26 @@
 import { z } from "zod";
 import { POST_CATEGORIES } from "@/entities/community";
 
-export const postEditorSchema = z.object({
-  title: z
-    .string()
-    .min(1, "제목을 입력해주세요")
-    .max(300, "제목은 최대 300자까지 입력 가능합니다"),
-  content: z.string().min(1, "내용을 입력해주세요"),
-  category: z.enum(POST_CATEGORIES, { message: "카테고리를 선택해주세요" }),
-});
+/** messages 의 community.editor.validation.* 키를 받는 번역 함수 */
+type TranslateValidation = (
+  key:
+    | "titleRequired"
+    | "titleTooLong"
+    | "contentRequired"
+    | "categoryRequired"
+) => string;
 
-export type PostEditorFormData = z.output<typeof postEditorSchema>;
+export function createPostEditorSchema(t: TranslateValidation) {
+  return z.object({
+    title: z
+      .string()
+      .min(1, t("titleRequired"))
+      .max(300, t("titleTooLong")),
+    content: z.string().min(1, t("contentRequired")),
+    category: z.enum(POST_CATEGORIES, { message: t("categoryRequired") }),
+  });
+}
+
+export type PostEditorFormData = z.output<
+  ReturnType<typeof createPostEditorSchema>
+>;

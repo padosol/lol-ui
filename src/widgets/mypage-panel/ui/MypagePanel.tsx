@@ -1,7 +1,8 @@
 "use client";
 
 import { Suspense } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "@/shared/i18n/navigation";
 import MypageSidebar from "./MypageSidebar";
 import AccountSection from "./AccountSection";
 import BookmarksSection from "./BookmarksSection";

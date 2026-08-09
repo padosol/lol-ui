@@ -21,5 +21,7 @@ export default defineConfig({
     command: "npm run dev",
     url: "http://localhost:3000",
     reuseExistingServer: !process.env.CI,
+    // CI 콜드 스타트에서 Next 개발 서버가 기본 60초를 넘길 수 있다.
+    timeout: 120_000,
   },
 });

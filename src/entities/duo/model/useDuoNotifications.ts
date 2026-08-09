@@ -42,6 +42,7 @@ export function useDuoNotifications(enabled: boolean) {
     source.onerror = () => {
       consecutiveErrors += 1;
       if (consecutiveErrors >= MAX_CONSECUTIVE_ERRORS) {
+        // eslint-disable-next-line no-restricted-syntax -- 개발자 로그, 사용자 노출 아님
         logger.warn("Duo SSE 연속 오류로 구독 종료 — 새로고침 시 재연결");
         source.close();
       }

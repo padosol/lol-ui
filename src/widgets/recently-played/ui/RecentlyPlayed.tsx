@@ -9,7 +9,8 @@ import { getSummonerHref } from "@/widgets/match-detail/ui/SummonerNameLink";
 import type { ParticipantData } from "@/entities/match";
 import { aggregateTeammates } from "../lib/aggregateTeammates";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/shared/i18n/navigation";
+import { useTranslations } from "next-intl";
 import { useMemo } from "react";
 
 interface RecentlyPlayedProps {
@@ -21,6 +22,7 @@ export default function RecentlyPlayed({
   puuid,
   region = "kr",
 }: RecentlyPlayedProps) {
+  const t = useTranslations("recentlyPlayed");
   const latestSeasonValue = useSeasonStore((s) => s.getLatestSeasonValue());
   const seasonsLoaded = useSeasonStore((s) => s.seasons.length > 0);
 
@@ -42,7 +44,7 @@ export default function RecentlyPlayed({
   const renderHeader = () => (
     <div className="bg-surface-6/50 p-2">
       <span className="px-3 py-1.5 text-sm font-semibold text-on-surface">
-        함께 플레이한 소환사
+        {t("title")}
       </span>
     </div>
   );
@@ -66,7 +68,7 @@ export default function RecentlyPlayed({
         {renderHeader()}
         <div className="p-3">
           <div className="text-center py-12 text-on-surface-medium">
-            소환사 정보가 필요합니다.
+            {t("needSummoner")}
           </div>
         </div>
       </div>
@@ -79,7 +81,7 @@ export default function RecentlyPlayed({
         {renderHeader()}
         <div className="p-3">
           <div className="text-center text-on-surface-medium border border-divider rounded-lg py-4">
-            함께 플레이한 소환사가 없습니다.
+            {t("empty")}
           </div>
         </div>
       </div>
@@ -166,9 +168,13 @@ export default function RecentlyPlayed({
                     <span className="text-on-surface-disabled">)</span>
                   </div>
                   <div className="shrink-0 text-[11px] leading-tight">
-                    <span className="text-win">{teammate.wins}승</span>
+                    <span className="text-win">
+                      {t("wins", { count: teammate.wins })}
+                    </span>
                     <span className="text-on-surface-disabled mx-0.5">/</span>
-                    <span className="text-loss">{teammate.losses}패</span>
+                    <span className="text-loss">
+                      {t("losses", { count: teammate.losses })}
+                    </span>
                   </div>
                 </div>
               </div>

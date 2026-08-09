@@ -11,6 +11,7 @@ import { getProfileIconImageUrl } from "@/shared/lib/profile";
 import { useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { RefreshCw } from "lucide-react";
+import { useFormatter, useTranslations } from "next-intl";
 import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 
@@ -27,6 +28,8 @@ export default function ProfileSection({
   initialData,
   onRefreshComplete,
 }: ProfileSectionProps) {
+  const t = useTranslations("summoner.refresh");
+  const format = useFormatter();
   // region이 prop으로 전달되지 않은 경우 파싱
   const parsed = propRegion
     ? { region: propRegion }
@@ -89,24 +92,11 @@ export default function ProfileSection({
     const cooldownInfo =
       remaining > 0 ? { remainingSeconds: Math.ceil(remaining / 1000) } : null;
 
-    // 상대 시간 텍스트 계산
-    const elapsedMinutes = Math.floor(elapsed / 60000);
-    const elapsedHours = Math.floor(elapsed / 3600000);
-    const elapsedDays = Math.floor(elapsed / 86400000);
-
-    let elapsedText: string;
-    if (elapsedMinutes < 1) {
-      elapsedText = '1분 미만';
-    } else if (elapsedMinutes < 60) {
-      elapsedText = `${elapsedMinutes}분 전`;
-    } else if (elapsedHours < 24) {
-      elapsedText = `${elapsedHours}시간 전`;
-    } else {
-      elapsedText = `${elapsedDays}일 전`;
-    }
+    // 상대 시간 텍스트는 로케일별 포맷터에 위임한다.
+    const elapsedText = format.relativeTime(lastRevisionTime, now);
 
     return { cooldownInfo, elapsedText };
-  }, [profileData?.lastRevisionClickDateTime, now]);
+  }, [profileData?.lastRevisionClickDateTime, now, format]);
 
   // 에러 메시지 5초 후 자동 소멸
   useEffect(() => {
@@ -138,7 +128,7 @@ export default function ProfileSection({
         onSuccess: async (response) => {
           // FAILED -> 쿨다운 (3분 미만 재요청)
           if (response.status === "FAILED") {
-            setRefreshError("잠시 후 다시 시도해주세요");
+            setRefreshError(t("cooldownError"));
             return;
           }
 
@@ -183,6 +173,7 @@ export default function ProfileSection({
                   return;
                 }
               } catch (error) {
+                // eslint-disable-next-line no-restricted-syntax -- 개발자 로그, 사용자 노출 아님
                 console.error("갱신 상태 확인 중 오류:", error);
                 stopPolling();
               }
@@ -205,7 +196,7 @@ export default function ProfileSection({
           onRefreshComplete?.();
         },
         onError: () => {
-          setRefreshError("갱신 요청에 실패했습니다");
+          setRefreshError(t("requestError"));
         },
       }
     );
@@ -281,19 +272,24 @@ export default function ProfileSection({
                     className={`w-3.5 h-3.5 ${isRefreshing || isPolling ? "animate-spin" : ""
                       }`}
                   />
-                  {isRefreshing || isPolling ? "갱신 중..." : "갱신"}
+                  {isRefreshing || isPolling ? t("pending") : t("action")}
                 </button>
                 {cooldownInfo && (
                   <span className="inline-flex items-center gap-1.5 text-xs text-on-surface-medium whitespace-nowrap bg-surface-6 rounded-md border border-divider px-2 py-1">
                     <span className="w-1.5 h-1.5 rounded-full bg-on-surface-medium animate-pulse" />
                     {cooldownInfo.remainingSeconds >= 60
-                      ? `${Math.floor(cooldownInfo.remainingSeconds / 60)}분 ${cooldownInfo.remainingSeconds % 60}초 후 재시도`
-                      : `${cooldownInfo.remainingSeconds}초 후 재시도`}
+                      ? t("retryInMinutes", {
+                        minutes: Math.floor(cooldownInfo.remainingSeconds / 60),
+                        seconds: cooldownInfo.remainingSeconds % 60,
+                      })
+                      : t("retryInSeconds", {
+                        seconds: cooldownInfo.remainingSeconds,
+                      })}
                   </span>
                 )}
                 {!cooldownInfo && !isRefreshing && !isPolling && elapsedText && (
                   <span className="text-xs text-on-surface-medium">
-                    마지막 갱신: {elapsedText}
+                    {t("lastRefresh", { time: elapsedText })}
                   </span>
                 )}
                 {refreshError && (

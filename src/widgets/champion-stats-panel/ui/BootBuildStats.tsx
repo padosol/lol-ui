@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { GameTooltip } from "@/shared/ui/tooltip";
 import type { BootBuildData } from "@/entities/champion";
 import { getItemImageUrl } from "@/shared/lib/game";
@@ -15,6 +16,7 @@ interface BootBuildStatsProps {
 }
 
 export default function BootBuildStats({ data }: BootBuildStatsProps) {
+  const t = useTranslations("championStats");
   const [expanded, setExpanded] = useState(false);
   if (!data || data.length === 0) return null;
 
@@ -23,7 +25,7 @@ export default function BootBuildStats({ data }: BootBuildStatsProps) {
   return (
     <div className="bg-surface-1 rounded-lg border border-divider p-0 md:p-5">
       <StatSectionHeader
-        title="신발 빌드"
+        title={t("sections.boots")}
         totalCount={data.length}
         visibleCount={Math.min(DEFAULT_VISIBLE, data.length)}
         expanded={expanded}
@@ -39,6 +41,7 @@ export default function BootBuildStats({ data }: BootBuildStatsProps) {
 }
 
 function BuildRow({ build }: { build: BootBuildData }) {
+  const t = useTranslations("championStats");
   const winRatePercent = build.winRate * 100;
   return (
     <div className="bg-surface rounded-lg px-3 py-2">
@@ -55,7 +58,7 @@ function BuildRow({ build }: { build: BootBuildData }) {
         </GameTooltip>
         <div className="flex items-center gap-4 ml-auto text-xs">
           <span>
-            <span className="text-on-surface-medium">승률 </span>
+            <span className="text-on-surface-medium">{t("winRate")} </span>
             <span
               className={`font-medium ${winRatePercent >= 50 ? "text-win" : "text-loss"}`}
             >
@@ -63,13 +66,13 @@ function BuildRow({ build }: { build: BootBuildData }) {
             </span>
           </span>
           <span>
-            <span className="text-on-surface-medium">픽률 </span>
+            <span className="text-on-surface-medium">{t("pickRate")} </span>
             <span className="font-medium text-on-surface">
               {(build.pickRate * 100).toFixed(1)}%
             </span>
           </span>
           <span className="text-on-surface-medium">
-            {build.games.toLocaleString()}게임
+            {t("games", { count: build.games })}
           </span>
         </div>
       </div>

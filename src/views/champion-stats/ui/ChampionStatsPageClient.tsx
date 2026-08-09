@@ -9,9 +9,11 @@ import { Header, Navigation, Footer } from "@/widgets/layout";
 import { useChampionPositionStats, type ApiPositionType } from "@/entities/champion";
 import { useSeasonStore } from "@/entities/season";
 import { ChampionStatsFilters } from "@/features/champion-stats-filter";
+import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 
 export default function ChampionStatsPageClient() {
+  const t = useTranslations("championStats");
   const [selectedTier, setSelectedTier] = useState("CHALLENGER");
   const [selectedPatch, setSelectedPatch] = useState("");
   const [selectedPlatform, setSelectedPlatform] = useState("kr");
@@ -74,7 +76,7 @@ export default function ChampionStatsPageClient() {
                 </div>
               ) : isError ? (
                 <div className="text-center py-20 text-loss">
-                  통계 데이터를 불러오는 중 오류가 발생했습니다.
+                  {t("loadError")}
                 </div>
               ) : (
                 <ChampionStatsTable

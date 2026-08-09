@@ -2,6 +2,7 @@ import type { SummonerAutocompleteItem } from "@/entities/summoner";
 import { getProfileIconImageUrl } from "@/shared/lib/profile";
 import { getTierColor, getTierImageUrl, getTierInitial } from "@/shared/lib/tier";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 interface AutocompleteDropdownProps {
   results: SummonerAutocompleteItem[];
@@ -18,6 +19,8 @@ export default function AutocompleteDropdown({
   dropdownRef,
   compact = false,
 }: AutocompleteDropdownProps) {
+  const t = useTranslations("search");
+
   if (compact) {
     return (
       <div
@@ -26,7 +29,7 @@ export default function AutocompleteDropdown({
       >
         {isLoading ? (
           <div className="p-2 text-center text-on-surface-medium text-xs">
-            검색 중...
+            {t("searching")}
           </div>
         ) : results.length > 0 ? (
           <div className="py-0.5">
@@ -82,7 +85,7 @@ export default function AutocompleteDropdown({
           </div>
         ) : (
           <div className="p-2 text-center text-on-surface-medium text-xs">
-            검색 결과가 없습니다.
+            {t("noResults")}
           </div>
         )}
       </div>
@@ -95,7 +98,9 @@ export default function AutocompleteDropdown({
       className="absolute top-full left-0 right-0 mt-1 bg-surface-4 border border-divider rounded-lg shadow-lg z-50 max-h-80 overflow-y-auto"
     >
       {isLoading ? (
-        <div className="p-4 text-center text-on-surface-medium">검색 중...</div>
+        <div className="p-4 text-center text-on-surface-medium">
+          {t("searching")}
+        </div>
       ) : results.length > 0 ? (
         <div className="py-1">
           {results.map((item, index) => {
@@ -149,7 +154,7 @@ export default function AutocompleteDropdown({
                       {getTierImageUrl(item.tier) ? (
                         <Image
                           src={getTierImageUrl(item.tier)}
-                          alt={`${item.tier} 티어`}
+                          alt={t("tierAlt", { tier: item.tier })}
                           fill
                           sizes="40px"
                           className="object-cover"
@@ -180,7 +185,7 @@ export default function AutocompleteDropdown({
         </div>
       ) : (
         <div className="p-4 text-center text-on-surface-medium">
-          검색 결과가 없습니다.
+          {t("noResults")}
         </div>
       )}
     </div>

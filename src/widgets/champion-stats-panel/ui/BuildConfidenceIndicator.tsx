@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 interface BuildConfidenceIndicatorProps {
   sampleSize?: number;
   totalSampleSize?: number;
@@ -14,13 +16,6 @@ function levelOf(value: number | undefined): ConfidenceLevel {
   if (value < 0.55) return "mid";
   return "high";
 }
-
-const LEVEL_LABEL: Record<ConfidenceLevel, string> = {
-  low: "낮음",
-  mid: "보통",
-  high: "높음",
-  unknown: "표본 부족",
-};
 
 const LEVEL_BAR: Record<ConfidenceLevel, string> = {
   low: "bg-gray-500",
@@ -41,9 +36,10 @@ export default function BuildConfidenceIndicator({
   totalSampleSize,
   confidenceLowerBound,
 }: BuildConfidenceIndicatorProps) {
+  const t = useTranslations("championStats.confidence");
   const level = levelOf(confidenceLowerBound);
   const sampleLabel =
-    sampleSize != null ? `표본 ${sampleSize.toLocaleString()}` : null;
+    sampleSize != null ? t("sample", { count: sampleSize }) : null;
   const ratio =
     totalSampleSize && totalSampleSize > 0 && sampleSize != null
       ? (sampleSize / totalSampleSize) * 100
@@ -59,7 +55,7 @@ export default function BuildConfidenceIndicator({
           {sampleLabel}
           {ratio != null && (
             <span className="ml-1 opacity-70">
-              · 전체의 {ratio.toFixed(1)}%
+              {t("ratio", { value: ratio.toFixed(1) })}
             </span>
           )}
         </span>
@@ -75,7 +71,10 @@ export default function BuildConfidenceIndicator({
             />
           </span>
           <span className={`text-[10px] font-medium ${LEVEL_TEXT[level]}`}>
-            신뢰도 {LEVEL_LABEL[level]} ({(confidenceLowerBound * 100).toFixed(1)}%)
+            {t("label", {
+              level: t(level),
+              value: (confidenceLowerBound * 100).toFixed(1),
+            })}
           </span>
         </span>
       )}

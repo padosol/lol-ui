@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 
 interface CommentFormProps {
@@ -14,11 +15,13 @@ interface CommentFormProps {
 export default function CommentForm({
   onSubmit,
   isPending = false,
-  placeholder = "댓글을 입력하세요...",
-  buttonText = "등록",
+  placeholder,
+  buttonText,
   initialValue = "",
   onCancel,
 }: CommentFormProps) {
+  const t = useTranslations("community.comment");
+  const tCommon = useTranslations("common");
   const [content, setContent] = useState(initialValue);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -34,7 +37,7 @@ export default function CommentForm({
       <textarea
         value={content}
         onChange={(e) => setContent(e.target.value)}
-        placeholder={placeholder}
+        placeholder={placeholder ?? t("placeholder")}
         rows={3}
         className="w-full bg-surface-4 border border-divider rounded-md px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-disabled focus:outline-none focus:border-primary resize-none"
       />
@@ -45,7 +48,7 @@ export default function CommentForm({
             onClick={onCancel}
             className="px-3 py-1.5 text-sm text-on-surface-medium hover:text-on-surface transition-colors cursor-pointer"
           >
-            취소
+            {tCommon("cancel")}
           </button>
         )}
         <button
@@ -53,7 +56,7 @@ export default function CommentForm({
           disabled={isPending || !content.trim()}
           className="px-4 py-1.5 bg-primary hover:bg-primary/80 text-on-surface text-sm font-medium rounded-md transition-colors disabled:opacity-50 cursor-pointer"
         >
-          {isPending ? "등록 중..." : buttonText}
+          {isPending ? t("submitting") : (buttonText ?? t("submit"))}
         </button>
       </div>
     </form>

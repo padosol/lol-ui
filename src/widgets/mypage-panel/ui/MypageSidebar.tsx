@@ -2,6 +2,7 @@
 
 import { Bookmark, LogOut, User } from "lucide-react";
 import { useLogout } from "@/features/auth";
+import { useTranslations } from "next-intl";
 import type { Tab } from "./MypagePanel";
 
 interface MypageSidebarProps {
@@ -9,15 +10,16 @@ interface MypageSidebarProps {
   onTabChange: (tab: Tab) => void;
 }
 
-const tabs: { key: Tab; label: string; icon: typeof User }[] = [
-  { key: "account", label: "계정 관리", icon: User },
-  { key: "bookmarks", label: "북마크한 글", icon: Bookmark },
-];
+const tabs = [
+  { key: "account", icon: User },
+  { key: "bookmarks", icon: Bookmark },
+] as const satisfies readonly { key: Tab; icon: typeof User }[];
 
 export default function MypageSidebar({
   activeTab,
   onTabChange,
 }: MypageSidebarProps) {
+  const t = useTranslations("mypage");
   const { handleLogout } = useLogout();
 
   return (
@@ -40,7 +42,7 @@ export default function MypageSidebar({
                 }`}
               >
                 <Icon className="w-4 h-4" />
-                {tab.label}
+                {t(`nav.${tab.key}`)}
               </button>
             );
           })}
@@ -51,7 +53,7 @@ export default function MypageSidebar({
           className="mt-4 flex items-center gap-3 px-5 py-4 text-sm font-medium text-on-surface-medium hover:text-error transition-colors bg-surface-1 rounded-xl border border-divider"
         >
           <LogOut className="w-4 h-4" />
-          로그아웃
+          {t("logout")}
         </button>
       </aside>
 
@@ -70,7 +72,7 @@ export default function MypageSidebar({
                   : "text-on-surface-medium border-transparent hover:text-on-surface"
               }`}
             >
-              {tab.label}
+              {t(`nav.${tab.key}`)}
             </button>
           );
         })}

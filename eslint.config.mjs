@@ -26,6 +26,43 @@ const eslintConfig = defineConfig([
       ],
     },
   },
+  // UI 레이어에 한국어 문자열을 직접 박지 못하게 막는다 (MP-107).
+  // 표시 문자열은 src/shared/i18n/messages 의 키를 통해서만 들어와야 한다.
+  {
+    files: [
+      "src/app/**/*.{ts,tsx}",
+      "src/views/**/*.{ts,tsx}",
+      "src/widgets/**/*.{ts,tsx}",
+      "src/features/**/*.{ts,tsx}",
+      "src/entities/**/*.{ts,tsx}",
+    ],
+    ignores: [
+      // 패치노트 원문이 한국어라 접미사만 번역하면 문장이 섞인다 (MP-106 영역).
+      "src/entities/patch-note/lib/transformPatchNote.ts",
+      // 탭이 비활성화된 목업 컴포넌트. 노출 시점에 함께 번역한다.
+      "src/widgets/summoner-profile/ui/FanLetter.tsx",
+    ],
+    rules: {
+      "no-restricted-syntax": [
+        "warn",
+        {
+          selector: "JSXText[value=/[가-힣]/]",
+          message:
+            "JSX 안에 한국어를 직접 쓰지 마세요. useTranslations() 로 messages 의 키를 사용하세요.",
+        },
+        {
+          selector: "Literal[value=/[가-힣]/]",
+          message:
+            "한국어 문자열 리터럴을 쓰지 마세요. useTranslations() 로 messages 의 키를 사용하세요.",
+        },
+        {
+          selector: "TemplateElement[value.raw=/[가-힣]/]",
+          message:
+            "템플릿 문자열에 한국어를 쓰지 마세요. useTranslations() 로 messages 의 키를 사용하세요.",
+        },
+      ],
+    },
+  },
 ]);
 
 export default eslintConfig;

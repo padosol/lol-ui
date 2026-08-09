@@ -3,15 +3,10 @@
 import Image from "next/image";
 import { Mic, MicOff } from "lucide-react";
 import type { DuoRequest } from "@/entities/duo";
-import {
-  LANE_LABELS,
-  LANE_IMAGE_KEY,
-  REQUEST_STATUS_LABELS,
-  useDuoMatchResult,
-} from "@/entities/duo";
+import { LANE_IMAGE_KEY, useDuoMatchResult } from "@/entities/duo";
 import { getPositionImageUrl } from "@/shared/lib/position";
-import { getTierName } from "@/shared/lib/tier";
-import { getRelativeTime } from "@/shared/lib/date";
+import { useTierName } from "@/shared/lib/useTierName";
+import { useFormatter, useTranslations } from "next-intl";
 import { RequesterActionButtons } from "@/features/duo-matching";
 import PartnerName from "./PartnerName";
 
@@ -29,6 +24,11 @@ const STATUS_COLORS: Record<string, string> = {
 };
 
 export default function DuoRequestCard({ request }: DuoRequestCardProps) {
+  const format = useFormatter();
+  const t = useTranslations("duo");
+  const getTierName = useTierName();
+  const tLane = useTranslations("domain.position");
+  const tStatus = useTranslations("domain.duoRequestStatus");
   const tier = request.tier;
   const isMasterPlus = tier !== null && ["MASTER", "GRANDMASTER", "CHALLENGER"].includes(tier);
 
@@ -43,14 +43,14 @@ export default function DuoRequestCard({ request }: DuoRequestCardProps) {
       <div className="flex items-center gap-1 shrink-0">
         <Image
           src={getPositionImageUrl(LANE_IMAGE_KEY[request.primaryLane])}
-          alt={LANE_LABELS[request.primaryLane]}
+          alt={tLane(request.primaryLane)}
           width={18}
           height={18}
         />
         <span className="text-on-surface-disabled text-xs">/</span>
         <Image
           src={getPositionImageUrl(LANE_IMAGE_KEY[request.desiredLane])}
-          alt={LANE_LABELS[request.desiredLane]}
+          alt={tLane(request.desiredLane)}
           width={16}
           height={16}
           className="opacity-70"
@@ -62,7 +62,7 @@ export default function DuoRequestCard({ request }: DuoRequestCardProps) {
         {tier !== null ? (
           <>{getTierName(tier)} {isMasterPlus ? "" : request.rank} {request.leaguePoints}LP</>
         ) : (
-          <span className="text-on-surface-disabled">언랭크</span>
+          <span className="text-on-surface-disabled">{t("unranked")}</span>
         )}
       </span>
 
@@ -86,12 +86,12 @@ export default function DuoRequestCard({ request }: DuoRequestCardProps) {
       <span
         className={`shrink-0 text-xs font-medium ${STATUS_COLORS[request.status] ?? "text-on-surface-disabled"}`}
       >
-        {REQUEST_STATUS_LABELS[request.status]}
+        {tStatus(request.status)}
       </span>
 
       {/* 시간 */}
       <span className="shrink-0 text-xs text-on-surface-disabled hidden sm:inline">
-        {getRelativeTime(request.createdAt)}
+        {format.relativeTime(new Date(request.createdAt))}
       </span>
 
       {/* 액션 버튼 */}
@@ -106,7 +106,7 @@ export default function DuoRequestCard({ request }: DuoRequestCardProps) {
       {/* 매칭 확정 시 파트너 정보 */}
       {isConfirmed && partner?.partnerGameName && (
         <div className="mt-2 pt-2 border-t border-divider flex items-center gap-1.5 text-xs">
-          <span className="text-on-surface-disabled">파트너</span>
+          <span className="text-on-surface-disabled">{t("partner")}</span>
           <PartnerName
             gameName={partner.partnerGameName}
             tagLine={partner.partnerTagLine}

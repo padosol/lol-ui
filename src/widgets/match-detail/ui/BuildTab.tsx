@@ -2,6 +2,7 @@
 
 import type { MatchDetail, ParticipantData } from "@/entities/match";
 import { getChampionImageUrl } from "@/entities/champion";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useState } from "react";
 import ItemBuildOrder from "./ItemBuildOrder";
@@ -25,6 +26,7 @@ export default function BuildTab({
   puuid,
   region = "kr",
 }: BuildTabProps) {
+  const t = useTranslations("matchDetail");
   const allParticipants = detail.participantData || [];
 
   // 기본 선택: 검색된 소환사 (puuid 매칭), 없으면 첫 번째 참가자
@@ -37,7 +39,7 @@ export default function BuildTab({
   if (!selected) {
     return (
       <div className="text-on-surface-medium text-xs p-2">
-        참가자 데이터 없음
+        {t("noParticipants")}
       </div>
     );
   }
@@ -143,7 +145,7 @@ export default function BuildTab({
       {/* ─── 아이템 빌드 순서 ─── */}
       <div className="rounded-lg border border-divider/50 p-3">
         <div className="text-on-surface text-[11px] font-semibold mb-1.5">
-          아이템 빌드 순서
+          {t("itemBuildOrder")}
         </div>
         <ItemBuildOrder itemSeq={selected.itemSeq} />
       </div>
@@ -151,7 +153,7 @@ export default function BuildTab({
       {/* ─── 스킬 순서 ─── */}
       <div className="rounded-lg border border-divider/50 p-3">
         <div className="text-on-surface text-[11px] font-semibold mb-1.5">
-          스킬 순서
+          {t("skillOrder")}
         </div>
         <SkillOrderGrid skillSeq={selected.skillSeq} championName={selected.championName} />
       </div>
@@ -159,7 +161,7 @@ export default function BuildTab({
       {/* ─── 룬 세팅 ─── */}
       <div className="rounded-lg border border-divider/50 p-3">
         <div className="text-on-surface text-[11px] font-semibold mb-1.5">
-          룬
+          {t("runes")}
         </div>
         <RuneSetup style={selected.style} statValue={selected.statValue} />
       </div>

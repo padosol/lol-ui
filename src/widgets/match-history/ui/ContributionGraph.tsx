@@ -3,6 +3,7 @@
 import { Tooltip } from "@/shared/ui/tooltip";
 import type { DailyMatchCount } from "@/entities/match";
 import { Loader2 } from "lucide-react";
+import { useFormatter, useTranslations } from "next-intl";
 import { useMemo } from "react";
 
 interface ContributionGraphProps {
@@ -12,11 +13,8 @@ interface ContributionGraphProps {
   maxCount?: number;
 }
 
-const DAY_LABELS = ["", "월", "", "수", "", "금", ""];
-const MONTH_LABELS = [
-  "1월", "2월", "3월", "4월", "5월", "6월",
-  "7월", "8월", "9월", "10월", "11월", "12월",
-];
+// 요일 라벨을 로케일별로 뽑기 위한 기준 주(2024-01-07 은 일요일).
+const REFERENCE_SUNDAY = new Date(2024, 0, 7);
 
 const COLOR_LEVELS = [
   "bg-primary/20",
@@ -44,6 +42,21 @@ function getColorClass(count: number, minCount?: number, maxCount?: number): str
 }
 
 export default function ContributionGraph({ dailyCounts, isLoading, minCount, maxCount }: ContributionGraphProps) {
+  const t = useTranslations("match.contributionGraph");
+  const format = useFormatter();
+
+  // 월/수/금만 표기한다 (홀수 인덱스).
+  const dayLabels = useMemo(
+    () =>
+      Array.from({ length: 7 }, (_, idx) => {
+        if (idx % 2 === 0) return "";
+        const date = new Date(REFERENCE_SUNDAY);
+        date.setDate(date.getDate() + idx);
+        return format.dateTime(date, { weekday: "short" });
+      }),
+    [format]
+  );
+
   const { weeks, monthLabels } = useMemo(() => {
     if (dailyCounts.length === 0) return { weeks: [], monthLabels: [] };
 
@@ -90,7 +103,7 @@ export default function ContributionGraph({ dailyCounts, isLoading, minCount, ma
       const month = firstDayOfWeek.getMonth();
       if (month !== lastMonth) {
         monthLabelsArr.push({
-          label: MONTH_LABELS[month],
+          label: format.dateTime(firstDayOfWeek, { month: "short" }),
           weekIndex: weeksArr.length - 1,
         });
         lastMonth = month;
@@ -98,7 +111,7 @@ export default function ContributionGraph({ dailyCounts, isLoading, minCount, ma
     }
 
     return { weeks: weeksArr, monthLabels: monthLabelsArr };
-  }, [dailyCounts]);
+  }, [dailyCounts, format]);
 
   if (isLoading) {
     return (
@@ -133,7 +146,7 @@ export default function ContributionGraph({ dailyCounts, isLoading, minCount, ma
         <div className="flex gap-0">
           {/* 요일 라벨 */}
           <div className="flex flex-col pr-1" style={{ gap: "2px" }}>
-            {DAY_LABELS.map((label, idx) => (
+            {dayLabels.map((label, idx) => (
               <div
                 key={idx}
                 className="text-[9px] text-on-surface-medium leading-none flex items-center justify-end"
@@ -159,10 +172,14 @@ export default function ContributionGraph({ dailyCounts, isLoading, minCount, ma
                     );
                   }
 
-                  const dateStr = `${cell.date.getFullYear()}년 ${cell.date.getMonth() + 1}월 ${cell.date.getDate()}일`;
+                  const dateStr = format.dateTime(cell.date, {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  });
                   const tooltipText = cell.count > 0
-                    ? `${dateStr} — ${cell.count}게임`
-                    : `${dateStr} — 게임 없음`;
+                    ? t("games", { date: dateStr, count: cell.count })
+                    : t("noGames", { date: dateStr });
 
                   return (
                     <Tooltip
@@ -187,7 +204,7 @@ export default function ContributionGraph({ dailyCounts, isLoading, minCount, ma
 
         {/* 범례 */}
         <div className="flex items-center justify-end gap-1 mt-1">
-          <span className="text-[9px] text-on-surface-medium">적음</span>
+          <span className="text-[9px] text-on-surface-medium">{t("less")}</span>
           <div className="rounded-sm bg-surface-4" style={{ width: "10px", height: "10px" }} />
           {COLOR_LEVELS.map((colorClass, idx) => (
             <div
@@ -196,7 +213,7 @@ export default function ContributionGraph({ dailyCounts, isLoading, minCount, ma
               style={{ width: "10px", height: "10px" }}
             />
           ))}
-          <span className="text-[9px] text-on-surface-medium">많음</span>
+          <span className="text-[9px] text-on-surface-medium">{t("more")}</span>
         </div>
       </div>
     </div>

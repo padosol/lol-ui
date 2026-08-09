@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import type { SkillBuildData } from "@/entities/champion";
 import { useGameDataStore } from "@/shared/model/game-data";
@@ -68,6 +69,7 @@ export default function SkillTreeStats({
   data,
   championName,
 }: SkillTreeStatsProps) {
+  const t = useTranslations("championStats");
   const [expanded, setExpanded] = useState(false);
   const championData = useGameDataStore((s) => s.championData);
   const champion = championData?.data[championName];
@@ -83,7 +85,7 @@ export default function SkillTreeStats({
   return (
     <div className="bg-surface-1 rounded-lg border border-divider p-0 md:p-5">
       <StatSectionHeader
-        title="스킬 트리"
+        title={t("sections.skillTree")}
         totalCount={filtered.length}
         visibleCount={Math.min(DEFAULT_VISIBLE, filtered.length)}
         expanded={expanded}
@@ -118,7 +120,7 @@ export default function SkillTreeStats({
                 </div>
                 <div className="flex items-center gap-3 text-xs">
                   <span>
-                    <span className="text-on-surface-medium">승률 </span>
+                    <span className="text-on-surface-medium">{t("winRate")} </span>
                     <span
                       className={`font-medium ${winRatePercent >= 50 ? "text-win" : "text-loss"}`}
                     >
@@ -126,7 +128,7 @@ export default function SkillTreeStats({
                     </span>
                   </span>
                   <span className="text-on-surface-medium">
-                    {build.games.toLocaleString()}게임
+                    {t("games", { count: build.games })}
                   </span>
                 </div>
               </div>

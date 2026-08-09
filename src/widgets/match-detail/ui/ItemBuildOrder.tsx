@@ -2,13 +2,16 @@ import { GameTooltip } from "@/shared/ui/tooltip";
 import type { ItemSeqEntry } from "@/entities/match";
 import { getItemImageUrl } from "@/shared/lib/game";
 import { ChevronRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 
 export default function ItemBuildOrder({ itemSeq }: { itemSeq: ItemSeqEntry[] | null }) {
+  const t = useTranslations("matchDetail");
+
   if (!itemSeq || itemSeq.length === 0) {
     return (
       <div className="text-on-surface-medium text-[11px]">
-        아이템 빌드 순서 정보 없음
+        {t("noItemBuildOrder")}
       </div>
     );
   }

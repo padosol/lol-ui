@@ -1,8 +1,10 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useGoogleLogin } from "../model/useGoogleLogin";
 
 export default function GoogleLoginButton() {
+  const t = useTranslations("auth");
   const { initiateGoogleLogin } = useGoogleLogin();
 
   return (
@@ -29,7 +31,7 @@ export default function GoogleLoginButton() {
           fill="#EA4335"
         />
       </svg>
-      Google로 계속하기
+      {t("google")}
     </button>
   );
 }

@@ -3,17 +3,26 @@
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslations } from "next-intl";
+import { useMemo } from "react";
 
-const loginSchema = z.object({
-  email: z.string().email("올바른 이메일을 입력하세요"),
-  password: z.string().min(1, "비밀번호를 입력하세요"),
-});
+function createLoginSchema(
+  t: (key: "invalidEmail" | "passwordRequired") => string
+) {
+  return z.object({
+    email: z.string().email(t("invalidEmail")),
+    password: z.string().min(1, t("passwordRequired")),
+  });
+}
 
-type LoginFormValues = z.infer<typeof loginSchema>;
+type LoginFormValues = z.infer<ReturnType<typeof createLoginSchema>>;
 
 export default function LoginForm() {
+  const t = useTranslations("auth");
+  const tValidation = useTranslations("auth.validation");
+  const schema = useMemo(() => createLoginSchema(tValidation), [tValidation]);
   const { register, handleSubmit, formState: { errors } } = useForm<LoginFormValues>({
-    resolver: zodResolver(loginSchema),
+    resolver: zodResolver(schema),
   });
 
   return (
@@ -26,7 +35,7 @@ export default function LoginForm() {
           htmlFor="email"
           className="block text-sm font-medium text-on-surface-medium mb-1"
         >
-          이메일
+          {t("email")}
         </label>
         <input
           id="email"
@@ -46,13 +55,13 @@ export default function LoginForm() {
           htmlFor="password"
           className="block text-sm font-medium text-on-surface-medium mb-1"
         >
-          비밀번호
+          {t("password")}
         </label>
         <input
           id="password"
           type="password"
           disabled
-          placeholder="비밀번호"
+          placeholder={t("password")}
           className="w-full px-3 py-2 bg-surface-4 border border-divider rounded-lg text-on-surface placeholder:text-on-surface-medium/50 disabled:opacity-50 disabled:cursor-not-allowed"
           {...register("password")}
         />
@@ -66,7 +75,7 @@ export default function LoginForm() {
         disabled
         className="w-full py-2.5 bg-primary/50 text-on-surface rounded-lg font-medium cursor-not-allowed opacity-50"
       >
-        이메일 로그인 (준비중)
+        {t("emailLoginForm")}
       </button>
     </form>
   );

@@ -5,6 +5,7 @@ import { AVAILABLE_REGIONS, type RegionValue } from "@/features/region-select";
 import { getTierImageUrl } from "@/shared/lib/tier";
 import { useClickOutside } from "@/shared/lib/useClickOutside";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useRef, useState } from "react";
 
@@ -16,9 +17,9 @@ interface RankingFiltersProps {
 }
 
 const queueTypes = [
-  { value: "solo", label: "솔로 랭크" },
-  { value: "flex", label: "자유 랭크" },
-];
+  { value: "solo", messageKey: "RANKED_SOLO_5x5" },
+  { value: "flex", messageKey: "RANKED_FLEX_SR" },
+] as const;
 
 const getQueueParam = (
   queueType: string
@@ -55,6 +56,10 @@ export default function RankingFilters({
   onRegionChange,
   onQueueTypeChange,
 }: RankingFiltersProps) {
+  const t = useTranslations("leaderboards");
+  const tRegion = useTranslations("domain.region");
+  const tQueue = useTranslations("domain.leagueType");
+  const tTier = useTranslations("domain.tier");
   const queueParam = getQueueParam(queueType);
   const { data: tierCutoffs, isLoading, isError } = useTierCutoffs(region, queueParam);
 
@@ -69,8 +74,7 @@ export default function RankingFilters({
   useClickOutside(queueTypeRef, () => setIsQueueTypeOpen(false), isQueueTypeOpen);
 
   const selectedRegion = AVAILABLE_REGIONS.find((r) => r.value === region);
-  const selectedQueueTypeLabel =
-    queueTypes.find((q) => q.value === queueType)?.label ?? queueType;
+  const selectedQueueTypeLabel = tQueue(getQueueParam(queueType));
 
   return (
     <div className="bg-surface-4 rounded-lg p-4 mb-6">
@@ -78,7 +82,7 @@ export default function RankingFilters({
         <div className="flex gap-4">
           <div className="w-32">
             <label className="block text-sm font-medium text-on-surface mb-2">
-              지역
+              {t("region")}
             </label>
             <div ref={regionRef} className="relative">
               <button
@@ -89,7 +93,7 @@ export default function RankingFilters({
                 aria-expanded={isRegionOpen}
               >
                 <span className="text-sm">
-                  {selectedRegion?.label ?? region}{" "}
+                  {tRegion(region)}{" "}
                   <span className="text-on-surface-medium">
                     {selectedRegion?.subLabel}
                   </span>
@@ -102,7 +106,11 @@ export default function RankingFilters({
 
               {isRegionOpen && (
                 <div className="absolute top-full left-0 mt-1 w-full bg-surface-4 border border-divider rounded-md shadow-lg z-50 overflow-hidden">
-                  <div className="py-1" role="listbox" aria-label="지역 선택">
+                  <div
+                    className="py-1"
+                    role="listbox"
+                    aria-label={t("regionSelect")}
+                  >
                     {AVAILABLE_REGIONS.map((r) => {
                       const selected = r.value === region;
                       return (
@@ -120,7 +128,7 @@ export default function RankingFilters({
                           role="option"
                           aria-selected={selected}
                         >
-                          {r.label}{" "}
+                          {tRegion(r.value)}{" "}
                           <span className="text-on-surface-medium">
                             {r.subLabel}
                           </span>
@@ -135,7 +143,7 @@ export default function RankingFilters({
 
           <div className="w-32">
             <label className="block text-sm font-medium text-on-surface mb-2">
-              랭킹 타입
+              {t("queueType")}
             </label>
             <div ref={queueTypeRef} className="relative">
               <button
@@ -154,7 +162,11 @@ export default function RankingFilters({
 
               {isQueueTypeOpen && (
                 <div className="absolute top-full left-0 mt-1 w-full bg-surface-4 border border-divider rounded-md shadow-lg z-50 overflow-hidden">
-                  <div className="py-1" role="listbox" aria-label="랭킹 타입 선택">
+                  <div
+                    className="py-1"
+                    role="listbox"
+                    aria-label={t("queueTypeSelect")}
+                  >
                     {queueTypes.map((q) => {
                       const selected = q.value === queueType;
                       return (
@@ -172,7 +184,7 @@ export default function RankingFilters({
                           role="option"
                           aria-selected={selected}
                         >
-                          {q.label}
+                          {tQueue(q.messageKey)}
                         </button>
                       );
                     })}
@@ -201,14 +213,14 @@ export default function RankingFilters({
             </>
           ) : isError ? (
             <div className="bg-surface-8 rounded-lg p-3 text-sm text-on-surface-medium">
-              커트라인 정보를 불러올 수 없습니다
+              {t("cutoffError")}
             </div>
           ) : (
             <>
               {[
-                { tier: "CHALLENGER", label: "챌린저", data: challengerData },
-                { tier: "GRANDMASTER", label: "그랜드마스터", data: grandmasterData },
-              ].map(({ tier, label, data }) => (
+                { tier: "CHALLENGER" as const, data: challengerData },
+                { tier: "GRANDMASTER" as const, data: grandmasterData },
+              ].map(({ tier, data }) => (
                 <div
                   key={tier}
                   className="flex-1 bg-surface-8 border border-divider rounded-lg overflow-hidden"
@@ -217,14 +229,16 @@ export default function RankingFilters({
                     <div className="w-[54px] h-[54px] shrink-0 overflow-hidden">
                       <Image
                         src={getTierImageUrl(tier)}
-                        alt={label}
+                        alt={tTier(tier)}
                         width={54}
                         height={60}
                         className="object-cover object-top"
                       />
                     </div>
                     <div>
-                      <div className="text-[11px] text-on-surface-medium">{label}</div>
+                      <div className="text-[11px] text-on-surface-medium">
+                        {tTier(tier)}
+                      </div>
                       <div className="flex items-center">
                         <span className="text-sm font-bold text-on-surface">
                           {data?.minLeaguePoints ?? "-"}
@@ -234,7 +248,7 @@ export default function RankingFilters({
                       </div>
                       {data?.userCount !== undefined && (
                         <div className="text-[11px] text-on-surface-medium">
-                          {data.userCount.toLocaleString()}명
+                          {t("userCount", { count: data.userCount })}
                         </div>
                       )}
                     </div>

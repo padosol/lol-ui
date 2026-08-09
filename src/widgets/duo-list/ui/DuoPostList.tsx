@@ -1,6 +1,7 @@
 "use client";
 
 import type { DuoPost } from "@/entities/duo";
+import { useTranslations } from "next-intl";
 import DuoCard from "./DuoCard";
 
 interface DuoPostListProps {
@@ -20,6 +21,8 @@ export default function DuoPostList({
   onFetchNextPage,
   onSelectPost,
 }: DuoPostListProps) {
+  const t = useTranslations("duo");
+
   if (isLoading) {
     return (
       <div className="space-y-2">
@@ -36,7 +39,7 @@ export default function DuoPostList({
   if (posts.length === 0) {
     return (
       <div className="text-center py-16 text-on-surface-disabled">
-        등록된 듀오가 없습니다
+        {t("emptyPosts")}
       </div>
     );
   }
@@ -57,7 +60,7 @@ export default function DuoPostList({
             disabled={isFetchingNextPage}
             className="cursor-pointer px-6 py-2 text-sm font-medium text-on-surface-medium bg-surface-4 border border-divider rounded-md hover:bg-surface-8 transition-colors disabled:opacity-50"
           >
-            {isFetchingNextPage ? "로딩 중..." : "더 보기"}
+            {isFetchingNextPage ? t("loadingMore") : t("loadMore")}
           </button>
         </div>
       )}

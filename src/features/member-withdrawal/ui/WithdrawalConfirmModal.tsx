@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { X, AlertTriangle } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useMemberWithdrawal } from "../model/useMemberWithdrawal";
 
 interface WithdrawalConfirmModalProps {
@@ -13,6 +14,8 @@ export default function WithdrawalConfirmModal({
   open,
   onClose,
 }: WithdrawalConfirmModalProps) {
+  const t = useTranslations("mypage.withdrawModal");
+  const tCommon = useTranslations("common");
   const { withdraw, isPending, error } = useMemberWithdrawal();
 
   useEffect(() => {
@@ -43,7 +46,7 @@ export default function WithdrawalConfirmModal({
     >
       <div className="bg-surface-4 rounded-lg border border-divider w-full max-w-md mx-4 p-6">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-lg font-bold text-on-surface">회원 탈퇴</h2>
+          <h2 className="text-lg font-bold text-on-surface">{t("title")}</h2>
           <button
             type="button"
             onClick={onClose}
@@ -58,11 +61,10 @@ export default function WithdrawalConfirmModal({
           <AlertTriangle className="w-5 h-5 text-error shrink-0 mt-0.5" />
           <div>
             <p className="text-sm font-medium text-on-surface mb-1">
-              정말 탈퇴하시겠습니까?
+              {t("confirmQuestion")}
             </p>
             <p className="text-xs text-on-surface-medium leading-relaxed">
-              탈퇴 시 모든 데이터가 삭제되며, 30일 이내에는 동일 계정으로
-              재가입할 수 없습니다.
+              {t("description")}
             </p>
           </div>
         </div>
@@ -76,7 +78,7 @@ export default function WithdrawalConfirmModal({
             disabled={isPending}
             className="flex-1 py-2.5 bg-surface-4 border border-divider text-on-surface-medium rounded-lg text-sm font-medium hover:bg-surface-1 transition-colors disabled:opacity-50"
           >
-            취소
+            {tCommon("cancel")}
           </button>
           <button
             type="button"
@@ -84,7 +86,7 @@ export default function WithdrawalConfirmModal({
             disabled={isPending}
             className="flex-1 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-medium transition-colors disabled:opacity-50"
           >
-            {isPending ? "처리 중..." : "탈퇴하기"}
+            {isPending ? tCommon("processing") : t("submit")}
           </button>
         </div>
       </div>

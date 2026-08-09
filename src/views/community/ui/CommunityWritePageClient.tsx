@@ -1,13 +1,15 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/shared/i18n/navigation";
 import { ArrowLeft } from "lucide-react";
 import { Header, Navigation, Footer } from "@/widgets/layout";
 import { useCreatePost } from "@/entities/community";
 import { PostEditorForm } from "@/features/community-post-editor";
 import type { PostEditorFormData } from "@/features/community-post-editor/model/postEditorSchema";
+import { useTranslations } from "next-intl";
 
 export default function CommunityWritePageClient() {
+  const t = useTranslations("community");
   const router = useRouter();
   const createMutation = useCreatePost();
 
@@ -31,15 +33,17 @@ export default function CommunityWritePageClient() {
             className="flex items-center gap-1 text-sm text-on-surface-medium hover:text-on-surface transition-colors cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />
-            목록으로
+            {t("backToList")}
           </button>
 
           <div className="bg-surface-1 border border-divider rounded-lg p-6">
-            <h1 className="text-lg font-bold text-on-surface mb-6">글쓰기</h1>
+            <h1 className="text-lg font-bold text-on-surface mb-6">
+              {t("write")}
+            </h1>
             <PostEditorForm
               onSubmit={handleSubmit}
               isPending={createMutation.isPending}
-              submitLabel="등록"
+              submitLabel={t("submit")}
             />
           </div>
         </div>

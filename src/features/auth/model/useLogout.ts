@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/shared/i18n/navigation";
 import { useAuthStore } from "@/entities/auth";
 import { logout } from "@/entities/auth";
 

@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useGameDataStore } from "@/shared/model/game-data";
 import { parseItemDescription } from "@/shared/lib/parseItemDescription";
 
@@ -8,13 +9,14 @@ interface ItemTooltipContentProps {
 }
 
 export default function ItemTooltipContent({ itemId }: ItemTooltipContentProps) {
+  const t = useTranslations("tooltip");
   const itemData = useGameDataStore((state) => state.itemData);
   const item = itemData?.data[String(itemId)];
 
   if (!item) {
     return (
       <div className="bg-surface-1 border border-divider shadow-xl rounded-lg p-3 max-w-[280px]">
-        <div className="text-on-surface-medium text-xs">아이템 정보 없음</div>
+        <div className="text-on-surface-medium text-xs">{t("noItemInfo")}</div>
       </div>
     );
   }

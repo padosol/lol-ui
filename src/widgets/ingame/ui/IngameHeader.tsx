@@ -1,6 +1,7 @@
 "use client";
 
 import type { SpectatorData } from "@/entities/spectator";
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
 interface IngameHeaderProps {
@@ -8,19 +9,25 @@ interface IngameHeaderProps {
 }
 
 export default function IngameHeader({ data }: IngameHeaderProps) {
+  const t = useTranslations("ingame");
+  const tGameMode = useTranslations("domain.gameMode");
   const [gameTime, setGameTime] = useState<string>("0:00");
 
-  const queueTypeMap: { [key: number]: string } = {
-    420: "솔로 랭크",
-    440: "자유 랭크",
-    450: "칼바람 나락",
-    700: "격전",
-    900: "우르프",
-    400: "일반",
-  };
+  // queueId → messages 의 domain.gameMode 키
+  const queueTypeMap = {
+    420: "RANKED_SOLO",
+    440: "RANKED_FLEX",
+    450: "ARAM",
+    700: "CLASH",
+    900: "URF",
+    400: "NORMAL",
+  } as const satisfies Record<number, string>;
 
-  const gameType =
-    queueTypeMap[data.gameQueueConfigId] || `큐 ID: ${data.gameQueueConfigId}`;
+  const queueKey =
+    queueTypeMap[data.gameQueueConfigId as keyof typeof queueTypeMap];
+  const gameType = queueKey
+    ? tGameMode(queueKey)
+    : t("unknownQueue", { id: data.gameQueueConfigId });
 
   useEffect(() => {
     const updateGameTime = () => {
@@ -51,7 +58,9 @@ export default function IngameHeader({ data }: IngameHeaderProps) {
             </div>
           </div>
           <div className="h-4 w-px bg-divider"></div>
-          <div className="text-on-surface-medium text-sm">게임시간: {gameTime}</div>
+          <div className="text-on-surface-medium text-sm">
+            {t("gameTime", { time: gameTime })}
+          </div>
         </div>
       </div>
     </div>
