@@ -263,15 +263,19 @@
       "sectionTitle": "Boards",
       "myActivity": "My activity",
       "myPosts": "My posts",
-      "bookmarks": "Saved posts"
-    },
-    "aside": {
-      "hotTitle": "Trending posts",
-      "hotEmpty": "No trending posts yet",
+      "bookmarks": "Saved posts",
       "guideTitle": "Community guidelines",
       "guideNoAbuse": "Abusive, spam, and promotional posts are removed without notice.",
       "guideAddContext": "Include your summoner name or match link to get faster answers.",
       "guideRepeatOffense": "Repeated violations may restrict your community access."
+    },
+    "aside": {
+      "hotTitle": "Trending posts",
+      "hotEmpty": "No trending posts yet",
+      "todayMatchesTitle": "Today's matches",
+      "todayMatchesEmpty": "No match schedule yet",
+      "standingsTitle": "League standings",
+      "standingsEmpty": "No standings yet"
     },
     "post": {
       "notFound": "Post not found.",

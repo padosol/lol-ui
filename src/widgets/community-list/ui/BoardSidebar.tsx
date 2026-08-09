@@ -17,7 +17,6 @@ const CATEGORIES: CategoryValue[] = ["ALL", ...POST_CATEGORIES];
 export default function BoardSidebar({ category, onSelect }: BoardSidebarProps) {
   const t = useTranslations("community");
   const tBoard = useTranslations("community.board");
-  const tNav = useTranslations("nav");
   const tCategory = useTranslations("domain.postCategory");
 
   return (
@@ -64,19 +63,15 @@ export default function BoardSidebar({ category, onSelect }: BoardSidebarProps) 
         </Link>
       </div>
 
-      <div className="border-t border-divider pt-3.5 px-2.5 flex flex-col gap-1.5 text-xs text-on-surface-disabled">
-        <Link
-          href="/terms-of-service"
-          className="hover:text-on-surface-medium transition-colors"
-        >
-          {tNav("terms")}
-        </Link>
-        <Link
-          href="/privacy-policy"
-          className="hover:text-on-surface-medium transition-colors"
-        >
-          {tNav("privacy")}
-        </Link>
+      <div className="border-t border-divider pt-3.5 px-2.5 flex flex-col gap-2">
+        <div className="text-[11.5px] font-bold tracking-widest text-on-surface-disabled">
+          {tBoard("guideTitle")}
+        </div>
+        <ul className="flex flex-col gap-1.5 text-[11.5px] leading-relaxed text-on-surface-disabled">
+          <li>· {tBoard("guideNoAbuse")}</li>
+          <li>· {tBoard("guideAddContext")}</li>
+          <li>· {tBoard("guideRepeatOffense")}</li>
+        </ul>
       </div>
     </div>
   );

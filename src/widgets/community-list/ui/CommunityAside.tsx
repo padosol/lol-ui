@@ -3,6 +3,8 @@
 import { Link } from "@/shared/i18n/navigation";
 import { useFormatter, useTranslations } from "next-intl";
 import { usePosts } from "@/entities/community";
+import TodayMatchesCard from "./TodayMatchesCard";
+import LeagueStandingsCard from "./LeagueStandingsCard";
 
 const HOT_LIMIT = 5;
 
@@ -70,16 +72,8 @@ export default function CommunityAside() {
         )}
       </section>
 
-      <section className="bg-surface-1 border border-divider rounded-xl p-4">
-        <h2 className="text-xs font-bold tracking-wider text-on-surface-disabled mb-3">
-          {t("guideTitle")}
-        </h2>
-        <ul className="flex flex-col gap-2 text-[12.5px] leading-relaxed text-on-surface-medium">
-          <li>· {t("guideNoAbuse")}</li>
-          <li>· {t("guideAddContext")}</li>
-          <li>· {t("guideRepeatOffense")}</li>
-        </ul>
-      </section>
+      <TodayMatchesCard />
+      <LeagueStandingsCard />
     </div>
   );
 }
