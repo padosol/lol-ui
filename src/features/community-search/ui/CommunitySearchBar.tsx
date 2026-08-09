@@ -27,7 +27,7 @@ export default function CommunitySearchBar({ onSearch }: CommunitySearchBarProps
         value={value}
         onChange={(e) => setValue(e.target.value)}
         placeholder={t("searchPlaceholder")}
-        className="w-full bg-surface-4 border border-divider rounded-md pl-3 pr-10 py-2 text-sm text-on-surface placeholder:text-on-surface-disabled focus:outline-none focus:border-primary"
+        className="w-full bg-surface-4 border border-divider rounded-lg pl-3 pr-10 py-2 text-sm text-on-surface placeholder:text-on-surface-disabled focus:outline-none focus:border-primary"
       />
       <button
         type="submit"

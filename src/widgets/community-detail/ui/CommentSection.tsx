@@ -75,42 +75,46 @@ export default function CommentSection({ postId, commentCount }: CommentSectionP
   };
 
   return (
-    <div className="space-y-4">
-      <h3 className="text-base font-bold text-on-surface">
-        {t("count", { count: commentCount })}
-      </h3>
+    <section className="mt-3 flex flex-col gap-3">
+      <div className="flex items-center gap-2">
+        <h2 className="text-base font-bold text-on-surface">
+          {t("count", { count: commentCount })}
+        </h2>
+      </div>
 
       <CommentForm
         onSubmit={handleCreate}
         isPending={createMutation.isPending}
         placeholder={user ? t("placeholder") : t("loginRequired")}
+        authorNickname={user?.nickname}
       />
 
-      {isLoading ? (
-        <div className="text-center py-8 text-on-surface-disabled text-sm">
-          {t("loading")}
-        </div>
-      ) : comments && comments.length > 0 ? (
-        <div>
-          {comments.map((comment) => (
-            <CommentItem
-              key={comment.id}
-              comment={comment}
-              onReply={handleReply}
-              onUpdate={handleUpdate}
-              onDelete={handleDelete}
-              onVote={handleVote}
-              isReplyPending={createMutation.isPending}
-              isUpdatePending={updateMutation.isPending}
-              isVotePending={voteMutation.isPending || removeVoteMutation.isPending}
-            />
-          ))}
-        </div>
-      ) : (
-        <div className="text-center py-8 text-on-surface-disabled text-sm">
-          {t("empty")}
-        </div>
-      )}
+      <div className="bg-surface-1 border border-divider rounded-xl overflow-hidden">
+        {isLoading ? (
+          <div className="py-10 text-center text-sm text-on-surface-disabled">
+            {t("loading")}
+          </div>
+        ) : comments && comments.length > 0 ? (
+          comments.map((comment) => (
+            <div key={comment.id} className="border-b border-divider last:border-b-0">
+              <CommentItem
+                comment={comment}
+                onReply={handleReply}
+                onUpdate={handleUpdate}
+                onDelete={handleDelete}
+                onVote={handleVote}
+                isReplyPending={createMutation.isPending}
+                isUpdatePending={updateMutation.isPending}
+                isVotePending={voteMutation.isPending || removeVoteMutation.isPending}
+              />
+            </div>
+          ))
+        ) : (
+          <div className="py-10 text-center text-sm text-on-surface-disabled">
+            {t("empty")}
+          </div>
+        )}
+      </div>
 
       <ConfirmModal
         open={pendingDeleteId !== null}
@@ -122,6 +126,6 @@ export default function CommentSection({ postId, commentCount }: CommentSectionP
         onConfirm={confirmDelete}
         onClose={() => setPendingDeleteId(null)}
       />
-    </div>
+    </section>
   );
 }

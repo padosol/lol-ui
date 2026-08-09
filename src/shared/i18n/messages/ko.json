@@ -252,9 +252,31 @@
     "back": "돌아가기",
     "submit": "등록",
     "submitEdit": "수정",
+    "share": "공유",
+    "shareCopied": "게시글 링크를 복사했습니다.",
+    "shareError": "링크 복사에 실패했습니다.",
+    "stats": {
+      "upvotes": "추천",
+      "views": "조회"
+    },
+    "board": {
+      "sectionTitle": "게시판",
+      "myActivity": "내 활동",
+      "myPosts": "내가 쓴 글",
+      "bookmarks": "스크랩"
+    },
+    "aside": {
+      "hotTitle": "커뮤니티 인기글",
+      "hotEmpty": "아직 인기글이 없습니다",
+      "guideTitle": "커뮤니티 이용 안내",
+      "guideNoAbuse": "비방·도배·광고 글은 사전 통보 없이 삭제됩니다.",
+      "guideAddContext": "소환사명·전적 링크를 함께 적으면 답변이 빨라집니다.",
+      "guideRepeatOffense": "반복 위반 시 커뮤니티 이용이 제한될 수 있습니다."
+    },
     "post": {
       "notFound": "게시글을 찾을 수 없습니다.",
       "viewCount": "조회 {count}",
+      "upvoteCount": "추천 {count}",
       "edited": "(수정됨)",
       "deleteTitle": "게시글 삭제",
       "deleteDescription": "이 게시글을 삭제하시겠습니까? 삭제한 게시글은 되돌릴 수 없습니다.",
@@ -268,6 +290,8 @@
       "titlePlaceholder": "제목을 입력해주세요 (최대 300자)",
       "content": "내용",
       "contentPlaceholder": "내용을 입력해주세요",
+      "contentCount": "{count}자",
+      "guideline": "비방·도배·광고 글은 사전 통보 없이 삭제되며 반복 시 이용이 제한될 수 있습니다.",
       "validation": {
         "titleRequired": "제목을 입력해주세요",
         "titleTooLong": "제목은 최대 300자까지 입력 가능합니다",

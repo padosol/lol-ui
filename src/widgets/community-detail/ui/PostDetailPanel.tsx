@@ -2,12 +2,13 @@
 
 import { useRouter } from "@/shared/i18n/navigation";
 import { useState } from "react";
-import { ArrowLeft, Pencil, Trash2 } from "lucide-react";
+import { ArrowLeft, Pencil, Trash2, Share2 } from "lucide-react";
 import {
   usePostDetail,
   useDeletePost,
   useVote,
   useRemoveVote,
+  AuthorAvatar,
 } from "@/entities/community";
 import type { VoteType } from "@/entities/community";
 import { useAuthStore } from "@/entities/auth";
@@ -53,6 +54,15 @@ export default function PostDetailPanel({ postId }: PostDetailPanelProps) {
     }
   };
 
+  const handleShare = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      toast.success(t("shareCopied"));
+    } catch {
+      toast.error(t("shareError"));
+    }
+  };
+
   const confirmDelete = () => {
     if (!post) return;
     deleteMutation.mutate(post.id, {
@@ -80,74 +90,80 @@ export default function PostDetailPanel({ postId }: PostDetailPanelProps) {
     );
   }
 
-  return (
-    <div className="space-y-6">
-      <button
-        type="button"
-        onClick={() => router.push("/community")}
-        className="flex items-center gap-1 text-sm text-on-surface-medium hover:text-on-surface transition-colors cursor-pointer"
-      >
-        <ArrowLeft className="w-4 h-4" />
-        {t("backToList")}
-      </button>
+  const netVotes = post.upvoteCount - post.downvoteCount;
 
-      <div className="bg-surface-1 border border-divider rounded-lg p-6">
-        <div className="flex items-center gap-2 mb-3">
-          <span className="text-xs bg-surface-4 border border-divider rounded px-2 py-0.5 text-on-surface-medium">
+  return (
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-wrap items-center gap-2">
+        <button
+          type="button"
+          onClick={() => router.push("/community")}
+          className="flex items-center gap-1.5 text-[13.5px] font-bold text-on-surface-medium hover:text-on-surface transition-colors cursor-pointer"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          {tCategory(post.category)}
+        </button>
+
+        <div className="flex-1" />
+
+        {isAuthor && (
+          <div className="flex gap-1.5">
+            <button
+              type="button"
+              onClick={() => router.push(`/community/${post.id}/edit`)}
+              className="flex items-center gap-1 rounded-md border border-divider px-3 py-1.5 text-[13px] font-bold text-on-surface-medium hover:text-on-surface hover:border-on-surface-disabled transition-colors cursor-pointer"
+            >
+              <Pencil className="w-3.5 h-3.5" />
+              {tCommon("edit")}
+            </button>
+            <button
+              type="button"
+              onClick={() => setDeleteOpen(true)}
+              disabled={deleteMutation.isPending}
+              className="flex items-center gap-1 rounded-md border border-divider px-3 py-1.5 text-[13px] font-bold text-on-surface-medium hover:text-loss hover:border-loss/50 transition-colors disabled:opacity-50 cursor-pointer"
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+              {tCommon("delete")}
+            </button>
+          </div>
+        )}
+      </div>
+
+      <article className="bg-surface-1 border border-divider rounded-xl px-5 py-6 sm:px-8 sm:py-7">
+        <div className="mb-3">
+          <span className="rounded bg-primary/15 px-2 py-1 text-[11.5px] font-bold text-primary">
             {tCategory(post.category)}
-          </span>
-          <span className="text-xs text-on-surface-disabled">
-            {tPost("viewCount", { count: post.viewCount })}
           </span>
         </div>
 
-        <h1 className="text-lg font-bold text-on-surface mb-4">
+        <h1 className="mb-4 text-xl sm:text-[26px] font-bold leading-snug tracking-tight text-on-surface">
           {post.title}
         </h1>
 
-        <div className="flex items-center justify-between mb-4 pb-4 border-b border-divider">
-          <div className="flex items-center gap-2">
-            <span className="text-sm font-medium text-on-surface">
-              {post.author.nickname}
-            </span>
-            <span className="text-xs text-on-surface-disabled">
-              {format.dateTime(new Date(post.createdAt), { dateStyle: "long", timeStyle: "short" })}
-            </span>
-            {post.updatedAt !== post.createdAt && (
-              <span className="text-xs text-on-surface-disabled">
-                {tPost("edited")}
-              </span>
-            )}
-          </div>
-
-          {isAuthor && (
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => router.push(`/community/${post.id}/edit`)}
-                className="flex items-center gap-1 text-xs text-on-surface-disabled hover:text-on-surface transition-colors cursor-pointer"
-              >
-                <Pencil className="w-3.5 h-3.5" />
-                {tCommon("edit")}
-              </button>
-              <button
-                type="button"
-                onClick={() => setDeleteOpen(true)}
-                disabled={deleteMutation.isPending}
-                className="flex items-center gap-1 text-xs text-on-surface-disabled hover:text-red-400 transition-colors disabled:opacity-50 cursor-pointer"
-              >
-                <Trash2 className="w-3.5 h-3.5" />
-                {tCommon("delete")}
-              </button>
-            </div>
-          )}
+        <div className="flex flex-wrap items-center gap-2.5 border-b border-divider pb-4">
+          <AuthorAvatar nickname={post.author.nickname} />
+          <span className="text-sm font-bold text-on-surface">
+            {post.author.nickname}
+          </span>
+          <div className="flex-1" />
+          <span className="text-xs text-on-surface-disabled">
+            {format.dateTime(new Date(post.createdAt), {
+              dateStyle: "long",
+              timeStyle: "short",
+            })}
+            {post.updatedAt !== post.createdAt && ` ${tPost("edited")}`}
+            {" · "}
+            {tPost("viewCount", { count: post.viewCount })}
+            {" · "}
+            {tPost("upvoteCount", { count: netVotes })}
+          </span>
         </div>
 
-        <div className="text-sm text-on-surface-medium leading-relaxed whitespace-pre-wrap mb-6">
+        <div className="py-6 text-[15px] leading-[1.85] text-on-surface-medium whitespace-pre-wrap">
           {post.content}
         </div>
 
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex flex-wrap items-center gap-2 border-t border-divider pt-4">
           <VoteButtons
             upvoteCount={post.upvoteCount}
             downvoteCount={post.downvoteCount}
@@ -159,12 +175,26 @@ export default function PostDetailPanel({ postId }: PostDetailPanelProps) {
             postId={post.id}
             bookmarked={post.currentUserBookmarked}
           />
+          <button
+            type="button"
+            onClick={handleShare}
+            className="flex items-center gap-1 rounded-md border border-divider bg-surface-4 hover:bg-surface-8 px-3 py-1.5 text-sm font-medium text-on-surface-medium transition-colors cursor-pointer"
+          >
+            <Share2 className="w-4 h-4" />
+            {t("share")}
+          </button>
         </div>
-      </div>
+      </article>
 
-      <div className="bg-surface-1 border border-divider rounded-lg p-6">
-        <CommentSection postId={post.id} commentCount={post.commentCount} />
-      </div>
+      <CommentSection postId={post.id} commentCount={post.commentCount} />
+
+      <button
+        type="button"
+        onClick={() => router.push("/community")}
+        className="mt-2 mb-4 w-full rounded-lg bg-surface-4 hover:bg-surface-8 py-3 text-[13.5px] font-bold text-on-surface-medium hover:text-on-surface transition-colors cursor-pointer"
+      >
+        {t("backToList")}
+      </button>
 
       <ConfirmModal
         open={deleteOpen}

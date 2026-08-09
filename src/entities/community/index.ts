@@ -37,3 +37,5 @@ export { useMyBookmarks } from "./model/useMyBookmarks";
 export { bookmarkKeys, postDetailKey } from "./model/bookmarkKeys";
 export { useRemoveBookmark } from "./model/useBookmarkMutation";
 export { default as PostCard } from "./ui/PostCard";
+export { default as PostRow } from "./ui/PostRow";
+export { default as AuthorAvatar } from "./ui/AuthorAvatar";

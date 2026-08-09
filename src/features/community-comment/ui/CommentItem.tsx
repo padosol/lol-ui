@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Reply, Pencil, Trash2 } from "lucide-react";
 import type { Comment } from "@/entities/community";
+import { AuthorAvatar } from "@/entities/community";
 import { useAuthStore } from "@/entities/auth";
 import { VoteButtons } from "@/shared/ui/vote-buttons";
 import { useFormatter, useTranslations } from "next-intl";
@@ -36,139 +37,131 @@ export default function CommentItem({
   const [showReplyForm, setShowReplyForm] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
   const isAuthor = user?.id === comment.author.id;
+  const isReply = comment.depth > 0;
+
+  // 답글은 한 단계 안쪽으로 들여쓰고 살짝 어둡게 깔아 원댓글과 구분한다.
+  const wrapperClass = isReply ? "border-t border-divider bg-surface-2/50" : "";
+  const bodyClass = `px-4 py-3.5 ${isReply ? "pl-9 sm:pl-12" : ""}`;
+
+  const children = comment.children.map((child) => (
+    <CommentItem
+      key={child.id}
+      comment={child}
+      onReply={onReply}
+      onUpdate={onUpdate}
+      onDelete={onDelete}
+      onVote={onVote}
+      isReplyPending={isReplyPending}
+      isUpdatePending={isUpdatePending}
+      isVotePending={isVotePending}
+    />
+  ));
 
   if (comment.deleted) {
     return (
-      <div className={`${comment.depth > 0 ? "ml-8" : ""}`}>
-        <div className="py-3 text-sm text-on-surface-disabled italic">
+      <div className={wrapperClass}>
+        <div className={`${bodyClass} text-sm italic text-on-surface-disabled`}>
           {t("deleted")}
         </div>
-        {comment.children.map((child) => (
-          <CommentItem
-            key={child.id}
-            comment={child}
-            onReply={onReply}
-            onUpdate={onUpdate}
-            onDelete={onDelete}
-            onVote={onVote}
-            isReplyPending={isReplyPending}
-            isUpdatePending={isUpdatePending}
-            isVotePending={isVotePending}
-          />
-        ))}
+        {children}
       </div>
     );
   }
 
   return (
-    <div className={`${comment.depth > 0 ? "ml-8" : ""}`}>
-      <div className="py-3 border-b border-divider">
-        <div className="flex items-center justify-between mb-2">
-          <div className="flex items-center gap-2">
-            <span className="text-sm font-medium text-on-surface">
-              {comment.author.nickname}
-            </span>
-            <span className="text-xs text-on-surface-disabled">
-              {format.relativeTime(new Date(comment.createdAt))}
-            </span>
-            {comment.updatedAt !== comment.createdAt && (
-              <span className="text-xs text-on-surface-disabled">
-                {t("edited")}
-              </span>
-            )}
-          </div>
+    <div className={wrapperClass}>
+      <div className={bodyClass}>
+        <div className="mb-1.5 flex flex-wrap items-center gap-2">
+          <AuthorAvatar nickname={comment.author.nickname} size="sm" />
+          <span className="text-[13.5px] font-bold text-on-surface">
+            {comment.author.nickname}
+          </span>
+          <span className="text-xs text-on-surface-disabled">
+            {format.relativeTime(new Date(comment.createdAt))}
+            {comment.updatedAt !== comment.createdAt && ` ${t("edited")}`}
+          </span>
         </div>
 
-        {showEditForm ? (
-          <CommentForm
-            initialValue={comment.content}
-            onSubmit={(content) => {
-              onUpdate(comment.id, content);
-              setShowEditForm(false);
-            }}
-            onCancel={() => setShowEditForm(false)}
-            isPending={isUpdatePending}
-            buttonText={tCommon("edit")}
-          />
-        ) : (
-          <p className="text-sm text-on-surface-medium mb-2 whitespace-pre-wrap">
-            {comment.content}
-          </p>
-        )}
-
-        {!showEditForm && (
-          <div className="flex items-center gap-3">
-            <VoteButtons
-              upvoteCount={comment.upvoteCount}
-              downvoteCount={comment.downvoteCount}
-              onVote={(voteType) => onVote(comment.id, voteType)}
-              isPending={isVotePending}
-              size="sm"
-            />
-            {comment.depth === 0 && (
-              <button
-                type="button"
-                onClick={() => setShowReplyForm(!showReplyForm)}
-                className="flex items-center gap-1 text-xs text-on-surface-disabled hover:text-on-surface transition-colors cursor-pointer"
-              >
-                <Reply className="w-3.5 h-3.5" />
-                {t("reply")}
-              </button>
-            )}
-            {isAuthor && (
-              <>
-                <button
-                  type="button"
-                  onClick={() => setShowEditForm(true)}
-                  className="flex items-center gap-1 text-xs text-on-surface-disabled hover:text-on-surface transition-colors cursor-pointer"
-                >
-                  <Pencil className="w-3 h-3" />
-                  {tCommon("edit")}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => onDelete(comment.id)}
-                  className="flex items-center gap-1 text-xs text-on-surface-disabled hover:text-red-400 transition-colors cursor-pointer"
-                >
-                  <Trash2 className="w-3 h-3" />
-                  {tCommon("delete")}
-                </button>
-              </>
-            )}
-          </div>
-        )}
-
-        {showReplyForm && (
-          <div className="mt-3">
+        <div className="ml-8">
+          {showEditForm ? (
             <CommentForm
-              placeholder={t("replyPlaceholder", {
-                nickname: comment.author.nickname,
-              })}
+              initialValue={comment.content}
               onSubmit={(content) => {
-                onReply(content, comment.id);
-                setShowReplyForm(false);
+                onUpdate(comment.id, content);
+                setShowEditForm(false);
               }}
-              onCancel={() => setShowReplyForm(false)}
-              isPending={isReplyPending}
-              buttonText={t("reply")}
+              onCancel={() => setShowEditForm(false)}
+              isPending={isUpdatePending}
+              buttonText={tCommon("edit")}
             />
-          </div>
-        )}
+          ) : (
+            <>
+              <p className="mb-2 whitespace-pre-wrap text-sm leading-relaxed text-on-surface-medium">
+                {comment.content}
+              </p>
+
+              <div className="flex flex-wrap items-center gap-3">
+                <VoteButtons
+                  upvoteCount={comment.upvoteCount}
+                  downvoteCount={comment.downvoteCount}
+                  onVote={(voteType) => onVote(comment.id, voteType)}
+                  isPending={isVotePending}
+                  size="sm"
+                />
+                {comment.depth === 0 && (
+                  <button
+                    type="button"
+                    onClick={() => setShowReplyForm((v) => !v)}
+                    className="flex items-center gap-1 text-xs font-semibold text-on-surface-disabled hover:text-on-surface transition-colors cursor-pointer"
+                  >
+                    <Reply className="w-3.5 h-3.5" />
+                    {t("reply")}
+                  </button>
+                )}
+                {isAuthor && (
+                  <>
+                    <button
+                      type="button"
+                      onClick={() => setShowEditForm(true)}
+                      className="flex items-center gap-1 text-xs font-semibold text-on-surface-disabled hover:text-on-surface transition-colors cursor-pointer"
+                    >
+                      <Pencil className="w-3 h-3" />
+                      {tCommon("edit")}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => onDelete(comment.id)}
+                      className="flex items-center gap-1 text-xs font-semibold text-on-surface-disabled hover:text-loss transition-colors cursor-pointer"
+                    >
+                      <Trash2 className="w-3 h-3" />
+                      {tCommon("delete")}
+                    </button>
+                  </>
+                )}
+              </div>
+            </>
+          )}
+
+          {showReplyForm && (
+            <div className="mt-3">
+              <CommentForm
+                placeholder={t("replyPlaceholder", {
+                  nickname: comment.author.nickname,
+                })}
+                onSubmit={(content) => {
+                  onReply(content, comment.id);
+                  setShowReplyForm(false);
+                }}
+                onCancel={() => setShowReplyForm(false)}
+                isPending={isReplyPending}
+                buttonText={t("reply")}
+              />
+            </div>
+          )}
+        </div>
       </div>
 
-      {comment.children.map((child) => (
-        <CommentItem
-          key={child.id}
-          comment={child}
-          onReply={onReply}
-          onUpdate={onUpdate}
-          onDelete={onDelete}
-          onVote={onVote}
-          isReplyPending={isReplyPending}
-          isUpdatePending={isUpdatePending}
-          isVotePending={isVotePending}
-        />
-      ))}
+      {children}
     </div>
   );
 }
