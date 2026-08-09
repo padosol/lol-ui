@@ -11,9 +11,33 @@ const KO_HOME_HEADING = "이번 주 무료 챔피언";
 const EN_HOME_HEADING = "Free Champion Rotation";
 
 test.describe("로케일 라우팅", () => {
-  test("prefix 없는 경로는 기본 로케일로 리다이렉트된다", async ({ page }) => {
-    const response = await page.goto("/champion-stats");
-    expect(response?.url()).toContain("/ko/champion-stats");
+  // localeDetection 이 켜져 있어 prefix 없는 경로는 Accept-Language 를 따른다.
+  // 실행 환경의 브라우저 언어에 좌우되지 않도록 각 케이스에서 명시한다.
+  test.describe("브라우저 언어가 한국어", () => {
+    test.use({ locale: "ko-KR" });
+
+    test("prefix 없는 경로는 ko 로 리다이렉트된다", async ({ page }) => {
+      const response = await page.goto("/champion-stats");
+      expect(response?.url()).toContain("/ko/champion-stats");
+    });
+  });
+
+  test.describe("브라우저 언어가 영어", () => {
+    test.use({ locale: "en-US" });
+
+    test("prefix 없는 경로는 en 으로 리다이렉트된다", async ({ page }) => {
+      const response = await page.goto("/champion-stats");
+      expect(response?.url()).toContain("/en/champion-stats");
+    });
+  });
+
+  test.describe("지원하지 않는 브라우저 언어", () => {
+    test.use({ locale: "fr-FR" });
+
+    test("기본 로케일(ko) 로 리다이렉트된다", async ({ page }) => {
+      const response = await page.goto("/champion-stats");
+      expect(response?.url()).toContain("/ko/champion-stats");
+    });
   });
 
   test("지원하지 않는 로케일은 404 를 준다", async ({ page }) => {
@@ -72,6 +96,9 @@ test.describe("번역 적용", () => {
 });
 
 test.describe("언어 스위처", () => {
+  // "언어 선택" 버튼 라벨을 한국어로 고정하기 위해 ko 로 시작한다.
+  test.use({ locale: "ko-KR" });
+
   test("언어를 바꾸면 경로 prefix 와 화면 언어가 함께 바뀐다", async ({
     page,
   }) => {
