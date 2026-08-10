@@ -1,7 +1,16 @@
 @import "tailwindcss";
 
+/*
+ * .theme-dark 는 테마와 무관하게 항상 어두운 배경으로 유지되는 영역에 붙인다.
+ * (상단 헤더 바처럼 흰 글씨 로고가 올라가는 곳)
+ * 토큰을 통째로 다크 값으로 덮으므로, 그 안의 자식들은 라이트 모드에서도
+ * text-on-surface / border-divider 같은 기존 클래스를 그대로 쓰면 된다.
+ * 하위 트리 오버라이드가 먹는 이유는 @theme inline 덕분에 유틸리티가
+ * --color-* 가 아니라 --md-* 를 직접 참조하기 때문이다.
+ */
 :root,
-html.dark {
+html.dark,
+.theme-dark {
   /* Material Design Dark Theme Base */
   --md-surface-base: #121212;
 
@@ -27,6 +36,7 @@ html.dark {
 
   /* 액센트 색상 (Material Design 2 Dark Theme 표준) */
   --md-primary: #BB86FC;       /* Purple 200 - 식별 가능하면서 desaturated */
+  --md-on-primary: rgba(0, 0, 0, 0.87);  /* 밝은 보라 위 - 검정 (6.4:1) */
   --md-secondary: #03DAC6;     /* Teal 200 - 보조 액센트 */
   --md-error: #CF6679;         /* Pink-Red - Material Design 2 Dark Error 표준 */
   --md-success: #81C784;       /* Green 300 - desaturated, 충분한 대비 */
@@ -75,13 +85,21 @@ html.light {
   --md-elevation-16: #FFFFFF;
   --md-elevation-24: #FFFFFF;
 
+  /*
+   * 다크 테마의 87/60/38% 를 그대로 뒤집으면 밝은 배경에서는 대비가 무너진다.
+   * (검정 38% 는 #F5F5F5 위에서 2.65:1 로 WCAG AA 미달)
+   * 흰 글씨는 어두운 배경에서 번져 보여 낮은 불투명도로도 읽히지만,
+   * 검은 글씨는 밝은 배경에서 그대로 흐려지기만 한다. 단계 간 위계는
+   * 유지하면서 아래 두 단계를 더 검게 내린다. — 흰 배경 기준 15.9 / 7.9 / 5.3:1
+   */
   --md-text-high: rgba(0, 0, 0, 0.87);
-  --md-text-medium: rgba(0, 0, 0, 0.60);
-  --md-text-disabled: rgba(0, 0, 0, 0.38);
+  --md-text-medium: rgba(0, 0, 0, 0.68);
+  --md-text-disabled: rgba(0, 0, 0, 0.58);
 
   --md-divider: rgba(0, 0, 0, 0.12);
 
   --md-primary: #1976D2;       /* Blue 700 */
+  --md-on-primary: #FFFFFF;    /* 진한 파랑 위 - 흰색 (4.9:1) */
   --md-secondary: #00897B;     /* Teal 600 */
   --md-error: #D32F2F;         /* Red 700 */
   --md-success: #388E3C;       /* Green 700 */
@@ -135,6 +153,8 @@ html.light {
 
   /* 액센트 색상 */
   --color-primary: var(--md-primary);
+  /* text-on-primary 는 코드에 이미 쓰이고 있었지만 토큰이 없어 무시되던 상태였다 */
+  --color-on-primary: var(--md-on-primary);
   --color-secondary: var(--md-secondary);
   --color-error: var(--md-error);
   --color-success: var(--md-success);
