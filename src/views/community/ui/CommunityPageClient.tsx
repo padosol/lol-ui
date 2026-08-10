@@ -8,10 +8,8 @@ export default function CommunityPageClient() {
     <div className="min-h-screen bg-surface flex flex-col">
       <Header />
       <Navigation />
-      <main className="flex-1 w-full max-w-[1080px] mx-auto py-8 sm:px-4">
-        <div className="max-w-[1024px] px-4 sm:px-0">
-          <CommunityListPanel />
-        </div>
+      <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <CommunityListPanel />
       </main>
       <Footer />
     </div>

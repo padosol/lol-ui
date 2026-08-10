@@ -252,9 +252,48 @@
     "back": "Back",
     "submit": "Post",
     "submitEdit": "Save",
+    "share": "Share",
+    "shareCopied": "Post link copied to clipboard.",
+    "shareError": "Failed to copy the link.",
+    "stats": {
+      "upvotes": "Upvotes",
+      "views": "Views"
+    },
+    "search": {
+      "scopeSelect": "Select search scope",
+      "TITLE_CONTENT": "Title + content",
+      "TITLE": "Title",
+      "CONTENT": "Content",
+      "AUTHOR": "Author"
+    },
+    "board": {
+      "sectionTitle": "Boards",
+      "group": {
+        "community": "Community",
+        "info": "Info",
+        "esports": "Esports",
+        "comingSoon": "Coming soon"
+      },
+      "myActivity": "My activity",
+      "myPosts": "My posts",
+      "bookmarks": "Saved posts",
+      "guideTitle": "Community guidelines",
+      "guideNoAbuse": "Abusive, spam, and promotional posts are removed without notice.",
+      "guideAddContext": "Include your summoner name or match link to get faster answers.",
+      "guideRepeatOffense": "Repeated violations may restrict your community access."
+    },
+    "aside": {
+      "hotTitle": "Trending posts",
+      "hotEmpty": "No trending posts yet",
+      "todayMatchesTitle": "Today's matches",
+      "todayMatchesEmpty": "No match schedule yet",
+      "standingsTitle": "League standings",
+      "standingsEmpty": "No standings yet"
+    },
     "post": {
       "notFound": "Post not found.",
       "viewCount": "{count} views",
+      "upvoteCount": "{count} upvotes",
       "edited": "(edited)",
       "deleteTitle": "Delete post",
       "deleteDescription": "Delete this post? This cannot be undone.",
@@ -268,6 +307,8 @@
       "titlePlaceholder": "Enter a title (up to 300 characters)",
       "content": "Content",
       "contentPlaceholder": "Write your post",
+      "contentCount": "{count} characters",
+      "guideline": "Abusive, spam, and promotional posts are removed without notice, and repeated violations may restrict your access.",
       "validation": {
         "titleRequired": "Enter a title",
         "titleTooLong": "The title must be 300 characters or fewer",

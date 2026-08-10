@@ -20,8 +20,9 @@ export default function Header() {
   // 헤더를 한 단계 위 레이어로 올려 드롭다운이 항상 보이게 한다.
   return (
     <header className="relative z-[60] bg-surface-1 border-b border-divider">
-      {/* 상단 헤더 */}
-      <div className="bg-[#272727] border-b border-divider">
+      {/* 상단 헤더 — 흰 글씨 로고 때문에 라이트 테마에서도 어두운 배경을 유지한다.
+          theme-dark 로 이 영역만 다크 토큰을 쓰게 해 글자·구분선도 함께 밝아진다. */}
+      <div className="theme-dark bg-surface-4 border-b border-divider">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-[40px] text-sm">
             <div className="flex items-center gap-4">

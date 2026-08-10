@@ -1,27 +1,43 @@
 "use client";
 
-import { useRef, useState, useEffect, useCallback, useMemo } from "react";
+import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ChevronDown } from "lucide-react";
-import { POST_CATEGORIES } from "@/entities/community";
-import type { PostCategory } from "@/entities/community";
 import { useTranslations } from "next-intl";
+import { POST_CATEGORIES } from "@/entities/community";
 import {
   createPostEditorSchema,
   type PostEditorFormData,
 } from "../model/postEditorSchema";
 
+const TITLE_MAX = 300;
+
 interface PostEditorFormProps {
   defaultValues?: Partial<PostEditorFormData>;
   onSubmit: (data: PostEditorFormData) => void;
+  onCancel?: () => void;
   isPending?: boolean;
   submitLabel?: string;
+}
+
+function FieldLabel({ children, hint }: { children: React.ReactNode; hint?: string }) {
+  return (
+    <div className="flex items-baseline gap-2">
+      <span className="text-xs font-bold tracking-widest text-on-surface-disabled">
+        {children}
+      </span>
+      <div className="flex-1" />
+      {hint && (
+        <span className="text-xs font-semibold text-on-surface-disabled">{hint}</span>
+      )}
+    </div>
+  );
 }
 
 export default function PostEditorForm({
   defaultValues,
   onSubmit,
+  onCancel,
   isPending = false,
   submitLabel,
 }: PostEditorFormProps) {
@@ -31,10 +47,7 @@ export default function PostEditorForm({
   const tCategory = useTranslations("domain.postCategory");
   const tValidation = useTranslations("community.editor.validation");
 
-  const schema = useMemo(
-    () => createPostEditorSchema(tValidation),
-    [tValidation]
-  );
+  const schema = useMemo(() => createPostEditorSchema(tValidation), [tValidation]);
 
   const {
     register,
@@ -52,118 +65,93 @@ export default function PostEditorForm({
     },
   });
 
-  const selectedCategory = watch("category") as PostCategory | undefined;
-  const [categoryOpen, setCategoryOpen] = useState(false);
-  const categoryRef = useRef<HTMLDivElement>(null);
-
-  const handleClickOutside = useCallback((e: MouseEvent) => {
-    if (categoryRef.current && !categoryRef.current.contains(e.target as Node)) {
-      setCategoryOpen(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [handleClickOutside]);
+  const selectedCategory = watch("category");
+  const title = watch("title") ?? "";
+  const content = watch("content") ?? "";
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <div>
-        <label className="block text-sm font-medium text-on-surface-medium mb-1">
-          {t("category")} <span className="text-red-400">*</span>
-        </label>
-        <input type="hidden" {...register("category")} />
-        <div ref={categoryRef} className="relative">
-          <button
-            type="button"
-            onClick={() => setCategoryOpen((v) => !v)}
-            className="w-full bg-surface-4 hover:bg-surface-8 border border-divider rounded-lg px-3 py-2 pr-8 text-sm text-on-surface cursor-pointer focus:outline-none text-left"
-            aria-haspopup="listbox"
-            aria-expanded={categoryOpen}
-          >
-            {selectedCategory
-              ? tCategory(selectedCategory)
-              : <span className="text-on-surface-disabled">{t("categoryPlaceholder")}</span>}
-            <ChevronDown
-              className={`absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-on-surface-medium transition-transform ${categoryOpen ? "rotate-180" : ""}`}
-            />
-          </button>
-          {categoryOpen && (
-            <div className="absolute top-full left-0 mt-1 w-full bg-surface-4 border border-divider rounded-lg shadow-lg z-50 overflow-hidden">
-              <div className="py-1 max-h-[280px] overflow-y-auto" role="listbox" aria-label={t("categorySelect")}>
-                {POST_CATEGORIES.map((cat) => {
-                  const selected = cat === selectedCategory;
-                  return (
-                    <button
-                      key={cat}
-                      type="button"
-                      onClick={() => {
-                        setValue("category", cat, { shouldValidate: true });
-                        setCategoryOpen(false);
-                      }}
-                      className={`w-full px-3 py-1.5 text-left text-sm transition-colors cursor-pointer ${
-                        selected
-                          ? "bg-surface-8 text-on-surface font-medium"
-                          : "text-on-surface hover:bg-surface-8"
-                      }`}
-                      role="option"
-                      aria-selected={selected}
-                    >
-                      {tCategory(cat)}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3.5">
+      <div className="flex flex-col gap-5 rounded-xl border border-divider bg-surface-1 px-5 py-6 sm:px-8 sm:py-7">
+        <div className="flex flex-col gap-2">
+          <FieldLabel>{t("category")}</FieldLabel>
+          <input type="hidden" {...register("category")} />
+          <div className="flex flex-wrap gap-1.5">
+            {POST_CATEGORIES.map((cat) => {
+              const selected = cat === selectedCategory;
+              return (
+                <button
+                  key={cat}
+                  type="button"
+                  onClick={() => setValue("category", cat, { shouldValidate: true })}
+                  aria-pressed={selected}
+                  className={`rounded-lg px-3.5 py-2 text-[13.5px] transition-colors cursor-pointer ${
+                    selected
+                      ? "bg-primary font-bold text-surface"
+                      : "bg-surface-4 font-medium text-on-surface-medium hover:bg-surface-8 hover:text-on-surface"
+                  }`}
+                >
+                  {tCategory(cat)}
+                </button>
+              );
+            })}
+          </div>
+          {errors.category && (
+            <p className="text-xs text-loss">{errors.category.message}</p>
           )}
         </div>
-        {errors.category && (
-          <p className="mt-1 text-xs text-red-400">{errors.category.message}</p>
-        )}
+
+        <div className="flex flex-col gap-2">
+          <FieldLabel hint={`${title.length}/${TITLE_MAX}`}>
+            {t("postTitle")}
+          </FieldLabel>
+          <input
+            {...register("title")}
+            placeholder={t("titlePlaceholder")}
+            maxLength={TITLE_MAX}
+            className="w-full border-0 border-b-2 border-divider bg-transparent pb-3 pt-1.5 text-lg font-bold tracking-tight text-on-surface placeholder:font-normal placeholder:text-on-surface-disabled focus:border-primary focus:outline-none"
+          />
+          {errors.title && <p className="text-xs text-loss">{errors.title.message}</p>}
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <FieldLabel hint={t("contentCount", { count: content.length })}>
+            {t("content")}
+          </FieldLabel>
+          <textarea
+            {...register("content")}
+            placeholder={t("contentPlaceholder")}
+            rows={14}
+            className="w-full resize-none rounded-lg border border-divider bg-surface-2 px-4 py-3.5 text-[15px] leading-[1.8] text-on-surface placeholder:text-on-surface-disabled focus:border-primary focus:outline-none"
+          />
+          {errors.content && (
+            <p className="text-xs text-loss">{errors.content.message}</p>
+          )}
+        </div>
       </div>
 
-      <div>
-        <label className="block text-sm font-medium text-on-surface-medium mb-1">
-          {t("postTitle")} <span className="text-red-400">*</span>
-        </label>
-        <input
-          {...register("title")}
-          placeholder={t("titlePlaceholder")}
-          maxLength={300}
-          className="w-full bg-surface-4 border border-divider rounded-md px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-disabled focus:outline-none focus:border-primary"
-        />
-        {errors.title && (
-          <p className="mt-1 text-xs text-red-400">{errors.title.message}</p>
+      <div className="flex flex-wrap items-center gap-2">
+        {onCancel && (
+          <button
+            type="button"
+            onClick={onCancel}
+            className="rounded-lg bg-surface-4 px-4 py-2.5 text-sm font-bold text-on-surface-medium hover:bg-surface-8 hover:text-on-surface transition-colors cursor-pointer"
+          >
+            {tCommon("cancel")}
+          </button>
         )}
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium text-on-surface-medium mb-1">
-          {t("content")} <span className="text-red-400">*</span>
-        </label>
-        <textarea
-          {...register("content")}
-          placeholder={t("contentPlaceholder")}
-          rows={12}
-          className="w-full bg-surface-4 border border-divider rounded-md px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-disabled focus:outline-none focus:border-primary resize-none"
-        />
-        {errors.content && (
-          <p className="mt-1 text-xs text-red-400">{errors.content.message}</p>
-        )}
-      </div>
-
-      <div className="flex justify-end">
+        <div className="flex-1" />
         <button
           type="submit"
           disabled={isPending}
-          className="px-6 py-2.5 bg-primary hover:bg-primary/80 text-on-surface font-medium rounded-md transition-colors disabled:opacity-50 cursor-pointer"
+          className="rounded-lg bg-primary px-7 py-2.5 text-sm font-bold text-surface hover:bg-primary/80 transition-colors disabled:opacity-50 cursor-pointer"
         >
-          {isPending
-            ? tCommon("processing")
-            : (submitLabel ?? tCommunity("submit"))}
+          {isPending ? tCommon("processing") : (submitLabel ?? tCommunity("submit"))}
         </button>
       </div>
+
+      <p className="text-[12.5px] leading-relaxed text-on-surface-disabled">
+        {t("guideline")}
+      </p>
     </form>
   );
 }

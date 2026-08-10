@@ -1,12 +1,11 @@
 "use client";
 
 import { useRouter } from "@/shared/i18n/navigation";
-import { ArrowLeft } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Header, Navigation, Footer } from "@/widgets/layout";
 import { useCreatePost } from "@/entities/community";
 import { PostEditorForm } from "@/features/community-post-editor";
 import type { PostEditorFormData } from "@/features/community-post-editor/model/postEditorSchema";
-import { useTranslations } from "next-intl";
 
 export default function CommunityWritePageClient() {
   const t = useTranslations("community");
@@ -25,28 +24,22 @@ export default function CommunityWritePageClient() {
     <div className="min-h-screen bg-surface flex flex-col">
       <Header />
       <Navigation />
-      <main className="flex-1 w-full max-w-[1080px] mx-auto py-8 sm:px-4">
-        <div className="max-w-[1024px] px-4 sm:px-0 space-y-4">
-          <button
-            type="button"
-            onClick={() => router.push("/community")}
-            className="flex items-center gap-1 text-sm text-on-surface-medium hover:text-on-surface transition-colors cursor-pointer"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            {t("backToList")}
-          </button>
-
-          <div className="bg-surface-1 border border-divider rounded-lg p-6">
-            <h1 className="text-lg font-bold text-on-surface mb-6">
-              {t("write")}
-            </h1>
-            <PostEditorForm
-              onSubmit={handleSubmit}
-              isPending={createMutation.isPending}
-              submitLabel={t("submit")}
-            />
-          </div>
+      <main className="flex-1 w-full max-w-[920px] mx-auto px-4 sm:px-6 py-6">
+        <div className="mb-4 flex flex-wrap items-baseline gap-2">
+          <h1 className="text-xl font-bold tracking-tight text-on-surface">
+            {t("write")}
+          </h1>
+          <span className="text-[13px] font-semibold text-on-surface-disabled">
+            {t("title")}
+          </span>
         </div>
+
+        <PostEditorForm
+          onSubmit={handleSubmit}
+          onCancel={() => router.push("/community")}
+          isPending={createMutation.isPending}
+          submitLabel={t("submit")}
+        />
       </main>
       <Footer />
     </div>
