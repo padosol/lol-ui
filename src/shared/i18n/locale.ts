@@ -19,8 +19,8 @@ export const INTL_LOCALE: Record<Locale, string> = {
 };
 
 /**
- * Data Dragon 로케일.
- * 게임 정적 데이터 경로(`/data/{패치}/{여기}/…`)의 디렉토리 이름으로 쓰인다.
+ * Data Dragon 원본 API 를 직접 호출할 때 쓰는 로케일.
+ * 자체 CDN 의 게임 데이터 경로는 `ko`/`en` 같은 앱 로케일 코드를 쓰므로 이 매핑을 타지 않는다.
  * @see shared/config/game-data.ts
  */
 export const DDRAGON_LOCALE: Record<Locale, string> = {

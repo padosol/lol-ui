@@ -4,6 +4,7 @@ import { test, expect, type Page } from "@playwright/test";
  * MP-108 게임 정적 데이터 로딩 회귀 테스트.
  *
  * 챔피언/스펠/아이템/룬 JSON 은 `static.metapick.me/data/{패치}/{로케일}/…` 에서 받아온다.
+ * 로케일 디렉토리는 `ko`/`en` 처럼 앱 로케일 코드 그대로다.
  * 실제 CDN 에 붙으면 패치가 올라갈 때마다 테스트가 흔들리므로 여기서는 응답을 가로채고
  * "어떤 URL 로 요청했는가" 만 본다.
  */
@@ -61,10 +62,10 @@ test.describe("게임 정적 데이터", () => {
 
     await page.goto("/ko");
     await expect
-      .poll(() => dataUrlsFor(urls, "ko_KR").length, { timeout: 15_000 })
+      .poll(() => dataUrlsFor(urls, "ko").length, { timeout: 15_000 })
       .toBeGreaterThanOrEqual(4);
 
-    const koUrls = dataUrlsFor(urls, "ko_KR");
+    const koUrls = dataUrlsFor(urls, "ko");
     for (const file of ["championFull", "summoner", "item", "runesReforged"]) {
       expect(
         koUrls.some((url) => url.endsWith(`/${file}.json`)),
@@ -75,15 +76,15 @@ test.describe("게임 정적 데이터", () => {
     expect(koUrls.every((url) => url.includes(`/data/${EXPECTED_LATEST_PATCH}/`))).toBe(true);
   });
 
-  test("영어 페이지는 en_US 데이터를 받는다", async ({ page }) => {
+  test("영어 페이지는 en 데이터를 받는다", async ({ page }) => {
     const urls = await stubGameData(page);
 
     await page.goto("/en");
     await expect
-      .poll(() => dataUrlsFor(urls, "en_US").length, { timeout: 15_000 })
+      .poll(() => dataUrlsFor(urls, "en").length, { timeout: 15_000 })
       .toBeGreaterThanOrEqual(4);
 
-    expect(dataUrlsFor(urls, "ko_KR")).toHaveLength(0);
+    expect(dataUrlsFor(urls, "ko")).toHaveLength(0);
   });
 
   test("언어 스위처로 바꾸면 해당 언어 데이터를 다시 받는다", async ({ page }) => {
@@ -91,7 +92,7 @@ test.describe("게임 정적 데이터", () => {
 
     await page.goto("/ko");
     await expect
-      .poll(() => dataUrlsFor(urls, "ko_KR").length, { timeout: 15_000 })
+      .poll(() => dataUrlsFor(urls, "ko").length, { timeout: 15_000 })
       .toBeGreaterThanOrEqual(4);
 
     await page.getByRole("button", { name: /언어|language/i }).first().click();
@@ -99,7 +100,7 @@ test.describe("게임 정적 데이터", () => {
 
     await expect(page).toHaveURL(/\/en(\/|$)/);
     await expect
-      .poll(() => dataUrlsFor(urls, "en_US").length, { timeout: 15_000 })
+      .poll(() => dataUrlsFor(urls, "en").length, { timeout: 15_000 })
       .toBeGreaterThanOrEqual(4);
   });
 

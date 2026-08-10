@@ -1,4 +1,4 @@
-import { DDRAGON_LOCALE, type Locale } from "@/shared/i18n/locale";
+import { type Locale } from "@/shared/i18n/locale";
 
 /**
  * 게임 정적 데이터(Data Dragon 파생 JSON) 호스트.
@@ -26,7 +26,9 @@ export function localGameDataUrl(file: GameDataFile): string {
 }
 
 /**
- * `https://static.metapick.me/data/{패치버전}/{ddragon 로케일}/{파일}`
+ * `https://static.metapick.me/data/{패치버전}/{로케일}/{파일}`
+ * 로케일 디렉토리는 `ko`/`en`/`ja` 처럼 앱 로케일 코드를 그대로 쓴다
+ * (Data Dragon 의 `ko_KR` 형식이 아니다).
  * 패치 버전이 없으면 번들 폴백 경로로 떨어진다.
  */
 export function gameDataUrl(
@@ -38,5 +40,5 @@ export function gameDataUrl(
     return localGameDataUrl(file);
   }
 
-  return `${GAME_DATA_HOST}/data/${patchVersion}/${DDRAGON_LOCALE[locale]}/${file}`;
+  return `${GAME_DATA_HOST}/data/${patchVersion}/${locale}/${file}`;
 }
