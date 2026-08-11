@@ -19,9 +19,9 @@ export const INTL_LOCALE: Record<Locale, string> = {
 };
 
 /**
- * Data Dragon 로케일.
- * 1차에서는 사용처가 없다 — 게임 데이터는 한국어 고정으로 유지(MP-106).
- * 다국어 게임 데이터 API를 붙일 때 쓸 매핑을 미리 자리만 잡아둔다.
+ * Data Dragon 원본 API 를 직접 호출할 때 쓰는 로케일.
+ * 자체 CDN 의 게임 데이터 경로는 `ko`/`en` 같은 앱 로케일 코드를 쓰므로 이 매핑을 타지 않는다.
+ * @see shared/config/game-data.ts
  */
 export const DDRAGON_LOCALE: Record<Locale, string> = {
   ko: "ko_KR",

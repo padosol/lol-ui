@@ -3,8 +3,8 @@ import { test, expect } from "@playwright/test";
 /**
  * MP-107 로케일 라우팅/번역 회귀 테스트.
  *
- * 게임 데이터(챔피언·아이템·룬 이름)는 아직 한국어 고정이므로(MP-106)
  * 여기서는 UI 크롬(내비게이션·섹션 제목·언어 스위처)만 검증한다.
+ * 게임 데이터(챔피언·아이템·룬 이름)의 언어별 로딩은 game-data.spec.ts 담당(MP-108).
  */
 
 const KO_HOME_HEADING = "이번 주 무료 챔피언";

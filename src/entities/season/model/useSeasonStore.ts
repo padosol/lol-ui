@@ -1,4 +1,5 @@
 import { getSeasons } from "../api/seasonApi";
+import { pickLatestPatchVersion } from "../lib/patchVersion";
 import type { Season } from "../types";
 import { create } from "zustand";
 
@@ -9,6 +10,7 @@ interface SeasonState {
   loadSeasons: () => Promise<void>;
   getLatestSeason: () => Season | null;
   getLatestSeasonValue: () => string | undefined;
+  getLatestPatchVersion: () => string | null;
 }
 
 export const useSeasonStore = create<SeasonState>((set, get) => ({
@@ -27,6 +29,12 @@ export const useSeasonStore = create<SeasonState>((set, get) => ({
   getLatestSeasonValue: () => {
     const latest = get().getLatestSeason();
     return latest ? String(latest.seasonValue) : undefined;
+  },
+
+  /** 최신 시즌의 패치 목록에서 가장 높은 버전. 게임 정적 데이터 경로에 쓰인다. */
+  getLatestPatchVersion: () => {
+    const latest = get().getLatestSeason();
+    return pickLatestPatchVersion(latest?.patchVersions);
   },
 
   loadSeasons: async () => {
