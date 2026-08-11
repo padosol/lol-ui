@@ -52,7 +52,7 @@ export default function BoardSidebar({ category, onSelect }: BoardSidebarProps) 
     }`;
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 rounded-xl border border-divider bg-surface-1 p-2">
       <button
         type="button"
         onClick={() => onSelect("ALL")}
