@@ -16,6 +16,7 @@ export interface PatchVersion {
 export interface PatchVersionListItem {
   versionId: string;
   title: string;
+  patchUrl?: string;
 }
 
 export interface ChampionChange {

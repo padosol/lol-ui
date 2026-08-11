@@ -2,7 +2,11 @@
 
 import { usePatchVersions } from "@/entities/patch-note";
 import { Link } from "@/shared/i18n/navigation";
+import { ExternalLink } from "lucide-react";
 import { useTranslations } from "next-intl";
+
+const ITEM_CLASS =
+  "flex items-center justify-between gap-2 w-full text-left px-3 py-2 rounded-lg bg-surface-2 hover:bg-surface-4 border-l-4 border-transparent hover:border-primary transition-all";
 
 export default function HomePatchNotes() {
   const t = useTranslations("home.patchNotes");
@@ -34,17 +38,32 @@ export default function HomePatchNotes() {
         </div>
       ) : (
         <div className="space-y-2">
-          {patches.map((patch) => (
-            <Link
-              key={patch.versionId}
-              href={`/patch-notes/${patch.versionId}`}
-              className="block w-full text-left px-3 py-2 rounded-lg bg-surface-2 hover:bg-surface-4 border-l-4 border-transparent hover:border-primary transition-all"
-            >
-              <span className="font-bold text-sm text-on-surface">
-                {patch.title}
-              </span>
-            </Link>
-          ))}
+          {patches.map((patch) =>
+            patch.patchUrl ? (
+              <a
+                key={patch.versionId}
+                href={patch.patchUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={ITEM_CLASS}
+              >
+                <span className="font-bold text-sm text-on-surface">
+                  {patch.title}
+                </span>
+                <ExternalLink className="w-4 h-4 shrink-0 text-on-surface-medium" />
+              </a>
+            ) : (
+              <Link
+                key={patch.versionId}
+                href={`/patch-notes/${patch.versionId}`}
+                className={ITEM_CLASS}
+              >
+                <span className="font-bold text-sm text-on-surface">
+                  {patch.title}
+                </span>
+              </Link>
+            )
+          )}
         </div>
       )}
     </div>
