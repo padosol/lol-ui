@@ -8,6 +8,7 @@ import {
   useDeletePost,
   useVote,
   useRemoveVote,
+  useCategoryLabel,
   AuthorAvatar,
 } from "@/entities/community";
 import type { VoteType } from "@/entities/community";
@@ -28,7 +29,9 @@ export default function PostDetailPanel({ postId }: PostDetailPanelProps) {
   const t = useTranslations("community");
   const tPost = useTranslations("community.post");
   const tCommon = useTranslations("common");
-  const tCategory = useTranslations("domain.postCategory");
+  // 게시글 본문 로딩이 보통 더 오래 걸려 라벨은 그 전에 도착한다. 목록과 달리
+  // 뒤로가기 버튼이 비면 화살표만 남으므로 빈 문자열 처리를 하지 않는다.
+  const categoryLabel = useCategoryLabel();
   const router = useRouter();
   const user = useAuthStore((s) => s.user);
   const { data: post, isLoading, error } = usePostDetail(postId);
@@ -101,7 +104,7 @@ export default function PostDetailPanel({ postId }: PostDetailPanelProps) {
           className="flex items-center gap-1.5 text-[13.5px] font-bold text-on-surface-medium hover:text-on-surface transition-colors cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
-          {tCategory(post.category)}
+          {categoryLabel(post.category)}
         </button>
 
         <div className="flex-1" />
@@ -132,7 +135,7 @@ export default function PostDetailPanel({ postId }: PostDetailPanelProps) {
       <article className="bg-surface-1 border border-divider rounded-xl px-5 py-6 sm:px-8 sm:py-7">
         <div className="mb-3">
           <span className="rounded bg-primary/15 px-2 py-1 text-[11.5px] font-bold text-primary">
-            {tCategory(post.category)}
+            {categoryLabel(post.category)}
           </span>
         </div>
 

@@ -269,9 +269,6 @@
     "board": {
       "sectionTitle": "게시판",
       "group": {
-        "community": "커뮤니티",
-        "info": "정보",
-        "esports": "e-스포츠",
         "comingSoon": "준비 중"
       },
       "myActivity": "내 활동",
@@ -609,15 +606,6 @@
     "team": {
       "blue": "블루팀",
       "red": "레드팀"
-    },
-    "postCategory": {
-      "CHAMPION_DISCUSSION": "챔피언 토론",
-      "PATCH_NOTES": "패치노트",
-      "TIPS_AND_GUIDES": "팁과 가이드",
-      "META_DISCUSSION": "메타 토론",
-      "COMMUNITY": "커뮤니티",
-      "HUMOR": "유머",
-      "GENERAL": "자유"
     },
     "postSort": {
       "HOT": "인기",

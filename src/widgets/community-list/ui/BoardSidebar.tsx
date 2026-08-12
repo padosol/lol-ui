@@ -2,47 +2,43 @@
 
 import { Link } from "@/shared/i18n/navigation";
 import { useTranslations } from "next-intl";
-import type { PostCategory } from "@/entities/community";
+import type { BoardGroupItem, PostCategory } from "@/entities/community";
 
 type CategoryValue = PostCategory | "ALL";
 
 interface BoardSidebarProps {
   category: CategoryValue;
   onSelect: (category: CategoryValue) => void;
+  /** 서버가 그룹핑·정렬을 끝내서 보낸 트리. 받은 순서대로 그리면 된다. */
+  groups: BoardGroupItem[];
+  isLoading?: boolean;
 }
 
-interface BoardGroup {
-  /** community.board.group.* 메시지 키 */
-  key: "community" | "info" | "esports";
-  categories: PostCategory[];
+/** 로딩 중 자리를 잡아둔다. 시드 기준 3그룹 8게시판이라 그 높이에 맞췄다. */
+function SidebarSkeleton() {
+  return (
+    <div className="flex flex-col gap-4" aria-hidden>
+      {[3, 2, 3].map((count, groupIndex) => (
+        <div key={groupIndex} className="flex flex-col gap-px">
+          <div className="mx-2.5 my-1.5 h-3 w-14 rounded bg-surface-4" />
+          {Array.from({ length: count }).map((_, itemIndex) => (
+            <div key={itemIndex} className="mx-2.5 my-1 h-5 rounded bg-surface-4" />
+          ))}
+        </div>
+      ))}
+    </div>
+  );
 }
 
-/**
- * 좌측 게시판 트리 구성.
- *
- * 서버의 PostCategory 는 아직 평평한 목록이라, 어떤 카테고리를 어느 영역에
- * 묶을지는 이 표가 유일한 기준이다. 영역을 바꾸고 싶으면 여기만 고치면 된다.
- * e-스포츠 영역은 대응하는 카테고리가 아직 없어 비어 있다.
- */
-const BOARD_GROUPS: BoardGroup[] = [
-  { key: "community", categories: ["GENERAL", "HUMOR", "COMMUNITY"] },
-  {
-    key: "info",
-    categories: [
-      "TIPS_AND_GUIDES",
-      "CHAMPION_DISCUSSION",
-      "META_DISCUSSION",
-      "PATCH_NOTES",
-    ],
-  },
-  { key: "esports", categories: [] },
-];
-
-export default function BoardSidebar({ category, onSelect }: BoardSidebarProps) {
+export default function BoardSidebar({
+  category,
+  onSelect,
+  groups,
+  isLoading = false,
+}: BoardSidebarProps) {
   const t = useTranslations("community");
   const tBoard = useTranslations("community.board");
   const tGroup = useTranslations("community.board.group");
-  const tCategory = useTranslations("domain.postCategory");
 
   const itemClass = (active: boolean) =>
     `rounded-md px-2.5 py-2 text-left text-sm transition-colors cursor-pointer ${
@@ -62,34 +58,43 @@ export default function BoardSidebar({ category, onSelect }: BoardSidebarProps) 
         {t("allCategories")}
       </button>
 
-      {BOARD_GROUPS.map((group) => (
-        <div key={group.key} className="flex flex-col gap-px">
-          <div className="px-2.5 py-1.5 text-[11.5px] font-bold tracking-widest text-on-surface-disabled">
-            {tGroup(group.key)}
-          </div>
+      {isLoading ? (
+        <SidebarSkeleton />
+      ) : (
+        groups.map((group) => {
+          // 숨김 게시판은 사이드바에서 뺀다. 응답에는 남아 있어야 기존 글의
+          // 배지 라벨을 해석할 수 있다.
+          const visible = group.categories.filter((item) => item.visible);
+          return (
+            <div key={group.code} className="flex flex-col gap-px">
+              <div className="px-2.5 py-1.5 text-[11.5px] font-bold tracking-widest text-on-surface-disabled">
+                {group.name}
+              </div>
 
-          {group.categories.length === 0 ? (
-            <div className="px-2.5 py-2 text-sm text-on-surface-disabled">
-              {tGroup("comingSoon")}
+              {visible.length === 0 ? (
+                <div className="px-2.5 py-2 text-sm text-on-surface-disabled">
+                  {tGroup("comingSoon")}
+                </div>
+              ) : (
+                visible.map((item) => {
+                  const active = item.code === category;
+                  return (
+                    <button
+                      key={item.code}
+                      type="button"
+                      onClick={() => onSelect(item.code)}
+                      aria-current={active ? "page" : undefined}
+                      className={`${itemClass(active)} pl-4`}
+                    >
+                      {item.name}
+                    </button>
+                  );
+                })
+              )}
             </div>
-          ) : (
-            group.categories.map((value) => {
-              const active = value === category;
-              return (
-                <button
-                  key={value}
-                  type="button"
-                  onClick={() => onSelect(value)}
-                  aria-current={active ? "page" : undefined}
-                  className={`${itemClass(active)} pl-4`}
-                >
-                  {tCategory(value)}
-                </button>
-              );
-            })
-          )}
-        </div>
-      ))}
+          );
+        })
+      )}
 
       <div className="flex flex-col gap-px">
         <div className="px-2.5 py-1.5 text-[11.5px] font-bold tracking-widest text-on-surface-disabled">

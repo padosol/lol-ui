@@ -7,7 +7,9 @@ import { useTranslations } from "next-intl";
 import {
   usePosts,
   useSearchPosts,
-  POST_CATEGORIES,
+  useCategoryTree,
+  useCategoryLabel,
+  useVisibleCategories,
   POST_SORTS,
   PostRow,
 } from "@/entities/community";
@@ -24,7 +26,6 @@ import CommunityAside from "./CommunityAside";
 type CategoryValue = PostCategory | "ALL";
 type PostSortValue = (typeof POST_SORTS)[number];
 
-const CATEGORIES: CategoryValue[] = ["ALL", ...POST_CATEGORIES];
 /** 노출 순서는 인기 → 추천 → 최신 (POST_SORTS 의 선언 순서와 다르다) */
 const SORTS: PostSortValue[] = ["HOT", "TOP", "NEW"];
 /** 기간 필터를 화면에서 뺐으므로 목록은 항상 전체 기간으로 조회한다. */
@@ -32,8 +33,11 @@ const LIST_PERIOD: PostPeriod = "ALL";
 
 export default function CommunityListPanel() {
   const t = useTranslations("community");
-  const tCategory = useTranslations("domain.postCategory");
   const tSort = useTranslations("domain.postSort");
+  const categoryTree = useCategoryTree();
+  const categoryLabel = useCategoryLabel();
+  // 모바일 가로 스크롤 탭은 그룹 구분 없이 늘어놓으므로 여기서만 평평하게 쓴다.
+  const visibleCategories = useVisibleCategories();
   const router = useRouter();
   const user = useAuthStore((s) => s.user);
   const [category, setCategory] = useState<CategoryValue>("ALL");
@@ -79,18 +83,28 @@ export default function CommunityListPanel() {
     router.push("/community/write");
   };
 
-  const boardTitle = category === "ALL" ? t("title") : tCategory(category);
+  const boardTitle = category === "ALL" ? t("title") : categoryLabel(category);
+
+  const mobileTabs: CategoryValue[] = [
+    "ALL",
+    ...visibleCategories.map((item) => item.code),
+  ];
 
   return (
     <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[176px_minmax(0,1fr)] xl:grid-cols-[176px_minmax(0,1fr)_280px]">
       <aside className="hidden lg:block sticky top-[66px]">
-        <BoardSidebar category={category} onSelect={handleSelectCategory} />
+        <BoardSidebar
+          category={category}
+          onSelect={handleSelectCategory}
+          groups={categoryTree.data?.groups ?? []}
+          isLoading={categoryTree.isLoading}
+        />
       </aside>
 
       <main className="min-w-0 flex flex-col gap-3">
         {/* 좁은 화면: 좌측 사이드바 대신 가로 스크롤 게시판 탭 */}
         <div className="lg:hidden flex gap-1.5 overflow-x-auto pb-1">
-          {CATEGORIES.map((value) => {
+          {mobileTabs.map((value) => {
             const active = value === category;
             return (
               <button
@@ -103,7 +117,7 @@ export default function CommunityListPanel() {
                     : "bg-surface-4 border border-divider text-on-surface-medium hover:bg-surface-8"
                 }`}
               >
-                {value === "ALL" ? t("allCategories") : tCategory(value)}
+                {value === "ALL" ? t("allCategories") : categoryLabel(value)}
               </button>
             );
           })}

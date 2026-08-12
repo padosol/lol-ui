@@ -269,9 +269,6 @@
     "board": {
       "sectionTitle": "Boards",
       "group": {
-        "community": "Community",
-        "info": "Info",
-        "esports": "Esports",
         "comingSoon": "Coming soon"
       },
       "myActivity": "My activity",
@@ -609,15 +606,6 @@
     "team": {
       "blue": "Blue Team",
       "red": "Red Team"
-    },
-    "postCategory": {
-      "CHAMPION_DISCUSSION": "Champion Discussion",
-      "PATCH_NOTES": "Patch Notes",
-      "TIPS_AND_GUIDES": "Tips & Guides",
-      "META_DISCUSSION": "Meta Discussion",
-      "COMMUNITY": "Community",
-      "HUMOR": "Humor",
-      "GENERAL": "General"
     },
     "postSort": {
       "HOT": "Hot",

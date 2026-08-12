@@ -17,14 +17,18 @@ export type {
   VoteRequest,
   PostListParams,
   PostSearchParams,
+  CategoryItem,
+  BoardGroupItem,
+  CategoryTree,
 } from "./types";
 
-export { POST_CATEGORIES, POST_SORTS, POST_PERIODS } from "./types";
+export { POST_SORTS, POST_PERIODS } from "./types";
 
 export { getPosts, getPostDetail, createPost, updatePost, deletePost, searchPosts, getMyPosts } from "./api/communityApi";
 export { getComments, createComment, updateComment, deleteComment } from "./api/commentApi";
 export { vote, removeVote } from "./api/voteApi";
 export { addBookmark, removeBookmark, getMyBookmarks } from "./api/bookmarkApi";
+export { getCategoryTree } from "./api/categoryApi";
 
 export { usePosts, useSearchPosts, useMyPosts } from "./model/usePosts";
 export { usePostDetail } from "./model/usePostDetail";
@@ -35,6 +39,12 @@ export { useVote, useRemoveVote } from "./model/useVoteMutation";
 export { useBookmarkToggle } from "./model/useBookmarkMutation";
 export { useMyBookmarks } from "./model/useMyBookmarks";
 export { bookmarkKeys, postDetailKey } from "./model/bookmarkKeys";
+export {
+  useCategoryTree,
+  useCategoryLabel,
+  useVisibleCategories,
+  useWritableCategories,
+} from "./model/useCategories";
 export { useRemoveBookmark } from "./model/useBookmarkMutation";
 export { default as PostCard } from "./ui/PostCard";
 export { default as PostRow } from "./ui/PostRow";
