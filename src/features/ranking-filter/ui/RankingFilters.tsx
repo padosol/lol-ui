@@ -88,7 +88,7 @@ export default function RankingFilters({
               <button
                 type="button"
                 onClick={() => setIsRegionOpen((v) => !v)}
-                className="w-full bg-surface-8 text-on-surface border border-divider rounded-md px-3 py-2 flex items-center justify-between cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full bg-surface-2 hover:bg-surface-4 text-on-surface border border-divider rounded-md px-3 py-2 flex items-center justify-between cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
                 aria-haspopup="listbox"
                 aria-expanded={isRegionOpen}
               >
@@ -149,7 +149,7 @@ export default function RankingFilters({
               <button
                 type="button"
                 onClick={() => setIsQueueTypeOpen((v) => !v)}
-                className="w-full bg-surface-8 text-on-surface border border-divider rounded-md px-3 py-2 flex items-center justify-between cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full bg-surface-2 hover:bg-surface-4 text-on-surface border border-divider rounded-md px-3 py-2 flex items-center justify-between cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
                 aria-haspopup="listbox"
                 aria-expanded={isQueueTypeOpen}
               >
