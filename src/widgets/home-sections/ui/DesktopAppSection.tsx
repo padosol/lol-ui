@@ -23,7 +23,7 @@ export default function DesktopAppSection() {
     !isLoading && hasFreeChampions && champions.length === 0;
 
   return (
-    <div>
+    <div className="bg-surface-1 border border-divider rounded-xl p-6">
       <div className="text-left mb-8">
         <h2 className="text-2xl font-bold text-on-surface mb-2">
           {t("title")}

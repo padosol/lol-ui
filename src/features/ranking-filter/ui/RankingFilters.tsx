@@ -43,7 +43,7 @@ const getLpChangeDisplay = (lpChange: number | undefined) => {
     );
   }
   return (
-    <span className="flex items-center text-lose text-xs ml-1">
+    <span className="flex items-center text-loss text-xs ml-1">
       <ChevronDown className="w-3 h-3" />
       {Math.abs(lpChange)}
     </span>
@@ -77,7 +77,7 @@ export default function RankingFilters({
   const selectedQueueTypeLabel = tQueue(getQueueParam(queueType));
 
   return (
-    <div className="bg-surface-4 rounded-lg p-4 mb-6">
+    <div className="bg-surface-1 border border-divider rounded-xl p-4 mb-6">
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
         <div className="flex gap-4">
           <div className="w-32">

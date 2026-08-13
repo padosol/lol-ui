@@ -37,7 +37,7 @@ export default function RankingTable({ region, queueType }: RankingTableProps) {
       );
     } else if (rankChange < 0) {
       return (
-        <span className="flex items-center text-lose text-[10px] sm:text-xs">
+        <span className="flex items-center text-loss text-[10px] sm:text-xs">
           <ChevronDown className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
           {Math.abs(rankChange)}
         </span>
@@ -48,7 +48,7 @@ export default function RankingTable({ region, queueType }: RankingTableProps) {
 
   if (isLoading) {
     return (
-      <div className="bg-surface-4 rounded-lg overflow-hidden">
+      <div className="bg-surface-1 border border-divider rounded-xl overflow-hidden">
         <div className="flex items-center justify-center py-20">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
           <span className="ml-3 text-on-surface-medium">{t("loading")}</span>
@@ -59,9 +59,9 @@ export default function RankingTable({ region, queueType }: RankingTableProps) {
 
   if (error) {
     return (
-      <div className="bg-surface-4 rounded-lg overflow-hidden">
+      <div className="bg-surface-1 border border-divider rounded-xl overflow-hidden">
         <div className="flex flex-col items-center justify-center py-20">
-          <p className="text-lose mb-2">{t("loadError")}</p>
+          <p className="text-loss mb-2">{t("loadError")}</p>
           <p className="text-on-surface-disabled text-sm">{error.message}</p>
         </div>
       </div>
@@ -70,7 +70,7 @@ export default function RankingTable({ region, queueType }: RankingTableProps) {
 
   if (!data || data.content.length === 0) {
     return (
-      <div className="bg-surface-4 rounded-lg overflow-hidden">
+      <div className="bg-surface-1 border border-divider rounded-xl overflow-hidden">
         <div className="flex items-center justify-center py-20">
           <p className="text-on-surface-medium">{t("empty")}</p>
         </div>
@@ -79,11 +79,11 @@ export default function RankingTable({ region, queueType }: RankingTableProps) {
   }
 
   return (
-    <div className="bg-surface-4 rounded-lg overflow-hidden">
+    <div className="bg-surface-1 border border-divider rounded-xl overflow-hidden">
       {/* 테이블 헤더 */}
       <div className="overflow-x-auto">
         <table className="w-full">
-          <thead className="bg-surface-8">
+          <thead className="bg-surface-2 border-b border-divider">
             <tr>
               <th className="px-1 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-on-surface uppercase tracking-wider">
                 {t("columnRank")}
@@ -114,14 +114,14 @@ export default function RankingTable({ region, queueType }: RankingTableProps) {
               </th>
             </tr>
           </thead>
-          <tbody className="bg-surface-4 divide-y divide-divider">
+          <tbody className="bg-surface-1 divide-y divide-divider">
             {data.content.map((player) => (
               <tr
                 key={player.puuid}
                 className={
                   player.currentRank === 1
                     ? "rank-1-row transition-colors"
-                    : "hover:bg-surface-8 transition-colors"
+                    : "hover:bg-surface-4 transition-colors"
                 }
               >
                 <td className={`px-1 sm:px-4 py-1.5 sm:py-4 whitespace-nowrap ${player.currentRank === 1 ? "border-l-3 border-rank-top" : ""}`}>
@@ -227,19 +227,19 @@ export default function RankingTable({ region, queueType }: RankingTableProps) {
       </div>
 
       {/* 페이지네이션 */}
-      <div className="bg-surface-8 px-4 py-3 flex items-center justify-between border-t border-divider">
+      <div className="bg-surface-2 px-4 py-3 flex items-center justify-between border-t border-divider">
         <div className="flex-1 flex justify-between sm:hidden">
           <button
             onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
             disabled={currentPage === 1}
-            className="relative inline-flex items-center px-4 py-2 border border-divider text-sm font-medium rounded-md text-on-surface bg-surface-4 hover:bg-surface-6 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="relative inline-flex items-center px-4 py-2 border border-divider text-sm font-medium rounded-md text-on-surface bg-surface-1 hover:bg-surface-4 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {t("previous")}
           </button>
           <button
             onClick={() => setCurrentPage((prev) => prev + 1)}
             disabled={data.isLast}
-            className="ml-3 relative inline-flex items-center px-4 py-2 border border-divider text-sm font-medium rounded-md text-on-surface bg-surface-4 hover:bg-surface-6 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="ml-3 relative inline-flex items-center px-4 py-2 border border-divider text-sm font-medium rounded-md text-on-surface bg-surface-1 hover:bg-surface-4 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {t("next")}
           </button>
@@ -263,7 +263,7 @@ export default function RankingTable({ region, queueType }: RankingTableProps) {
               <button
                 onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
                 disabled={currentPage === 1}
-                className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-divider bg-surface-4 text-sm font-medium text-on-surface hover:bg-surface-6 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-divider bg-surface-1 text-sm font-medium text-on-surface hover:bg-surface-4 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {t("previous")}
               </button>
@@ -283,8 +283,8 @@ export default function RankingTable({ region, queueType }: RankingTableProps) {
                     onClick={() => setCurrentPage(pageNum)}
                     className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
                       currentPage === pageNum
-                        ? "z-10 bg-primary border-primary text-on-surface"
-                        : "bg-surface-4 border-divider text-on-surface hover:bg-surface-6"
+                        ? "z-10 bg-primary border-primary text-on-primary"
+                        : "bg-surface-1 border-divider text-on-surface hover:bg-surface-4"
                     }`}
                   >
                     {pageNum}
@@ -293,7 +293,7 @@ export default function RankingTable({ region, queueType }: RankingTableProps) {
               <button
                 onClick={() => setCurrentPage((prev) => prev + 1)}
                 disabled={data.isLast}
-                className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-divider bg-surface-4 text-sm font-medium text-on-surface hover:bg-surface-6 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-divider bg-surface-1 text-sm font-medium text-on-surface hover:bg-surface-4 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {t("next")}
               </button>
