@@ -1,6 +1,7 @@
 "use client";
 
 import { Link } from "@/shared/i18n/navigation";
+import { useRelativeNow } from "@/shared/i18n";
 import { useFormatter, useTranslations } from "next-intl";
 import { useCategoryLabel, useCategoryTree } from "../model/useCategories";
 import type { PostListItem } from "../types";
@@ -15,6 +16,7 @@ interface PostRowProps {
  */
 export default function PostRow({ post }: PostRowProps) {
   const format = useFormatter();
+  const now = useRelativeNow();
   const t = useTranslations("community.stats");
   const categoryLabel = useCategoryLabel();
   // 라벨이 도착하기 전에는 코드 원문(GENERAL)이 나오므로 배지를 비워둔다.
@@ -47,7 +49,7 @@ export default function PostRow({ post }: PostRowProps) {
           </span>
           <span className="shrink-0">·</span>
           <span className="shrink-0">
-            {format.relativeTime(new Date(post.createdAt))}
+            {format.relativeTime(new Date(post.createdAt), now)}
           </span>
           <span className="shrink-0 sm:hidden">
             · {t("upvotes")} {netVotes}

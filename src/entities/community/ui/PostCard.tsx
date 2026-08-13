@@ -3,6 +3,7 @@
 import type { PostListItem } from "../types";
 import { Eye, MessageSquare, ThumbsUp } from "lucide-react";
 import { Link } from "@/shared/i18n/navigation";
+import { useRelativeNow } from "@/shared/i18n";
 import { useFormatter } from "next-intl";
 import { useCategoryLabel, useCategoryTree } from "../model/useCategories";
 
@@ -12,6 +13,7 @@ interface PostCardProps {
 
 export default function PostCard({ post }: PostCardProps) {
   const format = useFormatter();
+  const now = useRelativeNow();
   const categoryLabel = useCategoryLabel();
   // 라벨이 도착하기 전에는 코드 원문(GENERAL)이 나오므로 배지를 비워둔다.
   const { isLoading: isCategoryLoading } = useCategoryTree();
@@ -27,7 +29,7 @@ export default function PostCard({ post }: PostCardProps) {
           {isCategoryLoading ? "" : categoryLabel(post.category)}
         </span>
         <span className="text-xs text-on-surface-disabled">
-          {format.relativeTime(new Date(post.createdAt))}
+          {format.relativeTime(new Date(post.createdAt), now)}
         </span>
       </div>
 

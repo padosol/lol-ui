@@ -13,6 +13,7 @@ import type { DuoPost, DuoRequest } from "@/entities/duo";
 import { useAuthStore } from "@/entities/auth";
 import { getPositionImageUrl } from "@/shared/lib/position";
 import { useTierName } from "@/shared/lib/useTierName";
+import { useRelativeNow } from "@/shared/i18n";
 import { useFormatter, useTranslations } from "next-intl";
 import { RequestActionButtons } from "@/features/duo-matching";
 import { DuoRequestModal } from "@/features/duo-request";
@@ -130,6 +131,7 @@ function PostContent({
   onRequestClick: () => void;
 }) {
   const format = useFormatter();
+  const now = useRelativeNow();
   const t = useTranslations("duo");
   const tDetail = useTranslations("duo.detail");
   const tLane = useTranslations("domain.position");
@@ -199,7 +201,7 @@ function PostContent({
 
         {/* 작성 시간 */}
         <p className="text-xs text-on-surface-disabled">
-          {format.relativeTime(new Date(post.createdAt))}
+          {format.relativeTime(new Date(post.createdAt), now)}
         </p>
       </div>
 

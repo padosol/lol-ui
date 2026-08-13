@@ -6,6 +6,7 @@ import type { DuoPost } from "@/entities/duo";
 import { LANE_IMAGE_KEY } from "@/entities/duo";
 import { getPositionImageUrl } from "@/shared/lib/position";
 import { useTierName } from "@/shared/lib/useTierName";
+import { useRelativeNow } from "@/shared/i18n";
 import { useFormatter, useTranslations } from "next-intl";
 
 const TIER_COLORS: Record<string, string> = {
@@ -28,6 +29,7 @@ interface DuoCardProps {
 
 export default function DuoCard({ post, onSelect }: DuoCardProps) {
   const format = useFormatter();
+  const now = useRelativeNow();
   const t = useTranslations("duo");
   const getTierName = useTierName();
   const tLane = useTranslations("domain.position");
@@ -105,7 +107,7 @@ export default function DuoCard({ post, onSelect }: DuoCardProps) {
           <Clock className="w-3 h-3" />
           {getExpiryText(post.expiresAt, t)}
         </span>
-        <span className="hidden sm:inline">{format.relativeTime(new Date(post.createdAt))}</span>
+        <span className="hidden sm:inline">{format.relativeTime(new Date(post.createdAt), now)}</span>
       </div>
     </button>
   );
