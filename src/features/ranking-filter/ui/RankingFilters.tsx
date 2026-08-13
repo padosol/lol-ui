@@ -199,7 +199,7 @@ export default function RankingFilters({
           {isLoading ? (
             <>
               {[1, 2].map((i) => (
-                <div key={i} className="flex-1 bg-surface-8 border border-divider rounded-lg overflow-hidden animate-pulse">
+                <div key={i} className="flex-1 bg-surface-2 border border-divider rounded-lg overflow-hidden animate-pulse">
                   <div className="p-3 flex items-center gap-3">
                     <div className="w-10 h-10 bg-surface-12 rounded-full shrink-0" />
                     <div className="space-y-1">
@@ -212,7 +212,7 @@ export default function RankingFilters({
               ))}
             </>
           ) : isError ? (
-            <div className="bg-surface-8 rounded-lg p-3 text-sm text-on-surface-medium">
+            <div className="bg-surface-2 border border-divider rounded-lg p-3 text-sm text-on-surface-medium">
               {t("cutoffError")}
             </div>
           ) : (
@@ -223,7 +223,7 @@ export default function RankingFilters({
               ].map(({ tier, data }) => (
                 <div
                   key={tier}
-                  className="flex-1 bg-surface-8 border border-divider rounded-lg overflow-hidden"
+                  className="flex-1 bg-surface-2 border border-divider rounded-lg overflow-hidden"
                 >
                   <div className="p-3 flex items-center justify-between">
                     <div className="w-[54px] h-[54px] shrink-0 overflow-hidden">
