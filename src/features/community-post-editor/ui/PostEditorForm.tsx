@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
-import { POST_CATEGORIES } from "@/entities/community";
+import { useCategoryTree, useWritableCategories } from "@/entities/community";
 import {
   createPostEditorSchema,
   type PostEditorFormData,
@@ -44,10 +44,19 @@ export default function PostEditorForm({
   const t = useTranslations("community.editor");
   const tCommunity = useTranslations("community");
   const tCommon = useTranslations("common");
-  const tCategory = useTranslations("domain.postCategory");
   const tValidation = useTranslations("community.editor.validation");
 
-  const schema = useMemo(() => createPostEditorSchema(tValidation), [tValidation]);
+  const writableCategories = useWritableCategories();
+  const { isLoading: isCategoryLoading } = useCategoryTree();
+  const writableCodes = useMemo(
+    () => writableCategories.map((category) => category.code),
+    [writableCategories]
+  );
+
+  const schema = useMemo(
+    () => createPostEditorSchema(tValidation, writableCodes),
+    [tValidation, writableCodes]
+  );
 
   const {
     register,
@@ -60,7 +69,9 @@ export default function PostEditorForm({
     defaultValues: {
       title: "",
       content: "",
-      category: undefined,
+      // 빈 문자열이 곧 "미선택" 이다. undefined 면 zod 가 타입 에러를 먼저
+      // 던져 번역된 메시지 대신 기본 문구가 나온다.
+      category: "",
       ...defaultValues,
     },
   });
@@ -76,24 +87,35 @@ export default function PostEditorForm({
           <FieldLabel>{t("category")}</FieldLabel>
           <input type="hidden" {...register("category")} />
           <div className="flex flex-wrap gap-1.5">
-            {POST_CATEGORIES.map((cat) => {
-              const selected = cat === selectedCategory;
-              return (
-                <button
-                  key={cat}
-                  type="button"
-                  onClick={() => setValue("category", cat, { shouldValidate: true })}
-                  aria-pressed={selected}
-                  className={`rounded-lg px-3.5 py-2 text-[13.5px] transition-colors cursor-pointer ${
-                    selected
-                      ? "bg-primary font-bold text-surface"
-                      : "bg-surface-4 font-medium text-on-surface-medium hover:bg-surface-8 hover:text-on-surface"
-                  }`}
-                >
-                  {tCategory(cat)}
-                </button>
-              );
-            })}
+            {isCategoryLoading
+              ? // 칩 자리를 잡아둬 라벨이 도착할 때 레이아웃이 튀지 않게 한다.
+                Array.from({ length: 6 }).map((_, index) => (
+                  <div
+                    key={index}
+                    className="h-[38px] w-20 rounded-lg bg-surface-4"
+                    aria-hidden
+                  />
+                ))
+              : writableCategories.map((category) => {
+                  const selected = category.code === selectedCategory;
+                  return (
+                    <button
+                      key={category.code}
+                      type="button"
+                      onClick={() =>
+                        setValue("category", category.code, { shouldValidate: true })
+                      }
+                      aria-pressed={selected}
+                      className={`rounded-lg px-3.5 py-2 text-[13.5px] transition-colors cursor-pointer ${
+                        selected
+                          ? "bg-primary font-bold text-surface"
+                          : "bg-surface-4 font-medium text-on-surface-medium hover:bg-surface-8 hover:text-on-surface"
+                      }`}
+                    >
+                      {category.name}
+                    </button>
+                  );
+                })}
           </div>
           {errors.category && (
             <p className="text-xs text-loss">{errors.category.message}</p>
@@ -142,7 +164,8 @@ export default function PostEditorForm({
         <div className="flex-1" />
         <button
           type="submit"
-          disabled={isPending}
+          // 목록이 오기 전에는 writableCodes 가 비어 있어 정상 입력도 거부된다.
+          disabled={isPending || isCategoryLoading}
           className="rounded-lg bg-primary px-7 py-2.5 text-sm font-bold text-surface hover:bg-primary/80 transition-colors disabled:opacity-50 cursor-pointer"
         >
           {isPending ? tCommon("processing") : (submitLabel ?? tCommunity("submit"))}
