@@ -83,7 +83,9 @@ export default function CommunityListPanel() {
     router.push("/community/write");
   };
 
-  const boardTitle = category === "ALL" ? t("title") : categoryLabel(category);
+  // 전체 선택 시에는 페이지 제목("커뮤니티")이 아니라 게시판 이름 자리에 맞춰 "전체"를 쓴다.
+  const boardTitle =
+    category === "ALL" ? t("allCategories") : categoryLabel(category);
 
   const mobileTabs: CategoryValue[] = [
     "ALL",
