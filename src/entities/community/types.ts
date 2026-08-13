@@ -1,9 +1,8 @@
 /**
- * 게시판 코드. 목록이 DB 로 옮겨가면서 union 타입을 포기했다 — 코드를 여기 나열해
- * 두면 게시판을 추가할 때마다 프론트를 다시 배포해야 하기 때문이다.
- * 유효성은 서버와 zod 런타임 검증이 본다.
+ * 게시판 식별자. 서버가 목록 조회·작성에서 모두 DB id 를 받으므로 프론트도 id 를
+ * 정본으로 쓴다. code(GENERAL)는 사람이 읽는 값일 뿐 요청에 실리지 않는다.
  */
-export type PostCategory = string;
+export type CategoryId = number;
 
 export type PostSort = "HOT" | "NEW" | "TOP";
 export type PostPeriod = "DAILY" | "WEEKLY" | "MONTHLY" | "ALL";
@@ -12,6 +11,8 @@ export type VoteTargetType = "POST" | "COMMENT";
 
 /** 게시판 하나. name 은 서버가 요청 로케일에 맞춰 해석해 내려준 라벨이다. */
 export interface CategoryItem {
+  /** 목록 조회·글 작성에 그대로 실어 보내는 값. */
+  id: CategoryId;
   code: string;
   name: string;
   description: string | null;
@@ -62,7 +63,7 @@ export interface Post {
   id: number;
   title: string;
   content: string;
-  category: PostCategory;
+  categoryId: CategoryId;
   viewCount: number;
   upvoteCount: number;
   downvoteCount: number;
@@ -77,7 +78,7 @@ export interface Post {
 export interface PostListItem {
   id: number;
   title: string;
-  category: PostCategory;
+  categoryId: CategoryId;
   viewCount: number;
   upvoteCount: number;
   downvoteCount: number;
@@ -118,13 +119,13 @@ export interface VoteResponse {
 export interface CreatePostRequest {
   title: string;
   content: string;
-  category: PostCategory;
+  categoryId: CategoryId;
 }
 
 export interface UpdatePostRequest {
   title: string;
   content: string;
-  category: PostCategory;
+  categoryId: CategoryId;
 }
 
 export interface CreateCommentRequest {
@@ -143,7 +144,7 @@ export interface VoteRequest {
 }
 
 export interface PostListParams {
-  category?: PostCategory;
+  categoryId?: CategoryId;
   sort?: PostSort;
   period?: PostPeriod;
   page?: number;

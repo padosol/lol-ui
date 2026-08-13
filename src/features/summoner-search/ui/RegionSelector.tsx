@@ -28,7 +28,7 @@ export default function RegionSelector({
       <button
         type="button"
         onClick={onToggle}
-        className={`relative bg-surface-4 hover:bg-surface-8 border border-r border-divider font-medium text-sm text-on-surface cursor-pointer focus:outline-none h-full flex items-center gap-2 ${
+        className={`relative bg-surface-2 hover:bg-surface-8 border border-r border-divider font-medium text-sm text-on-surface cursor-pointer focus:outline-none h-full flex items-center gap-2 ${
           compact
             ? "px-2 py-1.5 pr-7 rounded-l-md min-w-[60px]"
             : "px-3 py-2.5 pr-10 rounded-l-lg min-w-[96px]"

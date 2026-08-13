@@ -6,6 +6,7 @@ import type { DuoRequest } from "@/entities/duo";
 import { LANE_IMAGE_KEY, useDuoMatchResult } from "@/entities/duo";
 import { getPositionImageUrl } from "@/shared/lib/position";
 import { useTierName } from "@/shared/lib/useTierName";
+import { useRelativeNow } from "@/shared/i18n";
 import { useFormatter, useTranslations } from "next-intl";
 import { RequesterActionButtons } from "@/features/duo-matching";
 import PartnerName from "./PartnerName";
@@ -25,6 +26,7 @@ const STATUS_COLORS: Record<string, string> = {
 
 export default function DuoRequestCard({ request }: DuoRequestCardProps) {
   const format = useFormatter();
+  const now = useRelativeNow();
   const t = useTranslations("duo");
   const getTierName = useTierName();
   const tLane = useTranslations("domain.position");
@@ -91,7 +93,7 @@ export default function DuoRequestCard({ request }: DuoRequestCardProps) {
 
       {/* 시간 */}
       <span className="shrink-0 text-xs text-on-surface-disabled hidden sm:inline">
-        {format.relativeTime(new Date(request.createdAt))}
+        {format.relativeTime(new Date(request.createdAt), now)}
       </span>
 
       {/* 액션 버튼 */}

@@ -1,8 +1,10 @@
 "use client";
 
 import { Link } from "@/shared/i18n/navigation";
+import { useRelativeNow } from "@/shared/i18n";
 import { useFormatter, useTranslations } from "next-intl";
 import { useCategoryLabel, useCategoryTree } from "../model/useCategories";
+import { postHref } from "../lib/routes";
 import type { PostListItem } from "../types";
 
 interface PostRowProps {
@@ -15,6 +17,7 @@ interface PostRowProps {
  */
 export default function PostRow({ post }: PostRowProps) {
   const format = useFormatter();
+  const now = useRelativeNow();
   const t = useTranslations("community.stats");
   const categoryLabel = useCategoryLabel();
   // 라벨이 도착하기 전에는 코드 원문(GENERAL)이 나오므로 배지를 비워둔다.
@@ -23,13 +26,13 @@ export default function PostRow({ post }: PostRowProps) {
 
   return (
     <Link
-      href={`/community/${post.id}`}
+      href={postHref(post.id)}
       className="group flex items-center gap-3.5 px-4 py-3 border-b border-divider last:border-b-0 hover:bg-surface-2 transition-colors"
     >
       <div className="min-w-0 flex-1 flex flex-col gap-1">
         <div className="flex items-center gap-2 min-w-0">
           <span className="shrink-0 text-[11.5px] font-bold text-on-surface-disabled">
-            {isCategoryLoading ? "" : categoryLabel(post.category)}
+            {isCategoryLoading ? "" : categoryLabel(post.categoryId)}
           </span>
           <span className="min-w-0 truncate text-[15px] text-on-surface group-hover:text-primary transition-colors">
             {post.title}
@@ -47,7 +50,7 @@ export default function PostRow({ post }: PostRowProps) {
           </span>
           <span className="shrink-0">·</span>
           <span className="shrink-0">
-            {format.relativeTime(new Date(post.createdAt))}
+            {format.relativeTime(new Date(post.createdAt), now)}
           </span>
           <span className="shrink-0 sm:hidden">
             · {t("upvotes")} {netVotes}

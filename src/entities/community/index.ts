@@ -1,5 +1,5 @@
 export type {
-  PostCategory,
+  CategoryId,
   PostSort,
   PostPeriod,
   VoteType,
@@ -29,6 +29,13 @@ export { getComments, createComment, updateComment, deleteComment } from "./api/
 export { vote, removeVote } from "./api/voteApi";
 export { addBookmark, removeBookmark, getMyBookmarks } from "./api/bookmarkApi";
 export { getCategoryTree } from "./api/categoryApi";
+export {
+  categoryHref,
+  postHref,
+  postEditHref,
+  findCategoryById,
+  parseCategoryId,
+} from "./lib/routes";
 
 export { usePosts, useSearchPosts, useMyPosts } from "./model/usePosts";
 export { usePostDetail } from "./model/usePostDetail";

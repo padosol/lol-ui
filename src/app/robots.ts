@@ -11,6 +11,7 @@ export default function robots(): MetadataRoute.Robots {
       "https://metapick.me/sitemap.xml",
       "https://metapick.me/champion-stats/sitemap.xml",
       "https://metapick.me/patch-notes/sitemap.xml",
+      "https://metapick.me/community/sitemap.xml",
     ],
   };
 }

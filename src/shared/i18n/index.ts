@@ -10,3 +10,4 @@ export {
   isLocale,
 } from "./locale";
 export type { Locale } from "./locale";
+export { useRelativeNow } from "./useRelativeNow";

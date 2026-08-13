@@ -2,13 +2,13 @@
 
 import { Link } from "@/shared/i18n/navigation";
 import { useTranslations } from "next-intl";
-import type { BoardGroupItem, PostCategory } from "@/entities/community";
+import { categoryHref } from "@/entities/community";
+import type { BoardGroupItem, CategoryId } from "@/entities/community";
 
-type CategoryValue = PostCategory | "ALL";
+type CategoryValue = CategoryId | "ALL";
 
 interface BoardSidebarProps {
   category: CategoryValue;
-  onSelect: (category: CategoryValue) => void;
   /** 서버가 그룹핑·정렬을 끝내서 보낸 트리. 받은 순서대로 그리면 된다. */
   groups: BoardGroupItem[];
   isLoading?: boolean;
@@ -32,7 +32,6 @@ function SidebarSkeleton() {
 
 export default function BoardSidebar({
   category,
-  onSelect,
   groups,
   isLoading = false,
 }: BoardSidebarProps) {
@@ -41,7 +40,7 @@ export default function BoardSidebar({
   const tGroup = useTranslations("community.board.group");
 
   const itemClass = (active: boolean) =>
-    `rounded-md px-2.5 py-2 text-left text-sm transition-colors cursor-pointer ${
+    `block rounded-md px-2.5 py-2 text-left text-sm transition-colors cursor-pointer ${
       active
         ? "bg-primary/15 font-bold text-primary"
         : "text-on-surface-medium hover:bg-surface-4 hover:text-on-surface"
@@ -49,14 +48,13 @@ export default function BoardSidebar({
 
   return (
     <div className="flex flex-col gap-4 rounded-xl border border-divider bg-surface-1 p-2">
-      <button
-        type="button"
-        onClick={() => onSelect("ALL")}
+      <Link
+        href={categoryHref("ALL")}
         aria-current={category === "ALL" ? "page" : undefined}
         className={itemClass(category === "ALL")}
       >
         {t("allCategories")}
-      </button>
+      </Link>
 
       {isLoading ? (
         <SidebarSkeleton />
@@ -77,17 +75,16 @@ export default function BoardSidebar({
                 </div>
               ) : (
                 visible.map((item) => {
-                  const active = item.code === category;
+                  const active = item.id === category;
                   return (
-                    <button
-                      key={item.code}
-                      type="button"
-                      onClick={() => onSelect(item.code)}
+                    <Link
+                      key={item.id}
+                      href={categoryHref(item.id)}
                       aria-current={active ? "page" : undefined}
                       className={`${itemClass(active)} pl-4`}
                     >
                       {item.name}
-                    </button>
+                    </Link>
                   );
                 })
               )}

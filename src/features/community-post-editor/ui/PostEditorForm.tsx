@@ -48,14 +48,14 @@ export default function PostEditorForm({
 
   const writableCategories = useWritableCategories();
   const { isLoading: isCategoryLoading } = useCategoryTree();
-  const writableCodes = useMemo(
-    () => writableCategories.map((category) => category.code),
+  const writableIds = useMemo(
+    () => writableCategories.map((category) => category.id),
     [writableCategories]
   );
 
   const schema = useMemo(
-    () => createPostEditorSchema(tValidation, writableCodes),
-    [tValidation, writableCodes]
+    () => createPostEditorSchema(tValidation, writableIds),
+    [tValidation, writableIds]
   );
 
   const {
@@ -69,14 +69,14 @@ export default function PostEditorForm({
     defaultValues: {
       title: "",
       content: "",
-      // 빈 문자열이 곧 "미선택" 이다. undefined 면 zod 가 타입 에러를 먼저
+      // 0 이 곧 "미선택" 이다. undefined 면 zod 가 타입 에러를 먼저
       // 던져 번역된 메시지 대신 기본 문구가 나온다.
-      category: "",
+      categoryId: 0,
       ...defaultValues,
     },
   });
 
-  const selectedCategory = watch("category");
+  const selectedCategory = watch("categoryId");
   const title = watch("title") ?? "";
   const content = watch("content") ?? "";
 
@@ -85,7 +85,10 @@ export default function PostEditorForm({
       <div className="flex flex-col gap-5 rounded-xl border border-divider bg-surface-1 px-5 py-6 sm:px-8 sm:py-7">
         <div className="flex flex-col gap-2">
           <FieldLabel>{t("category")}</FieldLabel>
-          <input type="hidden" {...register("category")} />
+          <input
+            type="hidden"
+            {...register("categoryId", { valueAsNumber: true })}
+          />
           <div className="flex flex-wrap gap-1.5">
             {isCategoryLoading
               ? // 칩 자리를 잡아둬 라벨이 도착할 때 레이아웃이 튀지 않게 한다.
@@ -97,13 +100,13 @@ export default function PostEditorForm({
                   />
                 ))
               : writableCategories.map((category) => {
-                  const selected = category.code === selectedCategory;
+                  const selected = category.id === selectedCategory;
                   return (
                     <button
-                      key={category.code}
+                      key={category.id}
                       type="button"
                       onClick={() =>
-                        setValue("category", category.code, { shouldValidate: true })
+                        setValue("categoryId", category.id, { shouldValidate: true })
                       }
                       aria-pressed={selected}
                       className={`rounded-lg px-3.5 py-2 text-[13.5px] transition-colors cursor-pointer ${
@@ -117,8 +120,8 @@ export default function PostEditorForm({
                   );
                 })}
           </div>
-          {errors.category && (
-            <p className="text-xs text-loss">{errors.category.message}</p>
+          {errors.categoryId && (
+            <p className="text-xs text-loss">{errors.categoryId.message}</p>
           )}
         </div>
 

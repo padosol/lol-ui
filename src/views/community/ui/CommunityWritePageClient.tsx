@@ -3,7 +3,7 @@
 import { useRouter } from "@/shared/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { Header, Navigation, Footer } from "@/widgets/layout";
-import { useCreatePost } from "@/entities/community";
+import { useCreatePost, postHref } from "@/entities/community";
 import { PostEditorForm } from "@/features/community-post-editor";
 import type { PostEditorFormData } from "@/features/community-post-editor/model/postEditorSchema";
 
@@ -15,7 +15,7 @@ export default function CommunityWritePageClient() {
   const handleSubmit = (data: PostEditorFormData) => {
     createMutation.mutate(data, {
       onSuccess: (post) => {
-        router.push(`/community/${post.id}`);
+        router.push(postHref(post.id));
       },
     });
   };

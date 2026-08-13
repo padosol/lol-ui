@@ -6,6 +6,7 @@ import type { Comment } from "@/entities/community";
 import { AuthorAvatar } from "@/entities/community";
 import { useAuthStore } from "@/entities/auth";
 import { VoteButtons } from "@/shared/ui/vote-buttons";
+import { useRelativeNow } from "@/shared/i18n";
 import { useFormatter, useTranslations } from "next-intl";
 import CommentForm from "./CommentForm";
 
@@ -31,6 +32,7 @@ export default function CommentItem({
   isVotePending,
 }: CommentItemProps) {
   const format = useFormatter();
+  const now = useRelativeNow();
   const t = useTranslations("community.comment");
   const tCommon = useTranslations("common");
   const user = useAuthStore((s) => s.user);
@@ -77,7 +79,7 @@ export default function CommentItem({
             {comment.author.nickname}
           </span>
           <span className="text-xs text-on-surface-disabled">
-            {format.relativeTime(new Date(comment.createdAt))}
+            {format.relativeTime(new Date(comment.createdAt), now)}
             {comment.updatedAt !== comment.createdAt && ` ${t("edited")}`}
           </span>
         </div>

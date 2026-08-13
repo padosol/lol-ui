@@ -43,7 +43,7 @@ export default function CommunitySearchBar({ onSearch }: CommunitySearchBarProps
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex items-center rounded-lg border border-divider bg-surface-4 focus-within:border-primary transition-colors"
+      className="flex items-center rounded-lg border border-divider bg-surface-2 focus-within:border-primary transition-colors"
     >
       <div ref={scopeRef} className="relative shrink-0">
         <button
