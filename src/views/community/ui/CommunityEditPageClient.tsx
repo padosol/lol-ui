@@ -3,7 +3,7 @@
 import { useRouter } from "@/shared/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { Header, Navigation, Footer } from "@/widgets/layout";
-import { usePostDetail, useUpdatePost } from "@/entities/community";
+import { usePostDetail, useUpdatePost, postHref } from "@/entities/community";
 import { PostEditorForm } from "@/features/community-post-editor";
 import type { PostEditorFormData } from "@/features/community-post-editor/model/postEditorSchema";
 
@@ -23,7 +23,7 @@ export default function CommunityEditPageClient({ postId }: CommunityEditPageCli
       { postId, data },
       {
         onSuccess: () => {
-          router.push(`/community/${postId}`);
+          router.push(postHref(postId));
         },
       }
     );
@@ -76,7 +76,7 @@ export default function CommunityEditPageClient({ postId }: CommunityEditPageCli
             category: post.category,
           }}
           onSubmit={handleSubmit}
-          onCancel={() => router.push(`/community/${postId}`)}
+          onCancel={() => router.push(postHref(postId))}
           isPending={updateMutation.isPending}
           submitLabel={t("submitEdit")}
         />

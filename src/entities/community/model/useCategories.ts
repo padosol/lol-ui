@@ -9,7 +9,7 @@ import type { CategoryItem, CategoryTree } from "../types";
  * 유일한 캐시 계층이다. 게시판 구성은 변경 빈도가 극히 낮아 30분으로 잡았다 —
  * 새 게시판이 최대 30분 늦게 보일 수 있고 새로고침으로 즉시 해소된다.
  */
-export function useCategoryTree() {
+export function useCategoryTree(initialTree?: CategoryTree) {
   const locale = useLocale();
   return useQuery<CategoryTree, Error>({
     queryKey: ["community", "categories", locale],
@@ -18,6 +18,8 @@ export function useCategoryTree() {
     gcTime: 24 * 60 * 60 * 1000,
     // 실패하면 사이드바가 통째로 비므로 목록 조회보다 재시도를 넉넉히 준다.
     retry: 2,
+    // 서버가 이미 실어 보낸 트리가 있으면 스켈레톤 없이 사이드바가 바로 선다.
+    initialData: initialTree,
   });
 }
 

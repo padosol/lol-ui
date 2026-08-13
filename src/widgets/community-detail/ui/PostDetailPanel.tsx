@@ -10,6 +10,7 @@ import {
   useRemoveVote,
   useCategoryLabel,
   AuthorAvatar,
+  postEditHref,
 } from "@/entities/community";
 import type { VoteType } from "@/entities/community";
 import { useAuthStore } from "@/entities/auth";
@@ -113,7 +114,7 @@ export default function PostDetailPanel({ postId }: PostDetailPanelProps) {
           <div className="flex gap-1.5">
             <button
               type="button"
-              onClick={() => router.push(`/community/${post.id}/edit`)}
+              onClick={() => router.push(postEditHref(post.id))}
               className="flex items-center gap-1 rounded-md border border-divider px-3 py-1.5 text-[13px] font-bold text-on-surface-medium hover:text-on-surface hover:border-on-surface-disabled transition-colors cursor-pointer"
             >
               <Pencil className="w-3.5 h-3.5" />

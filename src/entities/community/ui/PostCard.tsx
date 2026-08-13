@@ -6,6 +6,7 @@ import { Link } from "@/shared/i18n/navigation";
 import { useRelativeNow } from "@/shared/i18n";
 import { useFormatter } from "next-intl";
 import { useCategoryLabel, useCategoryTree } from "../model/useCategories";
+import { postHref } from "../lib/categorySlug";
 
 interface PostCardProps {
   post: PostListItem;
@@ -21,7 +22,7 @@ export default function PostCard({ post }: PostCardProps) {
 
   return (
     <Link
-      href={`/community/${post.id}`}
+      href={postHref(post.id)}
       className="block bg-surface-1 border border-divider rounded-lg p-4 hover:border-primary/50 transition-colors"
     >
       <div className="flex items-center gap-2 mb-2">

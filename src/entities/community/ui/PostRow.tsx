@@ -4,6 +4,7 @@ import { Link } from "@/shared/i18n/navigation";
 import { useRelativeNow } from "@/shared/i18n";
 import { useFormatter, useTranslations } from "next-intl";
 import { useCategoryLabel, useCategoryTree } from "../model/useCategories";
+import { postHref } from "../lib/categorySlug";
 import type { PostListItem } from "../types";
 
 interface PostRowProps {
@@ -25,7 +26,7 @@ export default function PostRow({ post }: PostRowProps) {
 
   return (
     <Link
-      href={`/community/${post.id}`}
+      href={postHref(post.id)}
       className="group flex items-center gap-3.5 px-4 py-3 border-b border-divider last:border-b-0 hover:bg-surface-2 transition-colors"
     >
       <div className="min-w-0 flex-1 flex flex-col gap-1">

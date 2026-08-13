@@ -2,7 +2,7 @@
 
 import { Link } from "@/shared/i18n/navigation";
 import { useFormatter, useTranslations } from "next-intl";
-import { usePosts } from "@/entities/community";
+import { usePosts, postHref } from "@/entities/community";
 import TodayMatchesCard from "./TodayMatchesCard";
 import LeagueStandingsCard from "./LeagueStandingsCard";
 
@@ -46,7 +46,7 @@ export default function CommunityAside() {
             {hotPosts.map((post, index) => (
               <li key={post.id}>
                 <Link
-                  href={`/community/${post.id}`}
+                  href={postHref(post.id)}
                   className="group flex gap-2.5 items-start"
                 >
                   <span

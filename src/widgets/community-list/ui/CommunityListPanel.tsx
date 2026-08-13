@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { PenLine } from "lucide-react";
-import { useRouter } from "@/shared/i18n/navigation";
+import { Link, useRouter } from "@/shared/i18n/navigation";
 import { useTranslations } from "next-intl";
 import {
   usePosts,
@@ -10,10 +10,16 @@ import {
   useCategoryTree,
   useCategoryLabel,
   useVisibleCategories,
+  categoryHref,
   POST_SORTS,
   PostRow,
 } from "@/entities/community";
-import type { PostCategory, PostPeriod } from "@/entities/community";
+import type {
+  CategoryTree,
+  PostCategory,
+  PostListResponse,
+  PostPeriod,
+} from "@/entities/community";
 import { useAuthStore } from "@/entities/auth";
 import {
   CommunitySearchBar,
@@ -31,26 +37,41 @@ const SORTS: PostSortValue[] = ["HOT", "TOP", "NEW"];
 /** 기간 필터를 화면에서 뺐으므로 목록은 항상 전체 기간으로 조회한다. */
 const LIST_PERIOD: PostPeriod = "ALL";
 
-export default function CommunityListPanel() {
+interface CommunityListPanelProps {
+  /** 서버가 URL 로 해석한 현재 게시판. 화면 상태가 아니라 경로가 출처다. */
+  category: CategoryValue;
+  /** 서버가 실어 보낸 게시판 트리·첫 페이지. 없으면 클라이언트가 직접 받아온다. */
+  initialTree?: CategoryTree;
+  initialPosts?: PostListResponse;
+}
+
+export default function CommunityListPanel({
+  category,
+  initialTree,
+  initialPosts,
+}: CommunityListPanelProps) {
   const t = useTranslations("community");
   const tSort = useTranslations("domain.postSort");
-  const categoryTree = useCategoryTree();
+  const categoryTree = useCategoryTree(initialTree);
   const categoryLabel = useCategoryLabel();
   // 모바일 가로 스크롤 탭은 그룹 구분 없이 늘어놓으므로 여기서만 평평하게 쓴다.
   const visibleCategories = useVisibleCategories();
   const router = useRouter();
   const user = useAuthStore((s) => s.user);
-  const [category, setCategory] = useState<CategoryValue>("ALL");
   const [sort, setSort] = useState<PostSortValue>("HOT");
   const [searchKeyword, setSearchKeyword] = useState("");
   // 검색 범위는 아직 서버가 받지 않아 화면 표시용으로만 들고 있는다.
   const [, setSearchScope] = useState<SearchScope>(DEFAULT_SEARCH_SCOPE);
 
-  const postsQuery = usePosts({
-    category: category === "ALL" ? undefined : category,
-    sort,
-    period: LIST_PERIOD,
-  });
+  const postsQuery = usePosts(
+    {
+      category: category === "ALL" ? undefined : category,
+      sort,
+      period: LIST_PERIOD,
+    },
+    // 서버가 내려준 첫 페이지는 기본 정렬 기준이라, 정렬을 바꾼 뒤에는 쓰지 않는다.
+    sort === "HOT" ? initialPosts : undefined
+  );
 
   const searchQuery = useSearchPosts(searchKeyword);
 
@@ -64,11 +85,6 @@ export default function CommunityListPanel() {
 
   const isLoading = isSearching ? searchQuery.isLoading : postsQuery.isLoading;
   const hasNextPage = isSearching ? false : postsQuery.hasNextPage;
-
-  const handleSelectCategory = (next: CategoryValue) => {
-    setCategory(next);
-    setSearchKeyword("");
-  };
 
   const handleSearch = (keyword: string, scope: SearchScope) => {
     setSearchScope(scope);
@@ -97,7 +113,6 @@ export default function CommunityListPanel() {
       <aside className="hidden lg:block sticky top-[66px]">
         <BoardSidebar
           category={category}
-          onSelect={handleSelectCategory}
           groups={categoryTree.data?.groups ?? []}
           isLoading={categoryTree.isLoading}
         />
@@ -109,10 +124,10 @@ export default function CommunityListPanel() {
           {mobileTabs.map((value) => {
             const active = value === category;
             return (
-              <button
+              <Link
                 key={value}
-                type="button"
-                onClick={() => handleSelectCategory(value)}
+                href={categoryHref(value)}
+                aria-current={active ? "page" : undefined}
                 className={`whitespace-nowrap rounded-md px-3 py-1.5 text-sm transition-colors cursor-pointer ${
                   active
                     ? "bg-primary text-surface font-bold"
@@ -120,7 +135,7 @@ export default function CommunityListPanel() {
                 }`}
               >
                 {value === "ALL" ? t("allCategories") : categoryLabel(value)}
-              </button>
+              </Link>
             );
           })}
         </div>
