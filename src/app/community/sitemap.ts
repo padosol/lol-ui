@@ -1,10 +1,6 @@
 import { MetadataRoute } from "next";
 import { serverApiClient } from "@/shared/api/server-client";
-import {
-  getCategoryTree,
-  getPosts,
-  categoryCodeToSlug,
-} from "@/entities/community";
+import { getCategoryTree, getPosts } from "@/entities/community";
 import { DEFAULT_LOCALE } from "@/shared/i18n/locale";
 import { localizedSitemapEntries } from "@/shared/i18n/sitemap";
 import { logger } from "@/shared/lib/logger";
@@ -23,13 +19,13 @@ const POST_PAGES = 5;
  */
 export const revalidate = 3600;
 
-/** 게시판 목록은 로케일마다 라벨만 다르고 코드는 같아서 기본 로케일로 한 번만 받는다. */
-async function loadCategorySlugs(): Promise<string[]> {
+/** 게시판 목록은 로케일마다 라벨만 다르고 id 는 같아서 기본 로케일로 한 번만 받는다. */
+async function loadCategoryIds(): Promise<number[]> {
   const tree = await getCategoryTree(DEFAULT_LOCALE, serverApiClient);
   return tree.groups
     .flatMap((group) => group.categories)
     .filter((category) => category.visible)
-    .map((category) => categoryCodeToSlug(category.code));
+    .map((category) => category.id);
 }
 
 async function loadPostIds(): Promise<number[]> {
@@ -58,14 +54,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const lastModified = new Date();
 
   try {
-    const [slugs, postIds] = await Promise.all([
-      loadCategorySlugs(),
+    const [categoryIds, postIds] = await Promise.all([
+      loadCategoryIds(),
       loadPostIds(),
     ]);
 
     return [
-      ...slugs.flatMap((slug) =>
-        localizedSitemapEntries(`/community/board/${slug}`, lastModified)
+      ...categoryIds.flatMap((categoryId) =>
+        localizedSitemapEntries(`/community/board/${categoryId}`, lastModified)
       ),
       ...postIds.flatMap((id) =>
         localizedSitemapEntries(`/community/board/detail/${id}`, lastModified)

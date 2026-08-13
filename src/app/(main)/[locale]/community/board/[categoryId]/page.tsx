@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { localeAlternates } from "@/shared/i18n/alternates";
 import { toLocale } from "@/shared/i18n/locale";
-import { findCategoryBySlug } from "@/entities/community";
+import { findCategoryById, parseCategoryId } from "@/entities/community";
 import { CommunityPageClient } from "@/views/community";
 import {
   loadCategoryTree,
@@ -19,12 +19,15 @@ export const dynamic = "force-dynamic";
 
 /**
  * 게시판 목록이 DB 에 있어 URL 만으로는 유효한지 알 수 없다. 트리를 받아
- * 대조하고 없는 슬러그면 404 로 떨어뜨린다 — 존재하지 않는 게시판이
+ * 대조하고 없는 id 면 404 로 떨어뜨린다 — 존재하지 않는 게시판이
  * 빈 목록으로 200 을 돌려주면 색인만 지저분해진다.
  */
-async function resolveCategory(locale: string, categoryId: string) {
+async function resolveCategory(locale: string, segment: string) {
+  const categoryId = parseCategoryId(segment);
+  if (categoryId === null) notFound();
+
   const tree = await loadCategoryTree(locale);
-  const category = findCategoryBySlug(tree, categoryId);
+  const category = findCategoryById(tree, categoryId);
   if (!category) notFound();
   return { tree, category };
 }
@@ -46,11 +49,11 @@ export default async function CommunityBoardPage({ params }: Props) {
   setRequestLocale(toLocale(locale));
 
   const { tree, category } = await resolveCategory(locale, categoryId);
-  const posts = await loadPostsSafely(category.code);
+  const posts = await loadPostsSafely(category.id);
 
   return (
     <CommunityPageClient
-      category={category.code}
+      category={category.id}
       initialTree={tree}
       initialPosts={posts}
     />

@@ -3,14 +3,14 @@
 import { Header, Navigation, Footer } from "@/widgets/layout";
 import { CommunityListPanel } from "@/widgets/community-list";
 import type {
+  CategoryId,
   CategoryTree,
-  PostCategory,
   PostListResponse,
 } from "@/entities/community";
 
 interface CommunityPageClientProps {
   /** 서버가 URL 로 해석한 게시판. 전체 목록이면 "ALL". */
-  category: PostCategory | "ALL";
+  category: CategoryId | "ALL";
   initialTree?: CategoryTree;
   initialPosts?: PostListResponse;
 }

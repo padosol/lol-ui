@@ -3,9 +3,9 @@
 import { Link } from "@/shared/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { categoryHref } from "@/entities/community";
-import type { BoardGroupItem, PostCategory } from "@/entities/community";
+import type { BoardGroupItem, CategoryId } from "@/entities/community";
 
-type CategoryValue = PostCategory | "ALL";
+type CategoryValue = CategoryId | "ALL";
 
 interface BoardSidebarProps {
   category: CategoryValue;
@@ -75,11 +75,11 @@ export default function BoardSidebar({
                 </div>
               ) : (
                 visible.map((item) => {
-                  const active = item.code === category;
+                  const active = item.id === category;
                   return (
                     <Link
-                      key={item.code}
-                      href={categoryHref(item.code)}
+                      key={item.id}
+                      href={categoryHref(item.id)}
                       aria-current={active ? "page" : undefined}
                       className={`${itemClass(active)} pl-4`}
                     >

@@ -105,7 +105,7 @@ export default function PostDetailPanel({ postId }: PostDetailPanelProps) {
           className="flex items-center gap-1.5 text-[13.5px] font-bold text-on-surface-medium hover:text-on-surface transition-colors cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
-          {categoryLabel(post.category)}
+          {categoryLabel(post.categoryId)}
         </button>
 
         <div className="flex-1" />
@@ -136,7 +136,7 @@ export default function PostDetailPanel({ postId }: PostDetailPanelProps) {
       <article className="bg-surface-1 border border-divider rounded-xl px-5 py-6 sm:px-8 sm:py-7">
         <div className="mb-3">
           <span className="rounded bg-primary/15 px-2 py-1 text-[11.5px] font-bold text-primary">
-            {categoryLabel(post.category)}
+            {categoryLabel(post.categoryId)}
           </span>
         </div>
 

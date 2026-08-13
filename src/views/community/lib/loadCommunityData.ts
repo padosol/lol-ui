@@ -4,7 +4,7 @@ import {
   getCategoryTree,
   getPosts,
   getPostDetail,
-  type PostCategory,
+  type CategoryId,
   type PostSort,
 } from "@/entities/community";
 import { logger } from "@/shared/lib/logger";
@@ -23,9 +23,9 @@ export const loadCategoryTree = cache((locale: string) =>
   getCategoryTree(locale, serverApiClient)
 );
 
-export const loadPosts = cache((category: PostCategory | undefined) =>
+export const loadPosts = cache((categoryId: CategoryId | undefined) =>
   getPosts(
-    { category, sort: DEFAULT_SORT, period: "ALL", page: 0 },
+    { categoryId, sort: DEFAULT_SORT, period: "ALL", page: 0 },
     serverApiClient
   )
 );
@@ -39,12 +39,12 @@ export const loadPostDetail = cache((postId: number) =>
  * 반면 글 목록은 비어 있어도 화면이 성립해서, 실패하면 빈 목록으로 떨어뜨리고
  * 클라이언트 쿼리가 다시 시도하게 둔다.
  */
-export async function loadPostsSafely(category: PostCategory | undefined) {
+export async function loadPostsSafely(categoryId: CategoryId | undefined) {
   try {
-    return await loadPosts(category);
+    return await loadPosts(categoryId);
   } catch (error) {
     logger.error("Failed to load community posts on server", {
-      category,
+      categoryId,
       error: error instanceof Error ? error.message : String(error),
     });
     return { content: [], hasNext: false };

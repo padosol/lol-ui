@@ -15,8 +15,8 @@ import {
   PostRow,
 } from "@/entities/community";
 import type {
+  CategoryId,
   CategoryTree,
-  PostCategory,
   PostListResponse,
   PostPeriod,
 } from "@/entities/community";
@@ -29,7 +29,7 @@ import {
 import BoardSidebar from "./BoardSidebar";
 import CommunityAside from "./CommunityAside";
 
-type CategoryValue = PostCategory | "ALL";
+type CategoryValue = CategoryId | "ALL";
 type PostSortValue = (typeof POST_SORTS)[number];
 
 /** 노출 순서는 인기 → 추천 → 최신 (POST_SORTS 의 선언 순서와 다르다) */
@@ -65,7 +65,7 @@ export default function CommunityListPanel({
 
   const postsQuery = usePosts(
     {
-      category: category === "ALL" ? undefined : category,
+      categoryId: category === "ALL" ? undefined : category,
       sort,
       period: LIST_PERIOD,
     },
@@ -105,7 +105,7 @@ export default function CommunityListPanel({
 
   const mobileTabs: CategoryValue[] = [
     "ALL",
-    ...visibleCategories.map((item) => item.code),
+    ...visibleCategories.map((item) => item.id),
   ];
 
   return (

@@ -4,11 +4,11 @@ import {
   useQuery,
 } from "@tanstack/react-query";
 import { getPosts, searchPosts, getMyPosts } from "../api/communityApi";
-import type { PostListResponse, PostCategory, PostSort, PostPeriod } from "../types";
+import type { PostListResponse, CategoryId, PostSort, PostPeriod } from "../types";
 
 export function usePosts(
   params: {
-    category?: PostCategory;
+    categoryId?: CategoryId;
     sort?: PostSort;
     period?: PostPeriod;
   },
@@ -19,10 +19,16 @@ export function usePosts(
   initialPage?: PostListResponse
 ) {
   return useInfiniteQuery<PostListResponse, Error>({
-    queryKey: ["community", "posts", params.category, params.sort, params.period],
+    queryKey: [
+      "community",
+      "posts",
+      params.categoryId,
+      params.sort,
+      params.period,
+    ],
     queryFn: ({ pageParam }) =>
       getPosts({
-        category: params.category,
+        categoryId: params.categoryId,
         sort: params.sort,
         period: params.period,
         page: pageParam as number,

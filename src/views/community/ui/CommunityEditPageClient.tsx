@@ -73,7 +73,7 @@ export default function CommunityEditPageClient({ postId }: CommunityEditPageCli
           defaultValues={{
             title: post.title,
             content: post.content,
-            category: post.category,
+            categoryId: post.categoryId,
           }}
           onSubmit={handleSubmit}
           onCancel={() => router.push(postHref(postId))}

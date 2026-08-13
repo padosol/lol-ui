@@ -6,7 +6,7 @@ import { Link } from "@/shared/i18n/navigation";
 import { useRelativeNow } from "@/shared/i18n";
 import { useFormatter } from "next-intl";
 import { useCategoryLabel, useCategoryTree } from "../model/useCategories";
-import { postHref } from "../lib/categorySlug";
+import { postHref } from "../lib/routes";
 
 interface PostCardProps {
   post: PostListItem;
@@ -27,7 +27,7 @@ export default function PostCard({ post }: PostCardProps) {
     >
       <div className="flex items-center gap-2 mb-2">
         <span className="text-xs bg-surface-4 border border-divider rounded px-2 py-0.5 text-on-surface-medium">
-          {isCategoryLoading ? "" : categoryLabel(post.category)}
+          {isCategoryLoading ? "" : categoryLabel(post.categoryId)}
         </span>
         <span className="text-xs text-on-surface-disabled">
           {format.relativeTime(new Date(post.createdAt), now)}

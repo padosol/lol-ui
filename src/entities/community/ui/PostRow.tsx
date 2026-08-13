@@ -4,7 +4,7 @@ import { Link } from "@/shared/i18n/navigation";
 import { useRelativeNow } from "@/shared/i18n";
 import { useFormatter, useTranslations } from "next-intl";
 import { useCategoryLabel, useCategoryTree } from "../model/useCategories";
-import { postHref } from "../lib/categorySlug";
+import { postHref } from "../lib/routes";
 import type { PostListItem } from "../types";
 
 interface PostRowProps {
@@ -32,7 +32,7 @@ export default function PostRow({ post }: PostRowProps) {
       <div className="min-w-0 flex-1 flex flex-col gap-1">
         <div className="flex items-center gap-2 min-w-0">
           <span className="shrink-0 text-[11.5px] font-bold text-on-surface-disabled">
-            {isCategoryLoading ? "" : categoryLabel(post.category)}
+            {isCategoryLoading ? "" : categoryLabel(post.categoryId)}
           </span>
           <span className="min-w-0 truncate text-[15px] text-on-surface group-hover:text-primary transition-colors">
             {post.title}
