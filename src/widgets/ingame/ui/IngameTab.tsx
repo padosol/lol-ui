@@ -36,7 +36,7 @@ export default function IngameTab({ region, puuid }: IngameTabProps) {
         </p>
         <button
           onClick={() => refetch()}
-          className="px-4 py-2 bg-primary hover:bg-primary/90 text-on-surface rounded-lg text-sm"
+          className="px-4 py-2 bg-primary hover:bg-primary/90 text-on-primary rounded-lg text-sm"
         >
           {tCommon("retry")}
         </button>

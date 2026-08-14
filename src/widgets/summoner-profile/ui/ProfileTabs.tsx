@@ -37,7 +37,7 @@ export default function ProfileTabs({
   return (
     <div className="mt-6">
       {/* 탭 헤더 */}
-      <div className="bg-surface-4 rounded-t-lg border border-b-0 border-divider">
+      <div className="bg-surface-2 rounded-t-lg border border-b-0 border-divider">
         <div className="flex gap-0">
           {tabs.map((tab) => (
             <button
@@ -56,7 +56,7 @@ export default function ProfileTabs({
       </div>
 
       {/* 탭 콘텐츠 */}
-      <div className="bg-surface-4 rounded-b-lg border border-divider">
+      <div className="bg-surface-1 rounded-b-lg border border-divider">
         {activeTab === "overview" && (
           <div className="py-4 md:p-6">
             {/* 모바일 전용: 리그정보 + 모스트5를 매치 히스토리 위에 배치 */}

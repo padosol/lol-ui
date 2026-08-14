@@ -34,7 +34,7 @@ export default function MatchDetailInfo({
 
   return (
     <div
-      className="border-t border-divider/50 bg-surface-1/80 cursor-default"
+      className="border-t border-divider/50 bg-surface-4/80 cursor-default"
       onClick={(e) => e.stopPropagation()}
     >
       {/* 탭 바: 아레나 모드가 아닐 때만 표시 */}

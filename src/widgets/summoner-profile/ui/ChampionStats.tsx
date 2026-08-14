@@ -190,10 +190,10 @@ export default function ChampionStats({
       {showTitle && (
         <h2 className="text-xl font-bold text-on-surface mb-4">{t("title")}</h2>
       )}
-      <div className="bg-surface-4 rounded-lg border border-divider overflow-hidden">
+      <div className="bg-surface-1 rounded-lg border border-divider overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-surface-1/50 border-b border-divider">
+            <thead className="bg-surface-2 border-b border-divider">
               <tr>
                 <th className="px-1.5 py-2 md:px-4 md:py-3 text-left text-xs font-semibold text-on-surface">
                   {t("columnChampion")}
@@ -268,12 +268,12 @@ export default function ChampionStats({
                 return (
                   <tr
                     key={champion.championId || index}
-                    className="border-b border-divider/50 hover:bg-surface-8/30 transition-colors"
+                    className="border-b border-divider/50 hover:bg-surface-4 transition-colors"
                   >
                     <td className="px-1.5 py-2 md:px-4 md:py-3">
                       <div className="flex items-center">
                         <GameTooltip type="champion" id={champion.championName}>
-                          <div className="w-8 h-8 bg-surface-6 rounded-lg flex items-center justify-center overflow-hidden relative shrink-0">
+                          <div className="w-8 h-8 bg-surface-4 rounded-lg flex items-center justify-center overflow-hidden relative shrink-0">
                             <Image
                               src={getChampionImageUrl(champion.championName)}
                               alt={champion.championName}

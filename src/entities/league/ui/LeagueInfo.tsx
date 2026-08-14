@@ -113,7 +113,7 @@ export default function LeagueInfo({
         {leagues.map((league, index) => (
           <div
             key={index}
-            className="bg-surface-8/50 rounded-lg p-3 border border-divider"
+            className="bg-surface-1 rounded-lg p-3 border border-divider"
           >
             <div className="flex items-center justify-between mb-1">
               <h3 className="text-on-surface font-semibold text-sm">

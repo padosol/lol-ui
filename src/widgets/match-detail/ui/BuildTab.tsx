@@ -47,7 +47,7 @@ export default function BuildTab({
   return (
     <div className="space-y-3">
       {/* ─── 유저 정보 + 챔피언 선택 바 ─── */}
-      <div className="rounded-lg border border-divider/50 p-3 flex items-center gap-3">
+      <div className="bg-surface-1 rounded-lg border border-divider p-3 flex items-center gap-3">
         {/* 왼쪽: 선택된 플레이어 정보 */}
         <div className="flex items-center gap-2 shrink-0">
           <div className="w-8 h-8 rounded overflow-hidden relative bg-surface-8 shrink-0">
@@ -143,7 +143,7 @@ export default function BuildTab({
       </div>
 
       {/* ─── 아이템 빌드 순서 ─── */}
-      <div className="rounded-lg border border-divider/50 p-3">
+      <div className="bg-surface-1 rounded-lg border border-divider p-3">
         <div className="text-on-surface text-[11px] font-semibold mb-1.5">
           {t("itemBuildOrder")}
         </div>
@@ -151,7 +151,7 @@ export default function BuildTab({
       </div>
 
       {/* ─── 스킬 순서 ─── */}
-      <div className="rounded-lg border border-divider/50 p-3">
+      <div className="bg-surface-1 rounded-lg border border-divider p-3">
         <div className="text-on-surface text-[11px] font-semibold mb-1.5">
           {t("skillOrder")}
         </div>
@@ -159,7 +159,7 @@ export default function BuildTab({
       </div>
 
       {/* ─── 룬 세팅 ─── */}
-      <div className="rounded-lg border border-divider/50 p-3">
+      <div className="bg-surface-1 rounded-lg border border-divider p-3">
         <div className="text-on-surface text-[11px] font-semibold mb-1.5">
           {t("runes")}
         </div>

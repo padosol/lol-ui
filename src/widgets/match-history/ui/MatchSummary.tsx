@@ -241,9 +241,9 @@ export default function MatchSummary({ matches, dailyCounts, isDailyCountLoading
             {topChampions.map((champ, index) => (
               <div
                 key={index}
-                className="flex items-center gap-1.5 p-1 bg-surface-4 rounded-lg hover:bg-surface-6 transition-colors"
+                className="flex items-center gap-1.5 p-1 bg-surface-1 rounded-lg border border-divider hover:bg-surface-4 transition-colors"
               >
-                <div className="w-7 h-7 bg-surface-8 rounded-lg flex items-center justify-center overflow-hidden shrink-0 relative">
+                <div className="w-7 h-7 bg-surface-4 rounded-lg flex items-center justify-center overflow-hidden shrink-0 relative">
                   {champ.icon && champ.icon.startsWith("http") ? (
                     <Image
                       src={champ.icon}

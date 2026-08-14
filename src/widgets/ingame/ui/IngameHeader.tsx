@@ -48,7 +48,7 @@ export default function IngameHeader({ data }: IngameHeaderProps) {
   }, [data.gameStartTime]);
 
   return (
-    <div className="bg-surface-4/80 backdrop-blur-sm border-b border-divider px-4 py-2">
+    <div className="bg-surface-2 backdrop-blur-sm border-b border-divider px-4 py-2">
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
