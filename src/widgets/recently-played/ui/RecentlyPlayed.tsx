@@ -117,7 +117,7 @@ export default function RecentlyPlayed({
           return (
             <div
               key={teammate.puuid}
-              className="flex items-center gap-1.5 p-1.5 bg-surface-2 rounded-lg hover:bg-surface-4 transition-colors border border-divider"
+              className="flex items-center gap-1.5 p-1.5 bg-surface-1 rounded-lg hover:bg-surface-4 transition-colors border border-divider"
             >
               {/* 프로필 아이콘 */}
               <div className="w-8 h-8 bg-surface-4 rounded-lg flex items-center justify-center overflow-hidden relative shrink-0">

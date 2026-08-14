@@ -49,7 +49,7 @@ export default function ItemBuildOrder({ itemSeq }: { itemSeq: ItemSeqEntry[] | 
                         unoptimized
                       />
                     ) : (
-                      <div className="w-full h-full bg-surface-4/50" />
+                      <div className="w-full h-full bg-surface-4" />
                     )}
                   </div>
                 </GameTooltip>

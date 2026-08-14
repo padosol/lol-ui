@@ -133,7 +133,7 @@ export default function ChampionStatsOverview({
           return (
             <div
               key={champion.championId || index}
-              className="flex items-center gap-1.5 p-1.5 bg-surface-2 rounded-lg hover:bg-surface-4 transition-colors border border-divider"
+              className="flex items-center gap-1.5 p-1.5 bg-surface-1 rounded-lg hover:bg-surface-4 transition-colors border border-divider"
             >
               {/* 챔피언 아이콘 */}
               <GameTooltip type="champion" id={champion.championName}>

@@ -93,7 +93,7 @@ export default function MatchDetailOverview({
               key={placement ?? index}
               className={`p-1.5 rounded ${isMyTeam
                   ? "bg-loss/10 border border-loss/50"
-                  : "bg-surface-4/30 border border-divider/50"
+                  : "bg-surface-1 border border-divider"
                 }`}
             >
               <div className="text-on-surface text-[11px] font-semibold mb-1">
@@ -131,7 +131,7 @@ export default function MatchDetailOverview({
                       key={participant.participantId}
                       className={`flex flex-col gap-0.5 p-1 rounded ${isMe
                           ? "bg-loss/30 border border-loss/60"
-                          : "bg-surface-4/20"
+                          : "bg-surface-1"
                         }`}
                     >
                       {/* 상단: 기본 정보 */}
@@ -193,7 +193,7 @@ export default function MatchDetailOverview({
                                     unoptimized
                                   />
                                 ) : (
-                                  <div className="w-full h-full bg-surface-4/50"></div>
+                                  <div className="w-full h-full bg-surface-4"></div>
                                 )}
                               </div>
                             </GameTooltip>
@@ -316,7 +316,7 @@ export default function MatchDetailOverview({
           return (
             <div
               key={participant.participantId}
-              className={`flex items-center gap-1 px-1 rounded h-8 ${isMe ? highlightBg : "bg-surface-4/30"
+              className={`flex items-center gap-1 px-1 rounded h-8 ${isMe ? highlightBg : "bg-surface-1"
                 }`}
             >
               {/* Col 1: 챔피언 이미지 */}
@@ -377,7 +377,7 @@ export default function MatchDetailOverview({
               <div className="flex flex-col gap-0.5 shrink-0 w-32">
                 <Tooltip content={<span className="bg-surface-1 border border-divider shadow-xl rounded-lg px-3 py-1.5 text-xs text-on-surface whitespace-nowrap">{t("damageTooltip")}</span>}>
                   <div className="flex items-center gap-1 cursor-default">
-                    <div className="flex-1 h-1.5 bg-surface-8/50 rounded-full overflow-hidden">
+                    <div className="flex-1 h-1.5 bg-surface-8 rounded-full overflow-hidden">
                       <div className="h-full bg-warning/70 rounded-full" style={{ width: `${damagePercentage}%` }} />
                     </div>
                     <span className="text-warning text-[9px] w-7 text-right">{(damage / 1000).toFixed(1)}k</span>
@@ -385,7 +385,7 @@ export default function MatchDetailOverview({
                 </Tooltip>
                 <Tooltip content={<span className="bg-surface-1 border border-divider shadow-xl rounded-lg px-3 py-1.5 text-xs text-on-surface whitespace-nowrap">{t("damageTakenTooltip")}</span>}>
                   <div className="flex items-center gap-1 cursor-default">
-                    <div className="flex-1 h-1.5 bg-surface-8/50 rounded-full overflow-hidden">
+                    <div className="flex-1 h-1.5 bg-surface-8 rounded-full overflow-hidden">
                       <div className="h-full bg-primary/70 rounded-full" style={{ width: `${damageTakenPercentage}%` }} />
                     </div>
                     <span className="text-primary text-[9px] w-7 text-right">{(damageTaken / 1000).toFixed(1)}k</span>
@@ -408,7 +408,7 @@ export default function MatchDetailOverview({
                           unoptimized
                         />
                       ) : (
-                        <div className="w-full h-full bg-surface-4/50"></div>
+                        <div className="w-full h-full bg-surface-4"></div>
                       )}
                     </div>
                   </GameTooltip>

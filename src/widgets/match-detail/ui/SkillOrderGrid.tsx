@@ -72,7 +72,7 @@ export default function SkillOrderGrid({ skillSeq, championName }: SkillOrderGri
                     ? isMaster
                       ? SKILL_COLORS[skillKey].master
                       : SKILL_COLORS[skillKey].bg
-                    : "bg-surface-4/30";
+                    : "bg-surface-4";
                   return (
                     <div
                       key={levelIdx}

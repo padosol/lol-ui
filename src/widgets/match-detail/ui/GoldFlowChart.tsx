@@ -145,7 +145,7 @@ export default function GoldFlowChart({
   };
 
   return (
-    <div className="bg-surface-4/30 rounded p-3">
+    <div className="bg-surface-1 border border-divider rounded p-3">
       <div className="h-40">
         <Line data={data} options={options} />
       </div>
