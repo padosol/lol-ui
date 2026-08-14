@@ -43,7 +43,7 @@ const getLpChangeDisplay = (lpChange: number | undefined) => {
     );
   }
   return (
-    <span className="flex items-center text-lose text-xs ml-1">
+    <span className="flex items-center text-loss text-xs ml-1">
       <ChevronDown className="w-3 h-3" />
       {Math.abs(lpChange)}
     </span>
@@ -77,7 +77,7 @@ export default function RankingFilters({
   const selectedQueueTypeLabel = tQueue(getQueueParam(queueType));
 
   return (
-    <div className="bg-surface-4 rounded-lg p-4 mb-6">
+    <div className="bg-surface-1 border border-divider rounded-xl p-4 mb-6">
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
         <div className="flex gap-4">
           <div className="w-32">
@@ -88,7 +88,7 @@ export default function RankingFilters({
               <button
                 type="button"
                 onClick={() => setIsRegionOpen((v) => !v)}
-                className="w-full bg-surface-8 text-on-surface border border-divider rounded-md px-3 py-2 flex items-center justify-between cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full bg-surface-2 hover:bg-surface-4 text-on-surface border border-divider rounded-md px-3 py-2 flex items-center justify-between cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
                 aria-haspopup="listbox"
                 aria-expanded={isRegionOpen}
               >
@@ -149,7 +149,7 @@ export default function RankingFilters({
               <button
                 type="button"
                 onClick={() => setIsQueueTypeOpen((v) => !v)}
-                className="w-full bg-surface-8 text-on-surface border border-divider rounded-md px-3 py-2 flex items-center justify-between cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full bg-surface-2 hover:bg-surface-4 text-on-surface border border-divider rounded-md px-3 py-2 flex items-center justify-between cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
                 aria-haspopup="listbox"
                 aria-expanded={isQueueTypeOpen}
               >
@@ -199,7 +199,7 @@ export default function RankingFilters({
           {isLoading ? (
             <>
               {[1, 2].map((i) => (
-                <div key={i} className="flex-1 bg-surface-8 border border-divider rounded-lg overflow-hidden animate-pulse">
+                <div key={i} className="flex-1 bg-surface-2 border border-divider rounded-lg overflow-hidden animate-pulse">
                   <div className="p-3 flex items-center gap-3">
                     <div className="w-10 h-10 bg-surface-12 rounded-full shrink-0" />
                     <div className="space-y-1">
@@ -212,7 +212,7 @@ export default function RankingFilters({
               ))}
             </>
           ) : isError ? (
-            <div className="bg-surface-8 rounded-lg p-3 text-sm text-on-surface-medium">
+            <div className="bg-surface-2 border border-divider rounded-lg p-3 text-sm text-on-surface-medium">
               {t("cutoffError")}
             </div>
           ) : (
@@ -223,7 +223,7 @@ export default function RankingFilters({
               ].map(({ tier, data }) => (
                 <div
                   key={tier}
-                  className="flex-1 bg-surface-8 border border-divider rounded-lg overflow-hidden"
+                  className="flex-1 bg-surface-2 border border-divider rounded-lg overflow-hidden"
                 >
                   <div className="p-3 flex items-center justify-between">
                     <div className="w-[54px] h-[54px] shrink-0 overflow-hidden">
