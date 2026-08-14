@@ -68,7 +68,7 @@ export default function PlayerInfo({
           </div>
           {/* 챔피언 레벨 */}
           {champLevel > 0 && (
-            <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-black rounded-full flex items-center justify-center border-2 border-surface-6">
+            <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-surface-1/90 rounded-full flex items-center justify-center border-2 border-surface-6">
               <span className="text-on-surface text-xs font-bold">{champLevel}</span>
             </div>
           )}

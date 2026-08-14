@@ -204,7 +204,7 @@ export default function ProfileSection({
 
   if (isLoading || !profileData) {
     return (
-      <div className="bg-surface-4 rounded-lg p-6 border border-divider">
+      <div className="bg-surface-1 rounded-lg p-6 border border-divider">
         <div className="flex items-center justify-center py-12">
           <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
         </div>
@@ -213,7 +213,7 @@ export default function ProfileSection({
   }
 
   return (
-    <div className="bg-surface-4 rounded-lg p-4 md:p-6 border border-divider">
+    <div className="bg-surface-1 rounded-lg p-4 md:p-6 border border-divider">
       <div className="grid grid-cols-1 md:grid-cols-3 md:gap-6">
         {/* 첫 번째 열: 프로필 아이콘, 프로필 이름, 랭크 정보, 갱신 버튼, 승률 통계 */}
         <div className="flex flex-col gap-3 md:gap-4">
@@ -221,7 +221,7 @@ export default function ProfileSection({
           <div className="flex items-stretch gap-3 md:gap-4">
             {/* 소환사 아이콘 */}
             <div className="relative shrink-0">
-              <div className="w-16 h-16 md:w-20 md:h-20 bg-surface-8 rounded-lg overflow-hidden border-2 border-divider relative">
+              <div className="w-16 h-16 md:w-20 md:h-20 bg-surface-2 rounded-lg overflow-hidden border-2 border-divider relative">
                 {profileData.profileIconId ? (
                   <Image
                     src={getProfileIconImageUrl(profileData.profileIconId)}
@@ -275,7 +275,7 @@ export default function ProfileSection({
                   {isRefreshing || isPolling ? t("pending") : t("action")}
                 </button>
                 {cooldownInfo && (
-                  <span className="inline-flex items-center gap-1.5 text-xs text-on-surface-medium whitespace-nowrap bg-surface-6 rounded-md border border-divider px-2 py-1">
+                  <span className="inline-flex items-center gap-1.5 text-xs text-on-surface-medium whitespace-nowrap bg-surface-2 rounded-md border border-divider px-2 py-1">
                     <span className="w-1.5 h-1.5 rounded-full bg-on-surface-medium animate-pulse" />
                     {cooldownInfo.remainingSeconds >= 60
                       ? t("retryInMinutes", {

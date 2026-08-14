@@ -179,7 +179,7 @@ export default function SummonerNotFound({
               <button
                 type="button"
                 onClick={() => setIsRegionOpen((v) => !v)}
-                className="relative px-3 py-2.5 pr-10 bg-surface-4 hover:bg-surface-8 rounded-l-lg border border-r border-divider font-medium text-sm text-on-surface min-w-[96px] cursor-pointer focus:outline-none h-full flex items-center gap-2"
+                className="relative px-3 py-2.5 pr-10 bg-surface-2 hover:bg-surface-8 rounded-l-lg border border-r border-divider font-medium text-sm text-on-surface min-w-[96px] cursor-pointer focus:outline-none h-full flex items-center gap-2"
                 aria-haspopup="listbox"
                 aria-expanded={isRegionOpen}
               >
@@ -256,7 +256,7 @@ export default function SummonerNotFound({
                   }
                 }}
                 placeholder="Game name + #KR1"
-                className="w-full px-4 py-3 pr-12 bg-surface-4 border border-divider border-l-0 border-r-0 text-on-surface placeholder-on-surface-disabled focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent h-full"
+                className="w-full px-4 py-3 pr-12 bg-surface-2 border border-divider border-l-0 border-r-0 text-on-surface placeholder-on-surface-disabled focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent h-full"
               />
               <div className="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-disabled text-xs hidden sm:block">
                 Game name + #{currentRegion.toUpperCase()}1
@@ -378,7 +378,7 @@ export default function SummonerNotFound({
             {/* 검색 버튼 */}
             <button
               type="submit"
-              className="px-6 py-3 bg-primary hover:bg-primary/90 text-on-surface rounded-r-lg flex items-center justify-center border border-l-0 border-primary h-full cursor-pointer transition-colors"
+              className="px-6 py-3 bg-primary hover:bg-primary/90 text-on-primary rounded-r-lg flex items-center justify-center border border-l-0 border-primary h-full cursor-pointer transition-colors"
             >
               <Search className="w-5 h-5" />
             </button>

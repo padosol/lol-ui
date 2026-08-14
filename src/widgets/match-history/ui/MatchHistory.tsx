@@ -344,7 +344,7 @@ export default function MatchHistory({
         {showTitle && (
           <h2 className="text-2xl font-bold text-on-surface mb-2">{t("title")}</h2>
         )}
-        <div className="bg-surface-4/50 rounded-lg border border-divider/50 p-12 text-center">
+        <div className="bg-surface-1 rounded-lg border border-divider p-12 text-center">
           <div className="text-on-surface-medium text-lg">
             {t("needSummoner")}
           </div>
@@ -390,14 +390,14 @@ export default function MatchHistory({
       )}
 
       {/* 게임 모드 필터 탭 */}
-      <div className="flex gap-1 mb-4 bg-surface-2/50 rounded-lg p-1 border border-divider/50 overflow-x-auto">
+      <div className="flex gap-1 mb-4 bg-surface-2 rounded-lg p-1 border border-divider overflow-x-auto">
         {GAME_MODE_FILTERS.map((filter) => (
           <button
             key={filter}
             onClick={() => setGameModeFilter(filter)}
             className={`px-4 py-2 text-sm font-medium transition-all whitespace-nowrap rounded-md cursor-pointer ${gameModeFilter === filter
               ? "text-on-surface bg-surface-8 shadow-lg shadow-surface-8/20"
-              : "text-on-surface-medium hover:text-on-surface hover:bg-surface-8/50"
+              : "text-on-surface-medium hover:text-on-surface hover:bg-surface-4"
               }`}
           >
             {t(`filter.${filter}`)}
@@ -415,14 +415,14 @@ export default function MatchHistory({
       />
 
       {allMatches.length === 0 && (isLoading || (matchesData?.content?.length ?? 0) > 0) ? (
-        <div className="bg-surface-4/50 rounded-lg border border-divider/50 p-12 flex items-center justify-center">
+        <div className="bg-surface-1 rounded-lg border border-divider p-12 flex items-center justify-center">
           <div className="flex flex-col items-center gap-3">
             <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
             <div className="text-on-surface-medium text-sm">{t("loading")}</div>
           </div>
         </div>
       ) : allMatches.length === 0 && !isLoading && !matchesData?.content?.length ? (
-        <div className="bg-surface-4/50 rounded-lg border border-divider/50 p-12 text-center">
+        <div className="bg-surface-1 rounded-lg border border-divider p-12 text-center">
           <div className="text-on-surface-medium text-lg">{t("empty")}</div>
         </div>
       ) : (
@@ -505,7 +505,7 @@ export default function MatchHistory({
                 ? "hover:shadow-win/10"
                 : "hover:shadow-loss/10";
             const arrowBgColor = isRemake
-              ? "bg-surface-8 hover:bg-surface-12"
+              ? "bg-surface-4 hover:bg-surface-8"
               : match.result === "WIN"
                 ? "bg-win/10 hover:bg-win/20"
                 : "bg-loss/10 hover:bg-loss/20";

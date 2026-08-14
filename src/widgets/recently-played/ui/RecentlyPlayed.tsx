@@ -42,7 +42,7 @@ export default function RecentlyPlayed({
   }, [matchContent, puuid]);
 
   const renderHeader = () => (
-    <div className="bg-surface-6/50 p-2">
+    <div className="bg-surface-2 border-b border-divider p-2">
       <span className="px-3 py-1.5 text-sm font-semibold text-on-surface">
         {t("title")}
       </span>
@@ -51,7 +51,7 @@ export default function RecentlyPlayed({
 
   if (isLoading) {
     return (
-      <div className="border border-divider rounded-lg overflow-hidden">
+      <div className="bg-surface-1 border border-divider rounded-lg overflow-hidden">
         {renderHeader()}
         <div className="p-3">
           <div className="flex items-center justify-center py-12">
@@ -64,7 +64,7 @@ export default function RecentlyPlayed({
 
   if (!puuid) {
     return (
-      <div className="border border-divider rounded-lg overflow-hidden">
+      <div className="bg-surface-1 border border-divider rounded-lg overflow-hidden">
         {renderHeader()}
         <div className="p-3">
           <div className="text-center py-12 text-on-surface-medium">
@@ -77,7 +77,7 @@ export default function RecentlyPlayed({
 
   if (teammates.length === 0) {
     return (
-      <div className="border border-divider rounded-lg overflow-hidden">
+      <div className="bg-surface-1 border border-divider rounded-lg overflow-hidden">
         {renderHeader()}
         <div className="p-3">
           <div className="text-center text-on-surface-medium border border-divider rounded-lg py-4">
@@ -89,7 +89,7 @@ export default function RecentlyPlayed({
   }
 
   return (
-    <div className="border border-divider rounded-lg overflow-hidden">
+    <div className="bg-surface-1 border border-divider rounded-lg overflow-hidden">
       {renderHeader()}
       <div className="p-3 space-y-2">
         {teammates.map((teammate) => {
@@ -117,10 +117,10 @@ export default function RecentlyPlayed({
           return (
             <div
               key={teammate.puuid}
-              className="flex items-center gap-1.5 p-1.5 bg-surface-8/50 rounded-lg hover:bg-surface-8 transition-colors border border-divider"
+              className="flex items-center gap-1.5 p-1.5 bg-surface-2 rounded-lg hover:bg-surface-4 transition-colors border border-divider"
             >
               {/* 프로필 아이콘 */}
-              <div className="w-8 h-8 bg-surface-6 rounded-lg flex items-center justify-center overflow-hidden relative shrink-0">
+              <div className="w-8 h-8 bg-surface-4 rounded-lg flex items-center justify-center overflow-hidden relative shrink-0">
                 <Image
                   src={getProfileIconImageUrl(teammate.profileIcon)}
                   alt={teammate.riotIdGameName}
