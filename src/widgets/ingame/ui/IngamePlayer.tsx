@@ -39,7 +39,7 @@ export default function IngamePlayer({
     : baseDisplayName;
 
   return (
-    <div className="flex items-center gap-1.5 px-2 py-1 rounded border border-divider bg-surface-4/50 hover:bg-surface-4/70 transition-all shadow-md hover:shadow-lg">
+    <div className="flex items-center gap-1.5 px-2 py-1 rounded border border-divider bg-surface-1 hover:bg-surface-4 transition-all shadow-md hover:shadow-lg">
       {/* 챔피언 아이콘 */}
       <GameTooltip type="champion" id={champId} disabled={!champId}>
         <div className="w-10 h-10 rounded overflow-hidden relative shrink-0">

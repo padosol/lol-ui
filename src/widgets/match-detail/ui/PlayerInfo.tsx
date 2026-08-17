@@ -8,7 +8,8 @@ import {
   getSpellImageUrl,
 } from "@/shared/lib/game";
 import { getStyleImageUrl } from "@/shared/lib/styles";
-import { getPositionName } from "@/shared/lib/position";
+import { useTranslations } from "next-intl";
+import { normalizePosition } from "@/shared/lib/position";
 import Image from "next/image";
 
 interface PlayerInfoProps {
@@ -44,6 +45,8 @@ export default function PlayerInfo({
   subRuneStyleId,
   isArena = false,
 }: PlayerInfoProps) {
+  const t = useTranslations("domain");
+  const tDetail = useTranslations("matchDetail");
   return (
     <div className="space-y-3">
       {/* 챔피언 포트레이트 */}
@@ -65,7 +68,7 @@ export default function PlayerInfo({
           </div>
           {/* 챔피언 레벨 */}
           {champLevel > 0 && (
-            <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-black rounded-full flex items-center justify-center border-2 border-surface-6">
+            <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-surface-1/90 rounded-full flex items-center justify-center border-2 border-surface-6">
               <span className="text-on-surface text-xs font-bold">{champLevel}</span>
             </div>
           )}
@@ -77,7 +80,7 @@ export default function PlayerInfo({
         <div className="text-center">
           <div className="text-on-surface font-semibold text-sm">{champion}</div>
           <div className="text-on-surface-medium text-xs">
-            {getPositionName(position)}
+            {t(`position.${normalizePosition(position)}`)}
           </div>
         </div>
       )}
@@ -155,7 +158,7 @@ export default function PlayerInfo({
           </div>
           <div className="text-xs">
             <span className={getKDAColorClass(kdaRating)}>
-              {kdaRating} 평점
+              {tDetail("kdaRating", { kda: kdaRating })}
             </span>
           </div>
         </div>

@@ -6,8 +6,10 @@ import { WithdrawalConfirmModal } from "@/features/member-withdrawal";
 import { NicknameEditForm } from "@/features/nickname-edit";
 import { RiotLinkCard } from "@/features/riot-link";
 import { Check } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export default function AccountSection() {
+  const t = useTranslations("mypage.account");
   const user = useAuthStore((s) => s.user);
   const [showWithdrawalModal, setShowWithdrawalModal] = useState(false);
 
@@ -20,20 +22,20 @@ export default function AccountSection() {
   return (
     <div className="space-y-8">
       <section>
-        <h2 className="text-lg font-bold text-on-surface mb-6">기본정보</h2>
+        <h2 className="text-lg font-bold text-on-surface mb-6">{t("title")}</h2>
         <div className="space-y-6">
           <div>
             <label className="block text-sm font-bold text-on-surface mb-2">
-              비밀번호
+              {t("password")}
             </label>
             <p className="text-sm text-on-surface-disabled">
-              소셜 로그인으로 가입된 계정입니다.
+              {t("socialOnly")}
             </p>
           </div>
 
           <div>
             <label className="block text-sm font-bold text-on-surface mb-2">
-              닉네임
+              {t("nickname")}
             </label>
             <NicknameEditForm currentNickname={user.nickname} />
           </div>
@@ -44,7 +46,7 @@ export default function AccountSection() {
 
       <section>
         <h2 className="text-lg font-bold text-on-surface mb-6">
-          계정 연동하기
+          {t("linkAccount")}
         </h2>
         <div className="space-y-3">
           <div className="flex items-center justify-between px-5 py-4 bg-surface-1 border border-divider rounded-xl">
@@ -69,7 +71,7 @@ export default function AccountSection() {
               </svg>
               <div>
                 <span className="text-sm font-medium text-on-surface">
-                  구글
+                  {t("google")}
                 </span>
                 <p className="text-xs text-on-surface-medium">
                   {googleAccount?.email ?? user.email}
@@ -78,7 +80,7 @@ export default function AccountSection() {
             </div>
             <span className="flex items-center gap-1 text-sm text-success">
               <Check className="w-4 h-4" />
-              연동됨
+              {t("linked")}
             </span>
           </div>
 
@@ -94,7 +96,7 @@ export default function AccountSection() {
           onClick={() => setShowWithdrawalModal(true)}
           className="text-sm text-on-surface-disabled hover:text-error transition-colors"
         >
-          회원 탈퇴
+          {t("withdraw")}
         </button>
       </section>
 

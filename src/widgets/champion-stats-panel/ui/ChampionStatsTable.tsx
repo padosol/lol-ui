@@ -7,8 +7,9 @@ import {
   getWinRateTextClass,
 } from "@/entities/champion";
 import { useGameDataStore } from "@/shared/model/game-data";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/shared/i18n/navigation";
 import { useMemo } from "react";
 
 interface ChampionStatsTableProps {
@@ -24,6 +25,7 @@ export default function ChampionStatsTable({
   patch,
   platformId,
 }: ChampionStatsTableProps) {
+  const t = useTranslations("championStats");
   const championData = useGameDataStore((s) => s.championData);
 
   const championMap = useMemo(() => {
@@ -41,18 +43,18 @@ export default function ChampionStatsTable({
     <div className="bg-surface-2 border border-divider rounded-xl overflow-hidden">
       {/* 테이블 헤더 */}
       <div className="grid grid-cols-[80px_60px_1fr_1fr_1fr] px-4 py-2 text-xs font-medium text-on-surface-medium border-b border-divider bg-surface-4">
-        <span className="text-center">랭킹</span>
-        <span className="text-center">티어</span>
-        <span className="text-right">승률</span>
-        <span className="text-right">픽률</span>
-        <span className="text-right">밴률</span>
+        <span className="text-center">{t("ranking")}</span>
+        <span className="text-center">{t("tier")}</span>
+        <span className="text-right">{t("winRate")}</span>
+        <span className="text-right">{t("pickRate")}</span>
+        <span className="text-right">{t("banRate")}</span>
       </div>
 
       {/* 테이블 바디 */}
       <div>
         {filtered.length === 0 ? (
           <div className="py-8 text-center text-on-surface-medium text-sm">
-            데이터가 없습니다.
+            {t("empty")}
           </div>
         ) : (
           filtered.map((entry, index) => {

@@ -2,6 +2,7 @@
 
 import { useSummonerSearch } from "../model/useSummonerSearch";
 import { Search } from "lucide-react";
+import { useTranslations } from "next-intl";
 import AutocompleteDropdown from "./AutocompleteDropdown";
 import RegionSelector from "./RegionSelector";
 
@@ -10,6 +11,7 @@ interface SearchBarProps {
 }
 
 export default function SearchBar({ variant = "full" }: SearchBarProps) {
+  const t = useTranslations("search");
   const {
     region,
     setRegion,
@@ -64,8 +66,8 @@ export default function SearchBar({ variant = "full" }: SearchBarProps) {
               setShowAutocomplete(true);
             }
           }}
-          placeholder={"소환사 명 + #KR1"}
-          className={`w-full bg-surface-4 border border-divider border-l-0 border-r-0 text-on-surface placeholder-on-surface-disabled focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent h-full ${isCompact
+          placeholder={t("placeholder")}
+          className={`w-full bg-surface-2 border border-divider border-l-0 border-r-0 text-on-surface placeholder-on-surface-disabled focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent h-full ${isCompact
               ? "px-2 py-1.5 text-sm"
               : "px-4 py-3 pr-12"
             }`}
@@ -74,7 +76,7 @@ export default function SearchBar({ variant = "full" }: SearchBarProps) {
 
       <button
         type="submit"
-        className={`bg-primary hover:bg-primary/90 text-on-surface flex items-center justify-center border border-l-0 border-primary h-full ${isCompact
+        className={`bg-primary hover:bg-primary/90 text-on-primary flex items-center justify-center border border-l-0 border-primary h-full ${isCompact
             ? "px-2.5 py-1.5 rounded-r-md"
             : "px-6 py-3 rounded-r-lg"
           }`}

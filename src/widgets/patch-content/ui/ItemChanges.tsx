@@ -3,6 +3,7 @@
 import type { ItemChange } from "@/entities/patch-note";
 import { getItemImageUrl } from "@/shared/lib/game";
 import { ChevronDown } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import ChangeCard from "./ChangeCard";
 
@@ -11,6 +12,7 @@ interface ItemChangesProps {
 }
 
 export default function ItemChanges({ changes }: ItemChangesProps) {
+  const t = useTranslations("patchNotes");
   const [isExpanded, setIsExpanded] = useState(true);
 
   if (changes.length === 0) {
@@ -26,7 +28,7 @@ export default function ItemChanges({ changes }: ItemChangesProps) {
       >
         <div className="flex items-center gap-2">
           <span className="text-lg font-bold text-on-surface">
-            아이템 변경사항
+            {t("sections.items")}
           </span>
           <span className="text-sm text-on-surface-medium px-2 py-0.5 rounded-full bg-surface-4">
             {changes.length}

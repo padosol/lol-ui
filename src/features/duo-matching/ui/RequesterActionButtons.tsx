@@ -5,6 +5,7 @@ import {
   useCancelDuoRequest,
 } from "@/entities/duo";
 import type { RequestStatus } from "@/entities/duo";
+import { useTranslations } from "next-intl";
 
 interface RequesterActionButtonsProps {
   requestId: number;
@@ -15,6 +16,7 @@ export default function RequesterActionButtons({
   requestId,
   status,
 }: RequesterActionButtonsProps) {
+  const t = useTranslations("duo.actions");
   const confirm = useConfirmDuoRequest();
   const cancel = useCancelDuoRequest();
 
@@ -29,7 +31,7 @@ export default function RequesterActionButtons({
           disabled={isPending}
           className="cursor-pointer px-3 py-1.5 text-xs font-medium rounded-md bg-primary hover:bg-primary/80 text-on-primary transition-colors disabled:opacity-50"
         >
-          {confirm.isPending ? "확정 중..." : "확정하기"}
+          {confirm.isPending ? t("confirming") : t("confirm")}
         </button>
       )}
       {(status === "PENDING" || status === "ACCEPTED") && (
@@ -39,7 +41,7 @@ export default function RequesterActionButtons({
           disabled={isPending}
           className="cursor-pointer px-3 py-1.5 text-xs font-medium rounded-md bg-surface-4 border border-divider text-on-surface-medium hover:bg-surface-8 transition-colors disabled:opacity-50"
         >
-          {cancel.isPending ? "취소 중..." : "취소"}
+          {cancel.isPending ? t("cancelling") : t("cancel")}
         </button>
       )}
     </div>

@@ -1,5 +1,6 @@
 import { AVAILABLE_REGIONS, type RegionValue } from "@/features/region-select";
 import { ChevronDown } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface RegionSelectorProps {
   region: RegionValue;
@@ -18,6 +19,8 @@ export default function RegionSelector({
   regionRef,
   compact = false,
 }: RegionSelectorProps) {
+  const t = useTranslations("search");
+  const tRegion = useTranslations("domain.region");
   const currentRegion = AVAILABLE_REGIONS.find((o) => o.value === region);
 
   return (
@@ -25,7 +28,7 @@ export default function RegionSelector({
       <button
         type="button"
         onClick={onToggle}
-        className={`relative bg-surface-4 hover:bg-surface-8 border border-r border-divider font-medium text-sm text-on-surface cursor-pointer focus:outline-none h-full flex items-center gap-2 ${
+        className={`relative bg-surface-2 hover:bg-surface-8 border border-r border-divider font-medium text-sm text-on-surface cursor-pointer focus:outline-none h-full flex items-center gap-2 ${
           compact
             ? "px-2 py-1.5 pr-7 rounded-l-md min-w-[60px]"
             : "px-3 py-2.5 pr-10 rounded-l-lg min-w-[96px]"
@@ -40,9 +43,7 @@ export default function RegionSelector({
             </span>
           ) : (
             <>
-              <span className="text-on-surface">
-                {currentRegion?.label ?? region}
-              </span>
+              <span className="text-on-surface">{tRegion(region)}</span>
               <span className="text-[10px] text-on-surface-medium">
                 {currentRegion?.subLabel ?? region}
               </span>
@@ -58,7 +59,7 @@ export default function RegionSelector({
 
       {isOpen && (
         <div className="absolute top-full left-0 mt-1 w-full bg-surface-4 border border-divider rounded-lg shadow-lg z-50 overflow-hidden min-w-[96px]">
-          <div className="py-1" role="listbox" aria-label="리전 선택">
+          <div className="py-1" role="listbox" aria-label={t("regionSelect")}>
             {AVAILABLE_REGIONS.map((opt) => {
               const selected = opt.value === region;
               return (
@@ -76,7 +77,9 @@ export default function RegionSelector({
                   role="option"
                   aria-selected={selected}
                 >
-                  <span className="font-medium text-sm">{opt.label}</span>
+                  <span className="font-medium text-sm">
+                    {tRegion(opt.value)}
+                  </span>
                   <span className="text-xs text-on-surface-medium">
                     {opt.subLabel}
                   </span>

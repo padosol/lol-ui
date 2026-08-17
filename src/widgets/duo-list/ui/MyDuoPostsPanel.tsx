@@ -1,7 +1,7 @@
 "use client";
 
 import { useMyDuoPosts } from "@/entities/duo";
-import type { DuoPost } from "@/entities/duo";
+import { useTranslations } from "next-intl";
 import DuoCard from "./DuoCard";
 
 interface MyDuoPostsPanelProps {
@@ -11,6 +11,7 @@ interface MyDuoPostsPanelProps {
 export default function MyDuoPostsPanel({
   onSelectPost,
 }: MyDuoPostsPanelProps) {
+  const t = useTranslations("duo");
   const { data, isLoading } = useMyDuoPosts();
   const posts = data?.content ?? [];
 
@@ -30,7 +31,7 @@ export default function MyDuoPostsPanel({
   if (posts.length === 0) {
     return (
       <div className="text-center py-16 text-on-surface-disabled">
-        작성한 게시글이 없습니다
+        {t("emptyMyPosts")}
       </div>
     );
   }

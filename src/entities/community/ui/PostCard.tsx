@@ -1,29 +1,36 @@
 "use client";
 
 import type { PostListItem } from "../types";
-import { POST_CATEGORY_LABELS } from "../types";
 import { Eye, MessageSquare, ThumbsUp } from "lucide-react";
-import Link from "next/link";
-import { getRelativeTime } from "@/shared/lib/date";
+import { Link } from "@/shared/i18n/navigation";
+import { useRelativeNow } from "@/shared/i18n";
+import { useFormatter } from "next-intl";
+import { useCategoryLabel, useCategoryTree } from "../model/useCategories";
+import { postHref } from "../lib/routes";
 
 interface PostCardProps {
   post: PostListItem;
 }
 
 export default function PostCard({ post }: PostCardProps) {
+  const format = useFormatter();
+  const now = useRelativeNow();
+  const categoryLabel = useCategoryLabel();
+  // 라벨이 도착하기 전에는 코드 원문(GENERAL)이 나오므로 배지를 비워둔다.
+  const { isLoading: isCategoryLoading } = useCategoryTree();
   const netVotes = post.upvoteCount - post.downvoteCount;
 
   return (
     <Link
-      href={`/community/${post.id}`}
+      href={postHref(post.id)}
       className="block bg-surface-1 border border-divider rounded-lg p-4 hover:border-primary/50 transition-colors"
     >
       <div className="flex items-center gap-2 mb-2">
         <span className="text-xs bg-surface-4 border border-divider rounded px-2 py-0.5 text-on-surface-medium">
-          {POST_CATEGORY_LABELS[post.category]}
+          {isCategoryLoading ? "" : categoryLabel(post.categoryId)}
         </span>
         <span className="text-xs text-on-surface-disabled">
-          {getRelativeTime(post.createdAt)}
+          {format.relativeTime(new Date(post.createdAt), now)}
         </span>
       </div>
 

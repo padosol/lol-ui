@@ -1,34 +1,61 @@
+/**
+ * 티어 선택 옵션.
+ *
+ * 표시 문구는 여기 두지 않는다 — `domain.tier.*` 메시지에서 가져온다.
+ * "GOLD+" 처럼 `+` 가 붙은 값은 base 만 번역하고 `+` 를 그대로 이어 붙인다.
+ */
 export const TIER_OPTIONS = [
-  { value: "CHALLENGER", label: "챌린저" },
-  { value: "GRANDMASTER", label: "그랜드마스터" },
-  { value: "GRANDMASTER+", label: "그랜드마스터+" },
-  { value: "MASTER", label: "마스터" },
-  { value: "MASTER+", label: "마스터+" },
-  { value: "DIAMOND", label: "다이아몬드" },
-  { value: "DIAMOND+", label: "다이아몬드+" },
-  { value: "EMERALD", label: "에메랄드" },
-  { value: "EMERALD+", label: "에메랄드+" },
-  { value: "PLATINUM", label: "플래티넘" },
-  { value: "PLATINUM+", label: "플래티넘+" },
-  { value: "GOLD", label: "골드" },
-  { value: "GOLD+", label: "골드+" },
-  { value: "SILVER", label: "실버" },
-  { value: "SILVER+", label: "실버+" },
-  { value: "BRONZE", label: "브론즈" },
-  { value: "BRONZE+", label: "브론즈+" },
-  { value: "IRON", label: "아이언" },
-  { value: "IRON+", label: "아이언+" },
+  "CHALLENGER",
+  "GRANDMASTER",
+  "GRANDMASTER+",
+  "MASTER",
+  "MASTER+",
+  "DIAMOND",
+  "DIAMOND+",
+  "EMERALD",
+  "EMERALD+",
+  "PLATINUM",
+  "PLATINUM+",
+  "GOLD",
+  "GOLD+",
+  "SILVER",
+  "SILVER+",
+  "BRONZE",
+  "BRONZE+",
+  "IRON",
+  "IRON+",
 ] as const;
 
-export type TierValue = (typeof TIER_OPTIONS)[number]["value"];
+export type TierValue = (typeof TIER_OPTIONS)[number];
 
-export function getTierLabel(value: string): string {
-  return TIER_OPTIONS.find((o) => o.value === value)?.label ?? value;
+/** 번역 키가 존재하는 base 티어 */
+export const TIER_BASES = [
+  "CHALLENGER",
+  "GRANDMASTER",
+  "MASTER",
+  "DIAMOND",
+  "EMERALD",
+  "PLATINUM",
+  "GOLD",
+  "SILVER",
+  "BRONZE",
+  "IRON",
+] as const;
+
+export type TierBase = (typeof TIER_BASES)[number];
+
+export function isTierBase(value: string): value is TierBase {
+  return (TIER_BASES as readonly string[]).includes(value);
 }
 
-export function getNextLowerTier(current: string): { value: string; label: string } | null {
-  const idx = TIER_OPTIONS.findIndex((o) => o.value === current);
+/** "GOLD+" → { base: "GOLD", plus: true } */
+export function splitTier(value: string): { base: string; plus: boolean } {
+  const plus = value.endsWith("+");
+  return { base: plus ? value.slice(0, -1) : value, plus };
+}
+
+export function getNextLowerTier(current: string): TierValue | null {
+  const idx = (TIER_OPTIONS as readonly string[]).indexOf(current);
   if (idx < 0 || idx >= TIER_OPTIONS.length - 1) return null;
-  const next = TIER_OPTIONS[idx + 1];
-  return { value: next.value, label: next.label };
+  return TIER_OPTIONS[idx + 1];
 }

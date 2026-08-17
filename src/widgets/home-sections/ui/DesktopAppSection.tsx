@@ -6,8 +6,10 @@ import {
   useChampionsByIds,
 } from "@/entities/champion";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 export default function DesktopAppSection() {
+  const t = useTranslations("home.freeChampions");
   const { data: rotationData, isLoading } = useChampionRotate("kr");
   const champions = useChampionsByIds(rotationData?.freeChampionIds ?? []);
 
@@ -21,14 +23,12 @@ export default function DesktopAppSection() {
     !isLoading && hasFreeChampions && champions.length === 0;
 
   return (
-    <div>
+    <div className="bg-surface-1 border border-divider rounded-xl p-6">
       <div className="text-left mb-8">
         <h2 className="text-2xl font-bold text-on-surface mb-2">
-          이번 주 무료 챔피언
+          {t("title")}
         </h2>
-        <p className="text-on-surface-medium text-sm">
-          무료로 플레이할 수 있는 챔피언을 확인하세요
-        </p>
+        <p className="text-on-surface-medium text-sm">{t("subtitle")}</p>
       </div>
 
       {isLoading || isChampionsLoading ? (
@@ -60,7 +60,7 @@ export default function DesktopAppSection() {
         </div>
       ) : (
         <div className="text-center text-on-surface-medium py-12">
-          챔피언 로테이션 정보를 불러올 수 없습니다.
+          {t("error")}
         </div>
       )}
     </div>

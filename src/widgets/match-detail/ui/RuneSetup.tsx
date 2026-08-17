@@ -11,6 +11,7 @@ import type { RuneStyle, StatValue } from "@/entities/match";
 import { getPerkImageUrl } from "@/shared/lib/game";
 import { normalizeRunes, parseRuneStyle } from "@/shared/lib/rune";
 import { getStyleImageUrl } from "@/shared/lib/styles";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 
 /* ─── 개별 룬 아이콘 ─── */
@@ -199,12 +200,13 @@ interface RuneSetupProps {
 }
 
 export default function RuneSetup({ style, statValue }: RuneSetupProps) {
+  const t = useTranslations("matchDetail");
   const runeStyle = parseRuneStyle(style);
   const runes = runeStyle ? normalizeRunes(runeStyle) : null;
 
   if (!runes) {
     return (
-      <div className="text-on-surface-medium text-[11px]">룬 정보 없음</div>
+      <div className="text-on-surface-medium text-[11px]">{t("noRunes")}</div>
     );
   }
 
@@ -240,7 +242,7 @@ export default function RuneSetup({ style, statValue }: RuneSetupProps) {
       {statValue && (
         <div className="flex flex-col items-center gap-1.5 min-w-[80px]">
           <span className="text-[9px] text-on-surface-medium mb-0.5">
-            룬 파편
+            {t("runeShards")}
           </span>
           {STAT_PERK_ROWS.map((row, rowIdx) => {
             const key = STAT_PERK_ROW_KEYS[rowIdx];

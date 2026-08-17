@@ -12,6 +12,7 @@ import {
 import { parseRuneStyle, normalizeRunes } from "@/shared/lib/rune";
 import { getStyleImageUrl } from "@/shared/lib/styles";
 import { SummonerSpellImage, RuneImage } from "@/shared/ui/game";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import DamageBar from "./DamageBar";
 import GoldFlowChart from "./GoldFlowChart";
@@ -43,6 +44,10 @@ export default function MatchDetailOverview({
   puuid,
   region = "kr",
 }: MatchDetailOverviewProps) {
+  const t = useTranslations("matchDetail");
+  const tResult = useTranslations("match.result");
+  const tTeam = useTranslations("domain.team");
+
   if (isArena) {
     const participants = detail.participantData || [];
     const hasValidPlacement = participants.some(p => p.placement > 0);
@@ -88,11 +93,13 @@ export default function MatchDetailOverview({
               key={placement ?? index}
               className={`p-1.5 rounded ${isMyTeam
                   ? "bg-loss/10 border border-loss/50"
-                  : "bg-surface-4/30 border border-divider/50"
+                  : "bg-surface-1 border border-divider"
                 }`}
             >
               <div className="text-on-surface text-[11px] font-semibold mb-1">
-                {placement != null ? `${placement}위` : "-"}
+                {placement != null
+                  ? tResult("placement", { rank: placement })
+                  : "-"}
               </div>
               <div className="grid grid-cols-2 gap-1">
                 {team.map((participant) => {
@@ -124,7 +131,7 @@ export default function MatchDetailOverview({
                       key={participant.participantId}
                       className={`flex flex-col gap-0.5 p-1 rounded ${isMe
                           ? "bg-loss/30 border border-loss/60"
-                          : "bg-surface-4/20"
+                          : "bg-surface-1"
                         }`}
                     >
                       {/* 상단: 기본 정보 */}
@@ -168,7 +175,7 @@ export default function MatchDetailOverview({
                             >
                               {participantKDA === "perfect"
                                 ? "perfect"
-                                : `${participantKDA}:1 평점`}
+                                : t("kdaRating", { kda: `${participantKDA}:1` })}
                             </span>
                           </div>
                         </div>
@@ -186,7 +193,7 @@ export default function MatchDetailOverview({
                                     unoptimized
                                   />
                                 ) : (
-                                  <div className="w-full h-full bg-surface-4/50"></div>
+                                  <div className="w-full h-full bg-surface-4"></div>
                                 )}
                               </div>
                             </GameTooltip>
@@ -196,13 +203,13 @@ export default function MatchDetailOverview({
                       {/* 하단: 피해량 막대바 */}
                       <div className="flex gap-1.5">
                         <DamageBar
-                          label="피해"
+                          label={t("damage")}
                           percentage={damagePercentage}
                           value={`${(damage / 1000).toFixed(1)}k`}
                           color="orange"
                         />
                         <DamageBar
-                          label="받은 피해"
+                          label={t("damageTaken")}
                           percentage={damageTakenPercentage}
                           value={`${(damageTaken / 1000).toFixed(1)}k`}
                           color="blue"
@@ -248,7 +255,7 @@ export default function MatchDetailOverview({
     teamColor: "blue" | "red",
     stats: TeamStats,
   ) {
-    const teamLabel = teamColor === "blue" ? "블루팀" : "레드팀";
+    const teamLabel = tTeam(teamColor);
     const teamTextClass = teamColor === "blue" ? "text-team-blue" : "text-loss";
     const highlightBg = teamColor === "blue"
       ? "bg-team-blue/20 border border-team-blue/50"
@@ -258,13 +265,18 @@ export default function MatchDetailOverview({
       <div className="space-y-1">
         <div className="flex items-center justify-between mb-1.5 px-1">
           <div className={`${teamTextClass} text-xs font-semibold`}>
-            {teamLabel} {team.some((p) => p.win) ? "승리" : "패배"}
+            {t("teamResult", {
+              team: teamLabel,
+              result: team.some((p) => p.win)
+                ? tResult("win")
+                : tResult("loss"),
+            })}
           </div>
           <div className="flex items-center gap-2 text-[10px] text-on-surface-medium">
-            <span>바론 {stats.baron}</span>
-            <span>드래곤 {stats.dragon}</span>
-            <span>타워 {stats.turret}</span>
-            <span>억제기 {stats.inhibitor}</span>
+            <span>{t("objectives.baron")} {stats.baron}</span>
+            <span>{t("objectives.dragon")} {stats.dragon}</span>
+            <span>{t("objectives.turret")} {stats.turret}</span>
+            <span>{t("objectives.inhibitor")} {stats.inhibitor}</span>
           </div>
         </div>
         {team.map((participant) => {
@@ -304,7 +316,7 @@ export default function MatchDetailOverview({
           return (
             <div
               key={participant.participantId}
-              className={`flex items-center gap-1 px-1 rounded h-8 ${isMe ? highlightBg : "bg-surface-4/30"
+              className={`flex items-center gap-1 px-1 rounded h-8 ${isMe ? highlightBg : "bg-surface-1"
                 }`}
             >
               {/* Col 1: 챔피언 이미지 */}
@@ -363,17 +375,17 @@ export default function MatchDetailOverview({
 
               {/* Col 4: 피해량 막대바 (2행, 인라인) */}
               <div className="flex flex-col gap-0.5 shrink-0 w-32">
-                <Tooltip content={<span className="bg-surface-1 border border-divider shadow-xl rounded-lg px-3 py-1.5 text-xs text-on-surface whitespace-nowrap">적에게 가한 피해량</span>}>
+                <Tooltip content={<span className="bg-surface-1 border border-divider shadow-xl rounded-lg px-3 py-1.5 text-xs text-on-surface whitespace-nowrap">{t("damageTooltip")}</span>}>
                   <div className="flex items-center gap-1 cursor-default">
-                    <div className="flex-1 h-1.5 bg-surface-8/50 rounded-full overflow-hidden">
+                    <div className="flex-1 h-1.5 bg-surface-8 rounded-full overflow-hidden">
                       <div className="h-full bg-warning/70 rounded-full" style={{ width: `${damagePercentage}%` }} />
                     </div>
                     <span className="text-warning text-[9px] w-7 text-right">{(damage / 1000).toFixed(1)}k</span>
                   </div>
                 </Tooltip>
-                <Tooltip content={<span className="bg-surface-1 border border-divider shadow-xl rounded-lg px-3 py-1.5 text-xs text-on-surface whitespace-nowrap">받은 피해량</span>}>
+                <Tooltip content={<span className="bg-surface-1 border border-divider shadow-xl rounded-lg px-3 py-1.5 text-xs text-on-surface whitespace-nowrap">{t("damageTakenTooltip")}</span>}>
                   <div className="flex items-center gap-1 cursor-default">
-                    <div className="flex-1 h-1.5 bg-surface-8/50 rounded-full overflow-hidden">
+                    <div className="flex-1 h-1.5 bg-surface-8 rounded-full overflow-hidden">
                       <div className="h-full bg-primary/70 rounded-full" style={{ width: `${damageTakenPercentage}%` }} />
                     </div>
                     <span className="text-primary text-[9px] w-7 text-right">{(damageTaken / 1000).toFixed(1)}k</span>
@@ -396,7 +408,7 @@ export default function MatchDetailOverview({
                           unoptimized
                         />
                       ) : (
-                        <div className="w-full h-full bg-surface-4/50"></div>
+                        <div className="w-full h-full bg-surface-4"></div>
                       )}
                     </div>
                   </GameTooltip>

@@ -15,7 +15,8 @@ export async function getChampionStats(
     { params: { championId, patch, ...(tier && { tier }) } }
   );
   if (response.data.result === "FAIL") {
-    throw new Error(response.data.errorMessage || "챔피언 통계 조회에 실패했습니다.");
+    // 표시 문구는 호출부가 번역해 보여준다. 여기서는 원인 식별용 기술 메시지만 남긴다.
+    throw new Error(response.data.errorMessage || "Failed to fetch champion stats");
   }
   return response.data.data;
 }

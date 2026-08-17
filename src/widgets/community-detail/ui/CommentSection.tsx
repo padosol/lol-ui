@@ -12,7 +12,8 @@ import { useAuthStore } from "@/entities/auth";
 import { CommentForm, CommentItem } from "@/features/community-comment";
 import { ConfirmModal } from "@/shared/ui/modal";
 import { toast } from "@/shared/ui/toast";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/shared/i18n/navigation";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 
 interface CommentSectionProps {
@@ -21,6 +22,8 @@ interface CommentSectionProps {
 }
 
 export default function CommentSection({ postId, commentCount }: CommentSectionProps) {
+  const t = useTranslations("community.comment");
+  const tCommon = useTranslations("common");
   const router = useRouter();
   const user = useAuthStore((s) => s.user);
   const { data: comments, isLoading } = useComments(postId);
@@ -59,7 +62,7 @@ export default function CommentSection({ postId, commentCount }: CommentSectionP
     if (pendingDeleteId === null) return;
     deleteMutation.mutate(pendingDeleteId, {
       onSuccess: () => setPendingDeleteId(null),
-      onError: () => toast.error("댓글 삭제에 실패했습니다."),
+      onError: () => toast.error(t("deleteError")),
     });
   };
 
@@ -72,53 +75,57 @@ export default function CommentSection({ postId, commentCount }: CommentSectionP
   };
 
   return (
-    <div className="space-y-4">
-      <h3 className="text-base font-bold text-on-surface">
-        댓글 {commentCount}
-      </h3>
+    <section className="mt-3 flex flex-col gap-3">
+      <div className="flex items-center gap-2">
+        <h2 className="text-base font-bold text-on-surface">
+          {t("count", { count: commentCount })}
+        </h2>
+      </div>
 
       <CommentForm
         onSubmit={handleCreate}
         isPending={createMutation.isPending}
-        placeholder={user ? "댓글을 입력하세요..." : "로그인 후 댓글을 작성할 수 있습니다."}
+        placeholder={user ? t("placeholder") : t("loginRequired")}
+        authorNickname={user?.nickname}
       />
 
-      {isLoading ? (
-        <div className="text-center py-8 text-on-surface-disabled text-sm">
-          댓글 로딩 중...
-        </div>
-      ) : comments && comments.length > 0 ? (
-        <div>
-          {comments.map((comment) => (
-            <CommentItem
-              key={comment.id}
-              comment={comment}
-              onReply={handleReply}
-              onUpdate={handleUpdate}
-              onDelete={handleDelete}
-              onVote={handleVote}
-              isReplyPending={createMutation.isPending}
-              isUpdatePending={updateMutation.isPending}
-              isVotePending={voteMutation.isPending || removeVoteMutation.isPending}
-            />
-          ))}
-        </div>
-      ) : (
-        <div className="text-center py-8 text-on-surface-disabled text-sm">
-          아직 댓글이 없습니다. 첫 댓글을 작성해보세요!
-        </div>
-      )}
+      <div className="bg-surface-1 border border-divider rounded-xl overflow-hidden">
+        {isLoading ? (
+          <div className="py-10 text-center text-sm text-on-surface-disabled">
+            {t("loading")}
+          </div>
+        ) : comments && comments.length > 0 ? (
+          comments.map((comment) => (
+            <div key={comment.id} className="border-b border-divider last:border-b-0">
+              <CommentItem
+                comment={comment}
+                onReply={handleReply}
+                onUpdate={handleUpdate}
+                onDelete={handleDelete}
+                onVote={handleVote}
+                isReplyPending={createMutation.isPending}
+                isUpdatePending={updateMutation.isPending}
+                isVotePending={voteMutation.isPending || removeVoteMutation.isPending}
+              />
+            </div>
+          ))
+        ) : (
+          <div className="py-10 text-center text-sm text-on-surface-disabled">
+            {t("empty")}
+          </div>
+        )}
+      </div>
 
       <ConfirmModal
         open={pendingDeleteId !== null}
-        title="댓글 삭제"
-        description="이 댓글을 삭제하시겠습니까? 삭제한 댓글은 되돌릴 수 없습니다."
-        confirmLabel="삭제"
+        title={t("deleteTitle")}
+        description={t("deleteDescription")}
+        confirmLabel={tCommon("delete")}
         variant="danger"
         loading={deleteMutation.isPending}
         onConfirm={confirmDelete}
         onClose={() => setPendingDeleteId(null)}
       />
-    </div>
+    </section>
   );
 }

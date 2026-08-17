@@ -1,9 +1,11 @@
 "use client";
 
 import { useMyDuoRequests } from "@/entities/duo";
+import { useTranslations } from "next-intl";
 import DuoRequestCard from "./DuoRequestCard";
 
 export default function MyDuoRequestsPanel() {
+  const t = useTranslations("duo");
   const { data, isLoading } = useMyDuoRequests();
   const requests = data?.content ?? [];
 
@@ -23,7 +25,7 @@ export default function MyDuoRequestsPanel() {
   if (requests.length === 0) {
     return (
       <div className="text-center py-16 text-on-surface-disabled">
-        보낸 요청이 없습니다
+        {t("emptyMyRequests")}
       </div>
     );
   }

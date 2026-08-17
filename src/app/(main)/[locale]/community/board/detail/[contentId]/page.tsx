@@ -1,0 +1,71 @@
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import { localeAlternates } from "@/shared/i18n/alternates";
+import { toLocale } from "@/shared/i18n/locale";
+import { CommunityDetailPageClient } from "@/views/community";
+import { loadPostDetail } from "@/views/community/lib/loadCommunityData";
+
+interface Props {
+  params: Promise<{ locale: string; contentId: string }>;
+}
+
+/** 조회수·투표가 실시간으로 바뀌므로 캐시하지 않는다. */
+export const dynamic = "force-dynamic";
+
+/** 메타 설명은 검색결과에서 잘리는 길이에 맞춘다. 본문은 평문이라 개행만 눌러주면 된다. */
+const DESCRIPTION_LENGTH = 160;
+
+function toDescription(content: string, fallback: string): string {
+  const flattened = content.replace(/\s+/g, " ").trim();
+  if (!flattened) return fallback;
+  return flattened.length > DESCRIPTION_LENGTH
+    ? `${flattened.slice(0, DESCRIPTION_LENGTH - 1)}…`
+    : flattened;
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale, contentId } = await params;
+  const postId = Number(contentId);
+  const t = await getTranslations({ locale: toLocale(locale), namespace: "meta.community" });
+  const alternates = localeAlternates(locale, `/community/board/detail/${contentId}`);
+
+  if (!Number.isInteger(postId) || postId <= 0) {
+    return { title: t("title"), description: t("description"), alternates };
+  }
+
+  try {
+    const post = await loadPostDetail(postId);
+    const title = `${post.title} | ${t("title")}`;
+    const description = toDescription(post.content, t("description"));
+
+    return {
+      title,
+      description,
+      alternates,
+      openGraph: {
+        title,
+        description,
+        type: "article",
+        siteName: "METAPICK",
+        publishedTime: post.createdAt,
+        modifiedTime: post.updatedAt,
+        authors: [post.author.nickname],
+      },
+      twitter: { card: "summary", title, description },
+    };
+  } catch {
+    // 삭제됐거나 백엔드가 응답하지 않는 경우. 본문 렌더에서 notFound 로 정리된다.
+    return { title: t("title"), description: t("description"), alternates };
+  }
+}
+
+export default async function CommunityDetailPage({ params }: Props) {
+  const { locale, contentId } = await params;
+  setRequestLocale(toLocale(locale));
+
+  const postId = Number(contentId);
+  if (!Number.isInteger(postId) || postId <= 0) notFound();
+
+  return <CommunityDetailPageClient postId={postId} />;
+}

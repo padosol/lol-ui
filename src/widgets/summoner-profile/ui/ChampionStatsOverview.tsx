@@ -6,6 +6,7 @@ import { getChampionImageUrl, getChampionNameByEnglishName } from "@/entities/ch
 import { calcWinRateCeil2, getWinRateTextClass } from "@/entities/champion";
 import { getKDAColorClass } from "@/shared/lib/game";
 import { useSeasonStore } from "@/entities/season";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -18,10 +19,10 @@ interface ChampionStatsOverviewProps {
   limit?: number;
 }
 
-const queueTabs: { id: QueueTabType; label: string }[] = [
-  { id: "solo", label: "솔로 랭크" },
-  { id: "flex", label: "자유 랭크" },
-];
+const queueTabs = [
+  { id: "solo", messageKey: "RANKED_SOLO_5x5" },
+  { id: "flex", messageKey: "RANKED_FLEX_SR" },
+] as const satisfies readonly { id: QueueTabType; messageKey: string }[];
 
 export default function ChampionStatsOverview({
   puuid,
@@ -29,6 +30,8 @@ export default function ChampionStatsOverview({
   showTitle = true,
   limit = 5,
 }: ChampionStatsOverviewProps) {
+  const t = useTranslations("summoner.championStats");
+  const tQueue = useTranslations("domain.leagueType");
   const latestSeasonValue = useSeasonStore((s) => s.getLatestSeasonValue());
   const effectiveSeason = season ?? latestSeasonValue ?? "";
 
@@ -46,17 +49,17 @@ export default function ChampionStatsOverview({
 
   // 탭 헤더 렌더링
   const renderTabHeader = () => (
-    <div className="flex gap-1 bg-surface-6/50 p-2">
+    <div className="flex gap-1 bg-surface-2 border-b border-divider p-2">
       {queueTabs.map((tab) => (
         <button
           key={tab.id}
           onClick={() => setActiveQueue(tab.id)}
-          className={`px-3 py-1.5 text-sm rounded-md transition-colors cursor-pointer ${activeQueue === tab.id
-            ? "bg-surface-1 text-on-surface font-semibold"
-            : "text-on-surface-medium hover:text-on-surface"
+          className={`px-3 py-1.5 text-sm rounded-md transition-colors cursor-pointer border ${activeQueue === tab.id
+            ? "bg-surface-1 border-divider text-on-surface font-semibold"
+            : "border-transparent text-on-surface-medium hover:text-on-surface"
             }`}
         >
-          {tab.label}
+          {tQueue(tab.messageKey)}
         </button>
       ))}
     </div>
@@ -64,7 +67,7 @@ export default function ChampionStatsOverview({
 
   if (isLoading) {
     return (
-      <div className="border border-divider rounded-lg overflow-hidden">
+      <div className="bg-surface-1 border border-divider rounded-lg overflow-hidden">
         {showTitle && renderTabHeader()}
         <div className="p-3">
           <div className="flex items-center justify-center py-12">
@@ -77,11 +80,11 @@ export default function ChampionStatsOverview({
 
   if (!puuid) {
     return (
-      <div className="border border-divider rounded-lg overflow-hidden">
+      <div className="bg-surface-1 border border-divider rounded-lg overflow-hidden">
         {showTitle && renderTabHeader()}
         <div className="p-3">
           <div className="text-center py-12 text-on-surface-medium">
-            소환사 정보가 필요합니다.
+            {t("needSummoner")}
           </div>
         </div>
       </div>
@@ -90,11 +93,15 @@ export default function ChampionStatsOverview({
 
   if (displayedStats.length === 0 && !isLoading) {
     return (
-      <div className="border border-divider rounded-lg overflow-hidden">
+      <div className="bg-surface-1 border border-divider rounded-lg overflow-hidden">
         {showTitle && renderTabHeader()}
         <div className="p-3">
           <div className="text-center text-on-surface-medium border border-divider rounded-lg py-4">
-            {activeQueue === "solo" ? "솔로 랭크" : "자유 랭크"} 챔피언 통계 데이터가 없습니다.
+            {t("emptyForQueue", {
+              queue: tQueue(
+                activeQueue === "solo" ? "RANKED_SOLO_5x5" : "RANKED_FLEX_SR"
+              ),
+            })}
           </div>
         </div>
       </div>
@@ -108,7 +115,7 @@ export default function ChampionStatsOverview({
   };
 
   return (
-    <div className="border border-divider rounded-lg overflow-hidden">
+    <div className="bg-surface-1 border border-divider rounded-lg overflow-hidden">
       {showTitle && renderTabHeader()}
       <div className="p-3 space-y-2">
         {displayedStats.map((champion, index) => {
@@ -126,11 +133,11 @@ export default function ChampionStatsOverview({
           return (
             <div
               key={champion.championId || index}
-              className="flex items-center gap-1.5 p-1.5 bg-surface-8/50 rounded-lg hover:bg-surface-8 transition-colors border border-divider"
+              className="flex items-center gap-1.5 p-1.5 bg-surface-1 rounded-lg hover:bg-surface-4 transition-colors border border-divider"
             >
               {/* 챔피언 아이콘 */}
               <GameTooltip type="champion" id={champion.championName}>
-                <div className="w-8 h-8 bg-surface-6 rounded-lg flex items-center justify-center overflow-hidden relative">
+                <div className="w-8 h-8 bg-surface-4 rounded-lg flex items-center justify-center overflow-hidden relative">
                   <Image
                     src={getChampionImageUrl(champion.championName)}
                     alt={champion.championName}
@@ -167,7 +174,7 @@ export default function ChampionStatsOverview({
                     </span>
                   </div>
                   <div className="shrink-0 text-on-surface-medium text-xs">
-                    {champion.playCount}게임
+                    {t("games", { count: champion.playCount })}
                   </div>
                 </div>
               </div>

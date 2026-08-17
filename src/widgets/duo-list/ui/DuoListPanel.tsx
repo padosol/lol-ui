@@ -7,6 +7,7 @@ import { useDuoPosts, useDuoNotifications } from "@/entities/duo";
 import type { Lane, Tier, DuoPostFilters } from "@/entities/duo";
 import { DuoFilters } from "@/features/duo-filter";
 import { DuoRegisterModal } from "@/features/duo-register";
+import { useTranslations } from "next-intl";
 import DuoPostList from "./DuoPostList";
 import DuoPostDetailModal from "./DuoPostDetailModal";
 import MyDuoPostsPanel from "./MyDuoPostsPanel";
@@ -15,6 +16,7 @@ import MyDuoRequestsPanel from "./MyDuoRequestsPanel";
 type DuoTab = "posts" | "my-posts" | "my-requests";
 
 export default function DuoListPanel() {
+  const t = useTranslations("duo");
   const user = useAuthStore((s) => s.user);
 
   // 듀오 페이지 체류 중 실시간 알림 구독 → 수신 시 듀오 쿼리 자동 갱신
@@ -41,18 +43,22 @@ export default function DuoListPanel() {
     [postsQuery.data],
   );
 
-  const tabs: { key: DuoTab; label: string; requireAuth: boolean }[] = [
-    { key: "posts", label: "게시글 목록", requireAuth: false },
-    { key: "my-posts", label: "내 게시글", requireAuth: true },
-    { key: "my-requests", label: "내 요청", requireAuth: true },
-  ];
+  const tabs = [
+    { key: "posts", messageKey: "posts", requireAuth: false },
+    { key: "my-posts", messageKey: "myPosts", requireAuth: true },
+    { key: "my-requests", messageKey: "myRequests", requireAuth: true },
+  ] as const satisfies readonly {
+    key: DuoTab;
+    messageKey: string;
+    requireAuth: boolean;
+  }[];
 
   return (
     <>
       <div className="space-y-4">
         {/* 헤더 */}
         <div className="flex items-center justify-between">
-          <h1 className="text-xl font-bold text-on-surface">듀오 찾기</h1>
+          <h1 className="text-xl font-bold text-on-surface">{t("title")}</h1>
           {user && (
             <button
               type="button"
@@ -60,7 +66,7 @@ export default function DuoListPanel() {
               className="cursor-pointer flex items-center gap-1.5 bg-primary hover:bg-primary/80 text-on-surface font-medium px-4 py-2 rounded-md text-sm transition-colors"
             >
               <Plus className="w-4 h-4" />
-              듀오 등록
+              {t("register")}
             </button>
           )}
         </div>
@@ -81,7 +87,7 @@ export default function DuoListPanel() {
                     : "text-on-surface-medium hover:text-primary border-transparent"
                 }`}
               >
-                {tab.label}
+                {t(`tabs.${tab.messageKey}`)}
               </button>
             );
           })}

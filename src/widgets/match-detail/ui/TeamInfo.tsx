@@ -2,6 +2,7 @@
 
 import type { ParticipantData } from "@/entities/match";
 import { getChampionImageUrl } from "@/entities/champion";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import SummonerNameLink from "./SummonerNameLink";
 
@@ -18,13 +19,15 @@ export default function TeamInfo({
   myPuuid,
   region = "kr",
 }: TeamInfoProps) {
+  const tTeam = useTranslations("domain.team");
+
   return (
     <div className="grid grid-cols-[110px_110px] gap-1 items-start">
       {/* 블루팀 */}
       {blueTeam.length > 0 && (
         <div className="flex flex-col w-[105px] shrink-0">
           <div className="text-team-blue text-[10px] font-semibold h-[14px] flex items-center">
-            블루팀
+            {tTeam("blue")}
           </div>
           <div className="space-y-0">
             {blueTeam.map((participant) => {
@@ -64,7 +67,7 @@ export default function TeamInfo({
       {redTeam.length > 0 && (
         <div className="flex flex-col w-[105px] shrink-0">
           <div className="text-team-red text-[10px] font-semibold h-[14px] flex items-center">
-            레드팀
+            {tTeam("red")}
           </div>
           <div className="space-y-0">
             {redTeam.map((participant) => {

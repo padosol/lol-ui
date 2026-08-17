@@ -1,0 +1,971 @@
+{
+  "common": {
+    "loading": "Loading",
+    "retry": "Retry",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "close": "Close",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "search": "Search",
+    "more": "More",
+    "empty": "No data available",
+    "processing": "Processing..."
+  },
+  "nav": {
+    "home": "Home",
+    "championStats": "Champions",
+    "leaderboards": "Leaderboards",
+    "patchNotes": "Patch Notes",
+    "community": "Community",
+    "duo": "Find Duo",
+    "login": "Sign in",
+    "logout": "Sign out",
+    "terms": "Terms of Service",
+    "privacy": "Privacy Policy",
+    "contact": "Contact"
+  },
+  "localeSwitcher": {
+    "label": "Select language"
+  },
+  "theme": {
+    "toLight": "Switch to light mode",
+    "toDark": "Switch to dark mode"
+  },
+  "home": {
+    "freeChampions": {
+      "title": "Free Champion Rotation",
+      "subtitle": "Check which champions are free to play this week",
+      "error": "Unable to load the champion rotation."
+    },
+    "patchNotes": {
+      "title": "Patch Notes",
+      "subtitle": "Catch up on the latest patch",
+      "error": "Failed to load patch notes.",
+      "empty": "No patch notes available."
+    }
+  },
+  "search": {
+    "placeholder": "Summoner name + #KR1",
+    "regionSelect": "Select region",
+    "searching": "Searching...",
+    "noResults": "No results found.",
+    "tierAlt": "{tier} tier"
+  },
+  "summoner": {
+    "level": "Level {level}",
+    "tabs": {
+      "overview": "Overview",
+      "champions": "Champions",
+      "ingame": "Live Game"
+    },
+    "refresh": {
+      "action": "Refresh",
+      "pending": "Refreshing...",
+      "retryInMinutes": "Retry in {minutes}m {seconds}s",
+      "retryInSeconds": "Retry in {seconds}s",
+      "lastRefresh": "Last updated {time}",
+      "cooldownError": "Please try again in a moment",
+      "requestError": "Refresh request failed"
+    },
+    "championStats": {
+      "title": "Champion Stats",
+      "needSummoner": "A summoner is required.",
+      "empty": "No champion stats available.",
+      "emptyForQueue": "No {queue} champion stats available.",
+      "columnChampion": "Champion",
+      "columnGames": "Games",
+      "columnWins": "Wins",
+      "columnLosses": "Losses",
+      "columnWinRate": "Win rate",
+      "games": "{count} games"
+    },
+    "notFound": {
+      "title": "Summoner not found",
+      "body": "<highlight>{name}</highlight> could not be found on the Rift.",
+      "searchPrompt": "Try searching for another summoner",
+      "hintName": "• Make sure the summoner name and tagline are exact",
+      "hintExample": "• Example: HideOnBush#KR1",
+      "goHome": "Back to home"
+    }
+  },
+  "championStats": {
+    "tierSelect": "Select tier",
+    "patchSelect": "Select patch",
+    "platformSelect": "Select region",
+    "emptyTitle": "No stats match the selected filters.",
+    "latestPatch": "Latest",
+    "viewTier": "View {tier}",
+    "viewPreviousPatch": "View previous patch ({patch})",
+    "loadError": "Failed to load champion stats.",
+    "lastAttempt": "Last attempt {time}",
+    "searchPlaceholder": "Search champions...",
+    "winRate": "Win rate",
+    "pickRate": "Pick rate",
+    "banRate": "Ban rate",
+    "ranking": "Rank",
+    "tier": "Tier",
+    "games": "{count} games",
+    "gameCount": "Games",
+    "wins": "Wins",
+    "losses": "Losses",
+    "goldPerMinute": "Gold/min",
+    "csAt10": "CS @10",
+    "empty": "No data available.",
+    "noData": "No data",
+    "sortByPickRate": "By pick rate",
+    "topN": "Top {count} {label}",
+    "collapse": "Collapse",
+    "expand": "Show more ({count})",
+    "sections": {
+      "itemBuild": "Item build",
+      "startingItems": "Starting items",
+      "coreBuild": "Core build",
+      "boots": "Boots",
+      "runes": "Runes",
+      "spells": "Summoner spells",
+      "skillTree": "Skill order",
+      "matchup": "Matchups",
+      "favorable": "Best against",
+      "unfavorable": "Worst against"
+    },
+    "confidence": {
+      "label": "Confidence {level} ({value}%)",
+      "sample": "Sample {count}",
+      "ratio": "· {value}% of all",
+      "low": "Low",
+      "mid": "Medium",
+      "high": "High",
+      "unknown": "Not enough data"
+    }
+  },
+  "match": {
+    "title": "Recent Matches",
+    "needSummoner": "A summoner is required.",
+    "loading": "Loading matches...",
+    "empty": "No match data available.",
+    "loadMore": "Load more",
+    "scrollTop": "Back to top",
+    "filter": {
+      "ALL": "All",
+      "RANKED": "Solo",
+      "FLEX": "Flex",
+      "NORMAL": "Normal",
+      "ARENA": "Arena",
+      "ARAM": "ARAM"
+    },
+    "result": {
+      "win": "Victory",
+      "loss": "Defeat",
+      "remake": "Remake",
+      "placement": "#{rank}",
+      "unknownPlacement": "???"
+    },
+    "kdaRating": "{kda}:1 KDA",
+    "averageTier": "Avg",
+    "summary": {
+      "title": "Summary",
+      "winRate": "Win rate",
+      "totalGames": "{count} games total",
+      "topChampions": "Top champions",
+      "championGames": "{games} games · {winRate}% WR",
+      "winLoss": "{wins}W {losses}L",
+      "positions": "Positions",
+      "gameCount": "Games",
+      "activity": "Activity over the last 3 months",
+      "chartTooltip": "{label}: {count} games ({percentage}%)",
+      "positionTooltip": "{position}: {count} games",
+      "noGames": "0 games"
+    },
+    "contributionGraph": {
+      "games": "{date} — {count} games",
+      "noGames": "{date} — no games",
+      "less": "Less",
+      "more": "More"
+    }
+  },
+  "matchDetail": {
+    "tabs": {
+      "overview": "Overview",
+      "build": "Build"
+    },
+    "noParticipants": "No participant data",
+    "itemBuildOrder": "Item build order",
+    "noItemBuildOrder": "No item build order data",
+    "skillOrder": "Skill order",
+    "noSkillOrder": "No skill order data",
+    "runes": "Runes",
+    "noRunes": "No rune data",
+    "runeShards": "Rune shards",
+    "kdaRating": "{kda} KDA",
+    "damage": "Damage",
+    "damageTaken": "Taken",
+    "damageTooltip": "Damage dealt to champions",
+    "damageTakenTooltip": "Damage taken",
+    "teamResult": "{team} {result}",
+    "objectives": {
+      "baron": "Baron",
+      "dragon": "Dragon",
+      "turret": "Turret",
+      "inhibitor": "Inhibitor"
+    },
+    "goldBlueLead": "Blue Team +{gold}g",
+    "goldRedLead": "Red Team +{gold}g",
+    "goldEven": "Even"
+  },
+  "ingame": {
+    "loading": "Loading live game...",
+    "error": "Error: {message}",
+    "errorFallback": "Unable to load data",
+    "notInGame": "Not in a game right now",
+    "notInGameHint": "Live game details will appear here once the summoner starts a match",
+    "gameTime": "Game time: {time}",
+    "unknownQueue": "Queue ID: {id}",
+    "noBans": "None"
+  },
+  "recentlyPlayed": {
+    "title": "Recently played with",
+    "needSummoner": "A summoner is required.",
+    "empty": "No recent teammates.",
+    "wins": "{count}W",
+    "losses": "{count}L"
+  },
+  "community": {
+    "title": "Community",
+    "write": "New post",
+    "edit": "Edit post",
+    "allCategories": "All",
+    "sortSelect": "Select sorting",
+    "periodSelect": "Select period",
+    "searchResult": "Results for “{keyword}”",
+    "resetSearch": "Clear search",
+    "loading": "Loading...",
+    "emptySearch": "No results found",
+    "empty": "No posts yet",
+    "loadMore": "Load more",
+    "searchPlaceholder": "Search posts...",
+    "bookmark": "Save",
+    "bookmarked": "Saved",
+    "bookmarkError": "Failed to update the bookmark.",
+    "backToList": "Back to list",
+    "back": "Back",
+    "submit": "Post",
+    "submitEdit": "Save",
+    "share": "Share",
+    "shareCopied": "Post link copied to clipboard.",
+    "shareError": "Failed to copy the link.",
+    "stats": {
+      "upvotes": "Upvotes",
+      "views": "Views"
+    },
+    "search": {
+      "scopeSelect": "Select search scope",
+      "TITLE_CONTENT": "Title + content",
+      "TITLE": "Title",
+      "CONTENT": "Content",
+      "AUTHOR": "Author"
+    },
+    "board": {
+      "sectionTitle": "Boards",
+      "group": {
+        "comingSoon": "Coming soon"
+      },
+      "myActivity": "My activity",
+      "myPosts": "My posts",
+      "bookmarks": "Saved posts",
+      "guideTitle": "Community guidelines",
+      "guideNoAbuse": "Abusive, spam, and promotional posts are removed without notice.",
+      "guideAddContext": "Include your summoner name or match link to get faster answers.",
+      "guideRepeatOffense": "Repeated violations may restrict your community access."
+    },
+    "aside": {
+      "hotTitle": "Trending posts",
+      "hotEmpty": "No trending posts yet",
+      "todayMatchesTitle": "Today's matches",
+      "todayMatchesEmpty": "No match schedule yet",
+      "standingsTitle": "League standings",
+      "standingsEmpty": "No standings yet"
+    },
+    "post": {
+      "notFound": "Post not found.",
+      "viewCount": "{count} views",
+      "upvoteCount": "{count} upvotes",
+      "edited": "(edited)",
+      "deleteTitle": "Delete post",
+      "deleteDescription": "Delete this post? This cannot be undone.",
+      "deleteError": "Failed to delete the post."
+    },
+    "editor": {
+      "category": "Category",
+      "categorySelect": "Select category",
+      "categoryPlaceholder": "Choose a category",
+      "postTitle": "Title",
+      "titlePlaceholder": "Enter a title (up to 300 characters)",
+      "content": "Content",
+      "contentPlaceholder": "Write your post",
+      "contentCount": "{count} characters",
+      "guideline": "Abusive, spam, and promotional posts are removed without notice, and repeated violations may restrict your access.",
+      "validation": {
+        "titleRequired": "Enter a title",
+        "titleTooLong": "The title must be 300 characters or fewer",
+        "contentRequired": "Enter some content",
+        "categoryRequired": "Choose a category"
+      }
+    },
+    "comment": {
+      "count": "{count} comments",
+      "placeholder": "Write a comment...",
+      "loginRequired": "Sign in to leave a comment.",
+      "loading": "Loading comments...",
+      "empty": "No comments yet. Be the first to comment!",
+      "submit": "Post",
+      "submitting": "Posting...",
+      "deleted": "This comment was deleted.",
+      "edited": "(edited)",
+      "reply": "Reply",
+      "replyPlaceholder": "Reply to {nickname}...",
+      "deleteTitle": "Delete comment",
+      "deleteDescription": "Delete this comment? This cannot be undone.",
+      "deleteError": "Failed to delete the comment."
+    }
+  },
+  "duo": {
+    "title": "Find Duo",
+    "register": "Post a duo",
+    "tabs": {
+      "posts": "Duo posts",
+      "myPosts": "My posts",
+      "myRequests": "My requests"
+    },
+    "unranked": "Unranked",
+    "allLanes": "All",
+    "allTiers": "All tiers",
+    "expired": "Expired",
+    "remainingHours": "{hours}h {minutes}m",
+    "remainingMinutes": "{minutes}m",
+    "micOn": "Mic on",
+    "micOff": "Mic off",
+    "mic": "Microphone",
+    "memo": "Note",
+    "memoPlaceholder": "Add a note (up to 500 characters)",
+    "primaryLane": "Primary lane",
+    "secondaryLane": "Secondary lane",
+    "partner": "Partner",
+    "emptyPosts": "No duo posts yet",
+    "emptyMyPosts": "You haven't posted a duo yet",
+    "emptyMyRequests": "You haven't sent any requests",
+    "loadMore": "Load more",
+    "loadingMore": "Loading...",
+    "detail": {
+      "title": "Duo details",
+      "notFound": "Duo post not found",
+      "deleteConfirm": "Delete this duo post?",
+      "deleting": "Deleting...",
+      "matchedWithPartner": "Matched · Partner ",
+      "receivedRequests": "Requests received ({count})",
+      "noRequests": "No requests yet",
+      "requestDuo": "Request duo",
+      "loginRequired": "Sign in to request a duo"
+    },
+    "registerModal": {
+      "title": "Post a duo",
+      "submit": "Post",
+      "submitting": "Posting...",
+      "error": "Failed to create the post."
+    },
+    "requestModal": {
+      "title": "Duo request",
+      "submit": "Request duo",
+      "submitting": "Sending...",
+      "error": "Failed to send the request."
+    },
+    "actions": {
+      "accept": "Accept",
+      "accepting": "Accepting...",
+      "reject": "Decline",
+      "rejecting": "Declining...",
+      "confirm": "Confirm",
+      "confirming": "Confirming...",
+      "cancel": "Cancel",
+      "cancelling": "Cancelling..."
+    },
+    "validation": {
+      "primaryLaneRequired": "Select a primary lane",
+      "secondaryLaneRequired": "Select a secondary lane",
+      "memoTooLong": "The note must be 500 characters or fewer"
+    }
+  },
+  "mypage": {
+    "title": "My account",
+    "nav": {
+      "account": "Account",
+      "bookmarks": "Bookmarks"
+    },
+    "logout": "Sign out",
+    "account": {
+      "title": "Basic info",
+      "password": "Password",
+      "socialOnly": "This account was created with social sign-in.",
+      "nickname": "Nickname",
+      "linkAccount": "Link an account",
+      "google": "Google",
+      "linked": "Linked",
+      "withdraw": "Delete account"
+    },
+    "withdrawModal": {
+      "title": "Delete account",
+      "confirmQuestion": "Delete your account?",
+      "description": "All of your data will be removed, and you cannot sign up again with the same account for 30 days.",
+      "submit": "Delete account",
+      "error": "Failed to delete the account. Please try again."
+    },
+    "riotLink": {
+      "description": "Link your Riot account to use it for match lookups.",
+      "link": "Link",
+      "linked": "Linked",
+      "unlink": "Unlink",
+      "unlinking": "Unlinking..."
+    },
+    "nickname": {
+      "saving": "Saving...",
+      "error": "Failed to change the nickname. Please try again.",
+      "required": "Enter a nickname.",
+      "tooShort": "The nickname must be at least 2 characters.",
+      "tooLong": "The nickname must be 16 characters or fewer."
+    },
+    "bookmarks": {
+      "title": "Bookmarked posts",
+      "loadError": "Failed to load bookmarks.",
+      "loading": "Loading...",
+      "empty": "No bookmarked posts",
+      "emptyPage": "No posts on this page",
+      "remove": "Remove bookmark",
+      "removeError": "Failed to remove the bookmark.",
+      "previous": "Previous",
+      "next": "Next"
+    }
+  },
+  "auth": {
+    "login": "Sign in",
+    "welcome": "Welcome to METAPICK",
+    "or": "or",
+    "google": "Continue with Google",
+    "email": "Email",
+    "emailPlaceholder": "Email address",
+    "password": "Password",
+    "emailLogin": "Continue with email (coming soon)",
+    "emailLoginForm": "Email sign-in (coming soon)",
+    "back": "Back",
+    "processingLogin": "Signing you in...",
+    "termsNotice": "By signing in you agree to the <terms>Terms of Service</terms> and <privacy>Privacy Policy</privacy>.",
+    "rejoinBlocked": "You cannot sign up again within 30 days of deleting your account.",
+    "validation": {
+      "invalidEmail": "Enter a valid email address",
+      "passwordRequired": "Enter your password"
+    }
+  },
+  "patchNotes": {
+    "title": "Patch Notes",
+    "subtitle": "See what changed in the latest League of Legends patch",
+    "empty": "No patch notes available.",
+    "noChanges": "No changes.",
+    "patchVersion": "Patch {version}",
+    "readFull": "Read the full notes",
+    "summary": "Patch summary",
+    "metaPredictions": "Predicted meta impact",
+    "tabs": {
+      "rift": "Summoner's Rift",
+      "aram": "ARAM",
+      "arena": "Arena",
+      "system": "System"
+    },
+    "sections": {
+      "champions": "Champion changes",
+      "items": "Item changes",
+      "systems": "System changes",
+      "arena": "Arena changes",
+      "aram": "ARAM changes",
+      "championCount": "Champions ({count})",
+      "systemCount": "Systems ({count})"
+    },
+    "summaryTable": {
+      "category": "Category",
+      "buff": "Buffs",
+      "nerf": "Nerfs",
+      "adjust": "Adjustments",
+      "total": "Total",
+      "champion": "Champions",
+      "item": "Items",
+      "arena": "Arena"
+    },
+    "changeType": {
+      "BUFF": "Buff",
+      "NERF": "Nerf",
+      "ADJUST": "Adjust",
+      "NEW": "New",
+      "REWORK": "Rework",
+      "BUGFIX": "Bugfix"
+    }
+  },
+  "leaderboards": {
+    "region": "Region",
+    "regionSelect": "Select region",
+    "queueType": "Queue",
+    "queueTypeSelect": "Select queue",
+    "cutoffError": "Unable to load tier cutoffs",
+    "userCount": "{count} players",
+    "loading": "Loading leaderboard...",
+    "loadError": "Failed to load the leaderboard.",
+    "empty": "No leaderboard data available.",
+    "columnRank": "Rank",
+    "columnSummoner": "Summoner",
+    "columnWinsShort": "W",
+    "columnWins": "Wins",
+    "columnLossesShort": "L",
+    "columnLosses": "Losses",
+    "columnWinRate": "Win rate",
+    "columnTier": "Tier",
+    "columnTopChampionsShort": "Top",
+    "columnTopChampions": "Top champions",
+    "previous": "Previous",
+    "next": "Next",
+    "pageInfo": "Page",
+    "totalCount": "({count} total)"
+  },
+  "league": {
+    "title": "Ranked",
+    "needSummoner": "A summoner is required.",
+    "empty": "No ranked data.",
+    "tierAlt": "{tier} tier",
+    "winRate": "Win rate",
+    "wins": "{count}W",
+    "losses": "{count}L"
+  },
+  "tooltip": {
+    "noSpellInfo": "No spell data",
+    "noPassiveInfo": "No passive data",
+    "noItemInfo": "No item data",
+    "noSkillInfo": "No ability data",
+    "cooldown": "Cooldown: {value}s",
+    "cost": "Cost: {value} ({resource})",
+    "rune": "Rune {id}"
+  },
+  "domain": {
+    "championTag": {
+      "Fighter": "Fighter",
+      "Tank": "Tank",
+      "Mage": "Mage",
+      "Assassin": "Assassin",
+      "Marksman": "Marksman",
+      "Support": "Support"
+    },
+    "championInfo": {
+      "attack": "Attack",
+      "defense": "Defense",
+      "magic": "Magic",
+      "difficulty": "Difficulty"
+    },
+    "championStat": {
+      "armor": "Armor",
+      "magicResist": "Magic Resist",
+      "moveSpeed": "Move Speed",
+      "range": "Range",
+      "attackDamage": "Attack Damage"
+    },
+    "region": {
+      "kr": "Korea",
+      "jp": "Japan",
+      "na": "North America"
+    },
+    "position": {
+      "TOP": "Top",
+      "JUNGLE": "Jungle",
+      "MID": "Mid",
+      "ADC": "Bot",
+      "SUPPORT": "Support",
+      "UNKNOWN": "Unknown"
+    },
+    "tier": {
+      "CHALLENGER": "Challenger",
+      "GRANDMASTER": "Grandmaster",
+      "MASTER": "Master",
+      "DIAMOND": "Diamond",
+      "EMERALD": "Emerald",
+      "PLATINUM": "Platinum",
+      "GOLD": "Gold",
+      "SILVER": "Silver",
+      "BRONZE": "Bronze",
+      "IRON": "Iron",
+      "UNRANKED": "Unranked"
+    },
+    "leagueType": {
+      "RANKED_SOLO_5x5": "Ranked Solo",
+      "RANKED_FLEX_SR": "Ranked Flex"
+    },
+    "team": {
+      "blue": "Blue Team",
+      "red": "Red Team"
+    },
+    "postSort": {
+      "HOT": "Hot",
+      "NEW": "New",
+      "TOP": "Top"
+    },
+    "postPeriod": {
+      "DAILY": "Today",
+      "WEEKLY": "This week",
+      "MONTHLY": "This month",
+      "ALL": "All time"
+    },
+    "duoPostStatus": {
+      "ACTIVE": "Open",
+      "MATCHED": "Matched",
+      "DELETED": "Deleted",
+      "EXPIRED": "Expired"
+    },
+    "duoRequestStatus": {
+      "PENDING": "Pending",
+      "ACCEPTED": "Accepted",
+      "CONFIRMED": "Confirmed",
+      "REJECTED": "Declined",
+      "CANCELLED": "Cancelled",
+      "CLOSED": "Closed"
+    },
+    "gameMode": {
+      "RANKED_SOLO": "Ranked",
+      "RANKED_FLEX": "Ranked Flex",
+      "NORMAL": "Normal",
+      "ARAM": "ARAM",
+      "ARENA": "Arena",
+      "URF": "U.R.F.",
+      "TFT": "Teamfight Tactics",
+      "SWIFTPLAY": "Swiftplay",
+      "CLASH": "Clash"
+    }
+  },
+  "meta": {
+    "home": {
+      "title": "LoL Match Lookup & Champion Stats | METAPICK.ME",
+      "description": "Look up your recent League of Legends matches on METAPICK and optimize your champion builds with in-depth champion analysis."
+    },
+    "championStats": {
+      "title": "Champion Stats - METAPICK",
+      "description": "Check champion pick counts by position and click a champion for detailed statistics."
+    },
+    "championDetail": {
+      "title": "{champion} Champion Stats - METAPICK",
+      "description": "See {champion}'s win rate, item builds, runes, skill order, and matchup stats."
+    },
+    "leaderboards": {
+      "title": "Leaderboards & Apex Tier Cutoffs | METAPICK.ME",
+      "description": "Check the League of Legends solo queue leaderboard and apex tier cutoffs."
+    },
+    "patchNotes": {
+      "title": "League of Legends Patch Notes",
+      "titleWithVersion": "League of Legends Patch Notes {version}",
+      "description": "See what changed in the latest League of Legends patch",
+      "descriptionWithVersion": "League of Legends patch {version} changes - champions, items, and system updates at a glance"
+    },
+    "summoner": {
+      "title": "{name} Match History | METAPICK",
+      "descriptionWithTier": "{name}'s League of Legends match history - {tier} | Win rate, champion stats, match history",
+      "description": "{name}'s League of Legends match history | Win rate, champion stats, match history",
+      "fallbackTitle": "Summoner Match Lookup | METAPICK",
+      "fallbackDescription": "League of Legends summoner lookup - win rate, champion stats, match history | METAPICK"
+    },
+    "community": {
+      "title": "Community | METAPICK.ME",
+      "description": "The League of Legends community. Share champion discussion, patch note takes, tips, and guides."
+    },
+    "communityWrite": {
+      "title": "New Post | Community | METAPICK.ME",
+      "description": "Write a post in the League of Legends community."
+    },
+    "communityEdit": {
+      "title": "Edit Post | Community | METAPICK.ME",
+      "description": "Edit your post."
+    },
+    "duo": {
+      "title": "Find Duo | METAPICK.ME",
+      "description": "Find a League of Legends duo partner. Send match requests and confirm a partner."
+    },
+    "login": {
+      "title": "Sign in | METAPICK.ME"
+    },
+    "mypage": {
+      "title": "My Account | METAPICK.ME",
+      "description": "Manage your account and linked apps."
+    },
+    "terms": {
+      "title": "Terms of Service | METAPICK.ME"
+    },
+    "privacy": {
+      "title": "Privacy Policy | METAPICK.ME"
+    },
+    "championNotFound": "Champion not found:"
+  },
+  "legal": {
+    "backToLogin": "Back to sign-in",
+    "terms": {
+      "title": "Terms of Service",
+      "effectiveDate": "Effective March 18, 2026",
+      "sections": [
+        {
+          "heading": "Article 1 (Purpose)",
+          "body": [
+            "These Terms govern the rights, obligations, and responsibilities between METAPICK (the \"Service\") and its users in connection with the League of Legends match-lookup service the Service provides."
+          ]
+        },
+        {
+          "heading": "Article 2 (Definitions)",
+          "listType": "bullet",
+          "list": [
+            {
+              "term": "\"Service\"",
+              "text": "means the League of Legends match lookup, champion statistics, patch notes, and related web services provided by METAPICK."
+            },
+            {
+              "term": "\"Member\"",
+              "text": "means a person who has signed in to the Service and entered into a usage agreement under these Terms."
+            },
+            {
+              "term": "\"Non-member\"",
+              "text": "means a person who uses the Service without signing in."
+            }
+          ]
+        },
+        {
+          "heading": "Article 3 (Effect and Amendment of the Terms)",
+          "listType": "number",
+          "list": [
+            { "text": "These Terms take effect when posted within the Service." },
+            {
+              "text": "The Service may amend these Terms where there is a reasonable ground to do so, and will announce any amendment within the Service."
+            },
+            {
+              "text": "A Member who does not agree to the amended Terms may delete their account. Continuing to use the Service after the amended Terms take effect is deemed acceptance of the amendment."
+            }
+          ]
+        },
+        {
+          "heading": "Article 4 (Provision of the Service)",
+          "body": ["The Service provides the following features."],
+          "listType": "bullet",
+          "list": [
+            { "text": "League of Legends summoner match lookup" },
+            { "text": "Champion statistics and analysis" },
+            { "text": "Patch note information" },
+            { "text": "Leaderboard information" },
+            { "text": "Other features the Service may develop" }
+          ]
+        },
+        {
+          "heading": "Article 5 (Use of the Service)",
+          "listType": "number",
+          "list": [
+            {
+              "text": "The Service is provided 24 hours a day, year-round in principle, but may be suspended temporarily where operationally necessary, such as for system maintenance."
+            },
+            {
+              "text": "Non-members may use basic features such as match lookup; some features may be available only to signed-in Members."
+            }
+          ]
+        },
+        {
+          "heading": "Article 6 (Sign-up and Accounts)",
+          "listType": "number",
+          "list": [
+            {
+              "text": "Sign-up is performed through Google OAuth. Signing in is deemed acceptance of these Terms and the Privacy Policy."
+            },
+            {
+              "text": "Members are responsible for keeping their account information accurate."
+            },
+            {
+              "text": "Members may not transfer or lend their account to any third party."
+            }
+          ]
+        },
+        {
+          "heading": "Article 7 (Account Deletion and Loss of Membership)",
+          "listType": "number",
+          "list": [
+            {
+              "text": "A Member may request account deletion at any time, and the Service will process it immediately."
+            },
+            {
+              "text": "The Service may restrict or revoke membership in the following cases.",
+              "sub": [
+                "Misappropriating another person's information",
+                "Intentionally interfering with the operation of the Service",
+                "Violating applicable law or these Terms"
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Article 8 (Suspension of the Service)",
+          "body": [
+            "Where the Service cannot be provided due to system maintenance, natural disaster, or other force majeure, the Service may be suspended temporarily after prior notice. Where prior notice is not feasible, notice may be given after the fact."
+          ]
+        },
+        {
+          "heading": "Article 9 (Limitation of Liability)",
+          "listType": "number",
+          "list": [
+            {
+              "text": "The Service is provided free of charge, and is liable for damages arising from use of the Service only to the extent provided by applicable law."
+            },
+            {
+              "text": "Match and statistical data provided by the Service is based on the Riot Games API, and its accuracy and completeness are not guaranteed."
+            },
+            {
+              "text": "The Service is not liable if a user fails to obtain the profit or outcome they expected from using the Service."
+            }
+          ]
+        },
+        {
+          "heading": "Article 10 (Intellectual Property)",
+          "listType": "number",
+          "list": [
+            {
+              "text": "Copyright in content created by the Service belongs to the Service."
+            },
+            {
+              "text": "League of Legends and related trademarks are the property of Riot Games, Inc. METAPICK is not endorsed by Riot Games and does not reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends."
+            }
+          ]
+        },
+        {
+          "heading": "Article 11 (Dispute Resolution)",
+          "listType": "number",
+          "list": [
+            {
+              "text": "Disputes between the Service and a user shall in principle be resolved through mutual consultation."
+            },
+            {
+              "text": "If consultation fails, the laws of the Republic of Korea shall govern, and jurisdiction shall be determined under the Civil Procedure Act."
+            }
+          ]
+        }
+      ]
+    },
+    "privacy": {
+      "title": "Privacy Policy",
+      "effectiveDate": "Effective March 18, 2026",
+      "sections": [
+        {
+          "heading": "1. Purposes of Collection and Use",
+          "body": [
+            "METAPICK (the \"Service\") collects and uses personal information for the following purposes."
+          ],
+          "listType": "bullet",
+          "list": [
+            { "text": "Member identification and sign-in authentication" },
+            { "text": "Providing the League of Legends match-lookup service" },
+            { "text": "Usage analytics and quality improvement" },
+            { "text": "Preventing abuse and maintaining service stability" }
+          ]
+        },
+        {
+          "heading": "2. Personal Information Collected",
+          "groups": [
+            {
+              "heading": "a. Collected on Google OAuth sign-in",
+              "items": ["Email address", "Name (nickname)", "Profile image URL"]
+            },
+            {
+              "heading": "b. Collected automatically during use",
+              "items": [
+                "Cookies",
+                "IP address",
+                "Access timestamp",
+                "Browser type and version"
+              ]
+            },
+            {
+              "heading": "c. Information entered by the user",
+              "items": [
+                "League of Legends summoner name and tag (when linked by the user)"
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "3. Retention and Use Period",
+          "body": [
+            "Personal information is destroyed without delay when the account is deleted or the purpose of collection is fulfilled. Where retention is required by law, it is kept for the period required."
+          ],
+          "listType": "bullet",
+          "list": [
+            { "text": "Sign-in records: until the account is deleted" },
+            { "text": "Access logs: 3 months" }
+          ]
+        },
+        {
+          "heading": "4. Provision to Third Parties",
+          "body": [
+            "The Service does not provide users' personal information to third parties, except where required by law."
+          ]
+        },
+        {
+          "heading": "5. Destruction Procedure and Method",
+          "listType": "bullet",
+          "list": [
+            {
+              "term": "Procedure:",
+              "text": "Information is destroyed without delay once the retention period expires or the account is deleted."
+            },
+            {
+              "term": "Method:",
+              "text": "Electronic files are permanently deleted by unrecoverable means; paper documents are shredded or incinerated."
+            }
+          ]
+        },
+        {
+          "heading": "6. User Rights and How to Exercise Them",
+          "body": ["Users may exercise the following rights at any time."],
+          "listType": "bullet",
+          "list": [
+            { "text": "Request access to personal information" },
+            { "text": "Request correction or deletion of personal information" },
+            { "text": "Request suspension of processing" },
+            { "text": "Request account deletion" }
+          ],
+          "footer": [
+            "You can exercise these rights through the contact below, and we will act without delay."
+          ]
+        },
+        {
+          "heading": "7. Cookies",
+          "body": [
+            "The Service uses cookies to maintain sign-in sessions and improve the user experience. You may refuse cookie storage through your browser settings, but some features such as sign-in may then be unavailable."
+          ]
+        },
+        {
+          "heading": "8. Privacy Officer and Contact",
+          "body": [
+            "This Service is operated by an individual. Please submit privacy-related inquiries through the link below."
+          ],
+          "link": {
+            "label": "Contact us (Google Forms)",
+            "href": "https://forms.gle/a5eF1Wapwirawq936"
+          }
+        },
+        {
+          "heading": "9. Changes to This Policy",
+          "body": [
+            "This Privacy Policy may be revised in response to changes in law or service policy, and any change will be announced within the Service."
+          ]
+        }
+      ]
+    }
+  },
+  "errors": {
+    "network": "Unable to connect to the server",
+    "timeout": "The request timed out",
+    "unknown": "An unexpected error occurred",
+    "notFound": "The requested data could not be found"
+  }
+}

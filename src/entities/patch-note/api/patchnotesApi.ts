@@ -7,7 +7,9 @@ export async function getPatchVersions(): Promise<PatchVersionListItem[]> {
     "/v1/patch-notes"
   );
   if (response.data.result === "FAIL") {
-    throw new Error(response.data.errorMessage || "패치 버전 목록 조회 실패");
+    throw new Error(
+      response.data.errorMessage || "Failed to fetch patch version list"
+    );
   }
   return response.data.data;
 }
@@ -19,7 +21,7 @@ export async function getPatchNote(
     `/v1/patch-notes/${versionId}`
   );
   if (response.data.result === "FAIL") {
-    throw new Error(response.data.errorMessage || "패치노트 조회 실패");
+    throw new Error(response.data.errorMessage || "Failed to fetch patch note");
   }
   return response.data.data;
 }

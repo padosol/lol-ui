@@ -7,6 +7,7 @@ import {
 } from "@/entities/champion";
 import Image from "next/image";
 import { useSeasonStore } from "@/entities/season";
+import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 
 interface ChampionStatsProps {
@@ -25,6 +26,7 @@ export default function ChampionStats({
   showTitle = true,
   limit,
 }: ChampionStatsProps) {
+  const t = useTranslations("summoner.championStats");
   const latestSeasonValue = useSeasonStore((s) => s.getLatestSeasonValue());
   const effectiveSeason = season ?? latestSeasonValue ?? "";
 
@@ -142,7 +144,9 @@ export default function ChampionStats({
     return (
       <div>
         {showTitle && (
-          <h2 className="text-xl font-bold text-on-surface mb-4">챔피언 통계</h2>
+          <h2 className="text-xl font-bold text-on-surface mb-4">
+            {t("title")}
+          </h2>
         )}
         <div className="flex items-center justify-center py-12">
           <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
@@ -155,10 +159,12 @@ export default function ChampionStats({
     return (
       <div>
         {showTitle && (
-          <h2 className="text-xl font-bold text-on-surface mb-4">챔피언 통계</h2>
+          <h2 className="text-xl font-bold text-on-surface mb-4">
+            {t("title")}
+          </h2>
         )}
         <div className="text-center py-12 text-on-surface">
-          소환사 정보가 필요합니다.
+          {t("needSummoner")}
         </div>
       </div>
     );
@@ -168,10 +174,12 @@ export default function ChampionStats({
     return (
       <div>
         {showTitle && (
-          <h2 className="text-xl font-bold text-on-surface mb-4">챔피언 통계</h2>
+          <h2 className="text-xl font-bold text-on-surface mb-4">
+            {t("title")}
+          </h2>
         )}
         <div className="text-center text-on-surface border border-divider rounded-lg py-12">
-          챔피언 통계 데이터가 없습니다.
+          {t("empty")}
         </div>
       </div>
     );
@@ -180,21 +188,21 @@ export default function ChampionStats({
   return (
     <div>
       {showTitle && (
-        <h2 className="text-xl font-bold text-on-surface mb-4">챔피언 통계</h2>
+        <h2 className="text-xl font-bold text-on-surface mb-4">{t("title")}</h2>
       )}
-      <div className="bg-surface-4 rounded-lg border border-divider overflow-hidden">
+      <div className="bg-surface-1 rounded-lg border border-divider overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-surface-1/50 border-b border-divider">
+            <thead className="bg-surface-2 border-b border-divider">
               <tr>
                 <th className="px-1.5 py-2 md:px-4 md:py-3 text-left text-xs font-semibold text-on-surface">
-                  챔피언
+                  {t("columnChampion")}
                 </th>
                 <th
                   className="px-1.5 py-2 md:px-4 md:py-3 text-right text-xs font-semibold text-on-surface cursor-pointer hover:text-on-surface-medium transition-colors"
                   onClick={() => handleSort("playCount")}
                 >
-                  게임
+                  {t("columnGames")}
                   {sortField === "playCount" && (
                     <span className="ml-1">
                       {sortDirection === "asc" ? "↑" : "↓"}
@@ -205,7 +213,7 @@ export default function ChampionStats({
                   className="px-1.5 py-2 md:px-4 md:py-3 text-right text-xs font-semibold text-on-surface cursor-pointer hover:text-on-surface-medium transition-colors"
                   onClick={() => handleSort("wins")}
                 >
-                  승리
+                  {t("columnWins")}
                   {sortField === "wins" && (
                     <span className="ml-1">
                       {sortDirection === "asc" ? "↑" : "↓"}
@@ -216,7 +224,7 @@ export default function ChampionStats({
                   className="px-1.5 py-2 md:px-4 md:py-3 text-right text-xs font-semibold text-on-surface cursor-pointer hover:text-on-surface-medium transition-colors"
                   onClick={() => handleSort("losses")}
                 >
-                  패배
+                  {t("columnLosses")}
                   {sortField === "losses" && (
                     <span className="ml-1">
                       {sortDirection === "asc" ? "↑" : "↓"}
@@ -227,7 +235,7 @@ export default function ChampionStats({
                   className="px-1.5 py-2 md:px-4 md:py-3 text-right text-xs font-semibold text-on-surface cursor-pointer hover:text-on-surface-medium transition-colors"
                   onClick={() => handleSort("winRate")}
                 >
-                  승률
+                  {t("columnWinRate")}
                   {sortField === "winRate" && (
                     <span className="ml-1">
                       {sortDirection === "asc" ? "↑" : "↓"}
@@ -260,12 +268,12 @@ export default function ChampionStats({
                 return (
                   <tr
                     key={champion.championId || index}
-                    className="border-b border-divider/50 hover:bg-surface-8/30 transition-colors"
+                    className="border-b border-divider/50 hover:bg-surface-4 transition-colors"
                   >
                     <td className="px-1.5 py-2 md:px-4 md:py-3">
                       <div className="flex items-center">
                         <GameTooltip type="champion" id={champion.championName}>
-                          <div className="w-8 h-8 bg-surface-6 rounded-lg flex items-center justify-center overflow-hidden relative shrink-0">
+                          <div className="w-8 h-8 bg-surface-4 rounded-lg flex items-center justify-center overflow-hidden relative shrink-0">
                             <Image
                               src={getChampionImageUrl(champion.championName)}
                               alt={champion.championName}

@@ -3,7 +3,7 @@
 import { searchSummonerAutocomplete } from "@/entities/summoner";
 import { useRegionStore } from "@/features/region-select";
 import type { SummonerAutocompleteItem } from "@/entities/summoner";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/shared/i18n/navigation";
 import { useEffect, useRef, useState } from "react";
 
 export function useSummonerSearch() {
@@ -43,6 +43,7 @@ export function useSummonerSearch() {
         setAutocompleteResults(results);
         setShowAutocomplete(results.length > 0);
       } catch (error) {
+        // eslint-disable-next-line no-restricted-syntax -- 개발자 로그, 사용자 노출 아님
         console.error("자동완성 검색 오류:", error);
         setAutocompleteResults([]);
         setShowAutocomplete(false);

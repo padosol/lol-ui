@@ -4,7 +4,8 @@ import type {
   ApiPositionType,
   PositionChampionStats,
 } from "@/entities/champion";
-import { getPositionImageUrl, getPositionName } from "@/shared/lib/position";
+import { useTranslations } from "next-intl";
+import { getPositionImageUrl, normalizePosition } from "@/shared/lib/position";
 import Image from "next/image";
 
 const ALL_POSITIONS: ApiPositionType[] = ["TOP", "JUNGLE", "MIDDLE", "BOTTOM", "UTILITY"];
@@ -20,6 +21,7 @@ export default function PositionTabsList({
   onSelectPosition,
   data: _data,
 }: PositionTabsListProps) {
+  const t = useTranslations("domain");
   return (
     <div className="flex border-b border-divider">
       {ALL_POSITIONS.map((pos) => {
@@ -37,13 +39,13 @@ export default function PositionTabsList({
           >
             <Image
               src={getPositionImageUrl(pos)}
-              alt={getPositionName(pos)}
+              alt={t(`position.${normalizePosition(pos)}`)}
               width={20}
               height={20}
               unoptimized
               className={isActive ? "opacity-100" : "opacity-60"}
             />
-            <span className="hidden sm:inline">{getPositionName(pos)}</span>
+            <span className="hidden sm:inline">{t(`position.${normalizePosition(pos)}`)}</span>
           </button>
         );
       })}

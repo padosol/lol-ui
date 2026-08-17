@@ -2,14 +2,6 @@
 export const LANES = ["TOP", "JUNGLE", "MID", "ADC", "SUPPORT"] as const;
 export type Lane = (typeof LANES)[number];
 
-export const LANE_LABELS: Record<Lane, string> = {
-  TOP: "탑",
-  JUNGLE: "정글",
-  MID: "미드",
-  ADC: "원딜",
-  SUPPORT: "서포터",
-};
-
 /** Lane → 포지션 이미지 파일 키 (MID→MIDDLE, ADC→BOTTOM, SUPPORT→UTILITY) */
 export const LANE_IMAGE_KEY: Record<Lane, string> = {
   TOP: "TOP",
@@ -44,21 +36,8 @@ export type RequestStatus =
   | "CANCELLED"
   | "CLOSED";
 
-export const POST_STATUS_LABELS: Record<PostStatus, string> = {
-  ACTIVE: "모집 중",
-  MATCHED: "매칭 완료",
-  DELETED: "삭제됨",
-  EXPIRED: "만료됨",
-};
-
-export const REQUEST_STATUS_LABELS: Record<RequestStatus, string> = {
-  PENDING: "대기 중",
-  ACCEPTED: "수락됨",
-  CONFIRMED: "확정됨",
-  REJECTED: "거절됨",
-  CANCELLED: "취소됨",
-  CLOSED: "종료됨",
-};
+// 표시 라벨은 messages 의 domain.position / domain.duoPostStatus /
+// domain.duoRequestStatus 에서 가져온다.
 
 // === 챔피언 통계 ===
 export interface MostChampion {

@@ -1,13 +1,14 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { X, Mic, MicOff } from "lucide-react";
 import { useCreateDuoPost } from "@/entities/duo";
 import { LaneSelector } from "@/shared/ui/lane-selector";
+import { useTranslations } from "next-intl";
 import {
-  duoRegisterSchema,
+  createDuoRegisterSchema,
   type DuoRegisterFormData,
 } from "../model/duoRegisterSchema";
 
@@ -20,7 +21,15 @@ export default function DuoRegisterModal({
   open,
   onClose,
 }: DuoRegisterModalProps) {
+  const t = useTranslations("duo");
+  const tModal = useTranslations("duo.registerModal");
+  const tValidation = useTranslations("duo.validation");
   const createPost = useCreateDuoPost();
+
+  const schema = useMemo(
+    () => createDuoRegisterSchema(tValidation),
+    [tValidation]
+  );
 
   const {
     handleSubmit,
@@ -30,7 +39,7 @@ export default function DuoRegisterModal({
     formState: { errors },
     reset,
   } = useForm<DuoRegisterFormData>({
-    resolver: zodResolver(duoRegisterSchema),
+    resolver: zodResolver(schema),
     defaultValues: {
       primaryLane: undefined,
       desiredLane: undefined,
@@ -78,7 +87,9 @@ export default function DuoRegisterModal({
     >
       <div className="bg-surface-4 rounded-lg border border-divider w-full max-w-md mx-4 max-h-[90vh] overflow-y-auto p-6">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-lg font-bold text-on-surface">듀오 등록</h2>
+          <h2 className="text-lg font-bold text-on-surface">
+            {tModal("title")}
+          </h2>
           <button
             type="button"
             onClick={onClose}
@@ -94,7 +105,7 @@ export default function DuoRegisterModal({
             control={control}
             render={({ field }) => (
               <LaneSelector
-                label="주 라인"
+                label={t("primaryLane")}
                 value={field.value ?? ""}
                 onChange={field.onChange}
                 error={errors.primaryLane?.message}
@@ -107,7 +118,7 @@ export default function DuoRegisterModal({
             control={control}
             render={({ field }) => (
               <LaneSelector
-                label="부 라인"
+                label={t("secondaryLane")}
                 value={field.value ?? ""}
                 onChange={field.onChange}
                 error={errors.desiredLane?.message}
@@ -121,7 +132,7 @@ export default function DuoRegisterModal({
             render={({ field }) => (
               <div>
                 <label className="block text-sm text-on-surface-medium mb-2">
-                  마이크
+                  {t("mic")}
                 </label>
                 <button
                   type="button"
@@ -137,7 +148,7 @@ export default function DuoRegisterModal({
                   ) : (
                     <MicOff className="w-4 h-4" />
                   )}
-                  {field.value ? "마이크 사용" : "마이크 미사용"}
+                  {field.value ? t("micOn") : t("micOff")}
                 </button>
               </div>
             )}
@@ -145,11 +156,11 @@ export default function DuoRegisterModal({
 
           <div>
             <label className="block text-sm text-on-surface-medium mb-1">
-              메모
+              {t("memo")}
             </label>
             <textarea
               {...register("memo")}
-              placeholder="하고 싶은 말을 적어주세요 (최대 500자)"
+              placeholder={t("memoPlaceholder")}
               maxLength={500}
               rows={2}
               className="w-full bg-surface-4 border border-divider rounded-md px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-disabled focus:outline-none focus:border-primary resize-none"
@@ -166,12 +177,12 @@ export default function DuoRegisterModal({
             disabled={createPost.isPending}
             className="cursor-pointer w-full bg-primary hover:bg-primary/80 text-on-surface font-medium py-2.5 rounded-md transition-colors disabled:opacity-50"
           >
-            {createPost.isPending ? "등록 중..." : "등록하기"}
+            {createPost.isPending ? tModal("submitting") : tModal("submit")}
           </button>
 
           {createPost.isError && (
             <p className="text-xs text-red-400 text-center">
-              {createPost.error?.message || "등록에 실패했습니다."}
+              {createPost.error?.message || tModal("error")}
             </p>
           )}
         </form>

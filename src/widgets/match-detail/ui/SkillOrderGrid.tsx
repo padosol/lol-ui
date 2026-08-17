@@ -1,6 +1,7 @@
 import { GameTooltip } from "@/shared/ui/tooltip";
 import { useGameDataStore } from "@/shared/model/game-data";
 import type { SkillSeqEntry } from "@/entities/match";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -20,10 +21,12 @@ interface SkillOrderGridProps {
 }
 
 export default function SkillOrderGrid({ skillSeq, championName }: SkillOrderGridProps) {
+  const t = useTranslations("matchDetail");
+
   if (!skillSeq || skillSeq.length === 0) {
     return (
       <div className="text-on-surface-medium text-[11px]">
-        스킬 순서 정보 없음
+        {t("noSkillOrder")}
       </div>
     );
   }
@@ -69,7 +72,7 @@ export default function SkillOrderGrid({ skillSeq, championName }: SkillOrderGri
                     ? isMaster
                       ? SKILL_COLORS[skillKey].master
                       : SKILL_COLORS[skillKey].bg
-                    : "bg-surface-4/30";
+                    : "bg-surface-4";
                   return (
                     <div
                       key={levelIdx}

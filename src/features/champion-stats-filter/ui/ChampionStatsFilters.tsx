@@ -5,7 +5,9 @@ import { useSeasonStore } from "@/entities/season";
 import { ChevronDown } from "lucide-react";
 import { useRef, useState } from "react";
 import { useClickOutside } from "@/shared/lib/useClickOutside";
+import { useTranslations } from "next-intl";
 import { TIER_OPTIONS } from "../lib/tiers";
+import { useTierLabel } from "../lib/useTierLabel";
 
 interface ChampionStatsFiltersProps {
   selectedTier: string;
@@ -24,6 +26,9 @@ export default function ChampionStatsFilters({
   selectedPlatform,
   onPlatformChange,
 }: ChampionStatsFiltersProps) {
+  const t = useTranslations("championStats");
+  const tRegion = useTranslations("domain.region");
+  const tierLabel = useTierLabel();
   const [tierOpen, setTierOpen] = useState(false);
   const [patchOpen, setPatchOpen] = useState(false);
   const [platformOpen, setPlatformOpen] = useState(false);
@@ -50,22 +55,22 @@ export default function ChampionStatsFilters({
           aria-haspopup="listbox"
           aria-expanded={tierOpen}
         >
-          {TIER_OPTIONS.find((o) => o.value === selectedTier)?.label ?? selectedTier}
+          {tierLabel(selectedTier)}
           <ChevronDown
             className={`absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-on-surface-medium transition-transform ${tierOpen ? "rotate-180" : ""}`}
           />
         </button>
         {tierOpen && (
           <div className="absolute top-full left-0 mt-1 w-full bg-surface-4 border border-divider rounded-lg shadow-lg z-50 overflow-hidden">
-            <div className="py-1 max-h-[320px] overflow-y-auto" role="listbox" aria-label="티어 선택">
+            <div className="py-1 max-h-[320px] overflow-y-auto" role="listbox" aria-label={t("tierSelect")}>
               {TIER_OPTIONS.map((opt) => {
-                const selected = opt.value === selectedTier;
+                const selected = opt === selectedTier;
                 return (
                   <button
-                    key={opt.value}
+                    key={opt}
                     type="button"
                     onClick={() => {
-                      onTierChange(opt.value);
+                      onTierChange(opt);
                       setTierOpen(false);
                     }}
                     className={`w-full px-3 py-1.5 text-left text-sm transition-colors cursor-pointer ${
@@ -76,7 +81,7 @@ export default function ChampionStatsFilters({
                     role="option"
                     aria-selected={selected}
                   >
-                    {opt.label}
+                    {tierLabel(opt)}
                   </button>
                 );
               })}
@@ -102,7 +107,7 @@ export default function ChampionStatsFilters({
           </button>
           {patchOpen && (
             <div className="absolute top-full left-0 mt-1 w-full bg-surface-4 border border-divider rounded-lg shadow-lg z-50 overflow-hidden">
-              <div className="py-1" role="listbox" aria-label="패치 선택">
+              <div className="py-1" role="listbox" aria-label={t("patchSelect")}>
                 {latestPatches.map((patch) => {
                   const selected = patch === activePatch;
                   return (
@@ -147,7 +152,7 @@ export default function ChampionStatsFilters({
         </button>
         {platformOpen && (
           <div className="absolute top-full left-0 mt-1 w-full bg-surface-4 border border-divider rounded-lg shadow-lg z-50 overflow-hidden">
-            <div className="py-1" role="listbox" aria-label="플랫폼 선택">
+            <div className="py-1" role="listbox" aria-label={t("platformSelect")}>
               {AVAILABLE_REGIONS.map((region) => {
                 const selected = region.value === selectedPlatform;
                 return (
@@ -166,7 +171,7 @@ export default function ChampionStatsFilters({
                     role="option"
                     aria-selected={selected}
                   >
-                    {region.label} ({region.subLabel})
+                    {tRegion(region.value)} ({region.subLabel})
                   </button>
                 );
               })}

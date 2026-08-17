@@ -1,3 +1,4 @@
+import type { AxiosInstance } from "axios";
 import { apiClient } from "@/shared/api/client";
 import type { ApiResponse } from "@/shared/api/types";
 import type {
@@ -9,16 +10,26 @@ import type {
   PostSearchParams,
 } from "../types";
 
-export async function getPosts(params: PostListParams = {}): Promise<PostListResponse> {
-  const response = await apiClient.get<ApiResponse<PostListResponse>>(
+/**
+ * 목록 조회. 서버 컴포넌트에서는 serverApiClient 를 넘겨 내부 네트워크로 호출한다
+ * (브라우저 전용 apiClient 는 NEXT_PUBLIC_API_URL 을 보므로 서버에서 쓸 수 없다).
+ */
+export async function getPosts(
+  params: PostListParams = {},
+  client: AxiosInstance = apiClient
+): Promise<PostListResponse> {
+  const response = await client.get<ApiResponse<PostListResponse>>(
     "/community/posts",
     { params }
   );
   return response.data.data;
 }
 
-export async function getPostDetail(postId: number): Promise<Post> {
-  const response = await apiClient.get<ApiResponse<Post>>(
+export async function getPostDetail(
+  postId: number,
+  client: AxiosInstance = apiClient
+): Promise<Post> {
+  const response = await client.get<ApiResponse<Post>>(
     `/community/posts/${postId}`
   );
   return response.data.data;

@@ -1,7 +1,8 @@
 "use client";
 
 import { RotateCcw } from "lucide-react";
-import { getNextLowerTier, getTierLabel } from "@/features/champion-stats-filter";
+import { useTranslations } from "next-intl";
+import { getNextLowerTier, useTierLabel } from "@/features/champion-stats-filter";
 
 function formatTime(ts: number): string {
   if (!ts) return "";
@@ -18,12 +19,15 @@ interface ErrorStateProps {
 }
 
 export function ErrorState({ errorUpdatedAt, onRetry }: ErrorStateProps) {
+  const t = useTranslations("championStats");
+  const tCommon = useTranslations("common");
+
   return (
     <div className="flex flex-col items-center justify-center py-20 gap-3">
-      <p className="text-loss text-sm">통계 데이터를 불러오지 못했습니다.</p>
+      <p className="text-loss text-sm">{t("loadError")}</p>
       {errorUpdatedAt > 0 && (
         <p className="text-on-surface-medium text-xs">
-          마지막 시도 {formatTime(errorUpdatedAt)}
+          {t("lastAttempt", { time: formatTime(errorUpdatedAt) })}
         </p>
       )}
       <button
@@ -32,7 +36,7 @@ export function ErrorState({ errorUpdatedAt, onRetry }: ErrorStateProps) {
         className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-surface-4 hover:bg-surface-8 border border-divider rounded-lg text-sm text-on-surface cursor-pointer focus:outline-none"
       >
         <RotateCcw className="w-3.5 h-3.5" />
-        재시도
+        {tCommon("retry")}
       </button>
     </div>
   );
@@ -53,6 +57,8 @@ export function EmptyState({
   onTierChange,
   onPatchChange,
 }: EmptyStateProps) {
+  const t = useTranslations("championStats");
+  const tierLabel = useTierLabel();
   const lowerTier = getNextLowerTier(selectedTier);
   const activePatch = selectedPatch || patchVersions[0] || "";
   const currentPatchIdx = patchVersions.indexOf(activePatch);
@@ -63,20 +69,18 @@ export function EmptyState({
 
   return (
     <div className="flex flex-col items-center justify-center py-20 gap-3">
-      <p className="text-on-surface-medium text-sm">
-        선택한 조건의 통계가 없습니다.
-      </p>
+      <p className="text-on-surface-medium text-sm">{t("emptyTitle")}</p>
       <p className="text-on-surface-medium text-xs">
-        {getTierLabel(selectedTier)} · {activePatch || "최신"}
+        {tierLabel(selectedTier)} · {activePatch || t("latestPatch")}
       </p>
       <div className="flex items-center gap-2 mt-1">
         {lowerTier && (
           <button
             type="button"
-            onClick={() => onTierChange(lowerTier.value)}
+            onClick={() => onTierChange(lowerTier)}
             className="px-3 py-1.5 bg-surface-4 hover:bg-surface-8 border border-divider rounded-lg text-sm text-on-surface cursor-pointer focus:outline-none"
           >
-            {lowerTier.label} 보기
+            {t("viewTier", { tier: tierLabel(lowerTier) })}
           </button>
         )}
         {previousPatch && (
@@ -85,7 +89,7 @@ export function EmptyState({
             onClick={() => onPatchChange(previousPatch)}
             className="px-3 py-1.5 bg-surface-4 hover:bg-surface-8 border border-divider rounded-lg text-sm text-on-surface cursor-pointer focus:outline-none"
           >
-            이전 패치 ({previousPatch}) 보기
+            {t("viewPreviousPatch", { patch: previousPatch })}
           </button>
         )}
       </div>

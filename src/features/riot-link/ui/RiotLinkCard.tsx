@@ -1,9 +1,12 @@
 "use client";
 
 import { Check } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useRiotLink } from "../model/useRiotLink";
 
 export default function RiotLinkCard() {
+  const t = useTranslations("mypage.riotLink");
+  const tCommon = useTranslations("common");
   const {
     riotAccounts,
     isLinked,
@@ -34,7 +37,7 @@ export default function RiotLinkCard() {
           </span>
           {!isLinked && (
             <p className="text-xs text-on-surface-disabled mt-0.5">
-              라이엇 계정을 연동하여 전적 검색에 활용할 수 있습니다.
+              {t("description")}
             </p>
           )}
           {isLinked && (
@@ -51,7 +54,7 @@ export default function RiotLinkCard() {
           onClick={initiateLink}
           className="shrink-0 px-4 py-2 text-sm font-medium text-on-surface bg-primary rounded-lg hover:bg-primary/90 transition-colors"
         >
-          연동하기
+          {t("link")}
         </button>
       )}
 
@@ -59,14 +62,14 @@ export default function RiotLinkCard() {
         <div className="flex items-center gap-3 shrink-0">
           <span className="flex items-center gap-1 text-sm text-success">
             <Check className="w-4 h-4" />
-            연동됨
+            {t("linked")}
           </span>
           <button
             type="button"
             onClick={() => setConfirming(true)}
             className="px-3 py-1.5 text-xs text-on-surface-medium border border-divider rounded-lg hover:text-error hover:border-error transition-colors"
           >
-            해제
+            {t("unlink")}
           </button>
         </div>
       )}
@@ -79,7 +82,7 @@ export default function RiotLinkCard() {
             disabled={isDisconnecting}
             className="px-3 py-1.5 text-xs text-error border border-error rounded-lg hover:bg-error/10 transition-colors disabled:opacity-50"
           >
-            {isDisconnecting ? "해제 중..." : "확인"}
+            {isDisconnecting ? t("unlinking") : tCommon("confirm")}
           </button>
           <button
             type="button"
@@ -87,7 +90,7 @@ export default function RiotLinkCard() {
             disabled={isDisconnecting}
             className="px-3 py-1.5 text-xs text-on-surface-medium border border-divider rounded-lg hover:bg-surface-4 transition-colors disabled:opacity-50"
           >
-            취소
+            {tCommon("cancel")}
           </button>
         </div>
       )}

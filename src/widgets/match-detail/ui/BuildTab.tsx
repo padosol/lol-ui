@@ -2,6 +2,7 @@
 
 import type { MatchDetail, ParticipantData } from "@/entities/match";
 import { getChampionImageUrl } from "@/entities/champion";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useState } from "react";
 import ItemBuildOrder from "./ItemBuildOrder";
@@ -25,6 +26,7 @@ export default function BuildTab({
   puuid,
   region = "kr",
 }: BuildTabProps) {
+  const t = useTranslations("matchDetail");
   const allParticipants = detail.participantData || [];
 
   // 기본 선택: 검색된 소환사 (puuid 매칭), 없으면 첫 번째 참가자
@@ -37,7 +39,7 @@ export default function BuildTab({
   if (!selected) {
     return (
       <div className="text-on-surface-medium text-xs p-2">
-        참가자 데이터 없음
+        {t("noParticipants")}
       </div>
     );
   }
@@ -45,7 +47,7 @@ export default function BuildTab({
   return (
     <div className="space-y-3">
       {/* ─── 유저 정보 + 챔피언 선택 바 ─── */}
-      <div className="rounded-lg border border-divider/50 p-3 flex items-center gap-3">
+      <div className="bg-surface-1 rounded-lg border border-divider p-3 flex items-center gap-3">
         {/* 왼쪽: 선택된 플레이어 정보 */}
         <div className="flex items-center gap-2 shrink-0">
           <div className="w-8 h-8 rounded overflow-hidden relative bg-surface-8 shrink-0">
@@ -141,25 +143,25 @@ export default function BuildTab({
       </div>
 
       {/* ─── 아이템 빌드 순서 ─── */}
-      <div className="rounded-lg border border-divider/50 p-3">
+      <div className="bg-surface-1 rounded-lg border border-divider p-3">
         <div className="text-on-surface text-[11px] font-semibold mb-1.5">
-          아이템 빌드 순서
+          {t("itemBuildOrder")}
         </div>
         <ItemBuildOrder itemSeq={selected.itemSeq} />
       </div>
 
       {/* ─── 스킬 순서 ─── */}
-      <div className="rounded-lg border border-divider/50 p-3">
+      <div className="bg-surface-1 rounded-lg border border-divider p-3">
         <div className="text-on-surface text-[11px] font-semibold mb-1.5">
-          스킬 순서
+          {t("skillOrder")}
         </div>
         <SkillOrderGrid skillSeq={selected.skillSeq} championName={selected.championName} />
       </div>
 
       {/* ─── 룬 세팅 ─── */}
-      <div className="rounded-lg border border-divider/50 p-3">
+      <div className="bg-surface-1 rounded-lg border border-divider p-3">
         <div className="text-on-surface text-[11px] font-semibold mb-1.5">
-          룬
+          {t("runes")}
         </div>
         <RuneSetup style={selected.style} statValue={selected.statValue} />
       </div>

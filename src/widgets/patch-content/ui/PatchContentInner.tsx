@@ -6,6 +6,7 @@ import type {
   PatchNoteExtended,
 } from "@/entities/patch-note";
 import { ExternalLink, Gamepad2, Map, Settings, Snowflake } from "lucide-react";
+import { useFormatter, useTranslations } from "next-intl";
 import { useState } from "react";
 import AramChanges from "./AramChanges";
 import ArenaChanges from "./ArenaChanges";
@@ -19,7 +20,6 @@ type TabType = "rift" | "aram" | "arena" | "system";
 
 interface TabConfig {
   id: TabType;
-  label: string;
   icon: React.ReactNode;
   isAvailable: (data: PatchNoteExtended) => boolean;
 }
@@ -27,14 +27,12 @@ interface TabConfig {
 const TAB_CONFIGS: TabConfig[] = [
   {
     id: "rift",
-    label: "협곡",
     icon: <Map className="w-4 h-4" />,
     isAvailable: (data) =>
       data.common.champions.length > 0 || data.common.items.length > 0,
   },
   {
     id: "aram",
-    label: "무작위 총력전",
     icon: <Snowflake className="w-4 h-4" />,
     isAvailable: (data) =>
       !!data.aram &&
@@ -42,7 +40,6 @@ const TAB_CONFIGS: TabConfig[] = [
   },
   {
     id: "arena",
-    label: "아레나",
     icon: <Gamepad2 className="w-4 h-4" />,
     isAvailable: (data) =>
       !!data.arena &&
@@ -50,7 +47,6 @@ const TAB_CONFIGS: TabConfig[] = [
   },
   {
     id: "system",
-    label: "시스템",
     icon: <Settings className="w-4 h-4" />,
     isAvailable: (data) => data.systems.length > 0,
   },
@@ -61,17 +57,17 @@ interface PatchContentInnerProps {
 }
 
 export default function PatchContentInner({ patchNote }: PatchContentInnerProps) {
+  const t = useTranslations("patchNotes");
+  const format = useFormatter();
   const [activeTab, setActiveTab] = useState<TabType>("rift");
 
-  // 날짜 포맷팅
-  const formatDate = (dateStr: string) => {
-    const date = new Date(dateStr);
-    return date.toLocaleDateString("ko-KR", {
+  // 날짜 포맷팅 (로케일별)
+  const formatDate = (dateStr: string) =>
+    format.dateTime(new Date(dateStr), {
       year: "numeric",
       month: "long",
       day: "numeric",
     });
-  };
 
   // 확장 데이터
   const extendedData = patchNote as PatchNoteExtended & {
@@ -129,7 +125,7 @@ export default function PatchContentInner({ patchNote }: PatchContentInnerProps)
               <div className="flex items-center gap-2 p-4 border-b border-divider/50">
                 <Snowflake className="w-5 h-5 text-info" />
                 <span className="text-lg font-bold text-on-surface">
-                  무작위 총력전 변경사항
+                  {t("sections.aram")}
                 </span>
                 <span className="text-sm text-on-surface-medium px-2 py-0.5 rounded-full bg-surface-4">
                   {extendedData.aram.champions.length +
@@ -170,7 +166,7 @@ export default function PatchContentInner({ patchNote }: PatchContentInnerProps)
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-2xl font-bold text-on-surface mb-1">
-              패치 {patchNote.version}
+              {t("patchVersion", { version: patchNote.version })}
             </h2>
             <p className="text-on-surface-medium">
               {patchNote.createdAt ? formatDate(patchNote.createdAt) : ""}
@@ -183,7 +179,7 @@ export default function PatchContentInner({ patchNote }: PatchContentInnerProps)
             rel="noopener noreferrer"
             className="flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-variant text-surface rounded-lg text-sm font-medium transition-colors"
           >
-            전체 내용 보러가기
+            {t("readFull")}
             <ExternalLink className="w-4 h-4" />
           </a>
         </div>
@@ -207,7 +203,7 @@ export default function PatchContentInner({ patchNote }: PatchContentInnerProps)
                   }`}
                 >
                   {tab.icon}
-                  {tab.label}
+                  {t(`tabs.${tab.id}`)}
                 </button>
               );
             })}
@@ -218,7 +214,7 @@ export default function PatchContentInner({ patchNote }: PatchContentInnerProps)
         </>
       ) : (
         <div className="flex items-center justify-center h-32 bg-surface-1 rounded-lg border border-divider/50">
-          <p className="text-on-surface-medium">변경사항이 없습니다.</p>
+          <p className="text-on-surface-medium">{t("noChanges")}</p>
         </div>
       )}
     </div>

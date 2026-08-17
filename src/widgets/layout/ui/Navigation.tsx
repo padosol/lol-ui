@@ -2,30 +2,33 @@
 
 import { SearchBar } from "@/features/summoner-search";
 import { Search, X } from "lucide-react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { Link } from "@/shared/i18n/navigation";
+import { usePathname } from "@/shared/i18n/navigation";
 import { useState } from "react";
 
+const NAV_ITEMS = [
+  { key: "home", href: "/" },
+  // { key: "championStats", href: "/champion-stats" },
+  { key: "leaderboards", href: "/leaderboards" },
+  // { key: "patchNotes", href: "/patch-notes" },
+  { key: "community", href: "/community" },
+  { key: "duo", href: "/duo" },
+] as const;
+
 export default function Navigation() {
+  const t = useTranslations("nav");
+  const tCommon = useTranslations("common");
   const pathname = usePathname() ?? "/";
   const isHome = pathname === "/";
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
-
-  const navItems = [
-    { label: "홈", href: "/" },
-    // { label: "챔피언 분석", href: "/champion-stats" },
-    { label: "랭킹", href: "/leaderboards" },
-    // { label: "패치노트", href: "/patch-notes" },
-    { label: "커뮤니티", href: "/community" },
-    { label: "듀오 찾기", href: "/duo" },
-  ];
 
   return (
     <nav className="sticky top-0 z-50 bg-surface-1 border-b border-divider">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-[50px] gap-4">
           <div className="flex items-center h-full gap-4 sm:gap-6 overflow-x-auto">
-            {navItems.map((item) => {
+            {NAV_ITEMS.map((item) => {
               const isActive =
                 item.href === "/"
                   ? pathname === "/"
@@ -39,7 +42,7 @@ export default function Navigation() {
                     : "text-on-surface-medium hover:text-primary border-transparent"
                     }`}
                 >
-                  {item.label}
+                  {t(item.key)}
                 </Link>
               );
             })}
@@ -59,7 +62,7 @@ export default function Navigation() {
                 type="button"
                 onClick={() => setMobileSearchOpen((v) => !v)}
                 className="sm:hidden flex items-center justify-center text-on-surface-medium hover:text-primary transition-colors"
-                aria-label="검색"
+                aria-label={tCommon("search")}
               >
                 {mobileSearchOpen ? (
                   <X className="w-5 h-5" />

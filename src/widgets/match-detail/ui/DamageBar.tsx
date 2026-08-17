@@ -41,7 +41,7 @@ export default function DamageBar({
       <div className="text-on-surface-medium text-[9px]">{label}</div>
       {/* 하단: 바 + 데미지 */}
       <div className="flex items-center gap-1.5">
-        <div className="flex-1 h-1.5 bg-surface-8/50 rounded-full overflow-hidden">
+        <div className="flex-1 h-1.5 bg-surface-8 rounded-full overflow-hidden">
           <div
             className={`h-full ${colors.bar} rounded-full transition-all`}
             style={{ width: `${percentage}%` }}

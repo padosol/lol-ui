@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { GameTooltip } from "@/shared/ui/tooltip";
 import {
   RUNE_TREE_MAP,
@@ -21,6 +22,7 @@ interface RuneStatsProps {
 }
 
 export default function RuneStats({ data }: RuneStatsProps) {
+  const t = useTranslations("championStats");
   const [expanded, setExpanded] = useState(false);
   if (data.length === 0) return null;
 
@@ -29,7 +31,7 @@ export default function RuneStats({ data }: RuneStatsProps) {
   return (
     <div className="bg-surface-1 rounded-lg border border-divider p-0 md:p-5">
       <StatSectionHeader
-        title="룬"
+        title={t("sections.runes")}
         totalCount={data.length}
         visibleCount={Math.min(DEFAULT_VISIBLE, data.length)}
         expanded={expanded}
@@ -184,6 +186,7 @@ function RuneTreeSection({
 
 /* ─── 룬 페이지 행 (빌드 1개) ─── */
 function RunePageRow({ build }: { build: RuneBuildData }) {
+  const t = useTranslations("championStats");
   const primaryPerkIds = [
     build.primaryPerk0,
     build.primaryPerk1,
@@ -216,7 +219,7 @@ function RunePageRow({ build }: { build: RuneBuildData }) {
       {/* 승률/픽률/게임수 */}
       <div className="flex items-center justify-center gap-4 mt-3 text-xs">
         <span>
-          <span className="text-on-surface-medium">승률 </span>
+          <span className="text-on-surface-medium">{t("winRate")} </span>
           <span
             className={`font-medium ${winRatePercent >= 50 ? "text-win" : "text-loss"}`}
           >
@@ -224,13 +227,13 @@ function RunePageRow({ build }: { build: RuneBuildData }) {
           </span>
         </span>
         <span>
-          <span className="text-on-surface-medium">픽률 </span>
+          <span className="text-on-surface-medium">{t("pickRate")} </span>
           <span className="font-medium text-on-surface">
             {(build.pickRate * 100).toFixed(1)}%
           </span>
         </span>
         <span className="text-on-surface-medium">
-          {build.games.toLocaleString()}게임
+          {t("games", { count: build.games })}
         </span>
       </div>
       <div className="flex justify-center mt-1.5">
