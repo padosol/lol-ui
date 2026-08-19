@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "@/shared/i18n/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowLeft, Pencil, Trash2, Share2 } from "lucide-react";
 import {
   usePostDetail,
@@ -12,7 +12,7 @@ import {
   AuthorAvatar,
   postEditHref,
 } from "@/entities/community";
-import type { VoteType } from "@/entities/community";
+import type { Post, VoteType } from "@/entities/community";
 import { useAuthStore } from "@/entities/auth";
 import { VoteButtons } from "@/shared/ui/vote-buttons";
 import { BookmarkButton } from "@/features/community-bookmark";
@@ -23,9 +23,14 @@ import CommentSection from "./CommentSection";
 
 interface PostDetailPanelProps {
   postId: number;
+  /** 서버가 이미 받아온 글. 있으면 첫 렌더에서 다시 받지 않는다. */
+  initialPost?: Post;
 }
 
-export default function PostDetailPanel({ postId }: PostDetailPanelProps) {
+export default function PostDetailPanel({
+  postId,
+  initialPost,
+}: PostDetailPanelProps) {
   const format = useFormatter();
   const t = useTranslations("community");
   const tPost = useTranslations("community.post");
@@ -35,11 +40,20 @@ export default function PostDetailPanel({ postId }: PostDetailPanelProps) {
   const categoryLabel = useCategoryLabel();
   const router = useRouter();
   const user = useAuthStore((s) => s.user);
-  const { data: post, isLoading, error } = usePostDetail(postId);
+  const { data: post, isLoading, error, refetch } = usePostDetail(postId, initialPost);
   const deleteMutation = useDeletePost();
   const [deleteOpen, setDeleteOpen] = useState(false);
   const voteMutation = useVote(postId);
   const removeVoteMutation = useRemoveVote(postId);
+
+  // 서버 조회에는 인증이 실리지 않아 초기 데이터의 투표·북마크 표시가 비어 있다.
+  // 로그인 상태일 때만 한 번 더 받아 채운다(비로그인 방문·크롤러는 조회가 한 번으로 끝난다).
+  const hasInitialPost = !!initialPost;
+  const userId = user?.id;
+  useEffect(() => {
+    if (!hasInitialPost || !userId) return;
+    refetch();
+  }, [hasInitialPost, userId, refetch]);
 
   const isAuthor = user?.id === post?.author.id;
   const isVotePending = voteMutation.isPending || removeVoteMutation.isPending;
