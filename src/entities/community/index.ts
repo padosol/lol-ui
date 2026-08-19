@@ -38,14 +38,14 @@ export {
 } from "./lib/routes";
 
 export { usePosts, useSearchPosts, useMyPosts } from "./model/usePosts";
-export { usePostDetail } from "./model/usePostDetail";
+export { usePostDetail, postDetailKey } from "./model/usePostDetail";
 export { useComments } from "./model/useComments";
 export { useCreatePost, useUpdatePost, useDeletePost } from "./model/usePostMutations";
 export { useCreateComment, useUpdateComment, useDeleteComment } from "./model/useCommentMutations";
 export { useVote, useRemoveVote } from "./model/useVoteMutation";
 export { useBookmarkToggle } from "./model/useBookmarkMutation";
 export { useMyBookmarks } from "./model/useMyBookmarks";
-export { bookmarkKeys, postDetailKey } from "./model/bookmarkKeys";
+export { bookmarkKeys } from "./model/bookmarkKeys";
 export {
   useCategoryTree,
   useCategoryLabel,
