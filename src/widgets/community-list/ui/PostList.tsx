@@ -9,6 +9,8 @@ interface PostListProps {
   isLoading: boolean;
   /** 비었을 때 문구. 검색 결과가 비었는지 게시판이 비었는지는 호출부가 안다. */
   emptyLabel: string;
+  /** 상세 화면 하단 목록에서 지금 열려 있는 글을 표시한다. */
+  activePostId?: number;
 }
 
 /** 글 목록 카드. 게시판 목록과 상세 하단 목록이 같은 껍데기를 쓴다. */
@@ -16,6 +18,7 @@ export default function PostList({
   posts,
   isLoading,
   emptyLabel,
+  activePostId,
 }: Readonly<PostListProps>) {
   const t = useTranslations("community");
 
@@ -30,7 +33,13 @@ export default function PostList({
           {emptyLabel}
         </div>
       ) : (
-        posts.map((post) => <PostRow key={post.id} post={post} />)
+        posts.map((post) => (
+          <PostRow
+            key={post.id}
+            post={post}
+            active={post.id === activePostId}
+          />
+        ))
       )}
     </div>
   );
