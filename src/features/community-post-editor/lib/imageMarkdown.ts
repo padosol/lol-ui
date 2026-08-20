@@ -17,8 +17,13 @@ export function imageMarkdown(url: string): string {
  * 깨지는</b> 것으로 보인다.
  */
 export function stripImageMarkdown(content: string, url: string): string {
-  const escaped = url.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const pattern = new RegExp(`!\\[[^\\]]*\\]\\(\\s*${escaped}\\s*\\)`, "g");
+  // String.raw 로 쓰면 정규식 원문이 그대로 보인다. 이스케이프를 두 번 씌우면
+  // (`\\[`) 실제 패턴이 무엇인지 읽어내기 어렵고 고칠 때 틀리기 쉽다.
+  const escaped = url.replace(/[.*+?^${}()|[\]\\]/g, String.raw`\$&`);
+  const pattern = new RegExp(
+    String.raw`!\[[^\]]*\]\(\s*${escaped}\s*\)`,
+    "g"
+  );
   return content
     .replace(pattern, "")
     // 이미지만 있던 줄이 사라지며 생긴 빈 줄 더미를 정리한다.

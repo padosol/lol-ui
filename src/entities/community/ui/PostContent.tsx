@@ -91,7 +91,7 @@ interface PostContentProps {
   content: string;
 }
 
-export default function PostContent({ content }: PostContentProps) {
+export default function PostContent({ content }: Readonly<PostContentProps>) {
   return (
     <div className="py-6 text-[15px] leading-[1.85] text-on-surface-medium">
       <ReactMarkdown
