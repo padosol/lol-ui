@@ -67,5 +67,13 @@ export default async function CommunityDetailPage({ params }: Props) {
   const postId = Number(contentId);
   if (!Number.isInteger(postId) || postId <= 0) notFound();
 
-  return <CommunityDetailPageClient postId={postId} />;
+  // generateMetadata 가 이미 받아온 글을 요청 스코프 캐시에서 그대로 꺼내 화면까지
+  // 내려보낸다. 이렇게 넘기지 않으면 클라이언트가 같은 글을 한 번 더 받아가는데,
+  // 백엔드가 이 GET 에서 조회수를 올리므로 새로고침 한 번에 조회수가 2 씩 오른다.
+  //
+  // 백엔드가 응답하지 않으면 초기 데이터 없이 넘긴다. 화면이 클라이언트 조회로
+  // 다시 시도하고, 그래도 실패하면 "글을 찾을 수 없음"으로 정리된다.
+  const initialPost = await loadPostDetail(postId).catch(() => undefined);
+
+  return <CommunityDetailPageClient postId={postId} initialPost={initialPost} />;
 }

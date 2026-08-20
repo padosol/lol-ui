@@ -5,7 +5,8 @@ import { useCallback, useMemo, useRef } from "react";
 import { useDebouncedCallback } from "@/shared/lib/useDebouncedCallback";
 import { addBookmark, removeBookmark } from "../api/bookmarkApi";
 import type { Post } from "../types";
-import { bookmarkKeys, postDetailKey } from "./bookmarkKeys";
+import { bookmarkKeys } from "./bookmarkKeys";
+import { postDetailKey } from "./usePostDetail";
 
 const TOGGLE_DEBOUNCE_MS = 400;
 
@@ -106,6 +107,9 @@ export function useBookmarkToggle(
 /**
  * 북마크 해제 전용. 북마크 목록에서 바로 빼기 위한 것으로, 목록의 모든 항목은
  * 정의상 북마크된 상태라 토글이 필요 없다.
+ *
+ * 상세 캐시는 여기서도 써넣기만 한다. 해제하면 그 글의 북마크 상태는 무조건
+ * false 라 다시 받아올 것이 없고, 무효화하면 조회수가 오른다(postDetailKey 주석).
  */
 export function useRemoveBookmark() {
   const queryClient = useQueryClient();
@@ -114,7 +118,9 @@ export function useRemoveBookmark() {
     mutationFn: (postId: number) => removeBookmark(postId),
     onSuccess: (_data, postId) => {
       queryClient.invalidateQueries({ queryKey: bookmarkKeys.all });
-      queryClient.invalidateQueries({ queryKey: postDetailKey(postId) });
+      queryClient.setQueryData<Post>(postDetailKey(postId), (prev) =>
+        prev ? { ...prev, currentUserBookmarked: false } : prev,
+      );
     },
   });
 }
