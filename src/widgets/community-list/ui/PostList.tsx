@@ -25,17 +25,14 @@ export default function PostList({
 }: Readonly<PostListProps>) {
   const t = useTranslations("community");
 
+  // 목록 자리에 글 대신 들어갈 문구. 먼저 정해두면 아래 분기가 하나로 끝난다.
+  let notice: string | null = null;
+  if (isLoading) notice = t("loading");
+  else if (posts.length === 0) notice = emptyLabel;
+
   return (
     <div className="bg-surface-1 border border-divider rounded-xl overflow-hidden">
-      {isLoading ? (
-        <div className="py-16 text-center text-on-surface-disabled">
-          {t("loading")}
-        </div>
-      ) : posts.length === 0 ? (
-        <div className="py-16 text-center text-on-surface-disabled">
-          {emptyLabel}
-        </div>
-      ) : (
+      {notice === null ? (
         posts.map((post) => (
           <PostRow
             key={post.id}
@@ -44,6 +41,10 @@ export default function PostList({
             listSort={listSort}
           />
         ))
+      ) : (
+        <div className="py-16 text-center text-on-surface-disabled">
+          {notice}
+        </div>
       )}
     </div>
   );
