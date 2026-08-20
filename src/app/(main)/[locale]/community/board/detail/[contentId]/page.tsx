@@ -69,7 +69,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function CommunityDetailPage({
   params,
   searchParams,
-}: Props) {
+}: Readonly<Props>) {
   const { locale, contentId } = await params;
   setRequestLocale(toLocale(locale));
 
