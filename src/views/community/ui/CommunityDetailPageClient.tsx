@@ -13,7 +13,7 @@ interface CommunityDetailPageClientProps {
 export default function CommunityDetailPageClient({
   postId,
   initialPost,
-}: CommunityDetailPageClientProps) {
+}: Readonly<CommunityDetailPageClientProps>) {
   return (
     <div className="min-h-screen bg-surface flex flex-col">
       <Header />

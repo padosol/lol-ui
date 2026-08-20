@@ -30,7 +30,7 @@ interface PostDetailPanelProps {
 export default function PostDetailPanel({
   postId,
   initialPost,
-}: PostDetailPanelProps) {
+}: Readonly<PostDetailPanelProps>) {
   const format = useFormatter();
   const t = useTranslations("community");
   const tPost = useTranslations("community.post");
