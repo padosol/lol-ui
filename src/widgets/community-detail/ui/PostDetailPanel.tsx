@@ -10,6 +10,7 @@ import {
   useRemoveVote,
   useCategoryLabel,
   AuthorAvatar,
+  PostContent,
   postEditHref,
 } from "@/entities/community";
 import type { Post, VoteType } from "@/entities/community";
@@ -177,9 +178,7 @@ export default function PostDetailPanel({
           </span>
         </div>
 
-        <div className="py-6 text-[15px] leading-[1.85] text-on-surface-medium whitespace-pre-wrap">
-          {post.content}
-        </div>
+        <PostContent content={post.content} />
 
         <div className="flex flex-wrap items-center gap-2 border-t border-divider pt-4">
           <VoteButtons

@@ -59,6 +59,23 @@ export interface Author {
   profileImageUrl: string;
 }
 
+/**
+ * 본문에 첨부된 이미지 한 장.
+ *
+ * `url` 은 CDN **영구** URL 이다. presigned 가 아니므로 만료되지 않고, 그래서 본문
+ * 마크다운에 그대로 박아도 시간이 지난 글이 깨지지 않는다.
+ *
+ * `width`/`height` 는 GIF·WebP 처럼 서버가 헤더만 읽은 경우에도 채워지지만,
+ * 스키마가 null 을 허용하므로 레이아웃 계산에 필수로 쓰지 않는다.
+ */
+export interface PostImage {
+  imageId: number;
+  url: string;
+  width: number | null;
+  height: number | null;
+  sizeBytes: number;
+}
+
 export interface Post {
   id: number;
   title: string;
@@ -71,6 +88,13 @@ export interface Post {
   author: Author;
   currentUserVote: VoteType | null;
   currentUserBookmarked: boolean;
+  /**
+   * 현재 글에 붙어 있는 이미지. 본문 마크다운에 URL 이 이미 들어 있어 렌더링에는
+   * 필요 없지만, 수정 화면이 전체 교체 시맨틱을 채우려면 이 목록이 있어야 한다.
+   *
+   * 이미지 기능 이전에 쓰인 글에는 서버가 빈 배열을 내려준다.
+   */
+  images: PostImage[];
   createdAt: string;
   updatedAt: string;
 }
@@ -120,12 +144,22 @@ export interface CreatePostRequest {
   title: string;
   content: string;
   categoryId: CategoryId;
+  /** 업로드 API 로 먼저 올린 이미지의 id. 없거나 비어 있으면 첨부 없음. */
+  imageIds?: number[];
 }
 
 export interface UpdatePostRequest {
   title: string;
   content: string;
   categoryId: CategoryId;
+  /**
+   * **전체 교체 시맨틱**이다. 목록을 보내면 거기 없는 기존 첨부는 서버에서 떨어져 나가므로,
+   * 유지할 이미지를 모두 담아야 한다.
+   *
+   * 필드를 아예 생략하면(`undefined`) 서버는 첨부를 건드리지 않는다 — 빈 배열(`[]`)과
+   * 의미가 다르다. 빈 배열은 "전부 떼라"는 명시적 요청이다.
+   */
+  imageIds?: number[];
 }
 
 export interface CreateCommentRequest {
