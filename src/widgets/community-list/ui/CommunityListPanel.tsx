@@ -1,67 +1,70 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useMemo, useTransition } from "react";
 import { PenLine } from "lucide-react";
-import { Link, useRouter } from "@/shared/i18n/navigation";
+import { useRouter } from "@/shared/i18n/navigation";
 import { useTranslations } from "next-intl";
 import {
   usePosts,
   useSearchPosts,
-  useCategoryTree,
   useCategoryLabel,
-  useVisibleCategories,
-  categoryHref,
-  POST_SORTS,
-  PostRow,
+  listHref,
 } from "@/entities/community";
 import type {
   CategoryId,
-  CategoryTree,
   PostListResponse,
   PostPeriod,
+  PostSort,
 } from "@/entities/community";
 import { useAuthStore } from "@/entities/auth";
 import {
   CommunitySearchBar,
-  DEFAULT_SEARCH_SCOPE,
   type SearchScope,
 } from "@/features/community-search";
-import BoardSidebar from "./BoardSidebar";
-import CommunityAside from "./CommunityAside";
+import PostList from "./PostList";
+import LoadMoreButton from "./LoadMoreButton";
 
 type CategoryValue = CategoryId | "ALL";
-type PostSortValue = (typeof POST_SORTS)[number];
 
 /** 노출 순서는 인기 → 추천 → 최신 (POST_SORTS 의 선언 순서와 다르다) */
-const SORTS: PostSortValue[] = ["HOT", "TOP", "NEW"];
+const SORTS: PostSort[] = ["HOT", "TOP", "NEW"];
 /** 기간 필터를 화면에서 뺐으므로 목록은 항상 전체 기간으로 조회한다. */
 const LIST_PERIOD: PostPeriod = "ALL";
 
 interface CommunityListPanelProps {
   /** 서버가 URL 로 해석한 현재 게시판. 화면 상태가 아니라 경로가 출처다. */
   category: CategoryValue;
-  /** 서버가 실어 보낸 게시판 트리·첫 페이지. 없으면 클라이언트가 직접 받아온다. */
-  initialTree?: CategoryTree;
+  /** 서버가 URL 로 해석한 정렬. 정렬 버튼은 이 값을 바꾸는 게 아니라 URL 을 바꾼다. */
+  sort: PostSort;
+  /** 서버가 URL 로 해석한 검색어. 비어 있으면 검색이 아니라 목록이다. */
+  keyword: string;
+  /** 서버가 실어 보낸 첫 페이지. 위 정렬로 받아온 것이다. */
   initialPosts?: PostListResponse;
 }
 
+/**
+ * 게시판 목록 화면의 가운데 컬럼.
+ *
+ * 좌·우 사이드바는 CommunityShell 이 그린다 — 상세 화면도 같은 셸을 쓰기 때문에
+ * 이 컴포넌트는 목록에만 집중한다.
+ *
+ * 정렬과 검색어는 화면 상태로 들고 있지 않고 URL 에 맡긴다. 조건을 바꾸면 주소가
+ * 바뀌고, 서버가 그 조건으로 받은 첫 페이지를 다시 내려준다 — 조건이 바뀔 때마다
+ * 클라이언트가 같은 목록을 한 번 더 받지 않게 하려는 것이다.
+ */
 export default function CommunityListPanel({
   category,
-  initialTree,
+  sort,
+  keyword,
   initialPosts,
-}: CommunityListPanelProps) {
+}: Readonly<CommunityListPanelProps>) {
   const t = useTranslations("community");
   const tSort = useTranslations("domain.postSort");
-  const categoryTree = useCategoryTree(initialTree);
   const categoryLabel = useCategoryLabel();
-  // 모바일 가로 스크롤 탭은 그룹 구분 없이 늘어놓으므로 여기서만 평평하게 쓴다.
-  const visibleCategories = useVisibleCategories();
   const router = useRouter();
   const user = useAuthStore((s) => s.user);
-  const [sort, setSort] = useState<PostSortValue>("HOT");
-  const [searchKeyword, setSearchKeyword] = useState("");
-  // 검색 범위는 아직 서버가 받지 않아 화면 표시용으로만 들고 있는다.
-  const [, setSearchScope] = useState<SearchScope>(DEFAULT_SEARCH_SCOPE);
+  // 주소가 바뀌고 서버 응답이 오기까지의 텀. 이 사이 목록을 흐려 눌린 것을 알린다.
+  const [isSwitching, startSwitching] = useTransition();
 
   const postsQuery = usePosts(
     {
@@ -69,13 +72,12 @@ export default function CommunityListPanel({
       sort,
       period: LIST_PERIOD,
     },
-    // 서버가 내려준 첫 페이지는 기본 정렬 기준이라, 정렬을 바꾼 뒤에는 쓰지 않는다.
-    sort === "HOT" ? initialPosts : undefined
+    initialPosts
   );
 
-  const searchQuery = useSearchPosts(searchKeyword);
+  const searchQuery = useSearchPosts(keyword);
 
-  const isSearching = searchKeyword.length > 0;
+  const isSearching = keyword.length > 0;
   const posts = useMemo(() => {
     if (isSearching) {
       return searchQuery.data?.content ?? [];
@@ -86,9 +88,22 @@ export default function CommunityListPanel({
   const isLoading = isSearching ? searchQuery.isLoading : postsQuery.isLoading;
   const hasNextPage = isSearching ? false : postsQuery.hasNextPage;
 
-  const handleSearch = (keyword: string, scope: SearchScope) => {
-    setSearchScope(scope);
-    setSearchKeyword(keyword);
+  const goTo = (next: { sort?: PostSort; keyword?: string }) => {
+    startSwitching(() => {
+      router.replace(
+        listHref(category, {
+          sort: next.sort ?? sort,
+          keyword: next.keyword ?? keyword,
+        }),
+        // 정렬만 바꿨을 뿐인데 맨 위로 튀지 않게 한다
+        { scroll: false }
+      );
+    });
+  };
+
+  // 검색 범위는 아직 서버가 받지 않아 화면 표시용으로만 존재한다.
+  const handleSearch = (nextKeyword: string, _scope: SearchScope) => {
+    goTo({ keyword: nextKeyword });
   };
 
   const handleWriteClick = () => {
@@ -103,131 +118,84 @@ export default function CommunityListPanel({
   const boardTitle =
     category === "ALL" ? t("allCategories") : categoryLabel(category);
 
-  const mobileTabs: CategoryValue[] = [
-    "ALL",
-    ...visibleCategories.map((item) => item.id),
-  ];
-
   return (
-    <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[176px_minmax(0,1fr)] xl:grid-cols-[176px_minmax(0,1fr)_280px]">
-      <aside className="hidden lg:block sticky top-[66px]">
-        <BoardSidebar
-          category={category}
-          groups={categoryTree.data?.groups ?? []}
-          isLoading={categoryTree.isLoading}
-        />
-      </aside>
+    <>
+      <div className="flex flex-wrap items-center gap-3">
+        <h1 className="text-xl font-bold text-on-surface">{boardTitle}</h1>
 
-      <main className="min-w-0 flex flex-col gap-3">
-        {/* 좁은 화면: 좌측 사이드바 대신 가로 스크롤 게시판 탭 */}
-        <div className="lg:hidden flex gap-1.5 overflow-x-auto pb-1">
-          {mobileTabs.map((value) => {
-            const active = value === category;
+        <div className="flex-1" />
+
+        <button
+          type="button"
+          onClick={handleWriteClick}
+          className="flex items-center gap-1.5 rounded-lg bg-primary hover:bg-primary/80 text-surface font-bold px-4 py-2 text-[13.5px] transition-colors cursor-pointer"
+        >
+          <PenLine className="w-4 h-4" />
+          {t("write")}
+        </button>
+      </div>
+
+      <div className="flex flex-wrap items-center gap-2">
+        <div className="flex gap-0.5">
+          {SORTS.map((value) => {
+            const active = value === sort;
             return (
-              <Link
+              <button
                 key={value}
-                href={categoryHref(value)}
-                aria-current={active ? "page" : undefined}
-                className={`whitespace-nowrap rounded-md px-3 py-1.5 text-sm transition-colors cursor-pointer ${
+                type="button"
+                onClick={() => goTo({ sort: value })}
+                aria-pressed={active}
+                className={`whitespace-nowrap rounded-md px-3 py-1.5 text-[13px] transition-colors cursor-pointer ${
                   active
-                    ? "bg-primary text-surface font-bold"
-                    : "bg-surface-4 border border-divider text-on-surface-medium hover:bg-surface-8"
+                    ? "bg-surface-8 font-bold text-on-surface"
+                    : "font-medium text-on-surface-disabled hover:bg-surface-4 hover:text-on-surface-medium"
                 }`}
               >
-                {value === "ALL" ? t("allCategories") : categoryLabel(value)}
-              </Link>
+                {tSort(value)}
+              </button>
             );
           })}
         </div>
 
-        <div className="flex flex-wrap items-center gap-3">
-          <h1 className="text-xl font-bold text-on-surface">{boardTitle}</h1>
+        <div className="flex-1" />
 
-          <div className="flex-1" />
+        <div className="w-full sm:w-auto sm:min-w-[280px]">
+          <CommunitySearchBar
+            initialKeyword={keyword}
+            onSearch={handleSearch}
+          />
+        </div>
+      </div>
 
+      {isSearching && (
+        <div className="flex items-center gap-2 text-sm text-on-surface-medium">
+          <span>{t("searchResult", { keyword })}</span>
           <button
             type="button"
-            onClick={handleWriteClick}
-            className="flex items-center gap-1.5 rounded-lg bg-primary hover:bg-primary/80 text-surface font-bold px-4 py-2 text-[13.5px] transition-colors cursor-pointer"
+            onClick={() => goTo({ keyword: "" })}
+            className="text-primary hover:underline cursor-pointer"
           >
-            <PenLine className="w-4 h-4" />
-            {t("write")}
+            {t("resetSearch")}
           </button>
         </div>
+      )}
 
-        <div className="flex flex-wrap items-center gap-2">
-          <div className="flex gap-0.5">
-            {SORTS.map((value) => {
-              const active = value === sort;
-              return (
-                <button
-                  key={value}
-                  type="button"
-                  onClick={() => setSort(value)}
-                  aria-pressed={active}
-                  className={`whitespace-nowrap rounded-md px-3 py-1.5 text-[13px] transition-colors cursor-pointer ${
-                    active
-                      ? "bg-surface-8 font-bold text-on-surface"
-                      : "font-medium text-on-surface-disabled hover:bg-surface-4 hover:text-on-surface-medium"
-                  }`}
-                >
-                  {tSort(value)}
-                </button>
-              );
-            })}
-          </div>
+      <div className={isSwitching ? "opacity-60 transition-opacity" : undefined}>
+        <PostList
+          posts={posts}
+          isLoading={isLoading}
+          emptyLabel={isSearching ? t("emptySearch") : t("empty")}
+          listSort={sort}
+          listFrom={category}
+        />
+      </div>
 
-          <div className="flex-1" />
-
-          <div className="w-full sm:w-auto sm:min-w-[280px]">
-            <CommunitySearchBar onSearch={handleSearch} />
-          </div>
-        </div>
-
-        {isSearching && (
-          <div className="flex items-center gap-2 text-sm text-on-surface-medium">
-            <span>{t("searchResult", { keyword: searchKeyword })}</span>
-            <button
-              type="button"
-              onClick={() => setSearchKeyword("")}
-              className="text-primary hover:underline cursor-pointer"
-            >
-              {t("resetSearch")}
-            </button>
-          </div>
-        )}
-
-        <div className="bg-surface-1 border border-divider rounded-xl overflow-hidden">
-          {isLoading ? (
-            <div className="py-16 text-center text-on-surface-disabled">
-              {t("loading")}
-            </div>
-          ) : posts.length === 0 ? (
-            <div className="py-16 text-center text-on-surface-disabled">
-              {isSearching ? t("emptySearch") : t("empty")}
-            </div>
-          ) : (
-            posts.map((post) => <PostRow key={post.id} post={post} />)
-          )}
-        </div>
-
-        {hasNextPage && (
-          <div className="pt-1 pb-4 text-center">
-            <button
-              type="button"
-              onClick={() => postsQuery.fetchNextPage()}
-              disabled={postsQuery.isFetchingNextPage}
-              className="px-6 py-2 bg-surface-1 hover:bg-surface-4 border border-divider rounded-lg text-sm font-medium text-on-surface-medium transition-colors disabled:opacity-50 cursor-pointer"
-            >
-              {postsQuery.isFetchingNextPage ? t("loading") : t("loadMore")}
-            </button>
-          </div>
-        )}
-      </main>
-
-      <aside className="hidden xl:block sticky top-[66px]">
-        <CommunityAside />
-      </aside>
-    </div>
+      {hasNextPage && (
+        <LoadMoreButton
+          onClick={() => postsQuery.fetchNextPage()}
+          isLoading={postsQuery.isFetchingNextPage}
+        />
+      )}
+    </>
   );
 }

@@ -46,6 +46,13 @@ export interface CategoryTree {
 // 게시판 라벨만 서버 응답(CategoryItem.name)을 쓴다.
 
 export const POST_SORTS: readonly PostSort[] = ["HOT", "NEW", "TOP"];
+
+/**
+ * 목록의 기본 정렬. URL 에 정렬이 없거나 모르는 값이면 이 값으로 읽는다.
+ * 기본값일 때는 쿼리를 붙이지 않으므로 경로가 하나로 유지된다.
+ */
+export const DEFAULT_POST_SORT: PostSort = "HOT";
+
 export const POST_PERIODS: readonly PostPeriod[] = [
   "DAILY",
   "WEEKLY",
