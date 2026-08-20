@@ -305,6 +305,22 @@
       "contentPlaceholder": "내용을 입력해주세요",
       "contentCount": "{count}자",
       "guideline": "비방·도배·광고 글은 사전 통보 없이 삭제되며 반복 시 이용이 제한될 수 있습니다.",
+      "image": {
+        "label": "이미지",
+        "attach": "이미지 첨부",
+        "uploading": "올리는 중...",
+        "hint": "붙여넣기·드래그로도 추가할 수 있어요",
+        "count": "{count}/{max}장",
+        "remove": "이미지 제거",
+        "errors": {
+          "tooLarge": "이미지는 최대 {size}MB까지 올릴 수 있어요",
+          "unsupportedType": "지원하지 않는 형식이에요 (JPG, PNG, GIF, WebP)",
+          "tooMany": "이미지는 글당 최대 10장까지예요",
+          "uploadFailed": "이미지 업로드에 실패했어요. 잠시 후 다시 시도해주세요",
+          "rateLimited": "업로드가 너무 잦아요. 잠시 후 다시 시도해주세요",
+          "removeFailed": "이미지 제거에 실패했어요"
+        }
+      },
       "validation": {
         "titleRequired": "제목을 입력해주세요",
         "titleTooLong": "제목은 최대 300자까지 입력 가능합니다",

@@ -40,3 +40,15 @@ export function createPostEditorSchema(
 export type PostEditorFormData = z.output<
   ReturnType<typeof createPostEditorSchema>
 >;
+
+/**
+ * 폼이 실제로 제출하는 값. `imageIds` 는 react-hook-form 이 아니라
+ * {@link useImageAttachments} 가 들고 있어 스키마 밖에 있다 — 업로드/삭제가 서버 왕복을
+ * 동반하는 비동기 상태라 폼 필드로 다루면 동기화 지점만 늘어난다.
+ *
+ * 수정 요청에서는 이 배열이 곧 <b>전체 교체 목록</b>이다. 에디터는 현재 첨부 전체를
+ * 알고 있으므로 빈 배열도 정상적인 값이다(= 전부 떼어낸다).
+ */
+export interface PostEditorSubmitData extends PostEditorFormData {
+  imageIds: number[];
+}

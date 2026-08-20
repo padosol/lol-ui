@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { Header, Navigation, Footer } from "@/widgets/layout";
 import { usePostDetail, useUpdatePost, postHref } from "@/entities/community";
 import { PostEditorForm } from "@/features/community-post-editor";
-import type { PostEditorFormData } from "@/features/community-post-editor/model/postEditorSchema";
+import type { PostEditorSubmitData } from "@/features/community-post-editor/model/postEditorSchema";
 
 interface CommunityEditPageClientProps {
   postId: number;
@@ -18,7 +18,7 @@ export default function CommunityEditPageClient({ postId }: CommunityEditPageCli
   const { data: post, isLoading } = usePostDetail(postId);
   const updateMutation = useUpdatePost();
 
-  const handleSubmit = (data: PostEditorFormData) => {
+  const handleSubmit = (data: PostEditorSubmitData) => {
     updateMutation.mutate(
       { postId, data },
       {
@@ -75,6 +75,9 @@ export default function CommunityEditPageClient({ postId }: CommunityEditPageCli
             content: post.content,
             categoryId: post.categoryId,
           }}
+          // 현재 첨부를 넘기지 않으면 저장 시 imageIds 가 빈 배열로 나가 기존
+          // 이미지가 전부 떨어져 나간다(수정은 전체 교체 시맨틱이다).
+          defaultImages={post.images}
           onSubmit={handleSubmit}
           onCancel={() => router.push(postHref(postId))}
           isPending={updateMutation.isPending}

@@ -305,6 +305,22 @@
       "contentPlaceholder": "Write your post",
       "contentCount": "{count} characters",
       "guideline": "Abusive, spam, and promotional posts are removed without notice, and repeated violations may restrict your access.",
+      "image": {
+        "label": "Images",
+        "attach": "Attach image",
+        "uploading": "Uploading...",
+        "hint": "You can also paste or drag files here",
+        "count": "{count}/{max}",
+        "remove": "Remove image",
+        "errors": {
+          "tooLarge": "Images can be up to {size}MB",
+          "unsupportedType": "Unsupported format (JPG, PNG, GIF, WebP)",
+          "tooMany": "Up to 10 images per post",
+          "uploadFailed": "Upload failed. Please try again in a moment",
+          "rateLimited": "Too many uploads. Please try again in a moment",
+          "removeFailed": "Failed to remove the image"
+        }
+      },
       "validation": {
         "titleRequired": "Enter a title",
         "titleTooLong": "The title must be 300 characters or fewer",

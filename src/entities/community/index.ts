@@ -6,6 +6,7 @@ export type {
   VoteTargetType,
   Author,
   Post,
+  PostImage,
   PostListItem,
   PostListResponse,
   Comment,
@@ -29,6 +30,7 @@ export { getComments, createComment, updateComment, deleteComment } from "./api/
 export { vote, removeVote } from "./api/voteApi";
 export { addBookmark, removeBookmark, getMyBookmarks } from "./api/bookmarkApi";
 export { getCategoryTree } from "./api/categoryApi";
+export { uploadPostImage, deletePostImage } from "./api/imageApi";
 export {
   categoryHref,
   listHref,
@@ -46,6 +48,7 @@ export { useComments } from "./model/useComments";
 export { useCreatePost, useUpdatePost, useDeletePost } from "./model/usePostMutations";
 export { useCreateComment, useUpdateComment, useDeleteComment } from "./model/useCommentMutations";
 export { useVote, useRemoveVote } from "./model/useVoteMutation";
+export { useUploadPostImage, useDeletePostImage } from "./model/useImageMutations";
 export { useBookmarkToggle } from "./model/useBookmarkMutation";
 export { useMyBookmarks } from "./model/useMyBookmarks";
 export { bookmarkKeys } from "./model/bookmarkKeys";
@@ -59,3 +62,4 @@ export { useRemoveBookmark } from "./model/useBookmarkMutation";
 export { default as PostCard } from "./ui/PostCard";
 export { default as PostRow } from "./ui/PostRow";
 export { default as AuthorAvatar } from "./ui/AuthorAvatar";
+export { default as PostContent } from "./ui/PostContent";

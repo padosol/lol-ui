@@ -5,14 +5,14 @@ import { useTranslations } from "next-intl";
 import { Header, Navigation, Footer } from "@/widgets/layout";
 import { useCreatePost, postHref } from "@/entities/community";
 import { PostEditorForm } from "@/features/community-post-editor";
-import type { PostEditorFormData } from "@/features/community-post-editor/model/postEditorSchema";
+import type { PostEditorSubmitData } from "@/features/community-post-editor/model/postEditorSchema";
 
 export default function CommunityWritePageClient() {
   const t = useTranslations("community");
   const router = useRouter();
   const createMutation = useCreatePost();
 
-  const handleSubmit = (data: PostEditorFormData) => {
+  const handleSubmit = (data: PostEditorSubmitData) => {
     createMutation.mutate(data, {
       onSuccess: (post) => {
         router.push(postHref(post.id));
