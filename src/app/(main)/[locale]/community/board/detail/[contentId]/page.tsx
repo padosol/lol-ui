@@ -4,7 +4,10 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { localeAlternates } from "@/shared/i18n/alternates";
 import { toLocale } from "@/shared/i18n/locale";
 import { CommunityDetailPageClient } from "@/views/community";
-import { loadPostDetail } from "@/views/community/lib/loadCommunityData";
+import {
+  loadCategoryTree,
+  loadPostDetail,
+} from "@/views/community/lib/loadCommunityData";
 
 interface Props {
   params: Promise<{ locale: string; contentId: string }>;
@@ -73,7 +76,19 @@ export default async function CommunityDetailPage({ params }: Props) {
   //
   // 백엔드가 응답하지 않으면 초기 데이터 없이 넘긴다. 화면이 클라이언트 조회로
   // 다시 시도하고, 그래도 실패하면 "글을 찾을 수 없음"으로 정리된다.
-  const initialPost = await loadPostDetail(postId).catch(() => undefined);
+  //
+  // 게시판 트리는 좌측 메뉴 때문에 함께 받는다. 목록 화면과 달리 여기서는
+  // 트리가 없어도 본문이 성립하므로, 실패해도 500 대신 클라이언트 재시도에 맡긴다.
+  const [initialPost, initialTree] = await Promise.all([
+    loadPostDetail(postId).catch(() => undefined),
+    loadCategoryTree(locale).catch(() => undefined),
+  ]);
 
-  return <CommunityDetailPageClient postId={postId} initialPost={initialPost} />;
+  return (
+    <CommunityDetailPageClient
+      postId={postId}
+      initialPost={initialPost}
+      initialTree={initialTree}
+    />
+  );
 }

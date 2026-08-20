@@ -11,6 +11,7 @@ import {
   useCategoryLabel,
   AuthorAvatar,
   postEditHref,
+  categoryHref,
 } from "@/entities/community";
 import type { Post, VoteType } from "@/entities/community";
 import { useAuthStore } from "@/entities/auth";
@@ -113,9 +114,10 @@ export default function PostDetailPanel({
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-wrap items-center gap-2">
+        {/* 라벨이 게시판 이름이므로 목적지도 그 게시판이다 (예전엔 전체로 갔다) */}
         <button
           type="button"
-          onClick={() => router.push("/community")}
+          onClick={() => router.push(categoryHref(post.categoryId))}
           className="flex items-center gap-1.5 text-[13.5px] font-bold text-on-surface-medium hover:text-on-surface transition-colors cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
@@ -177,7 +179,8 @@ export default function PostDetailPanel({
           </span>
         </div>
 
-        <div className="py-6 text-[15px] leading-[1.85] text-on-surface-medium whitespace-pre-wrap">
+        {/* 3단 그리드에서는 카드가 넓어지므로 본문만 읽기 좋은 폭으로 묶는다 */}
+        <div className="py-6 max-w-[760px] text-[15px] leading-[1.85] text-on-surface-medium whitespace-pre-wrap">
           {post.content}
         </div>
 
@@ -206,13 +209,10 @@ export default function PostDetailPanel({
 
       <CommentSection postId={post.id} commentCount={post.commentCount} />
 
-      <button
-        type="button"
-        onClick={() => router.push("/community")}
-        className="mt-2 mb-4 w-full rounded-lg bg-surface-4 hover:bg-surface-8 py-3 text-[13.5px] font-bold text-on-surface-medium hover:text-on-surface transition-colors cursor-pointer"
-      >
-        {t("backToList")}
-      </button>
+      {/*
+        예전에 여기 있던 "목록으로" 버튼은 뺐다. 이 아래에 같은 게시판의 글
+        목록이 바로 이어지므로 목록으로 되돌아갈 이유가 없다.
+      */}
 
       <ConfirmModal
         open={deleteOpen}
