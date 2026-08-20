@@ -2,7 +2,7 @@
 
 import { useRouter } from "@/shared/i18n/navigation";
 import { useEffect, useState } from "react";
-import { ArrowLeft, Pencil, Trash2, Share2 } from "lucide-react";
+import { Pencil, Trash2, Share2 } from "lucide-react";
 import {
   usePostDetail,
   useDeletePost,
@@ -11,9 +11,8 @@ import {
   useCategoryLabel,
   AuthorAvatar,
   postEditHref,
-  listHref,
 } from "@/entities/community";
-import type { Post, PostSort, VoteType } from "@/entities/community";
+import type { Post, VoteType } from "@/entities/community";
 import { useAuthStore } from "@/entities/auth";
 import { VoteButtons } from "@/shared/ui/vote-buttons";
 import { BookmarkButton } from "@/features/community-bookmark";
@@ -26,21 +25,18 @@ interface PostDetailPanelProps {
   postId: number;
   /** 서버가 이미 받아온 글. 있으면 첫 렌더에서 다시 받지 않는다. */
   initialPost?: Post;
-  /** 목록에서 넘어올 때의 정렬. 게시판으로 되돌아갈 때 그대로 들고 간다. */
-  listSort?: PostSort;
 }
 
 export default function PostDetailPanel({
   postId,
   initialPost,
-  listSort,
 }: Readonly<PostDetailPanelProps>) {
   const format = useFormatter();
   const t = useTranslations("community");
   const tPost = useTranslations("community.post");
   const tCommon = useTranslations("common");
-  // 게시글 본문 로딩이 보통 더 오래 걸려 라벨은 그 전에 도착한다. 목록과 달리
-  // 뒤로가기 버튼이 비면 화살표만 남으므로 빈 문자열 처리를 하지 않는다.
+  // 게시글 본문 로딩이 보통 더 오래 걸려 라벨은 그 전에 도착한다. 라벨이 늦어도
+  // 배지 자리만 잠깐 비므로 목록 배지와 달리 빈 문자열 처리를 하지 않는다.
   const categoryLabel = useCategoryLabel();
   const router = useRouter();
   const user = useAuthStore((s) => s.user);
@@ -116,44 +112,6 @@ export default function PostDetailPanel({
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex flex-wrap items-center gap-2">
-        {/* 라벨이 게시판 이름이므로 목적지도 그 게시판이다 (예전엔 전체로 갔다) */}
-        <button
-          type="button"
-          onClick={() =>
-            router.push(listHref(post.categoryId, { sort: listSort }))
-          }
-          className="flex items-center gap-1.5 text-[13.5px] font-bold text-on-surface-medium hover:text-on-surface transition-colors cursor-pointer"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          {categoryLabel(post.categoryId)}
-        </button>
-
-        <div className="flex-1" />
-
-        {isAuthor && (
-          <div className="flex gap-1.5">
-            <button
-              type="button"
-              onClick={() => router.push(postEditHref(post.id))}
-              className="flex items-center gap-1 rounded-md border border-divider px-3 py-1.5 text-[13px] font-bold text-on-surface-medium hover:text-on-surface hover:border-on-surface-disabled transition-colors cursor-pointer"
-            >
-              <Pencil className="w-3.5 h-3.5" />
-              {tCommon("edit")}
-            </button>
-            <button
-              type="button"
-              onClick={() => setDeleteOpen(true)}
-              disabled={deleteMutation.isPending}
-              className="flex items-center gap-1 rounded-md border border-divider px-3 py-1.5 text-[13px] font-bold text-on-surface-medium hover:text-loss hover:border-loss/50 transition-colors disabled:opacity-50 cursor-pointer"
-            >
-              <Trash2 className="w-3.5 h-3.5" />
-              {tCommon("delete")}
-            </button>
-          </div>
-        )}
-      </div>
-
       <article className="bg-surface-1 border border-divider rounded-xl px-5 py-6 sm:px-8 sm:py-7">
         <div className="mb-3">
           <span className="rounded bg-primary/15 px-2 py-1 text-[11.5px] font-bold text-primary">
@@ -209,6 +167,32 @@ export default function PostDetailPanel({
             <Share2 className="w-4 h-4" />
             {t("share")}
           </button>
+
+          {/*
+            글쓴이 몫의 조작은 같은 줄 반대쪽 끝에 모은다. 여백 대신 ml-auto 를
+            쓰는 건 좁은 화면에서 줄이 접혀도 오른쪽에 붙어 있게 하려는 것이다.
+          */}
+          {isAuthor && (
+            <div className="ml-auto flex gap-1.5">
+              <button
+                type="button"
+                onClick={() => router.push(postEditHref(post.id))}
+                className="flex items-center gap-1 rounded-md border border-divider px-3 py-1.5 text-sm font-medium text-on-surface-medium hover:bg-surface-8 hover:text-on-surface transition-colors cursor-pointer"
+              >
+                <Pencil className="w-4 h-4" />
+                {tCommon("edit")}
+              </button>
+              <button
+                type="button"
+                onClick={() => setDeleteOpen(true)}
+                disabled={deleteMutation.isPending}
+                className="flex items-center gap-1 rounded-md border border-divider px-3 py-1.5 text-sm font-medium text-on-surface-medium hover:border-loss/50 hover:bg-loss/10 hover:text-loss transition-colors disabled:opacity-50 cursor-pointer"
+              >
+                <Trash2 className="w-4 h-4" />
+                {tCommon("delete")}
+              </button>
+            </div>
+          )}
         </div>
       </article>
 

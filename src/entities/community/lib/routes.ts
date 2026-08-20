@@ -42,13 +42,26 @@ export function listHref(
 /**
  * 게시글 상세 경로.
  *
- * 목록에서 열었다면 그때의 정렬을 함께 넘긴다. 상세 아래에 이어 붙는 목록이
- * 같은 순서로 서야 방금 보던 흐름이 그대로 이어지고, 목록 화면이 이미 받아둔
- * 페이지도 재사용된다.
+ * 목록에서 열었다면 그때의 정렬과 출처 게시판을 함께 넘긴다. 상세 아래에 이어
+ * 붙는 목록이 같은 목록으로 서야 방금 보던 흐름이 그대로 이어지고, 목록 화면이
+ * 이미 받아둔 페이지도 재사용된다.
+ *
+ * 출처는 전체에서 들어온 경우만 남긴다 — 게시판에서 들어왔다면 그 게시판이 곧
+ * 글의 소속 게시판이라 URL 없이 글에서 나온다.
  */
-export function postHref(postId: number, sort?: PostSort): string {
+export function postHref(
+  postId: number,
+  query: { sort?: PostSort; from?: CategoryId | "ALL" } = {}
+): string {
+  const params = new URLSearchParams();
+  if (query.sort && query.sort !== DEFAULT_POST_SORT) {
+    params.set("sort", query.sort);
+  }
+  if (query.from === "ALL") params.set("from", "all");
+
+  const search = params.toString();
   const base = `/community/board/detail/${postId}`;
-  return sort && sort !== DEFAULT_POST_SORT ? `${base}?sort=${sort}` : base;
+  return search ? `${base}?${search}` : base;
 }
 
 /** 게시글 수정 경로. */
@@ -64,6 +77,14 @@ export function parsePostSort(value: string | undefined): PostSort {
   return POST_SORTS.includes(value as PostSort)
     ? (value as PostSort)
     : DEFAULT_POST_SORT;
+}
+
+/**
+ * URL 세그먼트를 출처 게시판으로. 전체에서 들어온 것만 구분하면 되므로 그 외의
+ * 값은 모두 없는 것으로 읽는다(글의 소속 게시판이 곧 출처가 된다).
+ */
+export function parseListOrigin(value: string | undefined): "ALL" | undefined {
+  return value === "all" ? "ALL" : undefined;
 }
 
 /**

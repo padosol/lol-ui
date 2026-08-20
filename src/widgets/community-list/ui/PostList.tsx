@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { PostRow } from "@/entities/community";
-import type { PostListItem, PostSort } from "@/entities/community";
+import type { CategoryId, PostListItem, PostSort } from "@/entities/community";
 
 interface PostListProps {
   posts: readonly PostListItem[];
@@ -13,6 +13,8 @@ interface PostListProps {
   activePostId?: number;
   /** 지금 보고 있는 정렬. 글 링크에 실어 상세 아래 목록도 같은 순서로 세운다. */
   listSort?: PostSort;
+  /** 지금 보고 있는 게시판. 글 링크에 실어 상세 아래 목록도 같은 목록으로 세운다. */
+  listFrom?: CategoryId | "ALL";
 }
 
 /** 글 목록 카드. 게시판 목록과 상세 하단 목록이 같은 껍데기를 쓴다. */
@@ -22,6 +24,7 @@ export default function PostList({
   emptyLabel,
   activePostId,
   listSort,
+  listFrom,
 }: Readonly<PostListProps>) {
   const t = useTranslations("community");
 
@@ -39,6 +42,7 @@ export default function PostList({
             post={post}
             active={post.id === activePostId}
             listSort={listSort}
+            listFrom={listFrom}
           />
         ))
       ) : (
