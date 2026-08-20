@@ -186,6 +186,7 @@ export default function CommunityListPanel({
           isLoading={isLoading}
           emptyLabel={isSearching ? t("emptySearch") : t("empty")}
           listSort={sort}
+          listFrom={category}
         />
       </div>
 

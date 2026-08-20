@@ -5,7 +5,7 @@ import { useRelativeNow } from "@/shared/i18n";
 import { useFormatter, useTranslations } from "next-intl";
 import { useCategoryLabel, useCategoryTree } from "../model/useCategories";
 import { postHref } from "../lib/routes";
-import type { PostListItem, PostSort } from "../types";
+import type { CategoryId, PostListItem, PostSort } from "../types";
 
 interface PostRowProps {
   post: PostListItem;
@@ -19,6 +19,11 @@ interface PostRowProps {
    * 이어가려고 링크에 싣는다 (기본 정렬이면 붙지 않는다).
    */
   listSort?: PostSort;
+  /**
+   * 이 목록이 서 있는 게시판. 상세로 넘어가도 같은 목록을 이어가려고 링크에
+   * 싣는다 (전체가 아니면 글에서 나오므로 붙지 않는다).
+   */
+  listFrom?: CategoryId | "ALL";
 }
 
 /**
@@ -29,6 +34,7 @@ export default function PostRow({
   post,
   active = false,
   listSort,
+  listFrom,
 }: Readonly<PostRowProps>) {
   const format = useFormatter();
   const now = useRelativeNow();
@@ -40,7 +46,7 @@ export default function PostRow({
 
   return (
     <Link
-      href={postHref(post.id, listSort)}
+      href={postHref(post.id, { sort: listSort, from: listFrom })}
       aria-current={active ? "page" : undefined}
       className={`group flex items-center gap-3.5 px-4 py-3 border-b border-divider last:border-b-0 transition-colors ${
         active ? "bg-primary/10" : "hover:bg-surface-2"
