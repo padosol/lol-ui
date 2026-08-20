@@ -5,10 +5,12 @@ import { CommunityShell } from "@/widgets/community-shell";
 import { BoardListSection } from "@/widgets/community-list";
 import { PostDetailPanel } from "@/widgets/community-detail";
 import { usePostDetail } from "@/entities/community";
-import type { CategoryTree, Post } from "@/entities/community";
+import type { CategoryTree, Post, PostSort } from "@/entities/community";
 
 interface CommunityDetailPageClientProps {
   postId: number;
+  /** 목록에서 넘어올 때의 정렬. 아래 목록과 게시판 링크가 그 순서를 잇는다. */
+  sort: PostSort;
   /** 서버가 이미 받아온 글. 넘어오면 클라이언트가 같은 글을 다시 받지 않는다. */
   initialPost?: Post;
   /** 서버가 실어 보낸 게시판 트리. 없으면 사이드바가 스켈레톤부터 시작한다. */
@@ -17,6 +19,7 @@ interface CommunityDetailPageClientProps {
 
 export default function CommunityDetailPageClient({
   postId,
+  sort,
   initialPost,
   initialTree,
 }: Readonly<CommunityDetailPageClientProps>) {
@@ -35,13 +38,18 @@ export default function CommunityDetailPageClient({
           initialTree={initialTree}
           showAside
         >
-          <PostDetailPanel postId={postId} initialPost={initialPost} />
+          <PostDetailPanel
+            postId={postId}
+            listSort={sort}
+            initialPost={initialPost}
+          />
 
           {/* 글을 못 받았으면 어느 게시판인지 알 수 없어 목록도 걸지 않는다 */}
           {post && (
             <BoardListSection
               categoryId={post.categoryId}
               currentPostId={postId}
+              sort={sort}
             />
           )}
         </CommunityShell>

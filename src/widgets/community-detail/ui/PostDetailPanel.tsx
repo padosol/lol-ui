@@ -11,9 +11,9 @@ import {
   useCategoryLabel,
   AuthorAvatar,
   postEditHref,
-  categoryHref,
+  listHref,
 } from "@/entities/community";
-import type { Post, VoteType } from "@/entities/community";
+import type { Post, PostSort, VoteType } from "@/entities/community";
 import { useAuthStore } from "@/entities/auth";
 import { VoteButtons } from "@/shared/ui/vote-buttons";
 import { BookmarkButton } from "@/features/community-bookmark";
@@ -26,11 +26,14 @@ interface PostDetailPanelProps {
   postId: number;
   /** 서버가 이미 받아온 글. 있으면 첫 렌더에서 다시 받지 않는다. */
   initialPost?: Post;
+  /** 목록에서 넘어올 때의 정렬. 게시판으로 되돌아갈 때 그대로 들고 간다. */
+  listSort?: PostSort;
 }
 
 export default function PostDetailPanel({
   postId,
   initialPost,
+  listSort,
 }: Readonly<PostDetailPanelProps>) {
   const format = useFormatter();
   const t = useTranslations("community");
@@ -117,7 +120,9 @@ export default function PostDetailPanel({
         {/* 라벨이 게시판 이름이므로 목적지도 그 게시판이다 (예전엔 전체로 갔다) */}
         <button
           type="button"
-          onClick={() => router.push(categoryHref(post.categoryId))}
+          onClick={() =>
+            router.push(listHref(post.categoryId, { sort: listSort }))
+          }
           className="flex items-center gap-1.5 text-[13.5px] font-bold text-on-surface-medium hover:text-on-surface transition-colors cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
