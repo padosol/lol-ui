@@ -20,7 +20,7 @@ export default function ImageAttachmentBar({
   isFull,
   onSelect,
   onRemove,
-}: ImageAttachmentBarProps) {
+}: Readonly<ImageAttachmentBarProps>) {
   const t = useTranslations("community.editor.image");
   const inputRef = useRef<HTMLInputElement>(null);
 
