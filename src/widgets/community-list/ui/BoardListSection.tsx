@@ -3,16 +3,12 @@
 import { ChevronRight } from "lucide-react";
 import { Link } from "@/shared/i18n/navigation";
 import { useTranslations } from "next-intl";
-import { usePosts, useCategoryLabel, categoryHref } from "@/entities/community";
+import { usePosts, useCategoryLabel, listHref } from "@/entities/community";
 import type { CategoryId, PostPeriod, PostSort } from "@/entities/community";
 import PostList from "./PostList";
 import LoadMoreButton from "./LoadMoreButton";
 
-/**
- * 상세 화면 하단 목록의 조회 조건. 목록 화면과 같은 값을 써야 쿼리 키가 겹쳐
- * 목록 → 상세 이동에서 이미 받아둔 페이지를 그대로 쓴다.
- */
-const SECTION_SORT: PostSort = "HOT";
+/** 기간 필터는 목록 화면과 마찬가지로 화면에 없다. */
 const SECTION_PERIOD: PostPeriod = "ALL";
 
 interface BoardListSectionProps {
@@ -20,6 +16,11 @@ interface BoardListSectionProps {
   categoryId: CategoryId;
   /** 지금 열려 있는 글. 목록에서 현재 위치로 표시된다. */
   currentPostId: number;
+  /**
+   * 목록에서 이 글을 열 때의 정렬(URL 의 `?sort=`). 같은 순서로 세워야 방금
+   * 보던 흐름이 이어지고, 조회 조건이 같아 목록 화면이 받아둔 페이지도 쓴다.
+   */
+  sort: PostSort;
 }
 
 /**
@@ -32,13 +33,14 @@ interface BoardListSectionProps {
 export default function BoardListSection({
   categoryId,
   currentPostId,
+  sort,
 }: Readonly<BoardListSectionProps>) {
   const t = useTranslations("community");
   const categoryLabel = useCategoryLabel();
 
   const postsQuery = usePosts({
     categoryId,
-    sort: SECTION_SORT,
+    sort,
     period: SECTION_PERIOD,
   });
 
@@ -55,7 +57,7 @@ export default function BoardListSection({
         <div className="flex-1" />
 
         <Link
-          href={categoryHref(categoryId)}
+          href={listHref(categoryId, { sort })}
           className="flex items-center gap-0.5 text-[13px] font-bold text-on-surface-medium hover:text-primary transition-colors"
         >
           {categoryLabel(categoryId) || t("allCategories")}
@@ -68,6 +70,7 @@ export default function BoardListSection({
         isLoading={postsQuery.isLoading}
         emptyLabel={t("empty")}
         activePostId={currentPostId}
+        listSort={sort}
       />
 
       {postsQuery.hasNextPage && (

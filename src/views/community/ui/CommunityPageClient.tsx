@@ -7,17 +7,23 @@ import type {
   CategoryId,
   CategoryTree,
   PostListResponse,
+  PostSort,
 } from "@/entities/community";
 
 interface CommunityPageClientProps {
   /** 서버가 URL 로 해석한 게시판. 전체 목록이면 "ALL". */
   category: CategoryId | "ALL";
+  /** 서버가 URL 로 해석한 정렬·검색어. */
+  sort: PostSort;
+  keyword: string;
   initialTree?: CategoryTree;
   initialPosts?: PostListResponse;
 }
 
 export default function CommunityPageClient({
   category,
+  sort,
+  keyword,
   initialTree,
   initialPosts,
 }: Readonly<CommunityPageClientProps>) {
@@ -33,7 +39,12 @@ export default function CommunityPageClient({
           showAside
           showMobileTabs
         >
-          <CommunityListPanel category={category} initialPosts={initialPosts} />
+          <CommunityListPanel
+            category={category}
+            sort={sort}
+            keyword={keyword}
+            initialPosts={initialPosts}
+          />
         </CommunityShell>
       </div>
       <Footer />

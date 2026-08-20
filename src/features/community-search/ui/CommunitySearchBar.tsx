@@ -11,12 +11,17 @@ import {
 
 interface CommunitySearchBarProps {
   onSearch: (keyword: string, scope: SearchScope) => void;
+  /** URL 이 들고 있는 검색어. 새로고침·뒤로가기에서도 입력창이 같은 값을 보인다. */
+  initialKeyword?: string;
 }
 
-export default function CommunitySearchBar({ onSearch }: CommunitySearchBarProps) {
+export default function CommunitySearchBar({
+  onSearch,
+  initialKeyword = "",
+}: Readonly<CommunitySearchBarProps>) {
   const t = useTranslations("community");
   const tScope = useTranslations("community.search");
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState(initialKeyword);
   const [scope, setScope] = useState<SearchScope>(DEFAULT_SEARCH_SCOPE);
   const [scopeOpen, setScopeOpen] = useState(false);
   const scopeRef = useRef<HTMLDivElement>(null);
@@ -31,6 +36,12 @@ export default function CommunitySearchBar({ onSearch }: CommunitySearchBarProps
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [handleClickOutside]);
+
+  // 검색 초기화나 뒤로가기로 주소의 검색어가 바뀌면 입력창도 따라간다.
+  // (검색 범위는 주소에 없으므로 고른 값을 그대로 둔다)
+  useEffect(() => {
+    setValue(initialKeyword);
+  }, [initialKeyword]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useMemo, useTransition } from "react";
 import { PenLine } from "lucide-react";
 import { useRouter } from "@/shared/i18n/navigation";
 import { useTranslations } from "next-intl";
@@ -8,34 +8,37 @@ import {
   usePosts,
   useSearchPosts,
   useCategoryLabel,
-  POST_SORTS,
+  listHref,
 } from "@/entities/community";
 import type {
   CategoryId,
   PostListResponse,
   PostPeriod,
+  PostSort,
 } from "@/entities/community";
 import { useAuthStore } from "@/entities/auth";
 import {
   CommunitySearchBar,
-  DEFAULT_SEARCH_SCOPE,
   type SearchScope,
 } from "@/features/community-search";
 import PostList from "./PostList";
 import LoadMoreButton from "./LoadMoreButton";
 
 type CategoryValue = CategoryId | "ALL";
-type PostSortValue = (typeof POST_SORTS)[number];
 
 /** 노출 순서는 인기 → 추천 → 최신 (POST_SORTS 의 선언 순서와 다르다) */
-const SORTS: PostSortValue[] = ["HOT", "TOP", "NEW"];
+const SORTS: PostSort[] = ["HOT", "TOP", "NEW"];
 /** 기간 필터를 화면에서 뺐으므로 목록은 항상 전체 기간으로 조회한다. */
 const LIST_PERIOD: PostPeriod = "ALL";
 
 interface CommunityListPanelProps {
   /** 서버가 URL 로 해석한 현재 게시판. 화면 상태가 아니라 경로가 출처다. */
   category: CategoryValue;
-  /** 서버가 실어 보낸 첫 페이지. 없으면 클라이언트가 직접 받아온다. */
+  /** 서버가 URL 로 해석한 정렬. 정렬 버튼은 이 값을 바꾸는 게 아니라 URL 을 바꾼다. */
+  sort: PostSort;
+  /** 서버가 URL 로 해석한 검색어. 비어 있으면 검색이 아니라 목록이다. */
+  keyword: string;
+  /** 서버가 실어 보낸 첫 페이지. 위 정렬로 받아온 것이다. */
   initialPosts?: PostListResponse;
 }
 
@@ -44,9 +47,15 @@ interface CommunityListPanelProps {
  *
  * 좌·우 사이드바는 CommunityShell 이 그린다 — 상세 화면도 같은 셸을 쓰기 때문에
  * 이 컴포넌트는 목록에만 집중한다.
+ *
+ * 정렬과 검색어는 화면 상태로 들고 있지 않고 URL 에 맡긴다. 조건을 바꾸면 주소가
+ * 바뀌고, 서버가 그 조건으로 받은 첫 페이지를 다시 내려준다 — 조건이 바뀔 때마다
+ * 클라이언트가 같은 목록을 한 번 더 받지 않게 하려는 것이다.
  */
 export default function CommunityListPanel({
   category,
+  sort,
+  keyword,
   initialPosts,
 }: Readonly<CommunityListPanelProps>) {
   const t = useTranslations("community");
@@ -54,10 +63,8 @@ export default function CommunityListPanel({
   const categoryLabel = useCategoryLabel();
   const router = useRouter();
   const user = useAuthStore((s) => s.user);
-  const [sort, setSort] = useState<PostSortValue>("HOT");
-  const [searchKeyword, setSearchKeyword] = useState("");
-  // 검색 범위는 아직 서버가 받지 않아 화면 표시용으로만 들고 있는다.
-  const [, setSearchScope] = useState<SearchScope>(DEFAULT_SEARCH_SCOPE);
+  // 주소가 바뀌고 서버 응답이 오기까지의 텀. 이 사이 목록을 흐려 눌린 것을 알린다.
+  const [isSwitching, startSwitching] = useTransition();
 
   const postsQuery = usePosts(
     {
@@ -65,13 +72,12 @@ export default function CommunityListPanel({
       sort,
       period: LIST_PERIOD,
     },
-    // 서버가 내려준 첫 페이지는 기본 정렬 기준이라, 정렬을 바꾼 뒤에는 쓰지 않는다.
-    sort === "HOT" ? initialPosts : undefined
+    initialPosts
   );
 
-  const searchQuery = useSearchPosts(searchKeyword);
+  const searchQuery = useSearchPosts(keyword);
 
-  const isSearching = searchKeyword.length > 0;
+  const isSearching = keyword.length > 0;
   const posts = useMemo(() => {
     if (isSearching) {
       return searchQuery.data?.content ?? [];
@@ -82,9 +88,22 @@ export default function CommunityListPanel({
   const isLoading = isSearching ? searchQuery.isLoading : postsQuery.isLoading;
   const hasNextPage = isSearching ? false : postsQuery.hasNextPage;
 
-  const handleSearch = (keyword: string, scope: SearchScope) => {
-    setSearchScope(scope);
-    setSearchKeyword(keyword);
+  const goTo = (next: { sort?: PostSort; keyword?: string }) => {
+    startSwitching(() => {
+      router.replace(
+        listHref(category, {
+          sort: next.sort ?? sort,
+          keyword: next.keyword ?? keyword,
+        }),
+        // 정렬만 바꿨을 뿐인데 맨 위로 튀지 않게 한다
+        { scroll: false }
+      );
+    });
+  };
+
+  // 검색 범위는 아직 서버가 받지 않아 화면 표시용으로만 존재한다.
+  const handleSearch = (nextKeyword: string, _scope: SearchScope) => {
+    goTo({ keyword: nextKeyword });
   };
 
   const handleWriteClick = () => {
@@ -124,7 +143,7 @@ export default function CommunityListPanel({
               <button
                 key={value}
                 type="button"
-                onClick={() => setSort(value)}
+                onClick={() => goTo({ sort: value })}
                 aria-pressed={active}
                 className={`whitespace-nowrap rounded-md px-3 py-1.5 text-[13px] transition-colors cursor-pointer ${
                   active
@@ -141,16 +160,19 @@ export default function CommunityListPanel({
         <div className="flex-1" />
 
         <div className="w-full sm:w-auto sm:min-w-[280px]">
-          <CommunitySearchBar onSearch={handleSearch} />
+          <CommunitySearchBar
+            initialKeyword={keyword}
+            onSearch={handleSearch}
+          />
         </div>
       </div>
 
       {isSearching && (
         <div className="flex items-center gap-2 text-sm text-on-surface-medium">
-          <span>{t("searchResult", { keyword: searchKeyword })}</span>
+          <span>{t("searchResult", { keyword })}</span>
           <button
             type="button"
-            onClick={() => setSearchKeyword("")}
+            onClick={() => goTo({ keyword: "" })}
             className="text-primary hover:underline cursor-pointer"
           >
             {t("resetSearch")}
@@ -158,11 +180,14 @@ export default function CommunityListPanel({
         </div>
       )}
 
-      <PostList
-        posts={posts}
-        isLoading={isLoading}
-        emptyLabel={isSearching ? t("emptySearch") : t("empty")}
-      />
+      <div className={isSwitching ? "opacity-60 transition-opacity" : undefined}>
+        <PostList
+          posts={posts}
+          isLoading={isLoading}
+          emptyLabel={isSearching ? t("emptySearch") : t("empty")}
+          listSort={sort}
+        />
+      </div>
 
       {hasNextPage && (
         <LoadMoreButton

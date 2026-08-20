@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { localeAlternates } from "@/shared/i18n/alternates";
 import { toLocale } from "@/shared/i18n/locale";
+import { parsePostSort } from "@/entities/community";
 import { CommunityDetailPageClient } from "@/views/community";
 import {
   loadCategoryTree,
@@ -11,6 +12,8 @@ import {
 
 interface Props {
   params: Promise<{ locale: string; contentId: string }>;
+  /** 목록에서 넘어왔다면 그때의 정렬. 글 아래 목록이 같은 순서로 선다. */
+  searchParams: Promise<{ sort?: string }>;
 }
 
 /** 조회수·투표가 실시간으로 바뀌므로 캐시하지 않는다. */
@@ -63,9 +66,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
-export default async function CommunityDetailPage({ params }: Props) {
+export default async function CommunityDetailPage({
+  params,
+  searchParams,
+}: Props) {
   const { locale, contentId } = await params;
   setRequestLocale(toLocale(locale));
+
+  const { sort } = await searchParams;
+  const listSort = parsePostSort(sort);
 
   const postId = Number(contentId);
   if (!Number.isInteger(postId) || postId <= 0) notFound();
@@ -87,6 +96,7 @@ export default async function CommunityDetailPage({ params }: Props) {
   return (
     <CommunityDetailPageClient
       postId={postId}
+      sort={listSort}
       initialPost={initialPost}
       initialTree={initialTree}
     />
