@@ -305,6 +305,21 @@
       "contentPlaceholder": "내용을 입력해주세요",
       "contentCount": "{count}자",
       "guideline": "비방·도배·광고 글은 사전 통보 없이 삭제되며 반복 시 이용이 제한될 수 있습니다.",
+      "toolbar": {
+        "label": "본문 서식",
+        "bold": "굵게",
+        "italic": "기울임",
+        "strike": "취소선",
+        "heading1": "제목 1",
+        "heading2": "제목 2",
+        "heading3": "제목 3",
+        "bulletList": "글머리 기호 목록",
+        "orderedList": "번호 매기기 목록",
+        "blockquote": "인용",
+        "code": "인라인 코드",
+        "codeBlock": "코드 블록",
+        "horizontalRule": "구분선"
+      },
       "image": {
         "label": "이미지",
         "attach": "이미지 첨부",

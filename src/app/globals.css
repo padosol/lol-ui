@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* 게시글 본문 타이포그래피 — 뷰어와 에디터가 공유한다. 자세한 배경은 파일 상단 주석. */
+@import "../shared/styles/postProse.css";
+
 /*
  * .theme-dark 는 테마와 무관하게 항상 어두운 배경으로 유지되는 영역에 붙인다.
  * (상단 헤더 바처럼 흰 글씨 로고가 올라가는 곳)
