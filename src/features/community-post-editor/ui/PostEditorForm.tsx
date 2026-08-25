@@ -1,9 +1,10 @@
 "use client";
 
-import { useCallback, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
+import { useEditorState, type Editor } from "@tiptap/react";
 import { useCategoryTree, useWritableCategories } from "@/entities/community";
 import type { PostImage } from "@/entities/community";
 import { toast } from "@/shared/ui/toast";
@@ -16,9 +17,11 @@ import {
   useImageAttachments,
   type ImageErrorKey,
 } from "../model/useImageAttachments";
+import { usePostEditor } from "../model/usePostEditor";
 import { MAX_IMAGE_SIZE_MB } from "../model/imageConstraints";
-import { imageMarkdown, stripImageMarkdown } from "../lib/imageMarkdown";
+import { insertImages, removeImageByUrl } from "../lib/editorImages";
 import ImageAttachmentBar from "./ImageAttachmentBar";
+import PostEditor from "./PostEditor";
 
 const TITLE_MAX = 300;
 
@@ -43,6 +46,27 @@ function FieldLabel({ children, hint }: { children: React.ReactNode; hint?: stri
         <span className="text-xs font-semibold text-on-surface-disabled">{hint}</span>
       )}
     </div>
+  );
+}
+
+/**
+ * 글자 수만 따로 떼어 낸 컴포넌트.
+ *
+ * 폼 본체에서 세면 타이핑 한 글자마다 폼 전체가 다시 그려진다. 여기서 구독하면
+ * 다시 그려지는 것은 이 span 뿐이다.
+ */
+function CharacterCounter({ editor }: Readonly<{ editor: Editor | null }>) {
+  const t = useTranslations("community.editor");
+  const count = useEditorState({
+    editor,
+    selector: ({ editor: current }) =>
+      current?.storage.characterCount.characters() ?? 0,
+  });
+
+  return (
+    <span className="text-xs font-semibold text-on-surface-disabled">
+      {t("contentCount", { count: count ?? 0 })}
+    </span>
   );
 }
 
@@ -77,7 +101,6 @@ export default function PostEditorForm({
     register,
     handleSubmit,
     setValue,
-    getValues,
     watch,
     formState: { errors },
   } = useForm<PostEditorFormData>({
@@ -106,73 +129,49 @@ export default function PostEditorForm({
   const { attachments, imageIds, isUploading, isFull, upload, remove } =
     useImageAttachments({ initial: defaultImages, onError: showImageError });
 
-  // react-hook-form 의 ref 와 우리 ref 를 함께 물려야 커서 위치를 알 수 있다.
-  const { ref: registerContentRef, ...contentField } = register("content");
-  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  // 붙여넣기·드롭 핸들러는 에디터를 만들 때 캡처되는데, 그 핸들러가 하는 일(업로드 →
+  // 본문 삽입)에는 다시 에디터가 필요하다. ref 를 한 칸 끼워 순환을 끊는다.
+  const handleFilesRef = useRef<(files: File[]) => void>(() => {});
 
-  const selectedCategory = watch("categoryId");
-  const title = watch("title") ?? "";
-  const content = watch("content") ?? "";
-
-  /** 커서 자리에 끼워 넣는다. 포커스를 잃은 상태면 맨 뒤에 붙인다. */
-  const insertAtCursor = useCallback(
-    (text: string) => {
-      const element = textareaRef.current;
-      const current = getValues("content") ?? "";
-
-      if (!element) {
-        const separator = current.length > 0 ? "\n\n" : "";
-        setValue("content", `${current}${separator}${text}\n`, {
-          shouldValidate: true,
-          shouldDirty: true,
-        });
-        return;
-      }
-
-      const start = element.selectionStart ?? current.length;
-      const end = element.selectionEnd ?? start;
-      // 앞 문장에 이어 붙으면 마크다운이 이미지를 문단 안 텍스트로 취급한다.
-      const prefix = start > 0 && current[start - 1] !== "\n" ? "\n" : "";
-      const block = `${prefix}${text}\n`;
-      setValue("content", current.slice(0, start) + block + current.slice(end), {
-        shouldValidate: true,
-        shouldDirty: true,
-      });
-
-      // setValue 로 값이 반영된 뒤라야 커서를 옮길 수 있다.
-      requestAnimationFrame(() => {
-        element.focus();
-        const caret = start + block.length;
-        element.setSelectionRange(caret, caret);
-      });
-    },
-    [getValues, setValue]
-  );
+  const editor = usePostEditor({
+    initialMarkdown: defaultValues?.content ?? "",
+    placeholder: t("contentPlaceholder"),
+    ariaLabel: t("content"),
+    onChange: (markdown) =>
+      setValue("content", markdown, { shouldValidate: true, shouldDirty: true }),
+    onImageFiles: (files) => handleFilesRef.current(files),
+  });
 
   const handleFiles = useCallback(
     async (files: File[]) => {
       const uploaded = await upload(files);
-      if (uploaded.length > 0) {
-        insertAtCursor(uploaded.map((image) => imageMarkdown(image.url)).join("\n"));
+      if (uploaded.length > 0 && editor) {
+        insertImages(
+          editor,
+          uploaded.map((image) => image.url)
+        );
       }
     },
-    [insertAtCursor, upload]
+    [editor, upload]
   );
+
+  useEffect(() => {
+    handleFilesRef.current = (files: File[]) => void handleFiles(files);
+  }, [handleFiles]);
 
   const handleRemove = useCallback(
     (imageId: number) => {
       const target = attachments.find((item) => item.image.imageId === imageId);
-      if (target) {
-        setValue(
-          "content",
-          stripImageMarkdown(getValues("content") ?? "", target.image.url),
-          { shouldValidate: true, shouldDirty: true }
-        );
+      if (target && editor) {
+        removeImageByUrl(editor, target.image.url);
       }
       void remove(imageId);
     },
-    [attachments, getValues, remove, setValue]
+    [attachments, editor, remove]
   );
+
+  const selectedCategory = watch("categoryId");
+  const title = watch("title") ?? "";
 
   const submit = (data: PostEditorFormData) => {
     onSubmit({ ...data, imageIds });
@@ -237,40 +236,19 @@ export default function PostEditorForm({
         </div>
 
         <div className="flex flex-col gap-2">
-          <FieldLabel hint={t("contentCount", { count: content.length })}>
-            {t("content")}
-          </FieldLabel>
-          <textarea
-            {...contentField}
-            ref={(element) => {
-              registerContentRef(element);
-              textareaRef.current = element;
-            }}
-            placeholder={t("contentPlaceholder")}
-            rows={14}
-            onPaste={(event) => {
-              // 스크린샷 붙여넣기. 파일이 없으면 평범한 텍스트 붙여넣기이므로 건드리지 않는다.
-              const files = Array.from(event.clipboardData.files);
-              if (files.length > 0) {
-                event.preventDefault();
-                void handleFiles(files);
-              }
-            }}
-            onDragOver={(event) => {
-              // 막지 않으면 브라우저가 파일을 새 탭으로 열어 작성 중인 글이 날아간다.
-              if (event.dataTransfer.types.includes("Files")) {
-                event.preventDefault();
-              }
-            }}
-            onDrop={(event) => {
-              const files = Array.from(event.dataTransfer.files);
-              if (files.length > 0) {
-                event.preventDefault();
-                void handleFiles(files);
-              }
-            }}
-            className="w-full resize-none rounded-lg border border-divider bg-surface-2 px-4 py-3.5 text-[15px] leading-[1.8] text-on-surface placeholder:text-on-surface-disabled focus:border-primary focus:outline-none"
-          />
+          <div className="flex items-baseline gap-2">
+            <span className="text-xs font-bold tracking-widest text-on-surface-disabled">
+              {t("content")}
+            </span>
+            <div className="flex-1" />
+            <CharacterCounter editor={editor} />
+          </div>
+          {/*
+            본문의 주인은 에디터다. 폼에는 자리만 만들어 두고 값은 onChange 에서
+            setValue 로 넣는다 — categoryId 와 같은 방식이다.
+          */}
+          <input type="hidden" {...register("content")} />
+          <PostEditor editor={editor} disabled={isUploading} />
           {errors.content && (
             <p className="text-xs text-loss">{errors.content.message}</p>
           )}

@@ -1,0 +1,175 @@
+/*
+ * 게시글 본문 타이포그래피. 뷰어(PostContent)와 에디터(PostEditor)가 같은 규칙을 쓴다.
+ *
+ * ## 왜 한곳에 모으나
+ * WYSIWYG 의 정의가 곧 이유다. 스타일이 두 곳에 나뉘어 있으면 "쓰는 화면"과 "보이는
+ * 화면"이 조금씩 어긋나는데, 그 어긋남은 아무도 버그로 신고하지 않은 채 계속 쌓인다.
+ *
+ * ## 왜 Tailwind 유틸리티가 아니라 --md-* 인가
+ * globals.css 가 @theme inline 을 쓰기 때문에 --color-* 는 :root 에 실제로 존재하지
+ * 않는다(값이 유틸리티에 인라인될 뿐이다). 손으로 쓰는 CSS 에서는 유틸리티가 참조하는
+ * --md-* 를 직접 봐야 하고, 그래야 .theme-dark / html.light 하위 트리 오버라이드도
+ * 그대로 따라온다.
+ *
+ * ## 제목이 h2 부터인 이유
+ * 게시글 제목이 이미 페이지의 h1 이다(PostDetailPanel). 본문 제목까지 h1 이면 한
+ * 문서에 h1 이 둘이 된다. 뷰어는 예전부터 한 단계 내려 렌더해 왔고, 에디터도 같은
+ * 태그를 내도록 맞췄다(PostHeading).
+ */
+.post-prose {
+  font-size: 15px;
+  line-height: 1.85;
+  color: var(--md-text-medium);
+}
+
+/* 첫 문단 위, 마지막 문단 아래 여백은 바깥 컨테이너가 정한다. */
+.post-prose > :first-child {
+  margin-top: 0;
+}
+
+.post-prose > :last-child {
+  margin-bottom: 0;
+}
+
+.post-prose p {
+  margin: 0.75rem 0;
+}
+
+.post-prose h2,
+.post-prose h3,
+.post-prose h4 {
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+  color: var(--md-text-high);
+}
+
+.post-prose h2 {
+  margin-top: 1.25rem;
+  font-size: 1.125rem;
+}
+
+.post-prose h3 {
+  margin-top: 1.25rem;
+  font-size: 1rem;
+}
+
+.post-prose h4 {
+  margin-top: 1rem;
+  font-size: 15px;
+}
+
+.post-prose a {
+  color: var(--md-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.post-prose a:hover {
+  opacity: 0.8;
+}
+
+.post-prose img {
+  margin: 0.75rem 0;
+  height: auto;
+  max-width: 100%;
+  border-radius: 0.5rem;
+  border: 1px solid var(--md-divider);
+}
+
+.post-prose ul {
+  margin: 0.75rem 0;
+  padding-left: 1.25rem;
+  list-style-type: disc;
+}
+
+.post-prose ol {
+  margin: 0.75rem 0;
+  padding-left: 1.25rem;
+  list-style-type: decimal;
+}
+
+.post-prose li {
+  margin: 0.25rem 0;
+}
+
+.post-prose blockquote {
+  margin: 0.75rem 0;
+  border-left: 2px solid var(--md-divider);
+  padding-left: 0.75rem;
+  color: var(--md-text-disabled);
+}
+
+.post-prose code {
+  border-radius: 0.25rem;
+  background: var(--md-elevation-4);
+  padding: 0.125rem 0.375rem;
+  font-size: 13px;
+}
+
+.post-prose pre {
+  margin: 0.75rem 0;
+  overflow-x: auto;
+  border-radius: 0.5rem;
+  background: var(--md-elevation-4);
+  padding: 0.75rem;
+  font-size: 13px;
+}
+
+/* pre 안의 code 가 배경과 패딩을 두 번 먹지 않게 되돌린다. */
+.post-prose pre code {
+  background: none;
+  padding: 0;
+  font-size: inherit;
+}
+
+.post-prose hr {
+  margin: 1.25rem 0;
+  border: 0;
+  border-top: 1px solid var(--md-divider);
+}
+
+/*
+ * 표는 에디터에서 만들 수 없다(Tiptap 표 확장을 넣지 않았다). 그래도 규칙을 남겨 두는
+ * 이유는 뷰어가 remark-gfm 으로 표를 렌더하기 때문이다 — 이미 표가 들어간 옛 글이
+ * 깨지면 안 된다.
+ */
+.post-prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.post-prose th,
+.post-prose td {
+  border: 1px solid var(--md-divider);
+  padding: 0.25rem 0.5rem;
+}
+
+.post-prose th {
+  text-align: left;
+  font-weight: 700;
+}
+
+/* ------------------------------------------------------------------
+ * 에디터 전용. 위 규칙에 얹혀 편집 중에만 필요한 것을 더한다.
+ * ------------------------------------------------------------------ */
+/* 예전 textarea 의 rows=14 와 비슷한 높이. 글을 쓰기 시작할 때 상자가 커 보여야 한다. */
+.post-editor .ProseMirror {
+  min-height: 22rem;
+  outline: none;
+}
+
+/* Placeholder 확장이 비어 있는 첫 문단에 붙이는 훅. */
+.post-editor .ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+  color: var(--md-text-disabled);
+}
+
+/* 이미지를 클릭하면 선택된다 — Backspace 로 지울 수 있다는 신호를 준다. */
+.post-editor .ProseMirror img.ProseMirror-selectednode {
+  outline: 2px solid var(--md-primary);
+  outline-offset: 2px;
+}
