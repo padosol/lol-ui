@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import axios from "axios";
 import {
   useDeletePostImage,
@@ -37,6 +37,12 @@ export interface Attachment {
 interface UseImageAttachmentsOptions {
   initial?: PostImage[];
   onError: (key: ImageErrorKey) => void;
+  /**
+   * 본문에 살아 있는 이미지 URL. 여기 없는 이미지는 목록에서 빠지고 저장되지도 않는다.
+   *
+   * <p>`null` 은 "아직 모른다"(에디터가 만들어지기 전)라 거르지 않는다.
+   */
+  attachedUrls: ReadonlySet<string> | null;
 }
 
 /**
@@ -57,14 +63,32 @@ function toErrorKey(error: unknown): ImageErrorKey {
 export function useImageAttachments({
   initial = [],
   onError,
+  attachedUrls,
 }: UseImageAttachmentsOptions) {
-  const [attachments, setAttachments] = useState<Attachment[]>(() =>
+  /** 이번 편집에서 알게 된 이미지 전부. 본문에서 빠져도 여기서는 지우지 않는다. */
+  const [known, setKnown] = useState<Attachment[]>(() =>
     initial.map((image) => ({ image, isNew: false }))
   );
   const [isUploading, setIsUploading] = useState(false);
 
   const uploadMutation = useUploadPostImage();
   const deleteMutation = useDeletePostImage();
+
+  /**
+   * 본문에 남아 있는 것만 추린 첨부. 화면에 보이는 것도, 저장되는 것도 이 목록이다.
+   *
+   * <p>본문에서 지워진 이미지를 {@link known} 에서까지 빼지 않는 이유는 <b>되돌리기</b>다.
+   * Ctrl+Z 로 이미지가 본문에 돌아오면 첨부도 같이 살아나야 한다. 대장에서 지워 버리면
+   * 본문에는 URL 이 있는데 `imageIds` 에는 없는 글이 저장되고, 그 파일은 미첨부 상태로
+   * 유예가 지나 사라진다 — 멀쩡히 저장한 글이 며칠 뒤 깨진다.
+   */
+  const attachments = useMemo(
+    () =>
+      attachedUrls === null
+        ? known
+        : known.filter((item) => attachedUrls.has(item.image.url)),
+    [known, attachedUrls]
+  );
 
   /**
    * 선택·붙여넣기·드롭으로 들어온 파일을 순서대로 올리고, 성공한 것만 돌려준다.
@@ -111,7 +135,7 @@ export function useImageAttachments({
       }
 
       if (uploaded.length > 0) {
-        setAttachments((prev) => [
+        setKnown((prev) => [
           ...prev,
           ...uploaded.map((image) => ({ image, isNew: true })),
         ]);
@@ -122,17 +146,18 @@ export function useImageAttachments({
   );
 
   /**
-   * 목록에서 빼고, 새로 올린 것이면 스토리지에서도 지운다.
+   * 썸네일의 X 로 <b>대놓고</b> 뺄 때. 대장에서 지우고, 새로 올린 것이면 스토리지에서도 지운다.
    *
-   * 서버 삭제가 실패해도 목록에서는 뺀다 — 사용자가 "뺐다"고 인지한 이미지가 화면에 남는
+   * <p>본문에서 지우는 것과 다르다. 그쪽은 되돌릴 수 있어야 해서 대장을 남겨 두지만,
+   * 여기는 사용자가 "이 파일 치워라"라고 말한 것이라 되살릴 여지를 두지 않는다.
+   *
+   * <p>서버 삭제가 실패해도 목록에서는 뺀다 — 사용자가 "뺐다"고 인지한 이미지가 화면에 남는
    * 편이 더 나쁘고, 남은 파일은 미첨부 상태로 유예가 지나면 정리 배치가 가져간다.
    */
   const remove = useCallback(
     async (imageId: number) => {
-      const target = attachments.find((item) => item.image.imageId === imageId);
-      setAttachments((prev) =>
-        prev.filter((item) => item.image.imageId !== imageId)
-      );
+      const target = known.find((item) => item.image.imageId === imageId);
+      setKnown((prev) => prev.filter((item) => item.image.imageId !== imageId));
 
       if (target?.isNew) {
         try {
@@ -142,7 +167,7 @@ export function useImageAttachments({
         }
       }
     },
-    [attachments, deleteMutation, onError]
+    [known, deleteMutation, onError]
   );
 
   return {

@@ -26,6 +26,24 @@ export function insertImages(editor: Editor, urls: string[]): void {
 }
 
 /**
+ * 본문에 살아 있는 이미지 URL 을 모은다.
+ *
+ * <p>정렬해 중복을 없앤 채로 돌려준다. 이 값의 변화가 곧 첨부 목록을 다시 그리는
+ * 신호라, 이미지를 위아래로 옮기기만 해도 결과가 달라지면 이유 없이 다시 그려진다.
+ */
+export function collectImageUrls(editor: Editor): string[] {
+  const urls = new Set<string>();
+
+  editor.state.doc.descendants((node) => {
+    if (node.type.name === IMAGE_NODE && typeof node.attrs.src === "string") {
+      urls.add(node.attrs.src);
+    }
+  });
+
+  return [...urls].sort();
+}
+
+/**
  * 첨부 목록에서 뺀 이미지를 본문에서도 지운다.
  *
  * 이걸 하지 않으면 본문에는 URL 이 남고 목록에는 없는 상태가 되는데, 그 이미지는 글에
