@@ -40,7 +40,7 @@ export function collectImageUrls(editor: Editor): string[] {
     }
   });
 
-  return [...urls].sort();
+  return [...urls].sort((a, b) => a.localeCompare(b));
 }
 
 /**
@@ -66,8 +66,10 @@ export function removeImageByUrl(editor: Editor, url: string): void {
   }
 
   const transaction = editor.state.tr;
-  // 뒤에서부터 지워야 앞쪽 위치가 밀리지 않는다.
-  for (const { from, to } of targets.reverse()) {
+  // 뒤에서부터 지워야 앞쪽 위치가 밀리지 않는다. 원본을 뒤집지 않고 사본을 만든다
+  // (toReversed 는 iOS 16.3 이하 사파리에 없다).
+  const fromLast = [...targets].reverse();
+  for (const { from, to } of fromLast) {
     transaction.delete(from, to);
   }
   editor.view.dispatch(transaction);
