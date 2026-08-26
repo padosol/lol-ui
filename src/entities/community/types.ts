@@ -108,6 +108,13 @@ export interface PostListItem {
   downvoteCount: number;
   commentCount: number;
   hotScore: number;
+  /**
+   * 본문에 붙은 이미지가 있는지. 목록의 사진 아이콘에만 쓴다.
+   *
+   * 서버는 첨부(ATTACHED)된 것만 센다 — 올리다 만 이미지나 글에서 뺀 이미지는 본문에
+   * 보이지 않으므로, 그것까지 세면 사진 없는 글에 아이콘이 붙는다.
+   */
+  hasImage: boolean;
   author: Author;
   createdAt: string;
 }
