@@ -256,7 +256,8 @@
     "shareError": "Failed to copy the link.",
     "stats": {
       "upvotes": "Upvotes",
-      "views": "Views"
+      "views": "Views",
+      "image": "Photo"
     },
     "search": {
       "scopeSelect": "Select search scope",

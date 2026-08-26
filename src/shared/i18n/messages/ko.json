@@ -256,7 +256,8 @@
     "shareError": "링크 복사에 실패했습니다.",
     "stats": {
       "upvotes": "추천",
-      "views": "조회"
+      "views": "조회",
+      "image": "사진"
     },
     "search": {
       "scopeSelect": "검색 범위 선택",
