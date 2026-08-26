@@ -18,6 +18,7 @@ import {
   type ImageErrorKey,
 } from "../model/useImageAttachments";
 import { usePostEditor } from "../model/usePostEditor";
+import { useDocumentImageUrls } from "../model/useDocumentImageUrls";
 import { MAX_IMAGE_SIZE_MB } from "../model/imageConstraints";
 import { insertImages, removeImageByUrl } from "../lib/editorImages";
 import ImageAttachmentBar from "./ImageAttachmentBar";
@@ -126,9 +127,6 @@ export default function PostEditorForm({
     [tImageError]
   );
 
-  const { attachments, imageIds, isUploading, isFull, upload, remove } =
-    useImageAttachments({ initial: defaultImages, onError: showImageError });
-
   // 붙여넣기·드롭 핸들러는 에디터를 만들 때 캡처되는데, 그 핸들러가 하는 일(업로드 →
   // 본문 삽입)에는 다시 에디터가 필요하다. ref 를 한 칸 끼워 순환을 끊는다.
   const handleFilesRef = useRef<(files: File[]) => void>(() => {});
@@ -141,6 +139,17 @@ export default function PostEditorForm({
       setValue("content", markdown, { shouldValidate: true, shouldDirty: true }),
     onImageFiles: (files) => handleFilesRef.current(files),
   });
+
+  // 첨부 목록의 주인은 본문이다. 본문에서 지운 이미지는 아래 썸네일에서도 사라지고
+  // 저장할 imageIds 에서도 빠진다 — 글에 안 보이는 이미지가 붙어 있으면 안 된다.
+  const documentImageUrls = useDocumentImageUrls(editor);
+
+  const { attachments, imageIds, isUploading, isFull, upload, remove } =
+    useImageAttachments({
+      initial: defaultImages,
+      onError: showImageError,
+      attachedUrls: documentImageUrls,
+    });
 
   const handleFiles = useCallback(
     async (files: File[]) => {
