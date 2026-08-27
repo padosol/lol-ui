@@ -1,5 +1,6 @@
 "use client";
 
+import { ImageIcon } from "lucide-react";
 import { Link } from "@/shared/i18n/navigation";
 import { useRelativeNow } from "@/shared/i18n";
 import { useFormatter, useTranslations } from "next-intl";
@@ -66,6 +67,13 @@ export default function PostRow({
           >
             {post.title}
           </span>
+          {/* 제목이 길어 잘려도 아이콘은 밀려나지 않아야 한다(shrink-0). */}
+          {post.hasImage && (
+            <ImageIcon
+              className="h-3.5 w-3.5 shrink-0 text-on-surface-disabled"
+              aria-label={t("image")}
+            />
+          )}
           {post.commentCount > 0 && (
             <span className="shrink-0 rounded bg-primary/15 px-1.5 py-px text-xs font-bold text-primary">
               {post.commentCount}
