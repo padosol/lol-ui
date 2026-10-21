@@ -1,6 +1,5 @@
 export { useAuthStore } from "./model/useAuthStore";
 export {
-  refreshAuth,
   logout,
   getMyProfile,
   updateNickname,
