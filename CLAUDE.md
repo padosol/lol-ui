@@ -40,7 +40,7 @@ Component → React Query hook (entities/*/model/) → API함수 (entities/*/api
 ### Non-obvious Decisions
 
 - **views/ 사용 이유**: Next.js `pages/` 예약 디렉토리 충돌 방지. 단, patch-notes는 순수 SSR이므로 `app/`에 유지 (예외).
-- **Dual API Client**: 브라우저용 `shared/api/client.ts` (`NEXT_PUBLIC_API_URL`) + 서버용 `shared/api/server-client.ts` (`API_URL_INTERNAL`, Docker 내부 네트워크).
+- **Dual API Client**: 브라우저용 `shared/api/client.ts` (`NEXT_PUBLIC_API_URL`) + 서버용 `shared/api/server-client.ts` (`API_URL_INTERNAL`, Docker 내부 네트워크). 서버용은 Ingress 를 거치지 않으므로, Riot 데이터 경로(`shared/api/repositoryRoutes.ts`)는 `REPOSITORY_API_URL_INTERNAL` 이 있으면 lol-repository 로 직접 보낸다 — Ingress 경로 표를 바꾸면 이 표도 바꾼다.
 - **SSR/CSR 구분**: SSR = patch-notes, leaderboards / CSR = champion-stats, summoners. 서버 페이지 → `views/*/ui/*PageClient.tsx` ("use client") 위임 패턴.
 - **React Query 캐싱**: 프로필 5분, 매치 목록 2분, 매치 상세 10분.
 - **GameDataLoader** (`app/GameDataLoader.tsx`): 앱 시작 시 챔피언/스펠 데이터를 Zustand store에 미리 로드.
@@ -50,6 +50,7 @@ Component → React Query hook (entities/*/model/) → API함수 (entities/*/api
 
 - `NEXT_PUBLIC_API_URL` — 외부 API (기본: `http://localhost:8100/api`)
 - `API_URL_INTERNAL` — 서버 전용 내부 API (Docker 네트워크)
+- `REPOSITORY_API_URL_INTERNAL` — 서버 전용 lol-repository 내부 API (운영: `http://lol-repository:8080/api`, 로컬은 비움)
 - `NEXT_PUBLIC_IMAGE_HOST` — 정적 이미지 호스트 (`https://static.mmrtr.shop`)
 
 ## Git Workflow
