@@ -116,84 +116,68 @@ export default function ProfileSection({
     if (!profileData?.puuid) return;
     if (isRefreshDisabled()) return;
 
-    const platform = profileData.platform || region;
-
     // 갱신 요청
     refresh(
-      {
-        platform,
-        puuid: profileData.puuid,
-      },
+      { puuid: profileData.puuid },
       {
         onSuccess: async (response) => {
-          // FAILED -> 쿨다운 (3분 미만 재요청)
+          // FAILED -> 쿨다운 (클릭 10초 이내, 또는 마지막 갱신 2분 이내 재요청)
           if (response.status === "FAILED") {
             setRefreshError(t("cooldownError"));
             return;
           }
 
-          // SUCCESS -> 갱신 진행중, 폴링 시작
-          if (response.status === "SUCCESS") {
-            setIsPolling(true);
-            pollingStartTimeRef.current = Date.now();
+          // SUCCESS -> 갱신 접수(이미 진행 중 포함), 폴링 시작
+          setIsPolling(true);
+          pollingStartTimeRef.current = Date.now();
 
-            const stopPolling = () => {
-              if (pollingIntervalRef.current) {
-                clearInterval(pollingIntervalRef.current);
-                pollingIntervalRef.current = null;
-              }
-              setIsPolling(false);
-              pollingStartTimeRef.current = null;
-            };
+          const stopPolling = () => {
+            if (pollingIntervalRef.current) {
+              clearInterval(pollingIntervalRef.current);
+              pollingIntervalRef.current = null;
+            }
+            setIsPolling(false);
+            pollingStartTimeRef.current = null;
+          };
 
-            const pollStatus = async () => {
-              // 최대 10초 경과 확인
-              const elapsed =
-                Date.now() - (pollingStartTimeRef.current || 0);
-              if (elapsed >= 10000) {
+          const pollStatus = async () => {
+            // 최대 10초 경과 확인
+            const elapsed =
+              Date.now() - (pollingStartTimeRef.current || 0);
+            if (elapsed >= 10000) {
+              stopPolling();
+              queryClient.invalidateQueries();
+              onRefreshComplete?.();
+              return;
+            }
+
+            try {
+              const statusResponse = await getSummonerRenewalStatus(
+                profileData.puuid
+              );
+
+              // 진행 중이 아니면 폴링 중지 -> 데이터 갱신
+              if (statusResponse.status !== "PROGRESS") {
                 stopPolling();
                 queryClient.invalidateQueries();
                 onRefreshComplete?.();
                 return;
               }
+            } catch (error) {
+              // eslint-disable-next-line no-restricted-syntax -- 개발자 로그, 사용자 노출 아님
+              console.error("갱신 상태 확인 중 오류:", error);
+              stopPolling();
+            }
+          };
 
-              try {
-                const statusResponse = await getSummonerRenewalStatus(
-                  profileData.puuid
-                );
-
-                // SUCCESS나 FAILED면 폴링 중지 -> 데이터 갱신
-                if (
-                  statusResponse.status === "SUCCESS" ||
-                  statusResponse.status === "FAILED"
-                ) {
-                  stopPolling();
-                  queryClient.invalidateQueries();
-                  onRefreshComplete?.();
-                  return;
-                }
-              } catch (error) {
-                // eslint-disable-next-line no-restricted-syntax -- 개발자 로그, 사용자 노출 아님
-                console.error("갱신 상태 확인 중 오류:", error);
-                stopPolling();
-              }
-            };
-
-            // 0.2초 후 첫 번째 폴링 시작
-            setTimeout(async () => {
-              await pollStatus();
-              // 첫 폴링에서 이미 완료된 경우 interval 생성 방지
-              if (pollingStartTimeRef.current !== null) {
-                pollingIntervalRef.current = setInterval(pollStatus, 1000);
-              }
-            }, 200);
-
-            return;
-          }
-
-          // 기타 상태 -> 즉시 완료 처리
-          queryClient.invalidateQueries();
-          onRefreshComplete?.();
+          // 0.2초 후 첫 번째 폴링 시작
+          setTimeout(async () => {
+            await pollStatus();
+            // 첫 폴링에서 이미 완료된 경우 interval 생성 방지
+            if (pollingStartTimeRef.current !== null) {
+              pollingIntervalRef.current = setInterval(pollStatus, 1000);
+            }
+          }, 200);
         },
         onError: () => {
           setRefreshError(t("requestError"));

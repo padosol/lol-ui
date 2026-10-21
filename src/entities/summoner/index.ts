@@ -2,4 +2,9 @@ export { searchSummonerAutocomplete, getSummonerProfile, renewSummoner, getSummo
 export { useSummonerProfile } from "./model/useSummonerProfile";
 export { parseSummonerName, normalizeRegion } from "./lib/parseSummonerName";
 export type { ParsedSummonerName } from "./lib/parseSummonerName";
-export type { SummonerProfile, SummonerAutocompleteItem, SummonerRenewalResponse } from "./types";
+export type {
+  SummonerProfile,
+  SummonerAutocompleteItem,
+  SummonerRenewalResponse,
+  SummonerRenewalStatusResponse,
+} from "./types";
