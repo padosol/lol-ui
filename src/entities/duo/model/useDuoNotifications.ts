@@ -21,7 +21,7 @@ export function useDuoNotifications(enabled: boolean) {
     if (!enabled) return;
 
     const source = new EventSource(
-      `${API_BASE_URL}/duo/notifications/subscribe`,
+      `${API_BASE_URL}/v1/duo/notifications/stream`,
       { withCredentials: true },
     );
 

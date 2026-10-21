@@ -11,7 +11,7 @@ export async function getDuoPosts(
   params: DuoPostFilters = {},
 ): Promise<DuoPostListResponse> {
   const response = await apiClient.get<ApiResponse<DuoPostListResponse>>(
-    "/duo/posts",
+    "/v1/duo/posts",
     { params },
   );
   return response.data.data;
@@ -19,7 +19,7 @@ export async function getDuoPosts(
 
 export async function getDuoPostDetail(postId: number): Promise<DuoPost> {
   const response = await apiClient.get<ApiResponse<DuoPost>>(
-    `/duo/posts/${postId}`,
+    `/v1/duo/posts/${postId}`,
   );
   return response.data.data;
 }
@@ -28,7 +28,7 @@ export async function createDuoPost(
   data: CreateDuoPostRequest,
 ): Promise<DuoPost> {
   const response = await apiClient.post<ApiResponse<DuoPost>>(
-    "/duo/posts",
+    "/v1/duo/posts",
     data,
   );
   return response.data.data;
@@ -39,21 +39,21 @@ export async function updateDuoPost(
   data: CreateDuoPostRequest,
 ): Promise<DuoPost> {
   const response = await apiClient.put<ApiResponse<DuoPost>>(
-    `/duo/posts/${postId}`,
+    `/v1/duo/posts/${postId}`,
     data,
   );
   return response.data.data;
 }
 
 export async function deleteDuoPost(postId: number): Promise<void> {
-  await apiClient.delete(`/duo/posts/${postId}`);
+  await apiClient.delete(`/v1/duo/posts/${postId}`);
 }
 
 export async function getMyDuoPosts(
   page: number = 0,
 ): Promise<DuoPostListResponse> {
   const response = await apiClient.get<ApiResponse<DuoPostListResponse>>(
-    "/duo/me/posts",
+    "/v1/duo/me/posts",
     { params: { page } },
   );
   return response.data.data;
