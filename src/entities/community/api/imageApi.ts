@@ -20,7 +20,7 @@ export async function uploadPostImage(file: File): Promise<PostImage> {
   formData.append("file", file);
 
   const response = await apiClient.post<ApiResponse<PostImage>>(
-    "/community/images",
+    "/v1/community/images",
     formData,
     {
       headers: { "Content-Type": "multipart/form-data" },
@@ -37,5 +37,5 @@ export async function uploadPostImage(file: File): Promise<PostImage> {
  * 첨부된 이미지는 글 저장 시 `imageIds` 에서 빼는 것으로 떨어진다.
  */
 export async function deletePostImage(imageId: number): Promise<void> {
-  await apiClient.delete(`/community/images/${imageId}`);
+  await apiClient.delete(`/v1/community/images/${imageId}`);
 }

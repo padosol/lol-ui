@@ -30,7 +30,7 @@ interface UseBookmarkToggleOptions {
  * 2. **Post 전체를 스냅샷하지 않는다.** 통짜로 되돌리면 그 사이 바뀐 추천 수·조회 수까지
  *    같이 되감긴다. 되돌릴 대상은 boolean 하나다.
  * 3. **서버 상태와 같은 요청은 보내지 않는다.** 짝수 번 연타하면 최종 의도가 원래
- *    상태와 같은데, 그걸 그대로 보내면 서버는 409/404 를 준다.
+ *    상태와 같다. PUT·DELETE 가 멱등이라 보내도 에러는 아니지만 왕복만 늘어난다.
  */
 export function useBookmarkToggle(
   postId: number,

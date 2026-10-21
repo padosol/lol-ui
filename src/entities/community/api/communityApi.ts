@@ -19,7 +19,7 @@ export async function getPosts(
   client: AxiosInstance = apiClient
 ): Promise<PostListResponse> {
   const response = await client.get<ApiResponse<PostListResponse>>(
-    "/community/posts",
+    "/v1/community/posts",
     { params }
   );
   return response.data.data;
@@ -30,14 +30,14 @@ export async function getPostDetail(
   client: AxiosInstance = apiClient
 ): Promise<Post> {
   const response = await client.get<ApiResponse<Post>>(
-    `/community/posts/${postId}`
+    `/v1/community/posts/${postId}`
   );
   return response.data.data;
 }
 
 export async function createPost(data: CreatePostRequest): Promise<Post> {
   const response = await apiClient.post<ApiResponse<Post>>(
-    "/community/posts",
+    "/v1/community/posts",
     data
   );
   return response.data.data;
@@ -45,19 +45,20 @@ export async function createPost(data: CreatePostRequest): Promise<Post> {
 
 export async function updatePost(postId: number, data: UpdatePostRequest): Promise<Post> {
   const response = await apiClient.put<ApiResponse<Post>>(
-    `/community/posts/${postId}`,
+    `/v1/community/posts/${postId}`,
     data
   );
   return response.data.data;
 }
 
 export async function deletePost(postId: number): Promise<void> {
-  await apiClient.delete(`/community/posts/${postId}`);
+  await apiClient.delete(`/v1/community/posts/${postId}`);
 }
 
+/** 목록과 같은 경로다. keyword 가 비어 있지 않으면 서버가 검색으로 바꿔 카테고리·정렬·기간을 무시한다. */
 export async function searchPosts(params: PostSearchParams): Promise<PostListResponse> {
   const response = await apiClient.get<ApiResponse<PostListResponse>>(
-    "/community/posts/search",
+    "/v1/community/posts",
     { params }
   );
   return response.data.data;
@@ -65,7 +66,7 @@ export async function searchPosts(params: PostSearchParams): Promise<PostListRes
 
 export async function getMyPosts(page: number = 0): Promise<PostListResponse> {
   const response = await apiClient.get<ApiResponse<PostListResponse>>(
-    "/community/me/posts",
+    "/v1/community/me/posts",
     { params: { page } }
   );
   return response.data.data;

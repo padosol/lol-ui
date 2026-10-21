@@ -14,7 +14,7 @@ export async function getCategoryTree(
   client: AxiosInstance = apiClient
 ): Promise<CategoryTree> {
   const response = await client.get<ApiResponse<CategoryTree>>(
-    "/community/categories",
+    "/v1/community/categories",
     { params: { locale } }
   );
   return response.data.data;
