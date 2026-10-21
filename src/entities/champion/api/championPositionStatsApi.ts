@@ -8,8 +8,8 @@ export async function getChampionPositionStats(
   tier?: string
 ): Promise<PositionChampionStats[]> {
   const response = await apiClient.get<ApiResponse<PositionChampionStats[]>>(
-    `/v1/${platformId}/champion-stats/positions`,
-    { params: { patch, ...(tier && { tier }) } }
+    "/v1/champion-stats",
+    { params: { platform: platformId, patch, ...(tier && { tier }) } }
   );
   if (response.data.result === "FAIL") {
     // 표시 문구는 호출부가 번역해 보여준다. 여기서는 원인 식별용 기술 메시지만 남긴다.
