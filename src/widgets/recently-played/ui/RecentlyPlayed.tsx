@@ -30,7 +30,6 @@ export default function RecentlyPlayed({
     puuid || "",
     undefined,
     0,
-    region,
     latestSeasonValue ?? undefined,
     seasonsLoaded,
   );
