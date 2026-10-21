@@ -4,7 +4,7 @@ import type { Comment, CreateCommentRequest, UpdateCommentRequest } from "../typ
 
 export async function getComments(postId: number): Promise<Comment[]> {
   const response = await apiClient.get<ApiResponse<Comment[]>>(
-    `/community/posts/${postId}/comments`
+    `/v1/community/posts/${postId}/comments`
   );
   return response.data.data;
 }
@@ -14,7 +14,7 @@ export async function createComment(
   data: CreateCommentRequest
 ): Promise<Comment> {
   const response = await apiClient.post<ApiResponse<Comment>>(
-    `/community/posts/${postId}/comments`,
+    `/v1/community/posts/${postId}/comments`,
     data
   );
   return response.data.data;
@@ -25,12 +25,12 @@ export async function updateComment(
   data: UpdateCommentRequest
 ): Promise<Comment> {
   const response = await apiClient.put<ApiResponse<Comment>>(
-    `/community/comments/${commentId}`,
+    `/v1/community/comments/${commentId}`,
     data
   );
   return response.data.data;
 }
 
 export async function deleteComment(commentId: number): Promise<void> {
-  await apiClient.delete(`/community/comments/${commentId}`);
+  await apiClient.delete(`/v1/community/comments/${commentId}`);
 }
