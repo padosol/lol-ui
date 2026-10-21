@@ -5,8 +5,9 @@ import { useSearchParams } from "next/navigation";
 import { useRouter } from "@/shared/i18n/navigation";
 import MypageSidebar from "./MypageSidebar";
 import AccountSection from "./AccountSection";
+import MyPostsSection from "./MyPostsSection";
 import BookmarksSection from "./BookmarksSection";
-export type Tab = "account" | "bookmarks";
+export type Tab = "account" | "posts" | "bookmarks";
 
 function MypagePanelContent() {
   const searchParams = useSearchParams();
@@ -22,6 +23,7 @@ function MypagePanelContent() {
       <MypageSidebar activeTab={tab} onTabChange={handleTabChange} />
       <div className="flex-1 min-w-0">
         {tab === "account" && <AccountSection />}
+        {tab === "posts" && <MyPostsSection />}
         {tab === "bookmarks" && <BookmarksSection />}
       </div>
     </div>

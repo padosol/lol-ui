@@ -1,6 +1,6 @@
 "use client";
 
-import { Bookmark, LogOut, User } from "lucide-react";
+import { Bookmark, FileText, LogOut, User } from "lucide-react";
 import { useLogout } from "@/features/auth";
 import { useTranslations } from "next-intl";
 import type { Tab } from "./MypagePanel";
@@ -12,6 +12,7 @@ interface MypageSidebarProps {
 
 const tabs = [
   { key: "account", icon: User },
+  { key: "posts", icon: FileText },
   { key: "bookmarks", icon: Bookmark },
 ] as const satisfies readonly { key: Tab; icon: typeof User }[];
 
