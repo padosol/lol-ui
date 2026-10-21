@@ -41,6 +41,19 @@ function processQueue(error: unknown) {
   failedQueue = [];
 }
 
+// refresh 쿠키는 새 Path(/api/v1/auth/refresh)와 옛 Path(/api/auth/refresh) 두 곳에 발급된다.
+// 새 Path 쿠키가 생기기 전에 로그인한 사용자는 옛 Path 에만 쿠키가 있어 새 경로가 401(쿠키 없음)을
+// 낸다 — 그때만 옛 경로로 한 번 더 시도한다. 옛 경로는 refresh 토큰 유효기간이 지나면 지운다(MP-148).
+// 순환 방지를 위해 apiClient 가 아니라 axios 를 직접 쓴다 (쿠키 자동 전송).
+async function requestTokenRefresh() {
+  try {
+    await axios.post(`${API_BASE_URL}/v1/auth/refresh`, {}, { withCredentials: true });
+  } catch (error) {
+    if (!axios.isAxiosError(error) || error.response?.status !== 401) throw error;
+    await axios.post(`${API_BASE_URL}/auth/refresh`, {}, { withCredentials: true });
+  }
+}
+
 function clearAuthStorage() {
   if (typeof window === "undefined") return;
   try {
@@ -124,8 +137,7 @@ apiClient.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        // 순환 방지를 위해 axios 직접 사용 (쿠키 자동 전송)
-        await axios.post(`${API_BASE_URL}/auth/refresh`, {}, { withCredentials: true });
+        await requestTokenRefresh();
         processQueue(null);
         return apiClient(originalRequest);
       } catch (refreshError) {
