@@ -12,8 +12,8 @@ export async function searchSummonerAutocomplete(
   region: string = "kr"
 ): Promise<SummonerAutocompleteItem[]> {
   const response = await apiClient.get<ApiResponse<SummonerAutocompleteItem[]>>(
-    `/v1/${region}/summoners/autocomplete`,
-    { params: { q: query } }
+    "/v1/summoners/autocomplete",
+    { params: { q: query, platform: region } }
   );
   return response.data.data;
 }
@@ -24,7 +24,8 @@ export async function getSummonerProfile(
   client: AxiosInstance = apiClient
 ): Promise<SummonerProfile> {
   const response = await client.get<ApiResponse<SummonerProfile>>(
-    `/v1/summoners/${region}/${encodeURIComponent(gameName)}`
+    `/v1/summoners/by-riot-id/${encodeURIComponent(gameName)}`,
+    { params: { platform: region } }
   );
   return response.data.data;
 }
