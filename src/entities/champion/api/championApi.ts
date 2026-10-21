@@ -6,7 +6,8 @@ export async function getChampionRotate(
   region: string = "kr"
 ): Promise<ChampionRotationResponse> {
   const response = await apiClient.get<ApiResponse<ChampionRotationResponse>>(
-    `/v1/${region}/champion/rotation`
+    "/v1/game-data/champion-rotations",
+    { params: { platform: region } }
   );
   return response.data.data;
 }

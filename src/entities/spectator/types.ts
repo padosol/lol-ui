@@ -31,8 +31,3 @@ export interface SpectatorData {
   gameStartTime: number;
   gameLength: number;
 }
-
-export interface QueueTab {
-  queueId: number;
-  queueName: string;
-}

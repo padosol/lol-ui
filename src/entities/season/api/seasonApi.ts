@@ -6,16 +6,8 @@ import type { Season } from "../types";
 export async function getSeasons(
   client: AxiosInstance = apiClient
 ): Promise<Season[]> {
-  const response = await client.get<ApiResponse<Season[]>>("/v1/seasons");
-  return response.data.data;
-}
-
-export async function getSeasonById(
-  seasonId: number,
-  client: AxiosInstance = apiClient
-): Promise<Season> {
-  const response = await client.get<ApiResponse<Season>>(
-    `/v1/seasons/${seasonId}`
+  const response = await client.get<ApiResponse<Season[]>>(
+    "/v1/game-data/seasons"
   );
   return response.data.data;
 }

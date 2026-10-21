@@ -1,11 +1,6 @@
 import type { ApiResponse } from "@/shared/api/types";
-import type { QueueTab, SpectatorData } from "../types";
+import type { SpectatorData } from "../types";
 import { apiClient } from "@/shared/api/client";
-
-export async function getQueueTabs(): Promise<QueueTab[]> {
-  const response = await apiClient.get<QueueTab[]>("/v1/queue-tab");
-  return response.data;
-}
 
 export async function getActiveGame(
   region: string,
