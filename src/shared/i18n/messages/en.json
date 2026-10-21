@@ -431,6 +431,7 @@
     "title": "My account",
     "nav": {
       "account": "Account",
+      "posts": "My posts",
       "bookmarks": "Bookmarks"
     },
     "logout": "Sign out",
@@ -464,6 +465,15 @@
       "required": "Enter a nickname.",
       "tooShort": "The nickname must be at least 2 characters.",
       "tooLong": "The nickname must be 16 characters or fewer."
+    },
+    "posts": {
+      "title": "My posts",
+      "loadError": "Failed to load your posts.",
+      "loading": "Loading...",
+      "empty": "You haven't written any posts yet",
+      "emptyPage": "No posts on this page",
+      "previous": "Previous",
+      "next": "Next"
     },
     "bookmarks": {
       "title": "Bookmarked posts",

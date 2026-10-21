@@ -54,9 +54,13 @@ export function useSearchPosts(keyword: string, page: number = 0) {
   });
 }
 
+/**
+ * 마이페이지 "내가 쓴 글" 목록. 북마크처럼 페이지 단위다.
+ * 키를 ["community", "posts"] 아래에 둬서 글 작성·수정·삭제가 이 목록도 함께 무효화하게 한다.
+ */
 export function useMyPosts(page: number = 0) {
   return useQuery<PostListResponse, Error>({
-    queryKey: ["community", "my-posts", page],
+    queryKey: ["community", "posts", "mine", page],
     queryFn: () => getMyPosts(page),
     staleTime: 1 * 60 * 1000,
   });
