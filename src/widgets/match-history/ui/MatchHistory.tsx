@@ -90,7 +90,7 @@ export default function MatchHistory({
   }, [gameModeFilter]);
 
   const { data: dailyMatchData, isLoading: isDailyCountLoading } = useDailyMatchCount(
-    region, puuid || "", latestSeasonValue ?? "", filterQueueId
+    puuid || "", latestSeasonValue ?? "", filterQueueId
   );
   const dailyCounts = dailyMatchData?.dailyCounts ?? [];
   const minCount = dailyMatchData?.minCount;
@@ -101,7 +101,6 @@ export default function MatchHistory({
     puuid || "",
     filterQueueId,
     page,
-    region,
     latestSeasonValue ?? undefined,
     seasonsLoaded
   );
