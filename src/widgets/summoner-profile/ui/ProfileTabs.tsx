@@ -104,7 +104,7 @@ export default function ProfileTabs({
 
         {activeTab === "ingame" && (
           <div className="p-6">
-            <IngameTab region={region} puuid={puuid} />
+            <IngameTab puuid={puuid} />
           </div>
         )}
 

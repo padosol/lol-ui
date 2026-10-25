@@ -191,11 +191,6 @@ export interface StatValue {
   [key: string]: number | string;
 }
 
-export interface MatchIdsResponse {
-  content: string[];
-  hasNext: boolean;
-}
-
 export interface SummonerMatchesResponse {
   content: MatchDetail[];
   hasNext: boolean;

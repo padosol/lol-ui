@@ -7,15 +7,14 @@ import { Gamepad2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 interface IngameTabProps {
-  region: string;
   puuid?: string | null;
 }
 
-export default function IngameTab({ region, puuid }: IngameTabProps) {
+export default function IngameTab({ puuid }: IngameTabProps) {
   const t = useTranslations("ingame");
   const tCommon = useTranslations("common");
   const tTeam = useTranslations("domain.team");
-  const { data, isLoading, error, refetch } = useActiveGame(region, puuid);
+  const { data, isLoading, error, refetch } = useActiveGame(puuid);
 
   if (isLoading) {
     return (

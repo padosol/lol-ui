@@ -19,7 +19,7 @@ export function useRiotLink() {
   const riotAccounts = user?.socialAccounts.filter((a) => a.provider === "RIOT") ?? [];
 
   function initiateLink() {
-    window.location.href = `${API_BASE_URL}/members/me/social-accounts/link/riot`;
+    window.location.href = `${API_BASE_URL}/v1/members/me/social-accounts/link/riot`;
   }
 
   const disconnectAllMutation = useMutation({

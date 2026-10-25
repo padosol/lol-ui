@@ -9,8 +9,8 @@ export async function getRanking(
   tier?: string
 ): Promise<RankingResponse> {
   const response = await apiClient.get<ApiResponse<RankingResponse>>(
-    `/v1/${region}/rank`,
-    { params: { rankType, page, ...(tier && { tier }) } }
+    "/v1/rankings",
+    { params: { platform: region, queue: rankType, page, ...(tier && { tier }) } }
   );
   return response.data.data;
 }
@@ -20,8 +20,8 @@ export async function getTierCutoffs(
   queue: "RANKED_SOLO_5x5" | "RANKED_FLEX_SR"
 ): Promise<TierCutoffResponse> {
   const response = await apiClient.get<ApiResponse<TierCutoffResponse>>(
-    `/v1/${region}/tier-cutoffs`,
-    { params: { queue } }
+    "/v1/rankings/tier-cutoffs",
+    { params: { platform: region, queue } }
   );
   return response.data.data;
 }

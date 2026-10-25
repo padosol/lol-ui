@@ -1,5 +1,6 @@
 import { logger } from "@/shared/lib/logger";
 import axios, { InternalAxiosRequestConfig } from "axios";
+import { isRepositoryPath } from "./repositoryRoutes";
 
 // 서버 전용 API 기본 URL 설정
 // API_URL_INTERNAL: NEXT_PUBLIC_ 접두사 없음 → 서버에서만 접근 가능 (런타임 환경변수)
@@ -8,6 +9,11 @@ const SERVER_API_BASE_URL =
   process.env.API_URL_INTERNAL ||
   process.env.NEXT_PUBLIC_API_URL ||
   "http://localhost:8100/api";
+
+// lol-repository 내부 URL (예: http://lol-repository:8080/api). 있으면 Riot 데이터 경로만 그쪽으로 보낸다.
+// API_URL_INTERNAL 이 Ingress 를 거치지 않는 주소일 때 필요하다 — Ingress 처럼 경로로 갈라 주는
+// 주소(로컬 nginx 등)라면 비워 둔다.
+const REPOSITORY_API_BASE_URL = process.env.REPOSITORY_API_URL_INTERNAL;
 
 export const serverApiClient = axios.create({
   baseURL: SERVER_API_BASE_URL,
@@ -20,6 +26,9 @@ export const serverApiClient = axios.create({
 // 요청 인터셉터
 serverApiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
+    if (REPOSITORY_API_BASE_URL && isRepositoryPath(config.url ?? "")) {
+      config.baseURL = REPOSITORY_API_BASE_URL;
+    }
     config.metadata = { startTime: Date.now() };
     logger.info("API Request", {
       method: config.method?.toUpperCase(),

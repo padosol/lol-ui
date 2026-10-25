@@ -10,6 +10,7 @@ import {
   useRemoveVote,
   useCategoryLabel,
   AuthorAvatar,
+  PostContent,
   postEditHref,
 } from "@/entities/community";
 import type { Post, VoteType } from "@/entities/community";
@@ -143,8 +144,8 @@ export default function PostDetailPanel({
         </div>
 
         {/* 3단 그리드에서는 카드가 넓어지므로 본문만 읽기 좋은 폭으로 묶는다 */}
-        <div className="py-6 max-w-[760px] text-[15px] leading-[1.85] text-on-surface-medium whitespace-pre-wrap">
-          {post.content}
+        <div className="max-w-[760px]">
+          <PostContent content={post.content} />
         </div>
 
         <div className="flex flex-wrap items-center gap-2 border-t border-divider pt-4">

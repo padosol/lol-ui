@@ -18,6 +18,7 @@ pnpm install
 | --- | --- | --- |
 | `NEXT_PUBLIC_API_URL` | 브라우저용 외부 API base URL | `http://localhost:8100/api` |
 | `API_URL_INTERNAL` | 서버 컴포넌트 전용 (Docker 내부 네트워크 등). 미설정 시 `NEXT_PUBLIC_API_URL` 로 fallback | `http://localhost:8100/api` |
+| `REPOSITORY_API_URL_INTERNAL` | 서버 컴포넌트 전용. 설정하면 Riot 데이터 경로(`shared/api/repositoryRoutes.ts`)만 lol-repository 로 보낸다. `API_URL_INTERNAL` 이 Ingress 를 거치지 않을 때(운영) 필요 | (비움) |
 | `NEXT_PUBLIC_IMAGE_HOST` | 정적 이미지 호스트 | `https://static.mmrtr.shop` |
 
 > `NEXT_PUBLIC_*` 는 클라이언트 번들에 inline 됨 — 비밀값 절대 X.
@@ -48,7 +49,7 @@ npx playwright test   # E2E 테스트
 | 브라우저 / `"use client"` | `@/shared/api/client` | `NEXT_PUBLIC_API_URL` |
 | 서버 컴포넌트 / 서버 액션 | `@/shared/api/server-client` | `API_URL_INTERNAL` (없으면 `NEXT_PUBLIC_API_URL`) |
 
-브라우저 클라이언트는 401 자동 토큰 갱신 + 로그인 페이지 redirect 인터셉터 포함 (`/auth/refresh`, `/auth/logout` 은 재시도 제외).
+브라우저 클라이언트는 401 자동 토큰 갱신 + 로그인 페이지 redirect 인터셉터 포함 (`/v1/auth/refresh`, `/v1/auth/logout` 은 재시도 제외). 토큰 갱신은 `/v1/auth/refresh` 가 401 이면 옛 `/auth/refresh` 로 한 번 더 시도한다 — 옛 Path 에만 refresh 쿠키가 있는 사용자용이며 MP-148 에서 지운다.
 
 ## 같이 보기
 

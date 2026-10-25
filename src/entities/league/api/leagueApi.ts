@@ -8,7 +8,7 @@ export async function getLeagueByPuuid(
   client: AxiosInstance = apiClient
 ): Promise<LeagueInfoResponse> {
   const response = await client.get<ApiResponse<LeagueInfoResponse>>(
-    `/v1/leagues/by-puuid/${puuid}`
+    `/v1/summoners/${puuid}/leagues`
   );
   return response.data.data;
 }

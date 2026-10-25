@@ -37,6 +37,9 @@ const eslintConfig = defineConfig([
       "src/entities/**/*.{ts,tsx}",
     ],
     ignores: [
+      // 테스트 문자열은 사용자에게 보이지 않는다. 한국어 본문을 그대로 넣어야
+      // 마크다운 왕복 같은 것을 실제 글에 가까운 입력으로 검증할 수 있다.
+      "src/**/*.test.{ts,tsx}",
       // 패치노트 원문이 한국어라 접미사만 번역하면 문장이 섞인다 (MP-106 영역).
       "src/entities/patch-note/lib/transformPatchNote.ts",
       // 탭이 비활성화된 목업 컴포넌트. 노출 시점에 함께 번역한다.

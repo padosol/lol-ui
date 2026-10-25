@@ -9,11 +9,18 @@
     "start": "next start",
     "lint": "eslint",
     "i18n:check": "node scripts/check-i18n-keys.mjs",
+    "test": "vitest run",
     "prepare": "husky"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
     "@tanstack/react-query": "^5.90.21",
+    "@tiptap/extension-heading": "3.30.3",
+    "@tiptap/extension-image": "3.30.3",
+    "@tiptap/extensions": "3.30.3",
+    "@tiptap/pm": "3.30.3",
+    "@tiptap/react": "3.30.3",
+    "@tiptap/starter-kit": "3.30.3",
     "axios": "^1.13.6",
     "chart.js": "^4.4.6",
     "dayjs": "^1.11.13",
@@ -25,7 +32,11 @@
     "react-dom": "19.2.4",
     "react-error-boundary": "^6.1.1",
     "react-hook-form": "^7.71.2",
+    "react-markdown": "^10.1.0",
+    "remark-breaks": "^4.0.0",
+    "remark-gfm": "^4.0.1",
     "sonner": "^2.0.7",
+    "tiptap-markdown": "0.9.0",
     "zod": "^4.3.6",
     "zustand": "^5.0.11"
   },
@@ -43,9 +54,11 @@
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
     "husky": "^9.1.7",
+    "jsdom": "^30.0.1",
     "lint-staged": "^16.4.0",
     "playwright": "^1.58.2",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.1.11"
   }
 }

@@ -2,44 +2,24 @@ import type { ApiResponse } from "@/shared/api/types";
 import type {
   DailyMatchCountResponse,
   MatchDetail,
-  MatchIdsResponse,
   RankChampionsResponse,
   SummonerMatchesResponse,
 } from "../types";
 import { apiClient } from "@/shared/api/client";
 
-export async function getMatchIds(
-  puuid: string,
-  queueId?: number,
-  pageNo: number = 0,
-  region: string = "kr"
-): Promise<MatchIdsResponse> {
-  const response = await apiClient.get<ApiResponse<MatchIdsResponse>>(
-    `/v1/${region}/matches/matchIds`,
-    {
-      params: {
-        puuid,
-        ...(queueId !== undefined && { queueId }),
-        pageNo,
-      },
-    }
-  );
-  return response.data.data;
-}
-
+/** page 는 0부터. */
 export async function getSummonerMatches(
   puuid: string,
   queueId?: number,
-  pageNo: number = 0,
-  region: string = "kr",
+  page: number = 0,
   season?: string
 ): Promise<SummonerMatchesResponse> {
   const response = await apiClient.get<ApiResponse<SummonerMatchesResponse>>(
-    `/v1/${region}/summoners/${puuid}/matches`,
+    `/v1/summoners/${puuid}/matches`,
     {
       params: {
         ...(queueId !== undefined && { queueId }),
-        pageNo,
+        page,
         ...(season !== undefined && { season }),
       },
     }
@@ -55,13 +35,12 @@ export async function getMatchDetail(matchId: string): Promise<MatchDetail> {
 }
 
 export async function getDailyMatchCount(
-  region: string,
   puuid: string,
   season: string,
   queueId?: number
 ): Promise<DailyMatchCountResponse> {
   const response = await apiClient.get<ApiResponse<DailyMatchCountResponse>>(
-    `/v1/${region}/summoners/${puuid}/matches/daily-count`,
+    `/v1/summoners/${puuid}/matches/daily-count`,
     {
       params: {
         season,
@@ -74,18 +53,11 @@ export async function getDailyMatchCount(
 
 export async function getChampionRanking(
   puuid: string,
-  season: string,
-  platform?: string
+  season: string
 ): Promise<RankChampionsResponse> {
   const response = await apiClient.get<ApiResponse<RankChampionsResponse>>(
-    `/v1/rank/champions`,
-    {
-      params: {
-        puuid,
-        season,
-        ...(platform !== undefined && { platform }),
-      },
-    }
+    `/v1/summoners/${puuid}/champions`,
+    { params: { season } }
   );
   return response.data.data;
 }

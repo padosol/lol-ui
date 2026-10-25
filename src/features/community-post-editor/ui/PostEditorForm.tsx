@@ -1,20 +1,36 @@
 "use client";
 
-import { useMemo } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
+import { useEditorState, type Editor } from "@tiptap/react";
 import { useCategoryTree, useWritableCategories } from "@/entities/community";
+import type { PostImage } from "@/entities/community";
+import { toast } from "@/shared/ui/toast";
 import {
   createPostEditorSchema,
   type PostEditorFormData,
+  type PostEditorSubmitData,
 } from "../model/postEditorSchema";
+import {
+  useImageAttachments,
+  type ImageErrorKey,
+} from "../model/useImageAttachments";
+import { usePostEditor } from "../model/usePostEditor";
+import { useDocumentImageUrls } from "../model/useDocumentImageUrls";
+import { MAX_IMAGE_SIZE_MB } from "../model/imageConstraints";
+import { insertImages, removeImageByUrl } from "../lib/editorImages";
+import ImageAttachmentBar from "./ImageAttachmentBar";
+import PostEditor from "./PostEditor";
 
 const TITLE_MAX = 300;
 
 interface PostEditorFormProps {
   defaultValues?: Partial<PostEditorFormData>;
-  onSubmit: (data: PostEditorFormData) => void;
+  /** 수정 화면에서 현재 글에 붙어 있는 이미지. 새 글이면 비어 있다. */
+  defaultImages?: PostImage[];
+  onSubmit: (data: PostEditorSubmitData) => void;
   onCancel?: () => void;
   isPending?: boolean;
   submitLabel?: string;
@@ -34,14 +50,38 @@ function FieldLabel({ children, hint }: { children: React.ReactNode; hint?: stri
   );
 }
 
+/**
+ * 글자 수만 따로 떼어 낸 컴포넌트.
+ *
+ * 폼 본체에서 세면 타이핑 한 글자마다 폼 전체가 다시 그려진다. 여기서 구독하면
+ * 다시 그려지는 것은 이 span 뿐이다.
+ */
+function CharacterCounter({ editor }: Readonly<{ editor: Editor | null }>) {
+  const t = useTranslations("community.editor");
+  const count = useEditorState({
+    editor,
+    selector: ({ editor: current }) =>
+      current?.storage.characterCount.characters() ?? 0,
+  });
+
+  return (
+    <span className="text-xs font-semibold text-on-surface-disabled">
+      {t("contentCount", { count: count ?? 0 })}
+    </span>
+  );
+}
+
 export default function PostEditorForm({
   defaultValues,
+  defaultImages,
   onSubmit,
   onCancel,
   isPending = false,
   submitLabel,
 }: PostEditorFormProps) {
   const t = useTranslations("community.editor");
+  const tImage = useTranslations("community.editor.image");
+  const tImageError = useTranslations("community.editor.image.errors");
   const tCommunity = useTranslations("community");
   const tCommon = useTranslations("common");
   const tValidation = useTranslations("community.editor.validation");
@@ -76,12 +116,78 @@ export default function PostEditorForm({
     },
   });
 
+  const showImageError = useCallback(
+    (key: ImageErrorKey) => {
+      toast.error(
+        key === "tooLarge"
+          ? tImageError(key, { size: MAX_IMAGE_SIZE_MB })
+          : tImageError(key)
+      );
+    },
+    [tImageError]
+  );
+
+  // 붙여넣기·드롭 핸들러는 에디터를 만들 때 캡처되는데, 그 핸들러가 하는 일(업로드 →
+  // 본문 삽입)에는 다시 에디터가 필요하다. ref 를 한 칸 끼워 순환을 끊는다.
+  const handleFilesRef = useRef<(files: File[]) => void>(() => {});
+
+  const editor = usePostEditor({
+    initialMarkdown: defaultValues?.content ?? "",
+    placeholder: t("contentPlaceholder"),
+    ariaLabel: t("content"),
+    onChange: (markdown) =>
+      setValue("content", markdown, { shouldValidate: true, shouldDirty: true }),
+    onImageFiles: (files) => handleFilesRef.current(files),
+  });
+
+  // 첨부 목록의 주인은 본문이다. 본문에서 지운 이미지는 아래 썸네일에서도 사라지고
+  // 저장할 imageIds 에서도 빠진다 — 글에 안 보이는 이미지가 붙어 있으면 안 된다.
+  const documentImageUrls = useDocumentImageUrls(editor);
+
+  const { attachments, imageIds, isUploading, isFull, upload, remove } =
+    useImageAttachments({
+      initial: defaultImages,
+      onError: showImageError,
+      attachedUrls: documentImageUrls,
+    });
+
+  const handleFiles = useCallback(
+    async (files: File[]) => {
+      const uploaded = await upload(files);
+      if (uploaded.length > 0 && editor) {
+        insertImages(
+          editor,
+          uploaded.map((image) => image.url)
+        );
+      }
+    },
+    [editor, upload]
+  );
+
+  useEffect(() => {
+    handleFilesRef.current = (files: File[]) => void handleFiles(files);
+  }, [handleFiles]);
+
+  const handleRemove = useCallback(
+    (imageId: number) => {
+      const target = attachments.find((item) => item.image.imageId === imageId);
+      if (target && editor) {
+        removeImageByUrl(editor, target.image.url);
+      }
+      void remove(imageId);
+    },
+    [attachments, editor, remove]
+  );
+
   const selectedCategory = watch("categoryId");
   const title = watch("title") ?? "";
-  const content = watch("content") ?? "";
+
+  const submit = (data: PostEditorFormData) => {
+    onSubmit({ ...data, imageIds });
+  };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3.5">
+    <form onSubmit={handleSubmit(submit)} className="flex flex-col gap-3.5">
       <div className="flex flex-col gap-5 rounded-xl border border-divider bg-surface-1 px-5 py-6 sm:px-8 sm:py-7">
         <div className="flex flex-col gap-2">
           <FieldLabel>{t("category")}</FieldLabel>
@@ -139,18 +245,33 @@ export default function PostEditorForm({
         </div>
 
         <div className="flex flex-col gap-2">
-          <FieldLabel hint={t("contentCount", { count: content.length })}>
-            {t("content")}
-          </FieldLabel>
-          <textarea
-            {...register("content")}
-            placeholder={t("contentPlaceholder")}
-            rows={14}
-            className="w-full resize-none rounded-lg border border-divider bg-surface-2 px-4 py-3.5 text-[15px] leading-[1.8] text-on-surface placeholder:text-on-surface-disabled focus:border-primary focus:outline-none"
-          />
+          <div className="flex items-baseline gap-2">
+            <span className="text-xs font-bold tracking-widest text-on-surface-disabled">
+              {t("content")}
+            </span>
+            <div className="flex-1" />
+            <CharacterCounter editor={editor} />
+          </div>
+          {/*
+            본문의 주인은 에디터다. 폼에는 자리만 만들어 두고 값은 onChange 에서
+            setValue 로 넣는다 — categoryId 와 같은 방식이다.
+          */}
+          <input type="hidden" {...register("content")} />
+          <PostEditor editor={editor} disabled={isUploading} />
           {errors.content && (
             <p className="text-xs text-loss">{errors.content.message}</p>
           )}
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <FieldLabel>{tImage("label")}</FieldLabel>
+          <ImageAttachmentBar
+            attachments={attachments}
+            isUploading={isUploading}
+            isFull={isFull}
+            onSelect={(files) => void handleFiles(files)}
+            onRemove={handleRemove}
+          />
         </div>
       </div>
 
@@ -168,7 +289,8 @@ export default function PostEditorForm({
         <button
           type="submit"
           // 목록이 오기 전에는 writableCodes 가 비어 있어 정상 입력도 거부된다.
-          disabled={isPending || isCategoryLoading}
+          // 업로드 중 제출하면 아직 id 를 못 받은 이미지가 본문에서 빠진 채 저장된다.
+          disabled={isPending || isCategoryLoading || isUploading}
           className="rounded-lg bg-primary px-7 py-2.5 text-sm font-bold text-surface hover:bg-primary/80 transition-colors disabled:opacity-50 cursor-pointer"
         >
           {isPending ? tCommon("processing") : (submitLabel ?? tCommunity("submit"))}

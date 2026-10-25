@@ -27,7 +27,7 @@ const EXPECTED_LATEST_PATCH = "16.14";
 async function stubGameData(page: Page): Promise<string[]> {
   const requestedUrls: string[] = [];
 
-  await page.route("**/v1/seasons", (route) =>
+  await page.route("**/v1/game-data/seasons", (route) =>
     route.fulfill({
       status: 200,
       contentType: "application/json",
@@ -107,7 +107,7 @@ test.describe("게임 정적 데이터", () => {
   test("시즌 정보를 받지 못하면 번들된 데이터로 떨어진다", async ({ page }) => {
     const requestedPaths: string[] = [];
 
-    await page.route("**/v1/seasons", (route) => route.abort());
+    await page.route("**/v1/game-data/seasons", (route) => route.abort());
     page.on("request", (request) => {
       const { pathname } = new URL(request.url());
       if (DATA_FILE_RE.test(pathname)) requestedPaths.push(pathname);

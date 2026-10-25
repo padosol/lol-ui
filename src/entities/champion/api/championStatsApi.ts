@@ -11,8 +11,8 @@ export async function getChampionStats(
   client: AxiosInstance = apiClient
 ): Promise<ChampionStatsResponse> {
   const response = await client.get<ApiResponse<ChampionStatsResponse>>(
-    `/v1/${region}/champion-stats`,
-    { params: { championId, patch, ...(tier && { tier }) } }
+    `/v1/champion-stats/${championId}`,
+    { params: { platform: region, patch, ...(tier && { tier }) } }
   );
   if (response.data.result === "FAIL") {
     // 표시 문구는 호출부가 번역해 보여준다. 여기서는 원인 식별용 기술 메시지만 남긴다.
