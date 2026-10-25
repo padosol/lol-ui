@@ -431,6 +431,7 @@
     "title": "내 계정",
     "nav": {
       "account": "계정 관리",
+      "posts": "내가 쓴 글",
       "bookmarks": "북마크한 글"
     },
     "logout": "로그아웃",
@@ -464,6 +465,15 @@
       "required": "닉네임을 입력해주세요.",
       "tooShort": "닉네임은 2자 이상이어야 합니다.",
       "tooLong": "닉네임은 16자 이하여야 합니다."
+    },
+    "posts": {
+      "title": "내가 쓴 글",
+      "loadError": "내가 쓴 글을 불러오지 못했습니다.",
+      "loading": "불러오는 중...",
+      "empty": "아직 쓴 글이 없습니다",
+      "emptyPage": "이 페이지에는 글이 없습니다",
+      "previous": "이전",
+      "next": "다음"
     },
     "bookmarks": {
       "title": "북마크한 글",
