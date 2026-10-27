@@ -13,7 +13,7 @@ const NAV_ITEMS = [
   { key: "leaderboards", href: "/leaderboards" },
   // { key: "patchNotes", href: "/patch-notes" },
   { key: "community", href: "/community" },
-  { key: "duo", href: "/duo" },
+  // { key: "duo", href: "/duo" },
 ] as const;
 
 export default function Navigation() {
