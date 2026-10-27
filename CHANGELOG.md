@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.13.0](https://github.com/padosol/lol-ui/compare/v1.12.0...v1.13.0) (2026-10-27)
+
+
+### Features
+
+* MP-184 네비게이션에서 듀오 찾기 메뉴를 내린다 ([a14ebb4](https://github.com/padosol/lol-ui/commit/a14ebb49578b11ee7f5975caf320bf74a3b2b2b5))
+* 네비게이션에서 듀오 찾기 메뉴를 내린다 ([7a5e6a6](https://github.com/padosol/lol-ui/commit/7a5e6a647b7e13ec708a732cb4573b3e951142e1))
+
 ## [1.12.0](https://github.com/padosol/lol-ui/compare/v1.11.0...v1.12.0) (2026-10-25)
 
 
