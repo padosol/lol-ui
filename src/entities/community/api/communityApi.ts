@@ -1,4 +1,4 @@
-import type { AxiosInstance } from "axios";
+import type { AxiosInstance, AxiosRequestConfig } from "axios";
 import { apiClient } from "@/shared/api/client";
 import type { ApiResponse } from "@/shared/api/types";
 import type {
@@ -27,10 +27,12 @@ export async function getPosts(
 
 export async function getPostDetail(
   postId: number,
-  client: AxiosInstance = apiClient
+  client: AxiosInstance = apiClient,
+  config?: AxiosRequestConfig
 ): Promise<Post> {
   const response = await client.get<ApiResponse<Post>>(
-    `/v1/community/posts/${postId}`
+    `/v1/community/posts/${postId}`,
+    config
   );
   return response.data.data;
 }

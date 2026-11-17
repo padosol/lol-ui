@@ -1,4 +1,9 @@
 import { cache } from "react";
+import { cookies } from "next/headers";
+import {
+  ACCESS_TOKEN_COOKIE,
+  bearerAuthHeaders,
+} from "@/shared/api/authHeaders";
 import { serverApiClient } from "@/shared/api/server-client";
 import {
   getCategoryTree,
@@ -32,9 +37,16 @@ export const loadPosts = cache(
     getPosts({ categoryId, sort, period: "ALL", page: 0 }, serverApiClient)
 );
 
-export const loadPostDetail = cache((postId: number) =>
-  getPostDetail(postId, serverApiClient)
-);
+/**
+ * 상세 조회에만 로그인 토큰을 실어, 내 추천/북마크 상태가 SSR 첫 화면부터 채워지게 한다.
+ * 같은 호스트의 accessToken 쿠키를 Authorization 헤더로 옮긴다.
+ */
+export const loadPostDetail = cache(async (postId: number) => {
+  const token = (await cookies()).get(ACCESS_TOKEN_COOKIE)?.value;
+  return getPostDetail(postId, serverApiClient, {
+    headers: bearerAuthHeaders(token),
+  });
+});
 
 /**
  * 목록은 게시판 트리가 없으면 사이드바가 통째로 비므로 실패를 삼키지 않고 올린다.
