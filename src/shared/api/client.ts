@@ -3,6 +3,10 @@ import axios, { InternalAxiosRequestConfig, AxiosError } from "axios";
 
 // axios 타입 확장: 요청 시작 시간 기록용
 declare module "axios" {
+  interface AxiosRequestConfig {
+    // true 면 refresh 가 실패해도 저장소를 지우거나 /login 으로 이동하지 않고 reject 만 한다.
+    skipAuthRedirect?: boolean;
+  }
   interface InternalAxiosRequestConfig {
     metadata?: { startTime: number };
     _retry?: boolean;
@@ -142,6 +146,9 @@ apiClient.interceptors.response.use(
         return apiClient(originalRequest);
       } catch (refreshError) {
         processQueue(refreshError);
+        if (originalRequest.skipAuthRedirect) {
+          return Promise.reject(refreshError);
+        }
         clearAuthStorage();
         if (typeof window !== "undefined") {
           window.location.href = "/login";

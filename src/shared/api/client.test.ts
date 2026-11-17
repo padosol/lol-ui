@@ -4,7 +4,7 @@ import axios, {
   type AxiosResponse,
   type InternalAxiosRequestConfig,
 } from "axios";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { apiClient } from "./client";
 
 /**
@@ -80,5 +80,50 @@ describe("401 토큰 갱신", () => {
       "POST /api/auth/refresh",
       "GET /api/v1/members/me",
     ]);
+  });
+});
+
+describe("skipAuthRedirect", () => {
+  function failRefresh() {
+    localStorage.setItem("auth-storage", "kept");
+    replies["/api/v1/members/me"] = [{ status: 401 }];
+    replies["/api/v1/auth/refresh"] = [{ status: 401 }];
+    replies["/api/auth/refresh"] = [{ status: 401 }];
+  }
+
+  // Node 의 실험적 localStorage 가 jsdom 것을 가려 undefined 가 될 수 있어 메모리 스토어로 고정한다.
+  beforeEach(() => {
+    const store = new Map<string, string>();
+    vi.stubGlobal("localStorage", {
+      getItem: (key: string) => store.get(key) ?? null,
+      setItem: (key: string, value: string) => void store.set(key, value),
+      removeItem: (key: string) => void store.delete(key),
+    });
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it("skipAuthRedirect 요청은 refresh 가 실패해도 저장소를 지우지 않고 reject 한다", async () => {
+    failRefresh();
+
+    await expect(
+      apiClient.get("/v1/members/me", { skipAuthRedirect: true }),
+    ).rejects.toMatchObject({ response: { status: 401 } });
+    expect(localStorage.getItem("auth-storage")).toBe("kept");
+  });
+
+  it("skipAuthRedirect 가 없으면 refresh 실패 시 저장소를 지운다", async () => {
+    failRefresh();
+    // jsdom 은 location.href 대입(navigation)을 구현하지 않아 소음을 낸다 — 이동도 함께 확인한다.
+    const location = { href: "" };
+    vi.stubGlobal("location", location);
+
+    await expect(apiClient.get("/v1/members/me")).rejects.toMatchObject({
+      response: { status: 401 },
+    });
+    expect(localStorage.getItem("auth-storage")).toBeNull();
+    expect(location.href).toBe("/login");
   });
 });
