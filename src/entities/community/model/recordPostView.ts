@@ -21,7 +21,7 @@ export async function recordPostViewAndSync(
       (prev) => prev && { ...prev, viewCount }
     );
   } catch (error) {
-    logger.warn("조회 기록 실패", {
+    logger.warn("Failed to record post view", {
       url: `/v1/community/posts/${postId}/views`,
       error: error instanceof Error ? error.message : String(error),
     });
