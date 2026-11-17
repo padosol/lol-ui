@@ -49,12 +49,15 @@ function processQueue(error: unknown) {
 // 새 Path 쿠키가 생기기 전에 로그인한 사용자는 옛 Path 에만 쿠키가 있어 새 경로가 401(쿠키 없음)을
 // 낸다 — 그때만 옛 경로로 한 번 더 시도한다. 옛 경로는 refresh 토큰 유효기간이 지나면 지운다(MP-148).
 // 순환 방지를 위해 apiClient 가 아니라 axios 를 직접 쓴다 (쿠키 자동 전송).
+// axios 기본값은 타임아웃이 없다. 세션 확인이 조회 기록을 붙잡고 있어 apiClient 와 같은 10초를 건다.
+const REFRESH_CONFIG = { withCredentials: true, timeout: 10000 };
+
 async function requestTokenRefresh() {
   try {
-    await axios.post(`${API_BASE_URL}/v1/auth/refresh`, {}, { withCredentials: true });
+    await axios.post(`${API_BASE_URL}/v1/auth/refresh`, {}, REFRESH_CONFIG);
   } catch (error) {
     if (!axios.isAxiosError(error) || error.response?.status !== 401) throw error;
-    await axios.post(`${API_BASE_URL}/auth/refresh`, {}, { withCredentials: true });
+    await axios.post(`${API_BASE_URL}/auth/refresh`, {}, REFRESH_CONFIG);
   }
 }
 

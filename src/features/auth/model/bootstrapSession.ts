@@ -9,16 +9,23 @@ export interface SessionBootstrapDeps {
   setStatus: (status: AuthStatus) => void;
 }
 
-function isUnauthorized(e: unknown): boolean {
-  return axios.isAxiosError(e) && e.response?.status === 401;
+/**
+ * 서버가 이 세션을 받아 주지 않았다(4xx)면 그 상태 코드, 아니면 undefined.
+ * 응답이 없는 네트워크 오류·타임아웃과 5xx 는 세션이 끝났다는 증거가 아니다.
+ */
+function rejectedStatus(e: unknown): number | undefined {
+  if (!axios.isAxiosError(e)) return undefined;
+  const status = e.response?.status;
+  return status !== undefined && status >= 400 && status < 500 ? status : undefined;
 }
 
 /**
- * 앱 진입 시 저장된 로그인 상태가 서버 세션과 맞는지 한 번 확인한다.
+ * 저장된 로그인 상태가 서버 세션과 맞는지 확인한다.
  *
- * <p>401 은 인터셉터의 refresh 까지 실패했다는 뜻이다. 한 번 더 확인해 두 번 연속 401 일 때만
- * 조용히 로그아웃한다. 네트워크·5xx 는 세션이 끝났다는 증거가 아니므로 user 를 유지하고
- * unverified 로 둔다.
+ * <p>401 은 인터셉터의 refresh 까지 실패했다는 뜻이다. 다른 탭이 먼저 토큰을 회전시켰을 수 있어
+ * 한 번 더 확인하고, 그래도 거절(4xx)되면 조용히 로그아웃한다. 401 이 아닌 4xx(탈퇴 403·삭제 404 등)는
+ * 다시 물어도 같은 답이라 바로 로그아웃한다. 네트워크·타임아웃·5xx 는 세션이 끝났다는 증거가 아니므로
+ * user 를 유지하고 unverified 로 둔다.
  */
 export async function bootstrapSession(deps: SessionBootstrapDeps): Promise<AuthStatus> {
   if (!deps.hasStoredUser) {
@@ -30,21 +37,25 @@ export async function bootstrapSession(deps: SessionBootstrapDeps): Promise<Auth
     deps.setUser(await deps.fetchProfile());
     return "authenticated";
   } catch (e) {
-    if (!isUnauthorized(e)) {
-      deps.setStatus("unverified");
-      return "unverified";
-    }
+    const status = rejectedStatus(e);
+    if (status === undefined) return unverified(deps);
+    if (status !== 401) return signOut(deps);
   }
 
   try {
     deps.setUser(await deps.fetchProfile());
     return "authenticated";
   } catch (e) {
-    if (isUnauthorized(e)) {
-      deps.clearAuth();
-      return "anonymous";
-    }
-    deps.setStatus("unverified");
-    return "unverified";
+    return rejectedStatus(e) === undefined ? unverified(deps) : signOut(deps);
   }
+}
+
+function signOut(deps: SessionBootstrapDeps): AuthStatus {
+  deps.clearAuth();
+  return "anonymous";
+}
+
+function unverified(deps: SessionBootstrapDeps): AuthStatus {
+  deps.setStatus("unverified");
+  return "unverified";
 }

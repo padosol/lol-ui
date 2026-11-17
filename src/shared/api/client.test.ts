@@ -17,6 +17,8 @@ import { apiClient } from "./client";
 type Reply = { status: number };
 
 const calls: string[] = [];
+// 어댑터가 받은 요청 설정. 경로별 마지막 것만 둔다.
+const configs: Record<string, InternalAxiosRequestConfig> = {};
 let replies: Record<string, Reply[]> = {};
 const originalAdapters = {
   axios: axios.defaults.adapter,
@@ -27,6 +29,7 @@ const adapter: AxiosAdapter = async (config: InternalAxiosRequestConfig) => {
   const url = `${config.baseURL ?? ""}${config.url ?? ""}`;
   const path = new URL(url).pathname;
   calls.push(`${config.method?.toUpperCase()} ${path}`);
+  configs[path] = config;
 
   const { status } = replies[path]?.shift() ?? { status: 200 };
   const response: AxiosResponse = {
@@ -44,6 +47,7 @@ const adapter: AxiosAdapter = async (config: InternalAxiosRequestConfig) => {
 
 beforeEach(() => {
   calls.length = 0;
+  for (const path of Object.keys(configs)) delete configs[path];
   replies = {};
   // refresh 는 순환을 피하려고 apiClient 가 아니라 axios 로 직접 보낸다 — 둘 다 가로챈다.
   axios.defaults.adapter = adapter;
@@ -80,6 +84,17 @@ describe("401 토큰 갱신", () => {
       "POST /api/auth/refresh",
       "GET /api/v1/members/me",
     ]);
+  });
+
+  // 세션 확인이 조회 기록을 붙잡고 있어서, refresh 가 응답 없이 매달리면 기록도 영영 나가지 않는다.
+  it("refresh 요청은 두 경로 모두 10초 타임아웃을 싣는다", async () => {
+    replies["/api/v1/members/me"] = [{ status: 401 }];
+    replies["/api/v1/auth/refresh"] = [{ status: 401 }];
+
+    await apiClient.get("/v1/members/me");
+
+    expect(configs["/api/v1/auth/refresh"]?.timeout).toBe(10000);
+    expect(configs["/api/auth/refresh"]?.timeout).toBe(10000);
   });
 });
 
