@@ -1,3 +1,4 @@
+import type { AxiosRequestConfig } from "axios";
 import { apiClient } from "@/shared/api/client";
 import type { ApiResponse } from "@/shared/api/types";
 import type { MemberProfile } from "../types";
@@ -6,8 +7,8 @@ export async function logout(): Promise<void> {
   await apiClient.post("/v1/auth/logout");
 }
 
-export async function getMyProfile(): Promise<MemberProfile> {
-  const res = await apiClient.get<ApiResponse<MemberProfile>>("/v1/members/me");
+export async function getMyProfile(config?: AxiosRequestConfig): Promise<MemberProfile> {
+  const res = await apiClient.get<ApiResponse<MemberProfile>>("/v1/members/me", config);
   return res.data.data;
 }
 

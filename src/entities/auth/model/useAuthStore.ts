@@ -6,8 +6,10 @@ export const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
       user: null,
-      setUser: (user: MemberProfile) => set({ user }),
-      clearAuth: () => set({ user: null }),
+      status: "unknown",
+      setStatus: (status) => set({ status }),
+      setUser: (user: MemberProfile) => set({ user, status: "authenticated" }),
+      clearAuth: () => set({ user: null, status: "anonymous" }),
     }),
     {
       name: "auth-storage",
