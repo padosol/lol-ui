@@ -12,6 +12,7 @@ import {
   AuthorAvatar,
   PostContent,
   postEditHref,
+  useRecordPostView,
 } from "@/entities/community";
 import type { Post, VoteType } from "@/entities/community";
 import { useAuthStore } from "@/entities/auth";
@@ -21,6 +22,7 @@ import { ConfirmModal } from "@/shared/ui/modal";
 import { toast } from "@/shared/ui/toast";
 import { useFormatter, useTranslations } from "next-intl";
 import CommentSection from "./CommentSection";
+import { shouldRefetchPersonalization } from "../lib/shouldRefetchPersonalization";
 
 interface PostDetailPanelProps {
   postId: number;
@@ -47,14 +49,13 @@ export default function PostDetailPanel({
   const voteMutation = useVote(postId);
   const removeVoteMutation = useRemoveVote(postId);
 
-  // 서버 조회에는 인증이 실리지 않아 초기 데이터의 투표·북마크 표시가 비어 있다.
-  // 로그인 상태일 때만 한 번 더 받아 채운다(비로그인 방문·크롤러는 조회가 한 번으로 끝난다).
-  const hasInitialPost = !!initialPost;
-  const userId = user?.id;
+  const authStatus = useAuthStore((s) => s.status);
+  // 세션이 확정된 뒤에 기록해야 토큰이 만료돼 있던 회원도 회원으로 한 번만 센다.
+  useRecordPostView(postId, authStatus !== "unknown");
+  const needsPersonalization = shouldRefetchPersonalization(authStatus, post);
   useEffect(() => {
-    if (!hasInitialPost || !userId) return;
-    refetch();
-  }, [hasInitialPost, userId, refetch]);
+    if (needsPersonalization) refetch();
+  }, [needsPersonalization, refetch]);
 
   const isAuthor = user?.id === post?.author.id;
   const isVotePending = voteMutation.isPending || removeVoteMutation.isPending;
