@@ -25,6 +25,13 @@ const forbidden = new AxiosError("403", "ERR_BAD_REQUEST", undefined, null, {
 const notFound = new AxiosError("404", "ERR_BAD_REQUEST", undefined, null, {
   status: 404,
 } as AxiosResponse);
+// 408·429 는 계정 상태가 아니라 일시 오류다.
+const requestTimeout = new AxiosError("408", "ERR_BAD_REQUEST", undefined, null, {
+  status: 408,
+} as AxiosResponse);
+const tooManyRequests = new AxiosError("429", "ERR_BAD_REQUEST", undefined, null, {
+  status: 429,
+} as AxiosResponse);
 const networkError = new AxiosError("Network Error", "ERR_NETWORK");
 
 let deps: SessionBootstrapDeps;
@@ -111,5 +118,29 @@ describe("bootstrapSession", () => {
     expect(await bootstrapSession(deps)).toBe("anonymous");
     expect(deps.fetchProfile).toHaveBeenCalledTimes(2);
     expect(deps.clearAuth).toHaveBeenCalledTimes(1);
+  });
+
+  it("처음부터 429 면 다시 확인하지 않고 user 를 유지한 채 unverified", async () => {
+    vi.mocked(deps.fetchProfile).mockRejectedValue(tooManyRequests);
+    expect(await bootstrapSession(deps)).toBe("unverified");
+    expect(deps.fetchProfile).toHaveBeenCalledTimes(1);
+    expect(deps.setStatus).toHaveBeenCalledWith("unverified");
+    expect(deps.clearAuth).not.toHaveBeenCalled();
+    expect(deps.setUser).not.toHaveBeenCalled();
+  });
+
+  it("처음부터 408 이면 unverified", async () => {
+    vi.mocked(deps.fetchProfile).mockRejectedValue(requestTimeout);
+    expect(await bootstrapSession(deps)).toBe("unverified");
+    expect(deps.fetchProfile).toHaveBeenCalledTimes(1);
+    expect(deps.clearAuth).not.toHaveBeenCalled();
+  });
+
+  it("401 뒤 재확인이 429 면 로그아웃하지 않고 unverified", async () => {
+    vi.mocked(deps.fetchProfile).mockRejectedValueOnce(unauthorized).mockRejectedValueOnce(tooManyRequests);
+    expect(await bootstrapSession(deps)).toBe("unverified");
+    expect(deps.fetchProfile).toHaveBeenCalledTimes(2);
+    expect(deps.setStatus).toHaveBeenCalledWith("unverified");
+    expect(deps.clearAuth).not.toHaveBeenCalled();
   });
 });
