@@ -150,13 +150,13 @@ apiClient.interceptors.response.use(
       } catch (refreshError) {
         processQueue(refreshError);
         if (originalRequest.skipAuthRedirect) {
-          return Promise.reject(refreshError);
+          throw refreshError;
         }
         clearAuthStorage();
         if (typeof window !== "undefined") {
           window.location.href = "/login";
         }
-        return Promise.reject(refreshError);
+        throw refreshError;
       } finally {
         isRefreshing = false;
       }
