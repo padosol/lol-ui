@@ -2,7 +2,7 @@
 
 import { useRef, useState, useTransition } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { Languages } from "lucide-react";
+import { Check, Globe } from "lucide-react";
 import { usePathname, useRouter } from "@/shared/i18n/navigation";
 import { LOCALES, LOCALE_LABELS, type Locale } from "@/shared/i18n/locale";
 import { useClickOutside } from "@/shared/lib/useClickOutside";
@@ -37,41 +37,57 @@ export function LocaleSwitcher() {
 
   return (
     <div className="relative" ref={containerRef}>
+      {/* 헤더 바와 메뉴가 bg-surface-4 라 hover 는 한 단계 밝은 surface-12 로 준다 */}
       <button
         type="button"
         onClick={() => setOpen((prev) => !prev)}
         disabled={isPending}
-        className="p-2 rounded-lg hover:bg-surface-4 transition-colors cursor-pointer disabled:opacity-50"
-        aria-label={t("label")}
+        className="flex items-center gap-1 h-9 px-2 rounded-lg text-on-surface-medium hover:bg-surface-12 hover:text-on-surface transition-colors cursor-pointer disabled:opacity-50"
+        // 화면엔 코드(KO)만 보이므로 보조기기에는 언어 이름으로 알린다
+        aria-label={t("current", { language: LOCALE_LABELS[activeLocale] })}
         aria-haspopup="listbox"
         aria-expanded={open}
       >
-        <Languages className="w-5 h-5 text-on-surface-medium" />
+        <Globe className="w-4 h-4" />
+        <span className="text-xs font-semibold tracking-wide">
+          {activeLocale.toUpperCase()}
+        </span>
       </button>
 
       {open && (
         <ul
           role="listbox"
           aria-label={t("label")}
-          className="absolute right-0 mt-2 min-w-32 rounded-lg bg-surface-4 border border-divider shadow-lg py-1 z-50"
+          className="absolute right-0 mt-2 min-w-40 rounded-lg bg-surface-4 border border-divider shadow-lg p-1 z-50"
         >
-          {LOCALES.map((locale) => (
-            <li key={locale}>
-              <button
-                type="button"
-                role="option"
-                aria-selected={locale === activeLocale}
-                onClick={() => handleSelect(locale)}
-                className={`w-full text-left px-4 py-2 text-sm cursor-pointer hover:bg-surface-4 transition-colors ${
-                  locale === activeLocale
-                    ? "text-primary font-medium"
-                    : "text-on-surface-medium"
-                }`}
-              >
-                {LOCALE_LABELS[locale]}
-              </button>
-            </li>
-          ))}
+          {LOCALES.map((locale) => {
+            const selected = locale === activeLocale;
+            return (
+              <li key={locale}>
+                <button
+                  type="button"
+                  role="option"
+                  aria-selected={selected}
+                  lang={locale}
+                  onClick={() => handleSelect(locale)}
+                  className={`flex items-center gap-2.5 w-full text-left px-2.5 py-2 rounded-md text-sm cursor-pointer hover:bg-surface-12 transition-colors ${
+                    selected
+                      ? "text-primary font-medium"
+                      : "text-on-surface-medium hover:text-on-surface"
+                  }`}
+                >
+                  <span
+                    aria-hidden="true"
+                    className="w-5 text-[11px] font-medium tracking-wide text-on-surface-disabled"
+                  >
+                    {locale.toUpperCase()}
+                  </span>
+                  {LOCALE_LABELS[locale]}
+                  {selected && <Check className="w-4 h-4 ml-auto" />}
+                </button>
+              </li>
+            );
+          })}
         </ul>
       )}
     </div>
