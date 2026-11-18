@@ -7,6 +7,7 @@ import axios, {
 import { QueryClient } from "@tanstack/react-query";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { apiClient } from "@/shared/api/client";
+import { createMemoryStorage } from "@/shared/lib/testing/memoryStorage";
 import type { Post } from "../types";
 import { postDetailKey } from "./usePostDetail";
 import { recordPostViewAndSync } from "./recordPostView";
@@ -87,12 +88,7 @@ describe("recordPostViewAndSync", () => {
 
   it("401 + refresh 실패여도 resolve 하고 캐시·auth-storage 를 건드리지 않는다", async () => {
     vi.spyOn(console, "warn").mockImplementation(() => {});
-    const store = new Map<string, string>([["auth-storage", "kept"]]);
-    vi.stubGlobal("localStorage", {
-      getItem: (key: string) => store.get(key) ?? null,
-      setItem: (key: string, value: string) => void store.set(key, value),
-      removeItem: (key: string) => void store.delete(key),
-    });
+    vi.stubGlobal("localStorage", createMemoryStorage({ "auth-storage": "kept" }));
     const location = { href: "" };
     vi.stubGlobal("location", location);
     queryClient.setQueryData(postDetailKey(42), post);

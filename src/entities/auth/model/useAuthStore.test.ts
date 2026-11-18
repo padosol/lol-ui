@@ -1,15 +1,9 @@
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
+import { createMemoryStorage } from "@/shared/lib/testing/memoryStorage";
 import type { MemberProfile } from "../types";
 
-// 이 Node 런타임은 jsdom 의 localStorage 를 undefined 로 가린다.
 // zustand persist 는 스토어 생성 시 저장소를 잡으므로 import 전에 stub 한다.
-const backing = new Map<string, string>();
-vi.stubGlobal("localStorage", {
-  getItem: (key: string) => backing.get(key) ?? null,
-  setItem: (key: string, value: string) => void backing.set(key, value),
-  removeItem: (key: string) => void backing.delete(key),
-  clear: () => backing.clear(),
-});
+vi.stubGlobal("localStorage", createMemoryStorage());
 
 const profile: MemberProfile = {
   id: 1,

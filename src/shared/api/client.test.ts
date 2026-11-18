@@ -6,6 +6,7 @@ import axios, {
 } from "axios";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { apiClient } from "./client";
+import { createMemoryStorage } from "@/shared/lib/testing/memoryStorage";
 
 /**
  * 401 을 받으면 refresh 후 원래 요청을 다시 보내는 인터셉터를 본다.
@@ -108,12 +109,7 @@ describe("skipAuthRedirect", () => {
 
   // Node 의 실험적 localStorage 가 jsdom 것을 가려 undefined 가 될 수 있어 메모리 스토어로 고정한다.
   beforeEach(() => {
-    const store = new Map<string, string>();
-    vi.stubGlobal("localStorage", {
-      getItem: (key: string) => store.get(key) ?? null,
-      setItem: (key: string, value: string) => void store.set(key, value),
-      removeItem: (key: string) => void store.delete(key),
-    });
+    vi.stubGlobal("localStorage", createMemoryStorage());
   });
 
   afterEach(() => {
