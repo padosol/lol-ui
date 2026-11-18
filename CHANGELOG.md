@@ -1,5 +1,28 @@
 # Changelog
 
+## [1.14.0](https://github.com/padosol/lol-ui/compare/v1.13.0...v1.14.0) (2026-11-18)
+
+
+### Features
+
+* 게시글 상세 SSR 조회에 로그인 토큰을 실어 개인화한다 ([f572b11](https://github.com/padosol/lol-ui/commit/f572b11033dc6be005c75d1e7cfc6fdef1419f41))
+* 게시글 조회 기록 API 호출과 조회수 캐시 동기화를 추가한다 ([bffe0cc](https://github.com/padosol/lol-ui/commit/bffe0ccdffc3d821d0fdb6e656dd4b112c6e2ee6))
+* 게시글 조회 기록을 별도 API 로 보내고 앱 진입 시 로그인 세션을 확정한다 ([923f6a9](https://github.com/padosol/lol-ui/commit/923f6a9aa39137c9ea5ca51aac7245f29064b3d4))
+* 상세 화면에서 세션 확정 뒤 조회를 기록하고 필요할 때만 재조회한다 ([4e34f3d](https://github.com/padosol/lol-ui/commit/4e34f3d26b64e3d11e9dd8e93375ed17c37edc09))
+* 앱 진입 시 로그인 세션을 먼저 확인하고 만료 토큰을 복구한다 ([31e9c28](https://github.com/padosol/lol-ui/commit/31e9c2866346c3ca4dca113599727a4a40318649))
+* 언어 버튼에 지금 선택된 언어를 보여준다 ([2e29c82](https://github.com/padosol/lol-ui/commit/2e29c8283d1d2a643fc65ec09e9c6e990450424e))
+* 언어 버튼에 지금 선택된 언어를 보여준다 ([7aecf2a](https://github.com/padosol/lol-ui/commit/7aecf2a0b37bc2d8793a0f3b2d84ae1f718f8f69))
+* 요청별로 refresh 실패 시 로그인 이동을 끌 수 있게 한다 ([c504cc7](https://github.com/padosol/lol-ui/commit/c504cc7544890994a03b752ce8737300328b8577))
+
+
+### Bug Fixes
+
+* 세션 중 토큰이 만료돼도 상세 화면 개인화와 조회 기록이 회원으로 이뤄지게 한다 ([58cdbf2](https://github.com/padosol/lol-ui/commit/58cdbf2a4a2a6d5ae7e8c321a2a50a92b8d00b82))
+* 세션 확인에서 408·429 는 일시 오류로 보고 로그인 상태를 유지한다 ([468dfc3](https://github.com/padosol/lol-ui/commit/468dfc3eba7e9a7195e3b49a600c9ab06b92e447))
+* 조회 기록 실패 로그를 영문 메시지로 바꿔 린트 경고를 없앤다 ([22b15bf](https://github.com/padosol/lol-ui/commit/22b15bfaf0300448dcd30c501c9983d0a5eb5d83))
+* 탈퇴·삭제된 계정은 세션 확인에서 조용히 로그아웃하고 refresh 에 타임아웃을 건다 ([d325eaa](https://github.com/padosol/lol-ui/commit/d325eaa4687f4404a4c5d5a10fa419e93025d651))
+* 테마 버튼 hover 가 헤더 바 배경에 묻히지 않게 한다 ([0a4e113](https://github.com/padosol/lol-ui/commit/0a4e113f3cf67adc04cbbb86d0dd1c9795396b7e))
+
 ## [1.13.0](https://github.com/padosol/lol-ui/compare/v1.12.0...v1.13.0) (2026-10-27)
 
 
