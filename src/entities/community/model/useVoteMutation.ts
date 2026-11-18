@@ -4,11 +4,11 @@ import { postDetailKey } from "./usePostDetail";
 import type { Post, VoteRequest, VoteTargetType } from "../types";
 
 /**
- * 게시글 투표는 상세 캐시를 invalidate 하지 않고 직접 써넣는다. 재조회가 곧
- * 조회수 증가라서다 (postDetailKey 주석 참고). 서버가 응답에 확정된 카운트를
+ * 게시글 투표는 상세 캐시를 invalidate 하지 않고 직접 써넣는다. 불필요한 재요청을
+ * 막기 위해서다 (postDetailKey 주석 참고). 서버가 응답에 확정된 카운트를
  * 실어주므로 다시 받아올 것도 없다.
  *
- * 목록(`community/posts`)은 조회수와 무관한 엔드포인트라 그대로 무효화한다.
+ * 목록(`community/posts`)은 invalidate 금지 대상이 아니라 그대로 무효화한다.
  * 상세를 보는 동안 목록 쿼리는 비활성이라 즉시 재조회되지도 않는다.
  */
 export function useVote(postId: number) {

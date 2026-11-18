@@ -4,9 +4,9 @@ import { postDetailKey } from "./usePostDetail";
 import type { CreateCommentRequest, Post, UpdateCommentRequest } from "../types";
 
 /**
- * 댓글 수만 ±1 한다. 상세를 통째로 다시 받으면 조회수가 함께 오른다
- * (postDetailKey 주석 참고). 댓글 목록은 조회수와 무관한 별도 엔드포인트라
- * 그대로 재조회한다 — 대댓글이 어디에 붙는지는 서버가 정답이다.
+ * 댓글 수만 ±1 한다. 불필요한 재요청을 막기 위해 상세를 통째로 다시 받지 않는다
+ * (postDetailKey 주석 참고). 댓글 목록은 별도 엔드포인트라 그대로 재조회한다
+ * — 대댓글이 어디에 붙는지는 서버가 정답이다.
  */
 function useCommentCountDelta() {
   const queryClient = useQueryClient();

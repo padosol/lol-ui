@@ -1,8 +1,9 @@
-import type { AxiosInstance } from "axios";
+import type { AxiosInstance, AxiosRequestConfig } from "axios";
 import { apiClient } from "@/shared/api/client";
 import type { ApiResponse } from "@/shared/api/types";
 import type {
   Post,
+  PostViewResult,
   PostListResponse,
   CreatePostRequest,
   UpdatePostRequest,
@@ -27,10 +28,27 @@ export async function getPosts(
 
 export async function getPostDetail(
   postId: number,
-  client: AxiosInstance = apiClient
+  client: AxiosInstance = apiClient,
+  config?: AxiosRequestConfig
 ): Promise<Post> {
   const response = await client.get<ApiResponse<Post>>(
-    `/v1/community/posts/${postId}`
+    `/v1/community/posts/${postId}`,
+    config
+  );
+  return response.data.data;
+}
+
+/**
+ * 조회를 기록한다(24시간 안에는 같은 방문자를 한 번만 센다).
+ *
+ * 구버전 백엔드는 비로그인 POST 에 401 을 주는데, 그때 인터셉터가 로그인 화면으로
+ * 보내면 비로그인 독자가 글을 읽다 쫓겨난다 — `skipAuthRedirect` 로 막는다.
+ */
+export async function recordPostView(postId: number): Promise<PostViewResult> {
+  const response = await apiClient.post<ApiResponse<PostViewResult>>(
+    `/v1/community/posts/${postId}/views`,
+    undefined,
+    { skipAuthRedirect: true }
   );
   return response.data.data;
 }

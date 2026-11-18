@@ -12,15 +12,18 @@ import {
   AuthorAvatar,
   PostContent,
   postEditHref,
+  useRecordPostView,
 } from "@/entities/community";
 import type { Post, VoteType } from "@/entities/community";
 import { useAuthStore } from "@/entities/auth";
 import { VoteButtons } from "@/shared/ui/vote-buttons";
+import { revalidateSession } from "@/features/auth";
 import { BookmarkButton } from "@/features/community-bookmark";
 import { ConfirmModal } from "@/shared/ui/modal";
 import { toast } from "@/shared/ui/toast";
 import { useFormatter, useTranslations } from "next-intl";
 import CommentSection from "./CommentSection";
+import { decideDetailSync } from "../lib/decideDetailSync";
 
 interface PostDetailPanelProps {
   postId: number;
@@ -47,14 +50,27 @@ export default function PostDetailPanel({
   const voteMutation = useVote(postId);
   const removeVoteMutation = useRemoveVote(postId);
 
-  // 서버 조회에는 인증이 실리지 않아 초기 데이터의 투표·북마크 표시가 비어 있다.
-  // 로그인 상태일 때만 한 번 더 받아 채운다(비로그인 방문·크롤러는 조회가 한 번으로 끝난다).
-  const hasInitialPost = !!initialPost;
-  const userId = user?.id;
+  const authStatus = useAuthStore((s) => s.status);
+  // 세션 재확인·재조회를 이미 시도한 글. 한 글에서 한 번만 시도하고, 끝나면 조회 기록을 풀어 준다.
+  const [attemptedFor, setAttemptedFor] = useState<number | null>(null);
+  // 세션이 확정된 뒤에 기록해야 토큰이 만료돼 있던 회원도 회원으로 한 번만 센다.
+  const { revalidate, recordView } = decideDetailSync(authStatus, post, attemptedFor === postId);
+  useRecordPostView(postId, recordView);
   useEffect(() => {
-    if (!hasInitialPost || !userId) return;
-    refetch();
-  }, [hasInitialPost, userId, refetch]);
+    if (!revalidate) return;
+    let cancelled = false;
+    void (async () => {
+      // 동시에 부른 곳과 확인 요청 하나를 나눠 쓴다(StrictMode 의 재실행 포함).
+      const status = await revalidateSession();
+      // 글이 바뀐 뒤의 refetch 는 새 글을 다시 받으므로, 낡은 실행은 여기서 멈춘다.
+      if (cancelled) return;
+      if (status === "authenticated") await refetch();
+      if (!cancelled) setAttemptedFor(postId);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [revalidate, postId, refetch]);
 
   const isAuthor = user?.id === post?.author.id;
   const isVotePending = voteMutation.isPending || removeVoteMutation.isPending;

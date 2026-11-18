@@ -31,8 +31,7 @@ export default function CommunityDetailPageClient({
   initialTree,
 }: Readonly<CommunityDetailPageClientProps>) {
   // 셸(사이드바 활성 표시)과 하단 목록이 글의 소속 게시판을 알아야 한다.
-  // PostDetailPanel 이 부르는 것과 같은 쿼리라 조회가 늘지 않는다 — 이 화면에서
-  // 상세를 한 번 더 받으면 그대로 조회수 +1 이므로 키를 공유하는 것이 중요하다.
+  // PostDetailPanel 이 부르는 것과 같은 쿼리라 같은 키를 공유해 요청이 늘지 않는다.
   const { data: post } = usePostDetail(postId, initialPost);
 
   // 이 화면이 이어가는 목록. 전체에서 들어왔으면 전체를 그대로 잇고, 아니면

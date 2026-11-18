@@ -6,6 +6,7 @@ export type {
   VoteTargetType,
   Author,
   Post,
+  PostViewResult,
   PostImage,
   PostListItem,
   PostListResponse,
@@ -25,7 +26,7 @@ export type {
 
 export { POST_SORTS, POST_PERIODS, DEFAULT_POST_SORT } from "./types";
 
-export { getPosts, getPostDetail, createPost, updatePost, deletePost, searchPosts, getMyPosts } from "./api/communityApi";
+export { getPosts, getPostDetail, recordPostView, createPost, updatePost, deletePost, searchPosts, getMyPosts } from "./api/communityApi";
 export { getComments, createComment, updateComment, deleteComment } from "./api/commentApi";
 export { vote, removeVote } from "./api/voteApi";
 export { addBookmark, removeBookmark, getMyBookmarks } from "./api/bookmarkApi";
@@ -44,6 +45,8 @@ export {
 
 export { usePosts, useSearchPosts, useMyPosts } from "./model/usePosts";
 export { usePostDetail, postDetailKey } from "./model/usePostDetail";
+export { recordPostViewAndSync } from "./model/recordPostView";
+export { useRecordPostView } from "./model/useRecordPostView";
 export { useComments } from "./model/useComments";
 export { useCreatePost, useUpdatePost, useDeletePost } from "./model/usePostMutations";
 export { useCreateComment, useUpdateComment, useDeleteComment } from "./model/useCommentMutations";
