@@ -27,7 +27,8 @@
     "contact": "Contact"
   },
   "localeSwitcher": {
-    "label": "Select language"
+    "label": "Select language",
+    "current": "Select language (current: {language})"
   },
   "theme": {
     "toLight": "Switch to light mode",

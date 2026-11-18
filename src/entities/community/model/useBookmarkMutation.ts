@@ -109,7 +109,8 @@ export function useBookmarkToggle(
  * 정의상 북마크된 상태라 토글이 필요 없다.
  *
  * 상세 캐시는 여기서도 써넣기만 한다. 해제하면 그 글의 북마크 상태는 무조건
- * false 라 다시 받아올 것이 없고, 무효화하면 조회수가 오른다(postDetailKey 주석).
+ * false 라 다시 받아올 것이 없다 — 불필요한 재요청을 막기 위해 무효화하지 않는다
+ * (postDetailKey 주석).
  */
 export function useRemoveBookmark() {
   const queryClient = useQueryClient();

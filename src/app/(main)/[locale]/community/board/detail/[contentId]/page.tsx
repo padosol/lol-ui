@@ -19,7 +19,10 @@ interface Props {
   searchParams: Promise<{ sort?: string; from?: string }>;
 }
 
-/** 조회수·투표가 실시간으로 바뀌므로 캐시하지 않는다. */
+/**
+ * 조회수·투표가 실시간으로 바뀌고, SSR 이 로그인 쿠키로 개인화(내 투표·북마크)해
+ * HTML 이 사용자마다 달라서 캐시하지 않는다.
+ */
 export const dynamic = "force-dynamic";
 
 /** 메타 설명은 검색결과에서 잘리는 길이에 맞춘다. 본문은 평문이라 개행만 눌러주면 된다. */
@@ -84,8 +87,9 @@ export default async function CommunityDetailPage({
   if (!Number.isInteger(postId) || postId <= 0) notFound();
 
   // generateMetadata 가 이미 받아온 글을 요청 스코프 캐시에서 그대로 꺼내 화면까지
-  // 내려보낸다. 이렇게 넘기지 않으면 클라이언트가 같은 글을 한 번 더 받아가는데,
-  // 백엔드가 이 GET 에서 조회수를 올리므로 새로고침 한 번에 조회수가 2 씩 오른다.
+  // 내려보낸다. 넘기지 않으면 클라이언트가 같은 글을 한 번 더 받아가므로, 불필요한
+  // 재요청을 막기 위해 넘긴다. (조회수는 이 GET 이 아니라 화면이 보내는
+  // `POST …/views` 가 센다)
   //
   // 백엔드가 응답하지 않으면 초기 데이터 없이 넘긴다. 화면이 클라이언트 조회로
   // 다시 시도하고, 그래도 실패하면 "글을 찾을 수 없음"으로 정리된다.

@@ -27,7 +27,8 @@
     "contact": "문의하기"
   },
   "localeSwitcher": {
-    "label": "언어 선택"
+    "label": "언어 선택",
+    "current": "언어 선택 (현재: {language})"
   },
   "theme": {
     "toLight": "라이트 모드로 전환",

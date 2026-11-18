@@ -8,6 +8,7 @@ export {
 } from "./api/authApi";
 export type {
   AuthState,
+  AuthStatus,
   MemberProfile,
   SocialAccount,
 } from "./types";

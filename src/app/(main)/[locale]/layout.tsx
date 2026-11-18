@@ -1,5 +1,6 @@
 import { QueryProvider } from "@/shared/providers/QueryProvider";
 import GameDataLoader from "./GameDataLoader";
+import { SessionBootstrap } from "@/features/auth";
 import { ThemeProvider } from "@/shared/providers/ThemeProvider";
 import { Toaster } from "@/shared/ui/toast";
 import { routing } from "@/shared/i18n/routing";
@@ -71,6 +72,7 @@ export default async function LocaleLayout({
           <QueryProvider>
             <ThemeProvider>
               <GameDataLoader />
+              <SessionBootstrap />
               {children}
               <Toaster />
             </ThemeProvider>

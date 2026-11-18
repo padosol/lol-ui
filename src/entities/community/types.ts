@@ -95,6 +95,8 @@ export interface Post {
   author: Author;
   currentUserVote: VoteType | null;
   currentUserBookmarked: boolean;
+  /** 서버가 이 응답을 만들 때 로그인 회원으로 인식했는가. false 이면 `currentUserVote`·`currentUserBookmarked` 가 비어 있다. */
+  viewerAuthenticated: boolean;
   /**
    * 현재 글에 붙어 있는 이미지. 본문 마크다운에 URL 이 이미 들어 있어 렌더링에는
    * 필요 없지만, 수정 화면이 전체 교체 시맨틱을 채우려면 이 목록이 있어야 한다.
@@ -104,6 +106,11 @@ export interface Post {
   images: PostImage[];
   createdAt: string;
   updatedAt: string;
+}
+
+/** 조회 기록 API 응답. */
+export interface PostViewResult {
+  viewCount: number;
 }
 
 export interface PostListItem {

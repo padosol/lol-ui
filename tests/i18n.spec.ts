@@ -99,6 +99,24 @@ test.describe("언어 스위처", () => {
   // "언어 선택" 버튼 라벨을 한국어로 고정하기 위해 ko 로 시작한다.
   test.use({ locale: "ko-KR" });
 
+  test("버튼에 지금 선택된 언어가 보인다", async ({ page }) => {
+    await page.goto("/ko");
+    const switcher = page.getByRole("button", { name: "언어 선택" });
+    await expect(switcher).toHaveText("KO");
+    // 화면엔 코드만 보이므로 스크린리더에는 언어 이름으로 알린다
+    await expect(switcher).toHaveAccessibleName("언어 선택 (현재: 한국어)");
+
+    await switcher.click();
+    await page.getByRole("option", { name: "English" }).click();
+    await expect(page).toHaveURL(/\/en$/);
+
+    const enSwitcher = page.getByRole("button", { name: "Select language" });
+    await expect(enSwitcher).toHaveText("EN");
+    await expect(enSwitcher).toHaveAccessibleName(
+      "Select language (current: English)"
+    );
+  });
+
   test("언어를 바꾸면 경로 prefix 와 화면 언어가 함께 바뀐다", async ({
     page,
   }) => {
