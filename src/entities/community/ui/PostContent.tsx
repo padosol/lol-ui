@@ -3,6 +3,8 @@
 import ReactMarkdown, { type Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkBreaks from "remark-breaks";
+import { XPostEmbed } from "@/shared/ui/x-post-embed";
+import rehypeXPostEmbed from "../lib/rehypeXPostEmbed";
 
 /**
  * 게시글 본문 렌더러.
@@ -28,6 +30,7 @@ import remarkBreaks from "remark-breaks";
  * - **위험한 URL 스킴 차단.** react-markdown 의 기본 `urlTransform` 이 `javascript:` 같은
  *   스킴을 걸러낸다. 기본값을 덮어쓰지 않는 것이 곧 방어다.
  * - 외부 링크에는 `noopener noreferrer nofollow` 를 붙인다.
+ * - X 카드는 저장된 HTML 이 아니라 본문의 URL 에서 그린다(rehypeXPostEmbed).
  *
  * ## 기존 글 호환
  * `remark-breaks` 를 넣은 이유는 순전히 회귀 방지다. 마크다운은 홑 줄바꿈을 공백으로
@@ -51,6 +54,16 @@ const components: Components = {
       {children}
     </a>
   ),
+  // 최상위 맨 X 링크 문단(rehypeXPostEmbed 가 표시)은 카드로 바꾼다. 카드는 <div> 라
+  // <p> 안에 넣으면 잘못된 중첩이므로 문단 자체를 대체한다.
+  p: ({ node, children }) => {
+    const url = node?.properties?.dataXPostUrl;
+    return typeof url === "string" ? (
+      <XPostEmbed url={url} />
+    ) : (
+      <p>{children}</p>
+    );
+  },
   // 게시글 제목이 이미 페이지의 h1 이다(PostDetailPanel). 본문 제목을 한 단계 내려
   // 한 문서에 h1 이 둘이 되는 것을 막는다. 에디터도 같은 태그를 낸다(PostHeading).
   h1: ({ children }) => <h2>{children}</h2>,
@@ -74,6 +87,7 @@ export default function PostContent({ content }: Readonly<PostContentProps>) {
     <div className="post-prose py-6">
       <ReactMarkdown
         remarkPlugins={[remarkGfm, remarkBreaks]}
+        rehypePlugins={[rehypeXPostEmbed]}
         components={components}
       >
         {content}
