@@ -55,6 +55,36 @@ function replaceWithCard(state: EditorState, url: string) {
 }
 
 /**
+ * 문서 바로 아래가 아닌 카드를 "링크 걸린 URL 한 줄" 문단으로 바꾼다. 바꿀 게 없으면 null.
+ *
+ * <p>카드는 블록이라 인용·목록 안에도 들어갈 수 있다(선택한 카드에 인용 버튼, 전체 선택 뒤
+ * 목록, 인용 안에 붙여넣기·끌어 놓기). 그 자리의 X 링크는 뷰어에서 카드가 아니라 링크다(최상위 규칙).
+ * 그래서 들어가는 즉시 저장된 마크다운을 다시 열었을 때와 같은 모양, 곧 링크 문단으로 바꾼다.
+ * 인용·목록 동작은 막지 않는다.
+ */
+function unnestCards(state: EditorState) {
+  const { doc, schema } = state;
+  const nested: { pos: number; url: string; size: number }[] = [];
+  doc.descendants((node, pos, parent) => {
+    if (node.type.name === "xPost") {
+      if (parent !== doc) nested.push({ pos, url: node.attrs.url as string, size: node.nodeSize });
+      return false;
+    }
+    // 글자 블록(문단·제목·코드) 안에는 블록이 없다. 블록을 담는 노드만 내려간다.
+    return !node.isTextblock;
+  });
+  if (nested.length === 0) return null;
+
+  const tr = state.tr;
+  // 뒤에서부터 바꿔야 앞쪽 위치가 밀리지 않는다.
+  for (const { pos, url, size } of nested.reverse()) {
+    const text = url ? schema.text(url, [schema.marks.link.create({ href: url })]) : null;
+    tr.replaceWith(pos, pos + size, schema.nodes.paragraph.create(null, text));
+  }
+  return tr;
+}
+
+/**
  * 붙여넣기와 Enter 가 함께 쓰는 공통 전제: 최상위 문단 안의 빈 선택이다.
  *
  * <p>목록·인용문 안(depth > 1)이나 제목에서는 카드를 넣지 않는다. 최상위 문단이 아니면
@@ -107,6 +137,15 @@ export const XPost = Node.create({
 
   addProseMirrorPlugins() {
     return [
+      new Plugin({
+        key: new PluginKey("xPostTopLevelOnly"),
+        // 문서를 바꾼 트랜잭션 뒤에만 본다. 선택만 바뀐 트랜잭션에 아무것도 덧붙이지 않아야
+        // 본문을 안 만진 수정에서 문서가 그대로다(markdownChangeListener 참고).
+        appendTransaction(transactions, _oldState, newState) {
+          if (!transactions.some((tr) => tr.docChanged)) return null;
+          return unnestCards(newState);
+        },
+      }),
       new Plugin({
         key: new PluginKey("xPostPaste"),
         props: {

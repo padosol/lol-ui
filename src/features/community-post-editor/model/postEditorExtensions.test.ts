@@ -3,10 +3,12 @@ import { renderToStaticMarkup } from "react-dom/server";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkBreaks from "remark-breaks";
+import { NextIntlClientProvider } from "next-intl";
 import { Editor } from "@tiptap/react";
 import { DOMParser, Fragment, Slice } from "@tiptap/pm/model";
 import { TextSelection } from "@tiptap/pm/state";
 import { describe, expect, it, vi } from "vitest";
+import PostContent from "@/entities/community/ui/PostContent";
 import {
   createPostEditorExtensions,
   markdownChangeListener,
@@ -61,6 +63,20 @@ function roundTrip(markdown: string): string {
   const output = toMarkdown(editor);
   editor.destroy();
   return output;
+}
+
+/** 실제 뷰어(PostContent)가 그리는 X 카드 수. PostContent.test.ts 와 같은 방식으로 렌더한다. */
+function viewerCardCount(markdown: string): number {
+  const html = renderToStaticMarkup(
+    // createElement 의 자식 인자로는 NextIntlClientProvider 의 오버로드가 맞지 않는다.
+    // eslint-disable-next-line react/no-children-prop
+    createElement(NextIntlClientProvider, {
+      locale: "ko",
+      messages: {},
+      children: createElement(PostContent, { content: markdown }),
+    })
+  );
+  return (html.match(/class="x-post-embed"/g) ?? []).length;
 }
 
 /** PostContent 와 같은 플러그인 구성으로 렌더한다. */
@@ -326,17 +342,118 @@ describe("X 게시물 넣기", () => {
   });
 });
 
-describe("수정 화면 단방향 원칙", () => {
-  function openWithListener(markdown: string) {
-    const onChange = vi.fn();
-    const editor = new Editor({
-      content: markdown,
-      extensions: createPostEditorExtensions(PLACEHOLDER),
-      onUpdate: markdownChangeListener(onChange),
-    });
-    return { editor, onChange };
-  }
+/** usePostEditor 와 같은 onUpdate 를 단 에디터. onChange 가 언제 불리는지 본다. */
+function openWithListener(markdown: string) {
+  const onChange = vi.fn();
+  const editor = new Editor({
+    content: markdown,
+    extensions: createPostEditorExtensions(PLACEHOLDER),
+    onUpdate: markdownChangeListener(onChange),
+  });
+  return { editor, onChange };
+}
 
+describe("X 카드는 최상위에만 있다", () => {
+  // 인용·목록 안의 X 링크는 뷰어에서 링크다(최상위 규칙). 카드가 그 안에 들어가면
+  // 에디터는 카드, 저장 뒤 뷰어는 링크가 된다. 들어가는 순간 링크 문단으로 바꿔야 같다.
+
+  it("선택한 카드를 인용으로 감싸면 링크 문단이 된다", () => {
+    const md = `요약\n\n${POST}`;
+    const editor = open(md);
+    editor.commands.setNodeSelection(editor.state.doc.firstChild!.nodeSize);
+    expect(editor.state.selection.$from.nodeAfter?.type.name).toBe("xPost");
+
+    editor.commands.toggleBlockquote();
+
+    expect(hasXPost(editor)).toBe(false);
+    const saved = toMarkdown(editor);
+    expect(saved).toBe(`요약\n\n> <${POST}>`);
+    expect(viewerCardCount(saved)).toBe(0);
+    // 다시 열어도 카드가 아니다 — 에디터·뷰어·재편집이 모두 같다.
+    const reopened = open(saved);
+    expect(hasXPost(reopened)).toBe(false);
+    reopened.destroy();
+    // 바꾼 것은 인용과 같은 되돌리기 단위다. 실수로 누른 인용은 Ctrl+Z 한 번에 카드로 돌아온다.
+    editor.commands.undo();
+    expect(hasXPost(editor)).toBe(true);
+    expect(toMarkdown(editor)).toBe(md);
+    editor.destroy();
+  });
+
+  it("전체 선택 뒤 글머리 목록으로 바꾸면 카드가 링크 문단이 된다", () => {
+    const editor = open(`요약\n\n${POST}`);
+    editor.commands.selectAll();
+
+    editor.commands.toggleBulletList();
+
+    expect(hasXPost(editor)).toBe(false);
+    const saved = toMarkdown(editor);
+    // 끝의 `-` 는 이 변경과 무관하다. 카드로 끝나는 글은 selectAll 트랜잭션에 TrailingNode 가
+    // 빈 문단을 덧붙이고, 전체 선택이 그 문단까지 덮어 빈 목록 항목이 하나 더 생긴다.
+    expect(saved).toBe(`- 요약\n\n  <${POST}>\n-`);
+    expect(viewerCardCount(saved)).toBe(0);
+    editor.destroy();
+  });
+
+  it("인용 안에 카드를 넣어도 링크 문단이 된다", () => {
+    const editor = open("> 인용");
+    const quote = editor.state.doc.firstChild!;
+    // 인용 안, 문단 뒤. 복사한 카드를 붙여넣거나 끌어다 놓은 것과 같은 자리다.
+    const inside = quote.nodeSize - 1;
+    editor.view.dispatch(
+      editor.state.tr.insert(inside, editor.schema.nodes.xPost.create({ url: POST }))
+    );
+
+    expect(hasXPost(editor)).toBe(false);
+    const saved = toMarkdown(editor);
+    expect(saved).toBe(`> 인용\n>\n> <${POST}>`);
+    expect(viewerCardCount(saved)).toBe(0);
+    editor.destroy();
+  });
+
+  it("복사한 카드 HTML 을 인용 안에 붙여넣어도 링크 문단이 된다", () => {
+    const editor = open("> 인용");
+    editor.commands.focus("end");
+
+    // jsdom 에는 ClipboardEvent 가 없어 이벤트를 직접 넘긴다. 클립보드 HTML 파싱·handlePaste·기본 붙여넣기를 실제로 지난다.
+    editor.view.pasteHTML(
+      `<div data-x-post-url="${POST}"></div>`,
+      new Event("paste") as ClipboardEvent
+    );
+
+    expect(hasXPost(editor)).toBe(false);
+    const saved = toMarkdown(editor);
+    expect(saved).toBe(`> 인용\n>\n> <${POST}>`);
+    expect(viewerCardCount(saved)).toBe(0);
+    editor.destroy();
+  });
+
+  it("최상위 카드가 있는 글에서 선택만 바꾸면 문서가 그대로다", () => {
+    // 카드로 끝나지 않는 글이라 TrailingNode 도 덧붙이지 않는다. 문서가 바뀌면 이 플러그인 탓이다.
+    const { editor, onChange } = openWithListener(`요약\n\n${POST}\n\n아래`);
+    const before = editor.state.doc;
+
+    editor.view.dispatch(editor.state.tr.setSelection(TextSelection.create(before, 1)));
+    editor.commands.setNodeSelection(before.firstChild!.nodeSize);
+
+    expect(editor.state.doc).toBe(before);
+    expect(hasXPost(editor)).toBe(true);
+    expect(onChange).not.toHaveBeenCalled();
+    editor.destroy();
+  });
+
+  it("최상위 카드 옆을 고쳐도 카드는 그대로다", () => {
+    const { editor, onChange } = openWithListener(`요약\n\n${POST}`);
+    editor.commands.focus(3); // "요약|"
+    editor.view.dispatch(editor.state.tr.insertText("!"));
+
+    expect(hasXPost(editor)).toBe(true);
+    expect(onChange).toHaveBeenLastCalledWith(`요약!\n\n${POST}`);
+    editor.destroy();
+  });
+});
+
+describe("수정 화면 단방향 원칙", () => {
   it("카드로 끝나는 글은 선택만 바꿔도 onChange 가 불리지 않는다", () => {
     const { editor, onChange } = openWithListener(`요약\n\n${POST}`);
     // 전제: 아직 빈 문단이 덧붙지 않았다. 생성 중에 이미 붙었다면 이 테스트는 그 경로를 지나지 않는다.
