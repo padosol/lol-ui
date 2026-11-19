@@ -213,7 +213,7 @@ describe("X 게시물", () => {
 
   it("뷰어가 보는 글과 에디터를 거친 글이 같다", () => {
     const md = `요약\n\n${POST}\n\n아래`;
-    expect(renderAsViewer(toMarkdown(open(md)))).toBe(renderAsViewer(md));
+    expect(renderAsViewer(roundTrip(md))).toBe(renderAsViewer(md));
   });
 });
 
@@ -379,6 +379,51 @@ describe("X 게시물 넣기", () => {
     editor.commands.undo();
     expect(toMarkdown(editor)).toBe("abc");
     expect(hasXPost(editor)).toBe(false);
+    editor.destroy();
+  });
+
+  describe("선택한 카드 위에 X 주소를 붙여넣으면 새 카드로 바꾼다", () => {
+    const OTHER = "https://x.com/Riot/status/987";
+
+    function cardUrls(editor: Editor): string[] {
+      const urls: string[] = [];
+      editor.state.doc.descendants((node) => {
+        if (node.type.name === "xPost") urls.push(node.attrs.url as string);
+      });
+      return urls;
+    }
+
+    it.each([
+      ["뒤에 문단이 있는 카드", `요약\n\n${POST}\n\n아래`, `요약\n\n${OTHER}\n\nZ아래`],
+      ["글 끝의 카드", `요약\n\n${POST}`, `요약\n\n${OTHER}\n\nZ`],
+    ])("%s", (_name, md, typed) => {
+      const editor = open(md);
+      editor.commands.setNodeSelection(editor.state.doc.firstChild!.nodeSize);
+      expect(editor.state.selection.$from.nodeAfter?.type.name).toBe("xPost");
+
+      expect(paste(editor, `${OTHER}?s=20`)).toBe(true);
+
+      expect(cardUrls(editor)).toEqual([OTHER]);
+      // 커서는 카드 뒤 문단에 있다. 다음 글자가 카드를 지우지 않는다.
+      expect(editor.state.selection.$from.parent.type.name).toBe("paragraph");
+      typeRaw(editor, "Z");
+      expect(cardUrls(editor)).toEqual([OTHER]);
+      expect(toMarkdown(editor)).toBe(typed);
+      editor.destroy();
+    });
+  });
+
+  it("글자를 가린 링크 문단에서는 Enter 로 바꾸지 않는다", () => {
+    // 글자는 X 주소지만 실제 링크는 다른 곳이다. 카드로 바꾸면 작성자의 href 가 사라진다.
+    const md = `[${POST}](https://example.com/z)`;
+    const editor = open(md);
+    expect(hasXPost(editor)).toBe(false);
+    editor.commands.focus("end");
+
+    editor.commands.keyboardShortcut("Enter");
+
+    expect(hasXPost(editor)).toBe(false);
+    expect(toMarkdown(editor)).toBe(md);
     editor.destroy();
   });
 });

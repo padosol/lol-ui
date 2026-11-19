@@ -1,5 +1,11 @@
 import { Node, ReactNodeViewRenderer } from "@tiptap/react";
-import { Plugin, PluginKey, TextSelection, type EditorState } from "@tiptap/pm/state";
+import {
+  NodeSelection,
+  Plugin,
+  PluginKey,
+  TextSelection,
+  type EditorState,
+} from "@tiptap/pm/state";
 import type { MarkdownNodeSpec } from "tiptap-markdown";
 import { matchBareXPostLink, parseXPostUrl } from "@/shared/lib/x-post";
 import { XPostNodeView } from "../ui/XPostNodeView";
@@ -56,7 +62,13 @@ const markdown: MarkdownNodeSpec = {
   },
 };
 
-/** 커서가 있는 문단을 [카드, 빈 문단] 으로 바꾸고 커서를 새 문단에 둔다. 한 트랜잭션이라 Ctrl+Z 한 번에 되돌아간다. */
+/**
+ * 커서가 있는 문단을 [카드, 빈 문단] 으로 바꾸고 커서를 새 문단에 둔다.
+ *
+ * <p>한 트랜잭션이라 "링크 문단" 같은 중간 단계로 되돌아가는 일은 없다. 다만 history 는
+ * 직전 입력과 이어지는 변경을 500ms(newGroupDelay) 안이면 한 묶음으로 친다. URL 을 치고 곧바로
+ * Enter 를 누르면 Ctrl+Z 한 번에 카드와 함께 친 글자도 되돌아간다.
+ */
 function replaceWithCard(state: EditorState, url: string) {
   const { $from } = state.selection;
   const { schema } = state;
@@ -66,6 +78,21 @@ function replaceWithCard(state: EditorState, url: string) {
     schema.nodes.paragraph.create(),
   ]);
   return tr.setSelection(TextSelection.create(tr.doc, $from.before() + card.nodeSize + 1));
+}
+
+/**
+ * 선택한 최상위 카드를 새 카드로 바꾸고 커서를 카드 뒤 문단에 둔다. 뒤가 문단이 아니면 빈 문단을 만든다.
+ * 붙여넣은 뒤 카드가 선택된 채 남으면 다음 글자가 카드를 지운다.
+ */
+function replaceSelectedCard(state: EditorState, selection: NodeSelection, url: string) {
+  const { schema } = state;
+  const card = schema.nodes.xPost.create({ url });
+  const tr = state.tr.replaceWith(selection.from, selection.to, card);
+  const after = selection.from + card.nodeSize;
+  if (tr.doc.resolve(after).nodeAfter?.type.name !== "paragraph") {
+    tr.insert(after, schema.nodes.paragraph.create());
+  }
+  return tr.setSelection(TextSelection.create(tr.doc, after + 1));
 }
 
 /**
@@ -169,6 +196,20 @@ export const XPost = Node.create({
             );
             if (!ref) return false;
             const { state } = view;
+
+            // 최상위 카드를 선택하고 X 주소를 붙여넣으면 카드를 갈아끼운다.
+            const { selection } = state;
+            if (
+              selection instanceof NodeSelection &&
+              selection.node.type.name === "xPost" &&
+              selection.$from.depth === 0
+            ) {
+              view.dispatch(
+                replaceSelectedCard(state, selection, ref.canonicalUrl).scrollIntoView()
+              );
+              return true;
+            }
+
             const $from = topLevelParagraph(state);
             if (!$from) return false;
 
@@ -176,7 +217,7 @@ export const XPost = Node.create({
               view.dispatch(replaceWithCard(state, ref.canonicalUrl).scrollIntoView());
               return true;
             }
-            // 글자가 있는 문단은 커서 자리에서 나눠 넣는다. 한 트랜잭션이라 Ctrl+Z 한 번에 되돌아간다.
+            // 글자가 있는 문단은 커서 자리에서 나눠 넣는다. 한 트랜잭션이라 붙여넣기 전체가 한 번에 되돌아간다.
             // insertContent 는 쓰지 않는다: 문단 끝에서는 카드가 선택된 채 끝나, 다음 글자가 카드를 지운다.
             const card = state.schema.nodes.xPost.create({ url: ref.canonicalUrl });
             const tr = state.tr;
@@ -207,11 +248,14 @@ export const XPost = Node.create({
         if (!$from) return false;
 
         // 이미지 같은 인라인 노드가 섞인 문단은 글자가 아니므로 건드리지 않는다.
-        let onlyText = true;
+        // 글자와 다른 곳을 가리키는 링크(`[x 주소](다른 주소)`)도 건드리지 않는다. 카드로 바꾸면 그 href 가 사라진다.
+        const { link } = state.schema.marks;
+        let plainUrl = true;
         $from.parent.forEach((child) => {
-          if (!child.isText) onlyText = false;
+          const href = link.isInSet(child.marks)?.attrs.href as string | undefined;
+          if (!child.isText || (href !== undefined && href !== child.text)) plainUrl = false;
         });
-        if (!onlyText) return false;
+        if (!plainUrl) return false;
 
         const ref = parseXPostUrl($from.parent.textContent.trim());
         if (!ref) return false;
