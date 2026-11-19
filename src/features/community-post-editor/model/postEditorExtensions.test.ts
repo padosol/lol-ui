@@ -4,6 +4,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkBreaks from "remark-breaks";
 import { Editor } from "@tiptap/react";
+import { DOMParser } from "@tiptap/pm/model";
 import { describe, expect, it } from "vitest";
 import { createPostEditorExtensions, toMarkdown } from "./postEditorExtensions";
 
@@ -17,6 +18,15 @@ import { createPostEditorExtensions, toMarkdown } from "./postEditorExtensions";
  */
 const PLACEHOLDER = "내용을 입력해주세요";
 const IMAGE_URL = "https://static.metapick.me/community-dev/2026/08/a.png";
+const POST = "https://x.com/LoLDev/status/1234567890123456789";
+
+function hasXPost(editor: Editor): boolean {
+  let found = false;
+  editor.state.doc.descendants((node) => {
+    if (node.type.name === "xPost") found = true;
+  });
+  return found;
+}
 
 function open(markdown: string): Editor {
   return new Editor({
@@ -106,5 +116,66 @@ describe("원시 HTML", () => {
     editor.destroy();
 
     expect(html).not.toMatch(/<script|<img/i);
+  });
+});
+
+describe("X 게시물", () => {
+  it.each([
+    ["단독 줄", POST],
+    ["앞뒤 문단과 함께", `패치 요약\n\n${POST}\n\n아래 문단`],
+    ["쿼리 붙은 원문은 원문 그대로", `${POST}?s=20&t=abc`],
+    ["twitter.com 원문 그대로", "https://twitter.com/LoLDev/status/1"],
+    ["이미지와 함께", `![](${IMAGE_URL})\n\n${POST}`],
+  ])("%s 은 노드로 읽히고 그대로 돌아온다", (_name, md) => {
+    const editor = open(md);
+    expect(hasXPost(editor)).toBe(true);
+    expect(toMarkdown(editor)).toBe(md);
+    editor.destroy();
+  });
+
+  it.each([
+    ["문장 속", `출처 ${POST} 참고`],
+    ["텍스트를 단 링크", `[출처](${POST})`],
+    ["인용문 안", `> ${POST}`],
+    ["목록 안", `- ${POST}`],
+  ])("%s 의 X 링크는 노드가 되지 않는다", (_name, md) => {
+    const editor = open(md);
+    expect(hasXPost(editor)).toBe(false);
+    editor.destroy();
+  });
+
+  it("X 게시물만 있는 글은 빈 글이 아니다", () => {
+    const editor = open(POST);
+    expect(toMarkdown(editor)).toBe(POST);
+    editor.destroy();
+  });
+
+  it("parseHTML 은 X 가 아닌 URL 을 거부한다", () => {
+    // setContent 는 tiptap-markdown 이 마크다운으로 먼저 파싱해(html: false) HTML 이 글자가 된다.
+    // 그러면 getAttrs 가 없어도 통과하는 빈 테스트가 된다. ProseMirror 파서로 직접 넣는다(붙여넣은 HTML 경로와 같다).
+    const editor = open("");
+    const dom = document.createElement("div");
+    dom.innerHTML =
+      '<div data-x-post-url="javascript:alert(1)"></div>' +
+      '<div data-x-post-url="https://example.com/a"></div>' +
+      `<div data-x-post-url="${POST}"></div>`;
+    const doc = DOMParser.fromSchema(editor.schema).parse(dom);
+    const urls: string[] = [];
+    doc.descendants((node) => {
+      if (node.type.name === "xPost") urls.push(node.attrs.url);
+    });
+    expect(urls).toEqual([POST]); // 마지막 것만 노드가 된다 — getAttrs 가 실제로 걸러냈다는 증거
+    editor.destroy();
+  });
+
+  it("문서 기본 블록은 여전히 paragraph 다", () => {
+    const editor = open("");
+    expect(editor.schema.topNodeType.contentMatch.defaultType?.name).toBe("paragraph");
+    editor.destroy();
+  });
+
+  it("뷰어가 보는 글과 에디터를 거친 글이 같다", () => {
+    const md = `요약\n\n${POST}\n\n아래`;
+    expect(renderAsViewer(toMarkdown(open(md)))).toBe(renderAsViewer(md));
   });
 });

@@ -198,3 +198,23 @@
   border-radius: 0.75rem;
   background: var(--md-elevation-4);
 }
+
+/*
+ * 에디터 안의 X 카드. 카드는 iframe 이라 클릭이 에디터에 닿지 않는다 — 덮개가 대신 받아
+ * 노드를 선택하게 한다.
+ */
+.x-post-node {
+  position: relative;
+  margin: 1rem 0;
+}
+
+.x-post-node__shield {
+  position: absolute;
+  inset: 0;
+  cursor: pointer;
+}
+
+.x-post-node.ProseMirror-selectednode .x-post-embed__frame {
+  outline: 2px solid var(--md-primary);
+  border-radius: 0.75rem;
+}

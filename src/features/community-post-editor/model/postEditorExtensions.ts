@@ -4,6 +4,7 @@ import { CharacterCount, Placeholder } from "@tiptap/extensions";
 import { Markdown, type MarkdownStorage } from "tiptap-markdown";
 import type { Editor, Extensions } from "@tiptap/react";
 import { PostHeading } from "../lib/postHeading";
+import { XPost } from "../lib/xPostNode";
 
 /**
  * 마크다운 입출력 설정. <b>기본값 두 개가 이 기능의 성패를 가른다.</b>
@@ -64,6 +65,8 @@ export function createPostEditorExtensions(placeholder: string): Extensions {
       // 거쳐 CDN URL 로만 들어와야 서버가 수명을 관리할 수 있다.
       allowBase64: false,
     }),
+    // 한 줄짜리 X 링크 ↔ 카드 노드. 저장은 URL 한 줄이라 포맷이 늘지 않는다.
+    XPost,
     Placeholder.configure({ placeholder }),
     // TrailingNode(마지막 블록이 이미지일 때 그 뒤에 커서 둘 자리를 만들어 주는 확장)를
     // 여기 더하면 안 된다. StarterKit 이 이미 켜 두었고, 두 번 등록하면 ProseMirror 가
