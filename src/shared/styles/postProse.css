@@ -215,7 +215,14 @@
 }
 
 /* 선택 클래스는 NodeViewWrapper 가 아니라 Tiptap ReactRenderer 의 바깥 div(.node-xPost)에 붙는다. */
-.node-xPost.ProseMirror-selectednode .x-post-embed__frame {
+.node-xPost.ProseMirror-selectednode .x-post-embed:not([data-state="failed"]) .x-post-embed__frame {
   outline: 2px solid var(--md-primary);
   border-radius: 0.75rem;
+}
+
+/* 실패한 카드는 frame 높이가 0 이라 frame 테두리가 선 하나로 접힌다. 링크가 남은 카드 전체에 두른다. */
+.node-xPost.ProseMirror-selectednode .x-post-embed[data-state="failed"] {
+  outline: 2px solid var(--md-primary);
+  outline-offset: 2px;
+  border-radius: 0.5rem;
 }
