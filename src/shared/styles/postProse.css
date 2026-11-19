@@ -214,7 +214,8 @@
   cursor: pointer;
 }
 
-.x-post-node.ProseMirror-selectednode .x-post-embed__frame {
+/* 선택 클래스는 NodeViewWrapper 가 아니라 Tiptap ReactRenderer 의 바깥 div(.node-xPost)에 붙는다. */
+.node-xPost.ProseMirror-selectednode .x-post-embed__frame {
   outline: 2px solid var(--md-primary);
   border-radius: 0.75rem;
 }
