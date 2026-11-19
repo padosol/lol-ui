@@ -2,7 +2,7 @@ import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
 import { CharacterCount, Placeholder } from "@tiptap/extensions";
 import { Markdown, type MarkdownStorage } from "tiptap-markdown";
-import type { Editor, Extensions } from "@tiptap/react";
+import type { Editor, EditorEvents, Extensions } from "@tiptap/react";
 import { PostHeading } from "../lib/postHeading";
 import { XPost } from "../lib/xPostNode";
 
@@ -91,4 +91,24 @@ export function toMarkdown(editor: Editor): string {
   }
   const storage = editor.storage as unknown as { markdown: MarkdownStorage };
   return storage.markdown.getMarkdown().trim();
+}
+
+/**
+ * 에디터 update 이벤트를 "사용자가 본문을 고쳤을 때"로 좁힌다.
+ *
+ * <p>Tiptap 3 은 TrailingNode 가 appendTransaction 으로 덧붙인 변경도 update 로 내고,
+ * setEditable 도 문서를 건드리지 않은 채 update 를 낸다. X 카드로 끝나는 글은 클릭만
+ * 해도 빈 문단이 붙으므로, 걸러 두지 않으면 본문을 건드리지 않은 수정에서도
+ * onChange 가 불려 원문이 재직렬화된다. 이벤트의 transaction 은 처음 디스패치된
+ * 트랜잭션이라 docChanged 가 사용자 변경 여부를 그대로 말해 준다.
+ */
+export function markdownChangeListener(
+  onChange: (markdown: string) => void
+): (props: EditorEvents["update"]) => void {
+  return ({ editor, transaction }) => {
+    if (!transaction.docChanged) {
+      return;
+    }
+    onChange(toMarkdown(editor));
+  };
 }

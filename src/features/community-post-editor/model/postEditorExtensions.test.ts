@@ -5,8 +5,13 @@ import remarkGfm from "remark-gfm";
 import remarkBreaks from "remark-breaks";
 import { Editor } from "@tiptap/react";
 import { DOMParser, Fragment, Slice } from "@tiptap/pm/model";
-import { describe, expect, it } from "vitest";
-import { createPostEditorExtensions, toMarkdown } from "./postEditorExtensions";
+import { TextSelection } from "@tiptap/pm/state";
+import { describe, expect, it, vi } from "vitest";
+import {
+  createPostEditorExtensions,
+  markdownChangeListener,
+  toMarkdown,
+} from "./postEditorExtensions";
 
 /**
  * 에디터가 마크다운을 읽어 들이고 다시 뱉었을 때 글이 보존되는지 본다.
@@ -317,6 +322,44 @@ describe("X 게시물 넣기", () => {
     editor.commands.undo();
     expect(toMarkdown(editor)).toBe("abc");
     expect(hasXPost(editor)).toBe(false);
+    editor.destroy();
+  });
+});
+
+describe("수정 화면 단방향 원칙", () => {
+  function openWithListener(markdown: string) {
+    const onChange = vi.fn();
+    const editor = new Editor({
+      content: markdown,
+      extensions: createPostEditorExtensions(PLACEHOLDER),
+      onUpdate: markdownChangeListener(onChange),
+    });
+    return { editor, onChange };
+  }
+
+  it("카드로 끝나는 글은 선택만 바꿔도 onChange 가 불리지 않는다", () => {
+    const { editor, onChange } = openWithListener(`요약\n\n${POST}`);
+    // 전제: 아직 빈 문단이 덧붙지 않았다. 생성 중에 이미 붙었다면 이 테스트는 그 경로를 지나지 않는다.
+    expect(editor.state.doc.lastChild?.type.name).toBe("xPost");
+    editor.view.dispatch(editor.state.tr.setSelection(TextSelection.create(editor.state.doc, 1)));
+    // TrailingNode 가 실제로 빈 문단을 덧붙였는지 먼저 확인한다 — 그래야 이 테스트가 그 경로를 지난다.
+    expect(editor.state.doc.lastChild?.type.name).toBe("paragraph");
+    expect(onChange).not.toHaveBeenCalled();
+    editor.destroy();
+  });
+
+  it("setEditable 만으로는 onChange 가 불리지 않는다", () => {
+    const { editor, onChange } = openWithListener(`요약\n\n${POST}`);
+    editor.setEditable(false);
+    expect(onChange).not.toHaveBeenCalled();
+    editor.destroy();
+  });
+
+  it("실제로 글을 고치면 onChange 가 불린다", () => {
+    const { editor, onChange } = openWithListener("요약");
+    editor.commands.focus("end");
+    editor.view.dispatch(editor.state.tr.insertText("!"));
+    expect(onChange).toHaveBeenLastCalledWith("요약!");
     editor.destroy();
   });
 });

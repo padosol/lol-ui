@@ -1,7 +1,7 @@
 "use client";
 
 import { useEditor, type Editor } from "@tiptap/react";
-import { createPostEditorExtensions, toMarkdown } from "./postEditorExtensions";
+import { createPostEditorExtensions, markdownChangeListener } from "./postEditorExtensions";
 
 interface UsePostEditorOptions {
   /** 최초 1회만 쓰인다. 이후 값을 되먹이면 커서가 튄다. */
@@ -24,6 +24,9 @@ interface UsePostEditorOptions {
  * <p>이 단방향에는 곁다리 이득이 하나 있다. 수정 화면에서 본문을 건드리지 않으면
  * onChange 가 한 번도 불리지 않으므로 <b>원문 문자열이 그대로 저장된다</b>. 제목만
  * 고치는 수정에서 마크다운 재직렬화로 본문이 미묘하게 달라지는 사고가 원천적으로 막힌다.
+ *
+ * <p>Tiptap 3 은 TrailingNode 가 덧붙인 변경이나 setEditable 도 update 로 내보낸다.
+ * 문서가 바뀌지 않은 update 를 {@link markdownChangeListener} 로 걸러야 위 약속이 지켜진다.
  */
 export function usePostEditor({
   initialMarkdown,
@@ -66,6 +69,6 @@ export function usePostEditor({
         return true;
       },
     },
-    onUpdate: ({ editor }) => onChange(toMarkdown(editor)),
+    onUpdate: markdownChangeListener(onChange),
   });
 }
