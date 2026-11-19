@@ -28,13 +28,65 @@ describe("renderXPost", () => {
     await expect(
       renderXPost(target, "1", opts, new AbortController().signal, async () => api),
     ).resolves.toBe("ready");
-    expect(api.widgets.createTweet).toHaveBeenCalledWith("1", target, {
+    expect(api.widgets.createTweet).toHaveBeenCalledWith("1", expect.any(HTMLElement), {
       theme: "dark",
       lang: "ko",
       dnt: true,
       conversation: "none",
       align: "center",
     });
+    const slot = api.widgets.createTweet.mock.calls[0][1];
+    expect(slot.parentElement).toBe(target);
+  });
+
+  it("오래된 렌더가 늦게 끝나도 새 카드를 지우지 않는다", async () => {
+    const target = document.createElement("div");
+    const staleIframe = document.createElement("iframe");
+    let resolveStale!: (el: HTMLElement) => void;
+    const staleApi = {
+      widgets: {
+        createTweet: vi.fn(
+          (_id: string, slot: HTMLElement) =>
+            new Promise<HTMLElement | undefined>((resolve) => {
+              resolveStale = (el) => {
+                slot.appendChild(el);
+                resolve(el);
+              };
+            }),
+        ),
+      },
+    } as unknown as XWidgetsApi;
+    const controllerA = new AbortController();
+    const a = renderXPost(target, "1", opts, controllerA.signal, async () => staleApi);
+    await vi.waitFor(() => expect(staleApi.widgets.createTweet).toHaveBeenCalled());
+    controllerA.abort();
+
+    const b = await renderXPost(
+      target,
+      "1",
+      opts,
+      new AbortController().signal,
+      async () => fakeApi("ok"),
+    );
+    expect(b).toBe("ready");
+
+    resolveStale(staleIframe);
+    await expect(a).resolves.toBe("aborted");
+    const iframes = target.querySelectorAll("iframe");
+    expect(iframes).toHaveLength(1);
+    expect(iframes[0]).not.toBe(staleIframe);
+  });
+
+  it("시작 전에 이미 abort 됐으면 target 을 건드리지 않는다", async () => {
+    const target = document.createElement("div");
+    const child = document.createElement("span");
+    target.appendChild(child);
+    const controller = new AbortController();
+    controller.abort();
+    const load = vi.fn(async () => fakeApi("ok"));
+    await expect(renderXPost(target, "1", opts, controller.signal, load)).resolves.toBe("aborted");
+    expect(target.contains(child)).toBe(true);
+    expect(load).not.toHaveBeenCalled();
   });
 
   it("게시물이 없으면(undefined) failed 이고 컨테이너를 비운다", async () => {
