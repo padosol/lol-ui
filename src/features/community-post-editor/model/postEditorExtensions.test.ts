@@ -4,7 +4,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkBreaks from "remark-breaks";
 import { Editor } from "@tiptap/react";
-import { DOMParser } from "@tiptap/pm/model";
+import { DOMParser, Fragment, Slice } from "@tiptap/pm/model";
 import { describe, expect, it } from "vitest";
 import { createPostEditorExtensions, toMarkdown } from "./postEditorExtensions";
 
@@ -26,6 +26,22 @@ function hasXPost(editor: Editor): boolean {
     if (node.type.name === "xPost") found = true;
   });
   return found;
+}
+
+/** 기본 붙여넣기 처리기가 없어 아무도 안 받으면 undefined 다. */
+function paste(editor: Editor, text: string): boolean | void {
+  return editor.view.someProp("handlePaste", (f) =>
+    f(
+      editor.view,
+      new Event("paste") as ClipboardEvent,
+      new Slice(Fragment.from(editor.schema.text(text)), 0, 0)
+    )
+  );
+}
+
+/** insertContent 는 tiptap-markdown 이 마크다운으로 파싱하므로 쓰지 않는다. */
+function typeRaw(editor: Editor, text: string) {
+  editor.view.dispatch(editor.state.tr.insertText(text));
 }
 
 function open(markdown: string): Editor {
@@ -177,5 +193,81 @@ describe("X 게시물", () => {
   it("뷰어가 보는 글과 에디터를 거친 글이 같다", () => {
     const md = `요약\n\n${POST}\n\n아래`;
     expect(renderAsViewer(toMarkdown(open(md)))).toBe(renderAsViewer(md));
+  });
+});
+
+describe("X 게시물 넣기", () => {
+  it("빈 문단에 붙여넣으면 표준형 노드가 된다", () => {
+    const editor = open("");
+    editor.commands.focus("start");
+    paste(editor, `  ${POST}?s=20&t=abc  `);
+    expect(toMarkdown(editor)).toBe(POST);
+    editor.destroy();
+  });
+
+  it("글자 사이에 붙여넣으면 문단을 나눠 넣는다", () => {
+    const editor = open("앞뒤");
+    editor.commands.setTextSelection(2); // "앞|뒤"
+    paste(editor, POST);
+    expect(toMarkdown(editor)).toBe(`앞\n\n${POST}\n\n뒤`);
+    editor.destroy();
+  });
+
+  it("글자를 선택하고 붙여넣으면 선택한 글자에 링크가 걸린다", () => {
+    const editor = open("출처");
+    editor.commands.setTextSelection({ from: 1, to: 3 });
+    paste(editor, POST);
+    expect(hasXPost(editor)).toBe(false);
+    expect(toMarkdown(editor)).toBe(`[출처](${POST})`);
+    editor.destroy();
+  });
+
+  it.each([
+    ["목록 안", "- 항목"],
+    ["인용문 안", "> 인용"],
+    ["제목 안", "# 제목"],
+  ])("%s 에 붙여넣으면 노드가 되지 않는다", (_name, md) => {
+    const editor = open(md);
+    editor.commands.focus("end");
+    paste(editor, POST);
+    expect(hasXPost(editor)).toBe(false);
+    editor.destroy();
+  });
+
+  it("X 가 아닌 URL 을 붙여넣으면 노드가 되지 않는다", () => {
+    const editor = open("");
+    editor.commands.focus("start");
+    paste(editor, "https://example.com/a");
+    expect(hasXPost(editor)).toBe(false);
+    editor.destroy();
+  });
+
+  it("URL 만 친 문단에서 Enter 를 누르면 노드로 바뀐다", () => {
+    const editor = open("");
+    editor.commands.focus("start");
+    typeRaw(editor, `${POST}?s=20`);
+    editor.commands.keyboardShortcut("Enter");
+    expect(toMarkdown(editor)).toBe(POST);
+    expect(editor.state.selection.$from.parent.type.name).toBe("paragraph");
+    editor.destroy();
+  });
+
+  it("이미지가 섞인 문단은 Enter 로 바꾸지 않는다", () => {
+    const editor = open(`![](${IMAGE_URL})`);
+    editor.commands.focus("end");
+    typeRaw(editor, POST);
+    editor.commands.keyboardShortcut("Enter");
+    expect(hasXPost(editor)).toBe(false);
+    expect(toMarkdown(editor)).toContain(IMAGE_URL);
+    editor.destroy();
+  });
+
+  it("글자와 URL 이 섞인 문단은 Enter 로 바꾸지 않는다", () => {
+    const editor = open("");
+    editor.commands.focus("start");
+    typeRaw(editor, `출처 ${POST}`);
+    editor.commands.keyboardShortcut("Enter");
+    expect(hasXPost(editor)).toBe(false);
+    editor.destroy();
   });
 });

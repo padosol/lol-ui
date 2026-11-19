@@ -1,4 +1,5 @@
 import { Node, ReactNodeViewRenderer } from "@tiptap/react";
+import { Plugin, PluginKey, TextSelection, type EditorState } from "@tiptap/pm/state";
 import type { MarkdownNodeSpec } from "tiptap-markdown";
 import { matchBareXPostLink, parseXPostUrl } from "@/shared/lib/x-post";
 import { XPostNodeView } from "../ui/XPostNodeView";
@@ -41,6 +42,33 @@ const markdown: MarkdownNodeSpec = {
   },
 };
 
+/** 커서가 있는 문단을 [카드, 빈 문단] 으로 바꾸고 커서를 새 문단에 둔다. 한 트랜잭션이라 Ctrl+Z 한 번에 되돌아간다. */
+function replaceWithCard(state: EditorState, url: string) {
+  const { $from } = state.selection;
+  const { schema } = state;
+  const card = schema.nodes.xPost.create({ url });
+  const tr = state.tr.replaceWith($from.before(), $from.after(), [
+    card,
+    schema.nodes.paragraph.create(),
+  ]);
+  return tr.setSelection(TextSelection.create(tr.doc, $from.before() + card.nodeSize + 1));
+}
+
+/**
+ * 붙여넣기와 Enter 가 함께 쓰는 공통 전제: 최상위 문단 안의 빈 선택이다.
+ *
+ * <p>목록·인용문 안(depth > 1)이나 제목에서는 카드를 넣지 않는다. 최상위 문단이 아니면
+ * 마크다운으로 쓸 때 "URL 한 줄" 규칙을 지킬 수 없어, 저장했다 열면 카드가 사라진다.
+ * 선택이 비어 있지 않으면 비켜서 Link 의 "선택한 글자에 링크 걸기"가 동작하게 둔다.
+ */
+function topLevelParagraph(state: EditorState) {
+  const { selection } = state;
+  if (!selection.empty) return null;
+  const { $from } = selection;
+  if ($from.depth !== 1 || $from.parent.type.name !== "paragraph") return null;
+  return $from;
+}
+
 export const XPost = Node.create({
   name: "xPost",
   group: "block",
@@ -75,6 +103,59 @@ export const XPost = Node.create({
 
   addStorage() {
     return { markdown };
+  },
+
+  addProseMirrorPlugins() {
+    const editor = this.editor;
+    return [
+      new Plugin({
+        key: new PluginKey("xPostPaste"),
+        props: {
+          handlePaste(view, _event, slice) {
+            const ref = parseXPostUrl(
+              slice.content.textBetween(0, slice.content.size, "\n").trim()
+            );
+            if (!ref) return false;
+            const { state } = view;
+            const $from = topLevelParagraph(state);
+            if (!$from) return false;
+
+            if ($from.parent.content.size === 0) {
+              view.dispatch(replaceWithCard(state, ref.canonicalUrl).scrollIntoView());
+              return true;
+            }
+            // 글자가 있는 문단은 커서 자리에서 나눠 넣는다. 직접 그리지 않고 insertContent 에 맡긴다.
+            return editor.commands.insertContent({
+              type: "xPost",
+              attrs: { url: ref.canonicalUrl },
+            });
+          },
+        },
+      }),
+    ];
+  },
+
+  addKeyboardShortcuts() {
+    return {
+      Enter: ({ editor }) => {
+        const { state } = editor;
+        const $from = topLevelParagraph(state);
+        if (!$from) return false;
+
+        // 이미지 같은 인라인 노드가 섞인 문단은 글자가 아니므로 건드리지 않는다.
+        let onlyText = true;
+        $from.parent.forEach((child) => {
+          if (!child.isText) onlyText = false;
+        });
+        if (!onlyText) return false;
+
+        const ref = parseXPostUrl($from.parent.textContent.trim());
+        if (!ref) return false;
+
+        editor.view.dispatch(replaceWithCard(state, ref.canonicalUrl).scrollIntoView());
+        return true;
+      },
+    };
   },
 
   addNodeView() {
