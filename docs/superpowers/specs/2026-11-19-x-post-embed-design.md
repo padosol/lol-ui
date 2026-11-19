@@ -39,7 +39,7 @@ X 로 넘어가야 내용을 볼 수 있다. 이런 게시물은 **이미지·�
 - **저장 포맷은 마크다운 문자열**이다. 확장 목록이 곧 저장 포맷의 정의다
   (`features/community-post-editor/model/postEditorExtensions.ts`). 왕복 테스트가
   `postEditorExtensions.test.ts` 에 있다.
-- 에디터: Tiptap 3.30.3 + `tiptap-markdown` 0.9.0 (`html: false`, `breaks: true`,
+- 에디터: Tiptap 3.32.0 + `tiptap-markdown` 0.9.0 (`html: false`, `breaks: true`,
   `linkify: true`). `StarterKit` 의 Link 는 `autolink`, `linkOnPaste` 가 켜져 있다.
 - 뷰어: `entities/community/ui/PostContent.tsx`. react-markdown + remark-gfm +
   remark-breaks 를 쓰고 rehype-raw 는 없다. `"use client"` 이지만 서버 페이지에서
@@ -151,7 +151,7 @@ https://x.com/LoLDev/status/1234567890123456789
   iframe 안을 클릭해도 노드를 선택하거나 지울 수 있어야 한다. 방법은 빌더가 정한다(예: 위에 얇은 오버레이나 손잡이).
 - **넣는 경로 2가지**
   1. **붙여넣기**: **선택이 비어 있고**, 붙여넣은 평문 전체가(앞뒤 공백 제외) `parseXPostUrl` 을 통과하면 링크 대신 `xPost` 노드를 넣는다.
-     - **선택이 있으면 건드리지 않는다.** Link 의 `linkOnPaste`(Tiptap 3.30.3 `pasteHandler.ts`)가 지금처럼 선택한 글자에 링크를 건다.
+     - **선택이 있으면 건드리지 않는다.** Link 의 `linkOnPaste`(Tiptap 3.32.0 `pasteHandler.ts`)가 지금처럼 선택한 글자에 링크를 건다.
        링크 버튼이 없는 에디터에서 `[출처](x url)` 을 만드는 유일한 경로이기 때문이다. **(내 판단)**
      - 선택이 비었을 때 기본 동작은 Link 의 paste rule(`markPasteRule`)이 URL 에 링크 마크를 거는 것이다.
        우리 handlePaste 가 `true` 를 돌려 기본 붙여넣기를 가로채면 paste rule 도 돌지 않는다.
@@ -166,7 +166,7 @@ https://x.com/LoLDev/status/1234567890123456789
 - **수정 화면 단방향 원칙과 TrailingNode**
   - StarterKit 이 켠 TrailingNode 는 마지막 블록이 문단이 아니면 다음 트랜잭션에 빈 문단을 덧붙인다(`appendTransaction`).
     클릭·포커스 같은 선택만 바뀐 트랜잭션도 여기에 해당한다.
-  - Tiptap 3.30.3 의 `Editor.dispatchTransaction` 은 덧붙은 트랜잭션 중 하나라도 문서를 바꾸면 `update` 를 낸다
+  - Tiptap 3.32.0 의 `Editor.dispatchTransaction` 은 덧붙은 트랜잭션 중 하나라도 문서를 바꾸면 `update` 를 낸다
     (`transactions.some(tr => tr.docChanged)`).
   - 그래서 **X 카드로 끝나는 글은 수정 화면에서 클릭만 해도 onChange 가 불려** 본문 전체가 다시 직렬화된다.
     "요약 + 카드" 는 흔한 모양이라 이번 기능이 이 경로를 크게 넓힌다.
