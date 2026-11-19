@@ -270,4 +270,53 @@ describe("X 게시물 넣기", () => {
     expect(hasXPost(editor)).toBe(false);
     editor.destroy();
   });
+
+  it("글 끝에 붙여넣으면 카드 뒤 문단에 커서가 가고 다음 글자가 카드를 지우지 않는다", () => {
+    const editor = open("abc");
+    editor.commands.focus("end");
+    paste(editor, POST);
+    expect(hasXPost(editor)).toBe(true);
+    expect(editor.state.selection.$from.parent.type.name).toBe("paragraph");
+    typeRaw(editor, "Z");
+    expect(toMarkdown(editor)).toBe(`abc\n\n${POST}\n\nZ`);
+    editor.destroy();
+  });
+
+  it("다음 문단이 있는 글 끝에 붙여넣어도 카드가 남는다", () => {
+    const editor = open("abc\n\nnext");
+    editor.commands.setTextSelection(4); // "abc|"
+    paste(editor, POST);
+    typeRaw(editor, "Z");
+    expect(hasXPost(editor)).toBe(true);
+    expect(toMarkdown(editor)).toBe(`abc\n\n${POST}\n\nZ\n\nnext`);
+    editor.destroy();
+  });
+
+  it("글 맨 앞에 붙여넣으면 카드가 앞에 들어가고 커서는 원래 글 앞에 있다", () => {
+    const editor = open("abc");
+    editor.commands.setTextSelection(1);
+    paste(editor, POST);
+    typeRaw(editor, "Z");
+    expect(toMarkdown(editor)).toBe(`${POST}\n\nZabc`);
+    editor.destroy();
+  });
+
+  it("글 가운데에 붙여넣으면 커서가 뒤 글 앞에 있다", () => {
+    const editor = open("앞뒤");
+    editor.commands.setTextSelection(2);
+    paste(editor, POST);
+    typeRaw(editor, "Z");
+    expect(toMarkdown(editor)).toBe(`앞\n\n${POST}\n\nZ뒤`);
+    editor.destroy();
+  });
+
+  it("붙여넣기는 Ctrl+Z 한 번에 되돌아간다", () => {
+    const editor = open("abc");
+    editor.commands.focus("end");
+    paste(editor, POST);
+    editor.commands.undo();
+    expect(toMarkdown(editor)).toBe("abc");
+    expect(hasXPost(editor)).toBe(false);
+    editor.destroy();
+  });
 });

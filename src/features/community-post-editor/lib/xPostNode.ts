@@ -106,7 +106,6 @@ export const XPost = Node.create({
   },
 
   addProseMirrorPlugins() {
-    const editor = this.editor;
     return [
       new Plugin({
         key: new PluginKey("xPostPaste"),
@@ -124,11 +123,23 @@ export const XPost = Node.create({
               view.dispatch(replaceWithCard(state, ref.canonicalUrl).scrollIntoView());
               return true;
             }
-            // 글자가 있는 문단은 커서 자리에서 나눠 넣는다. 직접 그리지 않고 insertContent 에 맡긴다.
-            return editor.commands.insertContent({
-              type: "xPost",
-              attrs: { url: ref.canonicalUrl },
-            });
+            // 글자가 있는 문단은 커서 자리에서 나눠 넣는다. 한 트랜잭션이라 Ctrl+Z 한 번에 되돌아간다.
+            // insertContent 는 쓰지 않는다: 문단 끝에서는 카드가 선택된 채 끝나, 다음 글자가 카드를 지운다.
+            const card = state.schema.nodes.xPost.create({ url: ref.canonicalUrl });
+            const tr = state.tr;
+            if ($from.pos === $from.start()) {
+              // 맨 앞: 빈 문단을 남기지 않고 카드만 앞에 넣는다. 커서는 원래 글 앞에 둔다.
+              tr.insert($from.before(), card);
+              tr.setSelection(TextSelection.create(tr.doc, $from.pos + card.nodeSize));
+            } else {
+              // 가운데·끝: 문단을 나눠 그 사이에 카드를 넣고, 커서는 카드 뒤 문단에 둔다.
+              tr.split($from.pos);
+              const boundary = $from.pos + 1;
+              tr.insert(boundary, card);
+              tr.setSelection(TextSelection.create(tr.doc, boundary + card.nodeSize + 1));
+            }
+            view.dispatch(tr.scrollIntoView());
+            return true;
           },
         },
       }),
