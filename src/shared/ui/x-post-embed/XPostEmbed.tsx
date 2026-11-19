@@ -77,12 +77,18 @@ export default function XPostEmbed({ url }: { url: string }) {
     const controller = new AbortController();
     renderXPost(frame, id, { theme, lang }, controller.signal).then(
       (value) => {
-        // 끊긴 렌더의 결과가 새 렌더의 상태를 덮어쓰지 않게 한다.
-        if (value !== "aborted") setResult({ key, value });
+        // 끊긴 렌더의 결과가 새 렌더의 상태를 덮어쓰지 않게 한다. renderXPost 는 실패
+        // 경로에서 abort 여부를 보지 않고 "failed" 를 돌려줄 수 있어 신호를 직접 본다.
+        if (!controller.signal.aborted && value !== "aborted") {
+          setResult({ key, value });
+        }
       },
     );
     return () => {
       controller.abort();
+      // frame 은 비워지므로 이 key 의 지난 결과도 함께 버린다. 남겨 두면 A→B→A 에서
+      // 빈 frame 위에 예전 ready 가 현재 결과처럼 보인다.
+      setResult((r) => (r?.key === key ? null : r));
       frame.replaceChildren();
     };
   }, [visible, id, theme, lang, key]);
