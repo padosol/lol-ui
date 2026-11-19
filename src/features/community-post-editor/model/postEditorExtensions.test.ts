@@ -217,6 +217,47 @@ describe("X 게시물", () => {
   });
 });
 
+describe("저장된 글을 에디터와 뷰어가 같게 본다", () => {
+  // 에디터는 markdown-it(linkify), 뷰어는 remark-gfm 으로 읽는다. 파서가 달라 같은 줄을
+  // 한쪽은 카드, 다른 쪽은 링크로 볼 수 있다. 같은 입력을 양쪽에 넣어 결과를 맞춘다.
+  it.each([
+    [POST, "card"],
+    [`${POST}?s=20&t=abc`, "card"],
+    // X 가 퍼가기 게시물 링크에 붙이는 꼬리. markdown-it 은 링크 글자만 `%5E` → `^` 로 풀어 보여 준다.
+    ["https://twitter.com/LoLDev/status/1?ref_src=twsrc%5Etfw", "card"],
+    // remark-gfm 은 끝의 `_`·`~` 를 링크 밖으로 뺀다.
+    [`${POST}?s=20&t=abc_`, "link"],
+    [`${POST}?s=20&t=abc~`, "link"],
+    [`${POST}?x=%E2%9C%93`, "card"],
+    [`${POST}.`, "link"],
+    [`${POST},`, "link"],
+    [`출처 ${POST}`, "link"],
+    [`[출처](${POST})`, "link"],
+    [`> ${POST}`, "link"],
+    [`- ${POST}`, "link"],
+    [`${POST}\n텍스트`, "link"],
+    [`<${POST}>`, "card"],
+    ["https://x.com/i/web/status/9", "card"],
+    ["https://example.com/a", "link"],
+  ])("%s → 양쪽 모두 %s", (md, expected) => {
+    const editor = open(md);
+    const editorCard = hasXPost(editor);
+    editor.destroy();
+    const viewerCard = viewerCardCount(md) > 0;
+
+    expect(editorCard).toBe(viewerCard);
+    expect(viewerCard ? "card" : "link").toBe(expected);
+  });
+
+  it("퍼가기 꼬리가 붙은 URL 은 원문 그대로 돌아온다", () => {
+    // 카드가 아니라 링크로 읽히면 `[…twsrc^tfw](…%5Etfw)` 로 다시 쓰여 뷰어에서도 카드가 사라진다.
+    const md = "요약\n\nhttps://twitter.com/LoLDev/status/1?ref_src=twsrc%5Etfw";
+    const editor = open(md);
+    expect(toMarkdown(editor)).toBe(md);
+    editor.destroy();
+  });
+});
+
 describe("X 게시물 넣기", () => {
   it("빈 문단에 붙여넣으면 표준형 노드가 된다", () => {
     const editor = open("");

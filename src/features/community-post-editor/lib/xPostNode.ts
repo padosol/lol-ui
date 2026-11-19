@@ -5,6 +5,20 @@ import { matchBareXPostLink, parseXPostUrl } from "@/shared/lib/x-post";
 import { XPostNodeView } from "../ui/XPostNodeView";
 
 /**
+ * markdown-it 은 링크 <b>글자</b>만 퍼센트 디코딩해 보여 준다(`…twsrc%5Etfw` → `…twsrc^tfw`).
+ * href 는 원문 그대로다. 뷰어(remark-gfm)는 글자도 원문이라 맨 URL 로 본다. 글자가 디코딩한
+ * href 와 같으면 맨 URL 로 쳐서 양쪽 판정을 맞춘다. 노드에는 원문 href 를 담아 왕복이 원문 그대로다.
+ */
+function shownAsHref(href: string, text: string): string {
+  try {
+    return decodeURI(href) === text.trim() ? href : text;
+  } catch {
+    // 잘못된 퍼센트 인코딩(`%E2%9C` 같은)은 디코딩을 포기하고 글자 그대로 비교한다.
+    return text;
+  }
+}
+
+/**
  * 한 줄짜리 X 게시물 링크를 카드로 보여 주는 블록 노드.
  *
  * <p>저장 포맷은 새로 만들지 않는다. 노드는 마크다운에서 <b>URL 한 줄</b>로 쓰이고,
@@ -32,7 +46,7 @@ const markdown: MarkdownNodeSpec = {
         if (link?.tagName !== "A") continue;
 
         const href = link.getAttribute("href") ?? "";
-        if (!matchBareXPostLink(href, link.textContent ?? "")) continue;
+        if (!matchBareXPostLink(href, shownAsHref(href, link.textContent ?? ""))) continue;
 
         const card = element.ownerDocument.createElement("div");
         card.setAttribute("data-x-post-url", href);

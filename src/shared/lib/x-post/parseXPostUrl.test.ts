@@ -66,4 +66,23 @@ describe("matchBareXPostLink", () => {
   it("href 가 없으면 거부한다", () => {
     expect(matchBareXPostLink(undefined, url)).toBeNull();
   });
+
+  // 뷰어(remark-gfm)의 자동 링크는 이 글자들로 끝나는 URL 에서 끝 글자를 링크 밖으로 뺀다.
+  // 에디터(markdown-it linkify)는 `_`·`~` 를 링크에 넣는다. 둘 다 링크로 두어야 같게 보인다.
+  it.each(["?", "!", ".", ",", ":", "*", "_", "~"])(
+    "href 가 %s 로 끝나면 거부한다",
+    (last) => {
+      const href = `${url}?t=abc${last}`;
+      // 전제: 주소 자체는 X 게시물이다. 거부는 끝 글자 규칙 때문이어야 한다.
+      expect(parseXPostUrl(href)).not.toBeNull();
+      expect(matchBareXPostLink(href, href)).toBeNull();
+    },
+  );
+
+  it.each([`${url}?t=abc-`, `${url}?s=20`, `${url}/`, `${url}?t=a_b~c`])(
+    "%s 처럼 다른 글자로 끝나면 받는다",
+    (href) => {
+      expect(matchBareXPostLink(href, href)?.id).toBe("1");
+    },
+  );
 });

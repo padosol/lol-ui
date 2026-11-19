@@ -56,11 +56,22 @@ export function parseXPostUrl(input: string): XPostRef | null {
   return { id, handle, canonicalUrl: `https://x.com/${handle}/status/${id}` };
 }
 
-/** 링크 텍스트가 href 와 같은(=URL 만 붙여 넣은) X 게시물 링크일 때만 참조를 돌려준다. */
+/**
+ * 뷰어(remark-gfm)의 자동 링크가 URL 끝에서 링크 밖으로 빼는 글자들. 에디터(markdown-it
+ * linkify)는 이 중 `_`·`~` 를 링크에 넣는다. 이 글자로 끝나는 링크는 양쪽 모두 카드로 보지
+ * 않아야 같은 글이 된다.
+ */
+const TRAILING_PUNCTUATION = /[?!.,:*_~]$/;
+
+/**
+ * 링크 텍스트가 href 와 같은(=URL 만 붙여 넣은) X 게시물 링크일 때만 참조를 돌려준다.
+ * 끝 글자가 문장부호인 href 는 거부한다(TRAILING_PUNCTUATION).
+ */
 export function matchBareXPostLink(
   href: string | null | undefined,
   text: string,
 ): XPostRef | null {
   if (!href || text.trim() !== href) return null;
+  if (TRAILING_PUNCTUATION.test(href)) return null;
   return parseXPostUrl(href);
 }
