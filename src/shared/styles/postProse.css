@@ -173,3 +173,28 @@
   outline: 2px solid var(--md-primary);
   outline-offset: 2px;
 }
+
+/*
+ * X 게시물 카드. 뷰어와 에디터 NodeView 가 같은 DOM(.x-post-embed > .x-post-embed__frame)
+ * 을 쓴다. frame 안에는 renderXPost 가 만든 슬롯 div 가 한 겹 더 있고, 슬롯은 폭을 꽉
+ * 채우므로 X 의 align: "center" 가 카드를 가운데로 둔다.
+ */
+.post-prose .x-post-embed {
+  margin: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.x-post-embed__frame {
+  width: 100%;
+  max-width: 550px; /* X 카드의 최대 폭 */
+}
+
+/* 카드가 오기 전에는 자리를 잡아 레이아웃이 튀지 않게 한다. 실패하면 거둔다. */
+.x-post-embed[data-state="idle"] .x-post-embed__frame,
+.x-post-embed[data-state="loading"] .x-post-embed__frame {
+  min-height: 240px;
+  border-radius: 0.75rem;
+  background: var(--md-elevation-4);
+}
