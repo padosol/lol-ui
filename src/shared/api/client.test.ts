@@ -125,6 +125,24 @@ describe("skipAuthRedirect", () => {
     expect(localStorage.getItem("auth-storage")).toBe("kept");
   });
 
+  // lol-repository 경로(Riot 데이터)는 모두 공개다. 여기서 받은 401 은 세션 만료가 아니라 요청이
+  // 엉뚱한 서버로 간 것이다(로컬에서 lol-server 로 직행한 경우 등). 이때 로그인으로 보내면
+  // 매 페이지 GameDataLoader 가 같은 401 을 받아 /login 새로고침을 끝없이 반복한다.
+  it("lol-repository 경로는 refresh 가 실패해도 로그인으로 보내지 않는다", async () => {
+    localStorage.setItem("auth-storage", "kept");
+    replies["/api/v1/game-data/seasons"] = [{ status: 401 }];
+    replies["/api/v1/auth/refresh"] = [{ status: 401 }];
+    replies["/api/auth/refresh"] = [{ status: 401 }];
+    const location = { href: "" };
+    vi.stubGlobal("location", location);
+
+    await expect(apiClient.get("/v1/game-data/seasons")).rejects.toMatchObject({
+      response: { status: 401 },
+    });
+    expect(location.href).toBe("");
+    expect(localStorage.getItem("auth-storage")).toBe("kept");
+  });
+
   it("skipAuthRedirect 가 없으면 refresh 실패 시 저장소를 지운다", async () => {
     failRefresh();
     // jsdom 은 location.href 대입(navigation)을 구현하지 않아 소음을 낸다 — 이동도 함께 확인한다.

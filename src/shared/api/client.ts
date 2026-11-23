@@ -1,5 +1,6 @@
 import { logger } from "@/shared/lib/logger";
 import axios, { InternalAxiosRequestConfig, AxiosError } from "axios";
+import { isRepositoryPath } from "./repositoryRoutes";
 
 // axios 타입 확장: 요청 시작 시간 기록용
 declare module "axios" {
@@ -149,7 +150,9 @@ apiClient.interceptors.response.use(
         return apiClient(originalRequest);
       } catch (refreshError) {
         processQueue(refreshError);
-        if (originalRequest.skipAuthRedirect) {
+        // lol-repository 경로(Riot 데이터)는 모두 공개라 401 은 세션 만료가 아니라 잘못 라우팅된 요청이다.
+        // 로그인으로 보내면 매 페이지 GameDataLoader 가 같은 401 을 받아 /login 새로고침을 끝없이 반복한다.
+        if (originalRequest.skipAuthRedirect || isRepositoryPath(requestUrl)) {
           throw refreshError;
         }
         clearAuthStorage();
