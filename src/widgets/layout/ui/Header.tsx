@@ -6,7 +6,8 @@ import Image from "next/image";
 import { ThemeToggle } from "@/features/theme-toggle";
 import { LocaleSwitcher } from "@/features/locale-switcher";
 import { useLogout } from "@/features/auth";
-import { useAuthStore } from "@/entities/auth";
+import { isAdmin, useAuthStore } from "@/entities/auth";
+import { adminEsportsHref } from "@/entities/esports";
 import { useHasHydrated } from "@/shared/lib/useHasHydrated";
 
 export default function Header() {
@@ -41,6 +42,14 @@ export default function Header() {
               <ThemeToggle />
               {!hasHydrated ? null : user ? (
                 <>
+                  {isAdmin(user) && (
+                    <Link
+                      href={adminEsportsHref.root}
+                      className="text-on-surface-medium hover:text-on-surface"
+                    >
+                      {t("admin")}
+                    </Link>
+                  )}
                   <Link
                     href="/mypage"
                     className="text-on-surface-medium hover:text-on-surface"
