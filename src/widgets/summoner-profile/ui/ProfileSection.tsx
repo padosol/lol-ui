@@ -19,7 +19,7 @@ import dayjs from "dayjs";
 import { RefreshCw } from "lucide-react";
 import { useFormatter, useTranslations } from "next-intl";
 import Image from "next/image";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import {
   pickCoverLeague,
   pickMostChampion,
@@ -239,6 +239,14 @@ export default function ProfileSection({
     );
   }
 
+  // 하단 바: 받는 중이면 스켈레톤, 모스트 챔피언이 있으면 요약, 없으면 생략(컴팩트 헤더)
+  let coverBar: ReactNode = null;
+  if (isMostPending) {
+    coverBar = <MostChampionBarSkeleton />;
+  } else if (most && mostAsset) {
+    coverBar = <MostChampionBar most={most} championName={mostAsset.name} />;
+  }
+
   return (
     <div
       className={`relative flex flex-col overflow-hidden rounded-lg border border-divider bg-surface-1 ${hasCover ? "md:h-[290px]" : ""}`}
@@ -356,11 +364,7 @@ export default function ProfileSection({
         <CoverTier league={coverLeague} />
       </div>
 
-      {isMostPending ? (
-        <MostChampionBarSkeleton />
-      ) : most && mostAsset ? (
-        <MostChampionBar most={most} championName={mostAsset.name} />
-      ) : null}
+      {coverBar}
     </div>
   );
 }

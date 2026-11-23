@@ -34,7 +34,7 @@ function Divider() {
   return <span aria-hidden="true" className="hidden md:block h-10 w-px bg-divider" />;
 }
 
-function Unit({ children }: { children: ReactNode }) {
+function Unit({ children }: Readonly<{ children: ReactNode }>) {
   return <span className="ml-px text-sm md:text-base font-semibold">{children}</span>;
 }
 
@@ -53,7 +53,10 @@ interface MostChampionBarProps {
 }
 
 /** 프로필 커버 하단의 모스트 1 챔피언 요약 바. */
-export default function MostChampionBar({ most, championName }: MostChampionBarProps) {
+export default function MostChampionBar({
+  most,
+  championName,
+}: Readonly<MostChampionBarProps>) {
   const t = useTranslations("summoner.cover");
   const tQueue = useTranslations("domain.leagueType");
   const { stat } = most;
@@ -114,8 +117,9 @@ export function MostChampionBarSkeleton() {
   const t = useTranslations("summoner.cover");
 
   return (
-    <div role="status" className={BAR_CLASS}>
-      <span className="sr-only">{t("loading")}</span>
+    <div className={BAR_CLASS}>
+      {/* <output> 은 role=status 를 내장한다. 문장 수준 요소라 블록들을 감싸지 않고 안내 문구만 담는다. */}
+      <output className="sr-only">{t("loading")}</output>
       <div className="flex items-center gap-3 basis-full md:basis-auto">
         <div aria-hidden="true" className={`w-10 h-[46px] bg-surface-4 animate-pulse ${HEXAGON}`} />
         <div aria-hidden="true" className="h-6 w-20 rounded bg-surface-4 animate-pulse" />

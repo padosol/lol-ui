@@ -12,7 +12,7 @@ interface CoverTierProps {
 }
 
 /** 프로필 커버의 티어 블록. 솔로 랭크 우선, 없으면 자유 랭크. */
-export default function CoverTier({ league }: CoverTierProps) {
+export default function CoverTier({ league }: Readonly<CoverTierProps>) {
   const t = useTranslations("league");
   const tDomain = useTranslations("domain");
 
