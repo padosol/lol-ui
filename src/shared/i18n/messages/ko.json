@@ -70,6 +70,16 @@
       "cooldownError": "잠시 후 다시 시도해주세요",
       "requestError": "갱신 요청에 실패했습니다"
     },
+    "cover": {
+      "mostChampion": "{queue} 모스트 1 챔피언 {champion}",
+      "loading": "모스트 챔피언을 불러오는 중",
+      "games": "{count}<unit>게임</unit>",
+      "wins": "{count}<unit>승</unit>",
+      "losses": "{count}<unit>패</unit>",
+      "winRate": "승률",
+      "averageKda": "평균 K/D/A",
+      "kdaRatio": "KDA"
+    },
     "championStats": {
       "title": "챔피언 통계",
       "needSummoner": "소환사 정보가 필요합니다.",

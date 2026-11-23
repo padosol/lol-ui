@@ -70,6 +70,16 @@
       "cooldownError": "Please try again in a moment",
       "requestError": "Refresh request failed"
     },
+    "cover": {
+      "mostChampion": "{queue} most played champion: {champion}",
+      "loading": "Loading most played champion",
+      "games": "{count}<unit> games</unit>",
+      "wins": "{count}<unit>W</unit>",
+      "losses": "{count}<unit>L</unit>",
+      "winRate": "Win rate",
+      "averageKda": "Average K/D/A",
+      "kdaRatio": "KDA"
+    },
     "championStats": {
       "title": "Champion Stats",
       "needSummoner": "A summoner is required.",

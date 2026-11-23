@@ -3,7 +3,7 @@ import {
   type ChampionData,
   type ChampionJson,
 } from "@/shared/model/game-data";
-import { IMAGE_HOST } from "@/shared/config/image";
+import { DDRAGON_IMAGE_HOST, IMAGE_HOST } from "@/shared/config/image";
 
 async function loadChampionData(): Promise<ChampionJson | null> {
   const store = useGameDataStore.getState();
@@ -54,6 +54,14 @@ export function getChampionImageUrl(championName: string): string {
     return "";
   }
   return `${IMAGE_HOST}/champion/${championName}.png`;
+}
+
+/** 기본 스킨 스플래시 일러스트 주소. championName 은 Data Dragon 챔피언 id(예: "Ahri"). */
+export function getChampionSplashUrl(championName: string): string {
+  if (!championName) {
+    return "";
+  }
+  return `${DDRAGON_IMAGE_HOST}/champion/splash/${championName}_0.jpg`;
 }
 
 export function getChampionNameByEnglishName(englishName: string): string {
