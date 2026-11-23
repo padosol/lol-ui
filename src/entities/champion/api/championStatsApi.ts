@@ -14,9 +14,9 @@ export async function getChampionStats(
     `/v1/champion-stats/${championId}`,
     { params: { platform: region, patch, ...(tier && { tier }) } }
   );
-  if (response.data.result === "FAIL") {
+  if (response.data.result === "ERROR") {
     // 표시 문구는 호출부가 번역해 보여준다. 여기서는 원인 식별용 기술 메시지만 남긴다.
-    throw new Error(response.data.errorMessage || "Failed to fetch champion stats");
+    throw new Error(response.data.errorMessage?.message || "Failed to fetch champion stats");
   }
   return response.data.data;
 }

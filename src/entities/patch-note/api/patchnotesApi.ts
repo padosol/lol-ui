@@ -6,9 +6,9 @@ export async function getPatchVersions(): Promise<PatchVersionListItem[]> {
   const response = await apiClient.get<ApiResponse<PatchVersionListItem[]>>(
     "/v1/game-data/patch-notes"
   );
-  if (response.data.result === "FAIL") {
+  if (response.data.result === "ERROR") {
     throw new Error(
-      response.data.errorMessage || "Failed to fetch patch version list"
+      response.data.errorMessage?.message || "Failed to fetch patch version list"
     );
   }
   return response.data.data;
@@ -20,8 +20,8 @@ export async function getPatchNote(
   const response = await apiClient.get<ApiResponse<PatchNoteDetailResponse>>(
     `/v1/game-data/patch-notes/${versionId}`
   );
-  if (response.data.result === "FAIL") {
-    throw new Error(response.data.errorMessage || "Failed to fetch patch note");
+  if (response.data.result === "ERROR") {
+    throw new Error(response.data.errorMessage?.message || "Failed to fetch patch note");
   }
   return response.data.data;
 }

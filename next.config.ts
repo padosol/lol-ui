@@ -16,6 +16,9 @@ const nextConfig: NextConfig = {
   // git worktree 를 리포 안(.claude/worktrees/*)에 두고 작업하면 상위 체크아웃의
   // proxy.ts·app 라우트까지 끌어와 엉뚱한 모듈 해석 오류가 난다.
   turbopack: { root: import.meta.dirname },
+  // 로컬 nginx(local.metapick.me → :3000)로 접속할 때 dev 서버가 자기 자원(HMR·청크)을 막지 않게 한다.
+  // dev 서버는 localhost 와 그 하위 도메인만 기본 허용한다. dev 에서만 쓰이는 옵션이라 운영과 무관하다.
+  allowedDevOrigins: ["local.metapick.me"],
   output: "standalone",
   images: {
     remotePatterns: [

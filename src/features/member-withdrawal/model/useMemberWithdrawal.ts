@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "@/shared/i18n/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { useAuthStore, withdrawMember } from "@/entities/auth";
-import axios from "axios";
+import { getApiErrorMessage } from "@/shared/api/error";
 import { useTranslations } from "next-intl";
 
 export function useMemberWithdrawal() {
@@ -20,11 +20,8 @@ export function useMemberWithdrawal() {
       router.replace("/login");
     },
     onError: (err: unknown) => {
-      if (axios.isAxiosError(err) && err.response?.data?.errorMessage) {
-        setError(err.response.data.errorMessage);
-      } else {
-        setError(t("error"));
-      }
+      // errorMessage 는 { errorCode, message } 객체다. 통째로 넣으면 JSX 렌더에서 터진다.
+      setError(getApiErrorMessage(err) ?? t("error"));
     },
   });
 

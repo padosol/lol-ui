@@ -24,7 +24,9 @@
     "logout": "Sign out",
     "terms": "Terms of Service",
     "privacy": "Privacy Policy",
-    "contact": "Contact"
+    "contact": "Contact",
+    "admin": "Admin",
+    "esports": "Esports"
   },
   "localeSwitcher": {
     "label": "Select language",
@@ -603,7 +605,132 @@
     "cost": "Cost: {value} ({resource})",
     "rune": "Rune {id}"
   },
+  "esports": {
+    "team": {
+      "roster": "Current roster",
+      "staff": "Staff",
+      "loanedOut": "Loaned out",
+      "members": "All-time members",
+      "seasonRoster": "Season roster"
+    },
+    "person": {
+      "status": "Current status",
+      "career": "Career",
+      "accounts": "Summoner accounts"
+    },
+    "stoveLeague": {
+      "title": "Off-season",
+      "freeAgents": "Free agents",
+      "expiring": "Expiring contracts"
+    },
+    "badge": {
+      "viewProfile": "View {name}'s profile"
+    }
+  },
+  "esportsAdmin": {
+    "title": "Esports Admin",
+    "nav": {
+      "leagues": "Leagues & seasons",
+      "teams": "Teams",
+      "persons": "People",
+      "rosterIssues": "Roster checks"
+    },
+    "forbidden": {
+      "title": "Access denied",
+      "description": "Only admins can see this page. If you were just granted admin access, please sign in again.",
+      "home": "Go home"
+    },
+    "comingSoon": "This page is coming soon.",
+    "common": {
+      "idImmutable": "This cannot be changed after it is created.",
+      "idPattern": "Use lowercase letters, numbers and underscores (_) only.",
+      "requestFailed": "We couldn't process the request. Please try again shortly."
+    },
+    "leagues": {
+      "title": "Leagues & seasons"
+    },
+    "teams": {
+      "title": "Teams"
+    },
+    "persons": {
+      "title": "People"
+    },
+    "contracts": {
+      "title": "Contracts"
+    },
+    "rosterIssues": {
+      "title": "Roster checks"
+    }
+  },
   "domain": {
+    "esports": {
+      "personStatus": {
+        "CONTRACTED": "Under contract",
+        "ON_LOAN": "On loan",
+        "FREE_AGENT": "Free agent",
+        "RETIRED": "Retired"
+      },
+      "role": {
+        "PLAYER": "Player",
+        "HEAD_COACH": "Head coach",
+        "COACH": "Coach"
+      },
+      "position": {
+        "TOP": "Top",
+        "JGL": "Jungle",
+        "MID": "Mid",
+        "AD": "Bot",
+        "SPT": "Support"
+      },
+      "contractStatus": {
+        "UPCOMING": "Upcoming",
+        "ACTIVE": "Active",
+        "ENDED": "Ended"
+      },
+      "contractType": {
+        "SIGN": "Signing",
+        "TRANSFER": "Transfer",
+        "RENEWAL": "Renewal",
+        "LOAN": "Loan",
+        "MOVE": "Internal move"
+      },
+      "endReason": {
+        "EXPIRED": "Expired",
+        "RENEWED": "Renewed",
+        "TRANSFERRED": "Transferred",
+        "RELEASED": "Released",
+        "RETIRED": "Retired",
+        "RECALLED": "Recalled from loan",
+        "MOVED": "Internal move"
+      },
+      "careerEventType": {
+        "RETIRE": "Retirement",
+        "UNRETIRE": "Unretirement",
+        "HIATUS": "Hiatus",
+        "RETURN": "Return"
+      },
+      "hiatusReason": {
+        "REST": "Rest",
+        "SUSPENSION": "Suspension",
+        "MILITARY": "Military service",
+        "PERSONAL": "Personal reasons"
+      },
+      "rosterProblem": {
+        "RENEWAL_NOT_CONTINUOUS": "Renewal does not follow the previous contract",
+        "MOVE_NOT_CONTINUOUS": "Contract before the internal move did not end the day before",
+        "MOVE_OUTSIDE_ORG": "Internal move to another organization",
+        "MOVE_END_DATE_CHANGED": "Expiry date changed on internal move",
+        "MOVE_PLAYER_STAFF_SWITCH": "Player–staff switch through an internal move",
+        "TRANSFER_WITHOUT_RELEASE": "Contract before the transfer did not end by transfer",
+        "PLAYER_AFTER_RETIRE": "Player contract after retirement without unretirement",
+        "RETIRED_WITHOUT_EVENT": "Contract ended by retirement has no retirement event",
+        "CONTRACT_AFTER_DISBAND": "Contract runs past the team's disbandment",
+        "TEAM_NAME_GAP": "Gap or overlap in team name history",
+        "TEAM_NESTED_TOO_DEEP": "Parent team nested more than one level",
+        "SIGN_DURING_RETIRE_RIGHTS": "Signed with another organization during retirement rights",
+        "EARLY_END_WITHOUT_SUCCESSOR": "Ended early with no following contract"
+      }
+    },
     "championTag": {
       "Fighter": "Fighter",
       "Tank": "Tank",
@@ -697,6 +824,21 @@
     }
   },
   "meta": {
+    "esportsTeam": {
+      "title": "{name} Roster | METAPICK.ME",
+      "description": "Current roster, past members and season rosters of {name}."
+    },
+    "esportsPerson": {
+      "title": "{name} Profile & Career | METAPICK.ME",
+      "description": "Current team and career of {name}."
+    },
+    "stoveLeague": {
+      "title": "Off-season Free Agents & Expiring Contracts | METAPICK.ME",
+      "description": "Free agents and players with expiring contracts during the off-season."
+    },
+    "esportsAdmin": {
+      "title": "Esports Admin | METAPICK.ME"
+    },
     "home": {
       "title": "LoL Match Lookup & Champion Stats | METAPICK.ME",
       "description": "Look up your recent League of Legends matches on METAPICK and optimize your champion builds with in-depth champion analysis."
