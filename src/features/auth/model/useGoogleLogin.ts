@@ -5,6 +5,7 @@ import axios from "axios";
 import { useRouter } from "@/shared/i18n/navigation";
 import { useAuthStore } from "@/entities/auth";
 import { getMyProfile } from "@/entities/auth";
+import { getApiErrorMessage } from "@/shared/api/error";
 
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || "http://localhost:8100/api";
@@ -47,8 +48,8 @@ export function useGoogleLogin() {
       router.replace("/", { locale });
     } catch (err: unknown) {
       if (axios.isAxiosError(err) && err.response?.status === 403) {
-        const message =
-          err.response.data?.errorMessage || t("rejoinBlocked");
+        // errorMessage 는 { errorCode, message } 객체다. 통째로 넣으면 URL 에 [object Object] 가 실린다.
+        const message = getApiErrorMessage(err) ?? t("rejoinBlocked");
         router.replace(`/login?error=${encodeURIComponent(message)}`, { locale });
       } else {
         router.replace("/login", { locale });
