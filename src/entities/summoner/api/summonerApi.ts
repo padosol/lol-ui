@@ -7,6 +7,7 @@ import type {
 } from "../types";
 import type { AxiosInstance } from "axios";
 import { apiClient } from "@/shared/api/client";
+import { getApiErrorStatus } from "@/shared/api/error";
 
 export async function searchSummonerAutocomplete(
   query: string,
@@ -29,6 +30,26 @@ export async function getSummonerProfile(
     { params: { platform: region } }
   );
   return response.data.data;
+}
+
+/**
+ * puuid 로 소환사(Riot ID·티어). lol-repository 에 저장된 소환사만 돌려준다 — 없으면(404) null.
+ * e스포츠 인물에 연결된 계정을 보여줄 때 쓴다(MP-190·MP-193). lol-server 는 puuid 만 준다.
+ */
+export async function getSummonerByPuuid(
+  puuid: string,
+  client: AxiosInstance = apiClient
+): Promise<SummonerProfile | null> {
+  try {
+    const response = await client.get<ApiResponse<SummonerProfile>>(
+      `/v1/summoners/${encodeURIComponent(puuid)}`,
+      { skipAuthRedirect: true }
+    );
+    return response.data.data;
+  } catch (error) {
+    if (getApiErrorStatus(error) === 404) return null;
+    throw error;
+  }
 }
 
 /** 접수되면 202, 쿨다운에 걸리면 200 + FAILED — 둘 다 2xx 라 resolve 된다. */
