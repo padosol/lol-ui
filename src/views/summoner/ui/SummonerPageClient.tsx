@@ -34,6 +34,7 @@ export default function SummonerPageClient({
           summonerName={gameName}
           region={region}
           initialData={profileData}
+          initialLeagueData={leagueData || undefined}
           onRefreshComplete={handleRefreshComplete}
         />
         <ProfileTabs
