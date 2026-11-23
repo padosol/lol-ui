@@ -24,7 +24,9 @@
     "logout": "로그아웃",
     "terms": "이용약관",
     "privacy": "개인정보처리방침",
-    "contact": "문의하기"
+    "contact": "문의하기",
+    "admin": "관리자",
+    "esports": "e스포츠"
   },
   "localeSwitcher": {
     "label": "언어 선택",
@@ -603,7 +605,132 @@
     "cost": "소모: {value} ({resource})",
     "rune": "룬 {id}"
   },
+  "esports": {
+    "team": {
+      "roster": "현재 로스터",
+      "staff": "스태프",
+      "loanedOut": "임대 보낸 선수",
+      "members": "역대 인원",
+      "seasonRoster": "시즌 로스터"
+    },
+    "person": {
+      "status": "현재 상태",
+      "career": "커리어",
+      "accounts": "소환사 계정"
+    },
+    "stoveLeague": {
+      "title": "스토브리그",
+      "freeAgents": "FA 선수",
+      "expiring": "계약 만료 예정"
+    },
+    "badge": {
+      "viewProfile": "{name} 프로필 보기"
+    }
+  },
+  "esportsAdmin": {
+    "title": "e스포츠 관리",
+    "nav": {
+      "leagues": "리그·시즌",
+      "teams": "팀",
+      "persons": "인물",
+      "rosterIssues": "검증 결과"
+    },
+    "forbidden": {
+      "title": "권한이 없습니다",
+      "description": "관리자만 볼 수 있는 화면입니다. 관리자 권한을 방금 받았다면 다시 로그인해 주세요.",
+      "home": "홈으로"
+    },
+    "comingSoon": "준비 중인 화면입니다.",
+    "common": {
+      "idImmutable": "등록한 뒤에는 바꿀 수 없습니다.",
+      "idPattern": "영문 소문자, 숫자, 밑줄(_)만 쓸 수 있습니다.",
+      "requestFailed": "요청을 처리하지 못했습니다. 잠시 후 다시 시도해 주세요."
+    },
+    "leagues": {
+      "title": "리그·시즌"
+    },
+    "teams": {
+      "title": "팀"
+    },
+    "persons": {
+      "title": "인물"
+    },
+    "contracts": {
+      "title": "계약"
+    },
+    "rosterIssues": {
+      "title": "검증 결과"
+    }
+  },
   "domain": {
+    "esports": {
+      "personStatus": {
+        "CONTRACTED": "계약 중",
+        "ON_LOAN": "임대 중",
+        "FREE_AGENT": "FA",
+        "RETIRED": "은퇴"
+      },
+      "role": {
+        "PLAYER": "선수",
+        "HEAD_COACH": "감독",
+        "COACH": "코치"
+      },
+      "position": {
+        "TOP": "탑",
+        "JGL": "정글",
+        "MID": "미드",
+        "AD": "원딜",
+        "SPT": "서포터"
+      },
+      "contractStatus": {
+        "UPCOMING": "시작 전",
+        "ACTIVE": "진행 중",
+        "ENDED": "종료"
+      },
+      "contractType": {
+        "SIGN": "입단",
+        "TRANSFER": "이적",
+        "RENEWAL": "재계약",
+        "LOAN": "임대",
+        "MOVE": "팀 내 이동"
+      },
+      "endReason": {
+        "EXPIRED": "계약 만료",
+        "RENEWED": "재계약",
+        "TRANSFERRED": "이적",
+        "RELEASED": "방출",
+        "RETIRED": "은퇴",
+        "RECALLED": "임대 복귀",
+        "MOVED": "팀 내 이동"
+      },
+      "careerEventType": {
+        "RETIRE": "은퇴",
+        "UNRETIRE": "은퇴 번복",
+        "HIATUS": "활동 중단",
+        "RETURN": "활동 복귀"
+      },
+      "hiatusReason": {
+        "REST": "휴식",
+        "SUSPENSION": "출장정지",
+        "MILITARY": "군 입대",
+        "PERSONAL": "개인 사유"
+      },
+      "rosterProblem": {
+        "RENEWAL_NOT_CONTINUOUS": "재계약이 직전 계약과 이어지지 않음",
+        "MOVE_NOT_CONTINUOUS": "팀 내 이동 직전 계약이 전날 끝나지 않음",
+        "MOVE_OUTSIDE_ORG": "다른 조직으로 팀 내 이동",
+        "MOVE_END_DATE_CHANGED": "팀 내 이동에서 만료일이 바뀜",
+        "MOVE_PLAYER_STAFF_SWITCH": "팀 내 이동으로 선수·스태프 전환",
+        "TRANSFER_WITHOUT_RELEASE": "이적 직전 계약이 이적으로 끝나지 않음",
+        "PLAYER_AFTER_RETIRE": "은퇴 번복 없이 선수 계약",
+        "RETIRED_WITHOUT_EVENT": "은퇴로 끝난 계약에 은퇴 사건 없음",
+        "CONTRACT_AFTER_DISBAND": "해체일 이후까지 이어지는 계약",
+        "TEAM_NAME_GAP": "팀명 이력에 빈 날짜나 겹침",
+        "TEAM_NESTED_TOO_DEEP": "상위 팀이 두 단계 이상",
+        "SIGN_DURING_RETIRE_RIGHTS": "은퇴 권리 기간에 다른 조직 입단",
+        "EARLY_END_WITHOUT_SUCCESSOR": "조기 종료 뒤 이어지는 계약 없음"
+      }
+    },
     "championTag": {
       "Fighter": "전사",
       "Tank": "탱커",
@@ -697,6 +824,21 @@
     }
   },
   "meta": {
+    "esportsTeam": {
+      "title": "{name} 로스터 | METAPICK.ME",
+      "description": "{name}의 현재 로스터와 역대 인원, 시즌별 로스터를 확인하세요."
+    },
+    "esportsPerson": {
+      "title": "{name} 프로필·커리어 | METAPICK.ME",
+      "description": "{name}의 현재 소속과 커리어를 확인하세요."
+    },
+    "stoveLeague": {
+      "title": "스토브리그 FA·계약 만료 예정 | METAPICK.ME",
+      "description": "스토브리그 FA 선수와 계약 만료 예정 선수를 확인하세요."
+    },
+    "esportsAdmin": {
+      "title": "e스포츠 관리 | METAPICK.ME"
+    },
     "home": {
       "title": "롤 전적 검색, 메타픽, 라이엇 | METAPICK.ME",
       "description": "롤 전적 검색, 메타픽을 사용하여 나의 최근 전적을 확인하고, 챔피언 분석을 통해 챔피언 빌드를 최적화하세요!"
