@@ -1,4 +1,5 @@
 export { useAuthStore } from "./model/useAuthStore";
+export { isAdmin } from "./lib/isAdmin";
 export {
   logout,
   getMyProfile,
@@ -10,5 +11,6 @@ export type {
   AuthState,
   AuthStatus,
   MemberProfile,
+  MemberRole,
   SocialAccount,
 } from "./types";
