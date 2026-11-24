@@ -24,8 +24,9 @@ interface StartingFiveProps {
 /** 면의 밝기를 번갈아 써 다섯 장이 한 덩어리로 붙어 보이게 한다. */
 const SURFACES = ["bg-surface-1", "bg-surface-2", "bg-surface-4", "bg-surface-2", "bg-surface-1"];
 
+/** 폰에서는 한 줄에 두 장(낮게), 넓은 화면에서는 다섯 장이 한 줄. */
 const CARD =
-  "relative flex h-[420px] min-w-0 flex-[1_1_180px] flex-col justify-between overflow-hidden px-[18px] py-5 text-on-surface sm:h-[520px]";
+  "relative flex h-[300px] min-w-0 flex-[1_1_160px] flex-col justify-between overflow-hidden px-4 py-4 text-on-surface sm:h-[520px] sm:px-[18px] sm:py-5";
 
 export default function StartingFive({ lineup, joinDates, today }: StartingFiveProps) {
   const t = useTranslations("esports.team");
@@ -84,7 +85,7 @@ function PlayerCard({
         variant="portrait"
         imageUrl={player.imageUrl}
         name={player.nickName}
-        className="absolute inset-x-0 bottom-[150px] top-16"
+        className="absolute inset-x-0 bottom-[110px] top-12 sm:bottom-[150px] sm:top-16"
       />
       <div className="relative">
         {player.inactive && (
@@ -94,7 +95,7 @@ function PlayerCard({
               : t("inactive")}
           </span>
         )}
-        <div className="break-words text-[34px] font-black uppercase leading-[38px] tracking-[-0.02em] [overflow-wrap:anywhere]">
+        <div className="break-words text-2xl font-black uppercase leading-7 tracking-[-0.02em] [overflow-wrap:anywhere] sm:text-[34px] sm:leading-[38px]">
           {player.nickName}
         </div>
         <div className="mt-2.5 border-t border-on-surface/25 pt-2.5 text-xs text-on-surface-medium">

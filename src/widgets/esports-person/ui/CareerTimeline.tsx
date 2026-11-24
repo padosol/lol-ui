@@ -25,7 +25,15 @@ interface CareerTimelineProps {
   today: LocalDate;
 }
 
-const ROW = "grid grid-cols-[84px_84px_minmax(0,1fr)_auto] items-center gap-x-3 border-t border-divider px-4 py-2.5";
+/**
+ * 행 배치. 넓은 화면: 날짜 | 유형 | 내용 | 상태 네 칸.
+ * 폰: 1줄 "날짜·유형 | 상태", 2줄 "내용" — 날짜·유형 묶음은 넓은 화면에서 contents 로 풀려 각자 칸에 들어간다.
+ */
+const ROW =
+  "grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 gap-y-1 border-t border-divider px-4 py-2.5 sm:grid-cols-[84px_84px_minmax(0,1fr)_auto]";
+const ROW_LEAD = "flex items-center gap-2 sm:contents";
+const ROW_BODY = "col-span-2 row-start-2 min-w-0 sm:col-span-1 sm:row-start-auto";
+const ROW_TAIL = "col-start-2 row-start-1 sm:col-start-auto sm:row-start-auto";
 
 const EVENT_TONE: Record<CareerEventType, string> = {
   HIATUS: "bg-warning/15 text-warning",
@@ -159,26 +167,30 @@ function ContractRow({ contract, teamsById }: { contract: Contract; teamsById: M
 
   return (
     <li className={`${ROW} tabular-nums`}>
-      <span className="text-sm font-medium text-on-surface">{formatDotDate(contract.startDate)}</span>
-      <span>
-        <span className="inline-block rounded-md bg-surface-4 px-2 py-0.5 text-xs font-medium text-on-surface">
-          {tType(contract.contractType)}
+      <span className={ROW_LEAD}>
+        <span className="text-sm font-medium text-on-surface">{formatDotDate(contract.startDate)}</span>
+        <span>
+          <span className="inline-block rounded-md bg-surface-4 px-2 py-0.5 text-xs font-medium text-on-surface">
+            {tType(contract.contractType)}
+          </span>
         </span>
       </span>
-      <span className="min-w-0">
+      <span className={ROW_BODY}>
         <span className="block truncate text-sm text-on-surface">
           {teamLabel} · {what}
         </span>
         <span className="block text-xs text-on-surface-medium">{expiry}</span>
       </span>
       {contract.status === "ACTIVE" ? (
-        <span className="inline-flex items-center gap-1.5 whitespace-nowrap text-xs font-semibold text-on-surface">
+        <span
+          className={`${ROW_TAIL} inline-flex items-center gap-1.5 whitespace-nowrap text-xs font-semibold text-on-surface`}
+        >
           <span aria-hidden="true" className="size-1.5 rounded-full bg-success" />
           {tStatus("ACTIVE")}
         </span>
       ) : (
         <span
-          className={`whitespace-nowrap text-xs font-medium ${
+          className={`${ROW_TAIL} whitespace-nowrap text-xs font-medium ${
             contract.status === "UPCOMING" ? "text-primary" : "text-on-surface-medium"
           }`}
         >
@@ -198,14 +210,15 @@ function EventRow({ event }: { event: CareerEvent }) {
 
   return (
     <li className={`${ROW} tabular-nums`}>
-      <span className="text-sm font-medium text-on-surface">{formatDotDate(event.eventDate)}</span>
-      <span>
-        <span className={`inline-block rounded-md px-2 py-0.5 text-xs font-medium ${EVENT_TONE[event.eventType]}`}>
-          {tEvent(event.eventType)}
+      <span className={ROW_LEAD}>
+        <span className="text-sm font-medium text-on-surface">{formatDotDate(event.eventDate)}</span>
+        <span>
+          <span className={`inline-block rounded-md px-2 py-0.5 text-xs font-medium ${EVENT_TONE[event.eventType]}`}>
+            {tEvent(event.eventType)}
+          </span>
         </span>
       </span>
-      <span className="min-w-0 truncate text-sm text-on-surface">{detail}</span>
-      <span />
+      {detail && <span className={`${ROW_BODY} truncate text-sm text-on-surface`}>{detail}</span>}
     </li>
   );
 }
