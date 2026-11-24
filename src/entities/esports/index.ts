@@ -92,6 +92,12 @@ export { startingLineup, splitStaff, currentTenureStarts } from "./lib/lineup";
 export type { StartingLineup } from "./lib/lineup";
 export { buildCareerTimeline } from "./lib/career";
 export type { CareerItem, CareerRow } from "./lib/career";
+export { publicLeagues, pickLeague, leagueLabel, latestSeasonYear } from "./lib/leagues";
+
+// ui
+export { default as TeamLogo } from "./ui/TeamLogo";
+export { default as PersonPhoto } from "./ui/PersonPhoto";
+export { default as PersonStatusBadge } from "./ui/PersonStatusBadge";
 
 // 타입·코드값
 export {
