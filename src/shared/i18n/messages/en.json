@@ -26,7 +26,7 @@
     "privacy": "Privacy Policy",
     "contact": "Contact",
     "admin": "Admin",
-    "esports": "Esports"
+    "esports": "e-sports"
   },
   "localeSwitcher": {
     "label": "Select language",
@@ -606,17 +606,68 @@
     "rune": "Rune {id}"
   },
   "esports": {
+    "common": {
+      "logo": "{name} logo",
+      "photo": "Photo of {name}"
+    },
+    "list": {
+      "eyebrow": "e-sports",
+      "seasonEyebrow": "e-sports · {year} season",
+      "title": "{league} teams",
+      "summary": "{teams} teams · {players} players · {staff} coaches",
+      "leagues": "League",
+      "staffGroup": "Head coach and coaches",
+      "startersGroup": "{team} starting five",
+      "viewLineup": "View starting five",
+      "empty": "No teams yet",
+      "rosterUnavailable": "Couldn't load the roster"
+    },
     "team": {
       "roster": "Current roster",
       "staff": "Staff",
       "loanedOut": "Loaned out",
       "members": "All-time members",
-      "seasonRoster": "Season roster"
+      "seasonRoster": "Season roster",
+      "seasonEyebrow": "{league} · {year} season",
+      "founded": "Founded {year}",
+      "startingFive": "Starting five",
+      "yearOnTeam": "Year {n}",
+      "joinedUntil": "Joined {joined} · until {until}",
+      "joined": "Joined {joined}",
+      "emptySlot": "Open",
+      "bench": "Bench",
+      "benchGroup": "Coaching staff",
+      "subs": "Subs",
+      "viewOrgRoster": "View {league} roster",
+      "inactive": "Inactive"
     },
     "person": {
       "status": "Current status",
       "career": "Career",
-      "accounts": "Summoner accounts"
+      "accounts": "Summoner accounts",
+      "breadcrumb": "Breadcrumb",
+      "rosterNav": "{team} roster",
+      "age": "Age {age}",
+      "contractEnds": "Contract ends",
+      "inactiveReason": "Inactive",
+      "nextContract": "Next contract",
+      "nextContractValue": "{team} · from {date}",
+      "rights": "Rights held",
+      "rightsValue": "{team} · until {date}",
+      "retiredAsPlayer": "Retired as player",
+      "noTeam": "No team",
+      "careerEmpty": "No career history yet",
+      "careerEmptyHint": "Contracts and career events will appear here",
+      "present": "Present",
+      "renewals": "{count, plural, one {# renewal} other {# renewals}}",
+      "expires": "Ends {date}",
+      "expiresEarly": "Ends {date} → ended early {actual}",
+      "expiresUnknown": "End date undisclosed",
+      "durationYears": "{years, plural, one {# yr} other {# yrs}}",
+      "durationMonths": "{months, plural, one {# mo} other {# mos}}",
+      "durationYearsMonths": "{years} yr {months} mo",
+      "durationUnderMonth": "Less than a month",
+      "tenure": "Time at {team}"
     },
     "stoveLeague": {
       "title": "Off-season",
@@ -824,6 +875,10 @@
     }
   },
   "meta": {
+    "esportsTeams": {
+      "title": "e-sports Team Rosters | METAPICK.ME",
+      "description": "Head coaches, coaches and starting players of LCK and LCK CL teams."
+    },
     "esportsTeam": {
       "title": "{name} Roster | METAPICK.ME",
       "description": "Current roster, past members and season rosters of {name}."

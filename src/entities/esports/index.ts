@@ -74,6 +74,7 @@ export {
 
 // lib
 export {
+  esportsHomeHref,
   esportsTeamHref,
   esportsPersonHref,
   stoveLeagueHref,

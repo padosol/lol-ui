@@ -7,6 +7,11 @@
 
 const enc = encodeURIComponent;
 
+/** e-sports 메뉴 첫 화면(리그별 팀 리스트). 리그를 고르지 않으면 기본 리그를 보여준다. */
+export function esportsHomeHref(leagueId?: string): string {
+  return leagueId ? `/esports?league=${enc(leagueId)}` : "/esports";
+}
+
 /** 팀 페이지(현재 로스터·역대 인원·시즌 로스터) — MP-192 */
 export function esportsTeamHref(teamId: string): string {
   return `/esports/teams/${enc(teamId)}`;

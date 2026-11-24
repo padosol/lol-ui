@@ -26,7 +26,7 @@
     "privacy": "개인정보처리방침",
     "contact": "문의하기",
     "admin": "관리자",
-    "esports": "e스포츠"
+    "esports": "e-sports"
   },
   "localeSwitcher": {
     "label": "언어 선택",
@@ -606,17 +606,68 @@
     "rune": "룬 {id}"
   },
   "esports": {
+    "common": {
+      "logo": "{name} 로고",
+      "photo": "{name} 사진"
+    },
+    "list": {
+      "eyebrow": "e-sports",
+      "seasonEyebrow": "e-sports · {year} 시즌",
+      "title": "{league} 팀",
+      "summary": "{teams}개 팀 · 선수 {players}명 · 감독·코치 {staff}명",
+      "leagues": "리그",
+      "staffGroup": "감독과 코치진",
+      "startersGroup": "{team} 주전 다섯 명",
+      "viewLineup": "스타팅 파이브 보기",
+      "empty": "등록된 팀이 없습니다",
+      "rosterUnavailable": "로스터를 불러오지 못했습니다"
+    },
     "team": {
       "roster": "현재 로스터",
       "staff": "스태프",
       "loanedOut": "임대 보낸 선수",
       "members": "역대 인원",
-      "seasonRoster": "시즌 로스터"
+      "seasonRoster": "시즌 로스터",
+      "seasonEyebrow": "{league} · {year} 시즌",
+      "founded": "창단 {year}",
+      "startingFive": "주전 다섯 명",
+      "yearOnTeam": "{n}년차",
+      "joinedUntil": "{joined} 합류 · {until}까지",
+      "joined": "{joined} 합류",
+      "emptySlot": "공석",
+      "bench": "벤치",
+      "benchGroup": "감독과 코치",
+      "subs": "후보",
+      "viewOrgRoster": "{league} 로스터 보기",
+      "inactive": "활동 중단"
     },
     "person": {
       "status": "현재 상태",
       "career": "커리어",
-      "accounts": "소환사 계정"
+      "accounts": "소환사 계정",
+      "breadcrumb": "현재 위치",
+      "rosterNav": "{team} 로스터",
+      "age": "만 {age}세",
+      "contractEnds": "계약 만료",
+      "inactiveReason": "중단 사유",
+      "nextContract": "다음 계약",
+      "nextContractValue": "{team} · {date} 합류",
+      "rights": "권리 보유",
+      "rightsValue": "{team} · {date}까지",
+      "retiredAsPlayer": "선수 은퇴",
+      "noTeam": "소속 팀 없음",
+      "careerEmpty": "등록된 커리어가 없습니다",
+      "careerEmptyHint": "계약이나 활동 기록이 생기면 여기에 표시됩니다",
+      "present": "현재",
+      "renewals": "재계약 {count}회",
+      "expires": "만료 {date}",
+      "expiresEarly": "만료 {date} → {actual} 조기 종료",
+      "expiresUnknown": "만료일 미공개",
+      "durationYears": "{years}년",
+      "durationMonths": "{months}개월",
+      "durationYearsMonths": "{years}년 {months}개월",
+      "durationUnderMonth": "1개월 미만",
+      "tenure": "{team} 소속 기간"
     },
     "stoveLeague": {
       "title": "스토브리그",
@@ -824,6 +875,10 @@
     }
   },
   "meta": {
+    "esportsTeams": {
+      "title": "e-sports 팀 로스터 | METAPICK.ME",
+      "description": "LCK·LCK CL 팀의 감독·코치진과 주전 선수를 확인하세요."
+    },
     "esportsTeam": {
       "title": "{name} 로스터 | METAPICK.ME",
       "description": "{name}의 현재 로스터와 역대 인원, 시즌별 로스터를 확인하세요."

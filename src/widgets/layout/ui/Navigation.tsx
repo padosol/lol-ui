@@ -14,6 +14,7 @@ const NAV_ITEMS = [
   // { key: "patchNotes", href: "/patch-notes" },
   { key: "community", href: "/community" },
   // { key: "duo", href: "/duo" },
+  { key: "esports", href: "/esports" },
 ] as const;
 
 export default function Navigation() {
