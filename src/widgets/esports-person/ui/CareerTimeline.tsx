@@ -8,6 +8,7 @@ import {
   durationParts,
   esportsTeamHref,
   formatDotDate,
+  tenurePeriod,
   type CareerEvent,
   type CareerEventType,
   type CareerRow,
@@ -100,6 +101,7 @@ function TenureCard({
   const tPosition = useTranslations("domain.esports.position");
   const team = teamsById.get(tenure.organizationId);
   const name = team?.name ?? tenure.organizationId;
+  const period = tenurePeriod(tenure, today);
 
   const sub = [
     tenure.roles.map((role) => tRole(role)).join(" · "),
@@ -127,10 +129,10 @@ function TenureCard({
         </div>
         <div className="shrink-0 text-right tabular-nums">
           <p className="text-sm font-medium text-on-surface">
-            {formatDotDate(tenure.startDate)} – {tenure.lastDay ? formatDotDate(tenure.lastDay) : t("present")}
+            {formatDotDate(tenure.startDate)} – {period.ongoing ? t("present") : formatDotDate(period.end)}
           </p>
           <p className="text-xs text-on-surface-medium">
-            <Duration from={tenure.startDate} to={tenure.lastDay ?? today} />
+            <Duration from={tenure.startDate} to={period.end} />
           </p>
         </div>
       </header>

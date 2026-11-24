@@ -10,6 +10,7 @@ import {
   esportsTeamHref,
   formatDotDate,
   fullYearsBetween,
+  statusDetails,
   type EsportsTeam,
   type LocalDate,
   type PersonProfile,
@@ -66,37 +67,35 @@ function StatusPanel({ status, teamsById }: { status: PersonStatusInfo; teamsByI
     .filter(Boolean)
     .join(" · ");
 
-  const rows: { key: string; label: string; value: ReactNode }[] = [];
-  if (status.contractLastDay) {
-    rows.push({ key: "ends", label: t("contractEnds"), value: formatDotDate(status.contractLastDay) });
-  }
-  if (status.inactive) {
-    rows.push({
-      key: "inactive",
-      label: t("inactiveReason"),
-      value: status.inactiveReason ? tHiatus(status.inactiveReason) : "—",
-    });
-  }
-  if (status.nextTeamId) {
-    rows.push({
-      key: "next",
-      label: t("nextContract"),
-      value: t("nextContractValue", {
-        team: teamName(teamsById, status.nextTeamId),
-        date: status.nextStartDate ? formatDotDate(status.nextStartDate) : "—",
-      }),
-    });
-  }
-  if (status.rightsTeamId) {
-    rows.push({
-      key: "rights",
-      label: t("rights"),
-      value: t("rightsValue", {
-        team: teamName(teamsById, status.rightsTeamId),
-        date: status.rightsUntil ? formatDotDate(status.rightsUntil) : "—",
-      }),
-    });
-  }
+  const dateOrDash = (date: string | null) => (date ? formatDotDate(date) : "—");
+  const rows: { key: string; label: string; value: ReactNode }[] = statusDetails(status).map((detail) => {
+    switch (detail.kind) {
+      case "contractEnds":
+        return {
+          key: detail.kind,
+          label: t("contractEnds"),
+          value: detail.date ? formatDotDate(detail.date) : t("expiresUnknown"),
+        };
+      case "inactive":
+        return {
+          key: detail.kind,
+          label: t("inactiveReason"),
+          value: detail.reason ? tHiatus(detail.reason) : "—",
+        };
+      case "nextContract":
+        return {
+          key: detail.kind,
+          label: t("nextContract"),
+          value: t("nextContractValue", { team: teamName(teamsById, detail.teamId), date: dateOrDash(detail.date) }),
+        };
+      case "rights":
+        return {
+          key: detail.kind,
+          label: t("rights"),
+          value: t("rightsValue", { team: teamName(teamsById, detail.teamId), date: dateOrDash(detail.date) }),
+        };
+    }
+  });
 
   return (
     <section

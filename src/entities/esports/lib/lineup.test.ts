@@ -62,6 +62,31 @@ describe("startingLineup", () => {
     expect(lineup.subs).toEqual([jgl2]);
   });
 
+  it("같은 포지션이면 활동 중단인 선수보다 활동 중인 선수가 주전이다", () => {
+    const resting = { ...entry("arcturus", "PLAYER", "MID"), inactive: true, inactiveReason: "REST" as const };
+    const playing = entry("rune", "PLAYER", "MID");
+
+    const lineup = startingLineup([resting, playing]);
+
+    expect(lineup.starters.MID).toBe(playing);
+    expect(lineup.subs).toEqual([resting]);
+  });
+
+  it("재계약으로 계약 시작일이 늦어져도 이 팀에 먼저 합류한 선수가 주전이다", () => {
+    // 서버 응답은 포지션 → 지금 계약 시작일 순이라 재계약한 주전이 뒤로 밀린다.
+    const sub = { ...entry("rune", "PLAYER", "MID"), startDate: "2025-11-18" };
+    const renewed = { ...entry("arcturus", "PLAYER", "MID"), startDate: "2026-11-17", contractType: "RENEWAL" as const };
+    const joinDates = new Map([
+      ["arcturus", "2023-11-21"],
+      ["rune", "2025-11-18"],
+    ]);
+
+    const lineup = startingLineup([sub, renewed], joinDates);
+
+    expect(lineup.starters.MID).toBe(renewed);
+    expect(lineup.subs).toEqual([sub]);
+  });
+
   it("포지션이 없는 선수는 후보로 둔다", () => {
     const noPosition = entry("mira", "PLAYER", null);
 

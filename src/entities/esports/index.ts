@@ -86,11 +86,13 @@ export {
   globalContractEndDate,
   nextGlobalContractEndDate,
 } from "./lib/date";
-export { organizationIdOf, indexTeams } from "./lib/teams";
+export { organizationIdOf, indexTeams, isDisbanded } from "./lib/teams";
+export { statusDetails } from "./lib/status";
+export type { StatusDetail } from "./lib/status";
 export { formatDotDate, formatDotYearMonth, fullYearsBetween, durationParts } from "./lib/format";
 export { startingLineup, splitStaff, currentTenureStarts } from "./lib/lineup";
 export type { StartingLineup } from "./lib/lineup";
-export { buildCareerTimeline } from "./lib/career";
+export { buildCareerTimeline, tenurePeriod } from "./lib/career";
 export type { CareerItem, CareerRow } from "./lib/career";
 export { publicLeagues, pickLeague, leagueLabel, latestSeasonYear } from "./lib/leagues";
 

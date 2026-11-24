@@ -9,22 +9,35 @@ export interface StartingLineup {
 }
 
 /**
- * 주전 다섯 명. 로스터 API 는 주전·후보를 구분하지 않으므로 포지션마다 응답 순서(포지션 → 시작일)상 첫 선수를 주전으로 본다.
+ * 주전 다섯 명 — 추정이다. 로스터 API 는 주전·후보를 구분하지 않는다.
+ *
+ * 같은 포지션끼리만 비교해 활동 중인 선수 → 이 팀에 먼저 합류한 선수 → 응답 순서로 고른다.
+ * 응답은 포지션 → "지금 계약" 시작일 순이라, 그대로 쓰면 재계약한 주전이 늦게 계약한 후보 뒤로 밀린다.
+ * 합류일(`joinDates`, 보통 `currentTenureStarts`)이 없으면 지금 계약 시작일로 대신한다.
+ * 후보는 응답 순서(포지션 순) 그대로 둔다.
  */
-export function startingLineup(players: readonly RosterEntry[]): StartingLineup {
+export function startingLineup(
+  players: readonly RosterEntry[],
+  joinDates?: ReadonlyMap<string, LocalDate>
+): StartingLineup {
+  const joined = (player: RosterEntry) => joinDates?.get(player.personId) ?? player.startDate;
+  const ahead = (a: RosterEntry, b: RosterEntry) => {
+    if (a.inactive !== b.inactive) return !a.inactive;
+    return joined(a) < joined(b);
+  };
+
   const starters = Object.fromEntries(ESPORTS_POSITIONS.map((position) => [position, null])) as Record<
     EsportsPosition,
     RosterEntry | null
   >;
-  const subs: RosterEntry[] = [];
   for (const player of players) {
-    if (player.position && starters[player.position] === null) {
-      starters[player.position] = player;
-    } else {
-      subs.push(player);
-    }
+    if (!player.position) continue;
+    const current = starters[player.position];
+    if (current === null || ahead(player, current)) starters[player.position] = player;
   }
-  return { starters, subs };
+
+  const chosen = new Set(Object.values(starters));
+  return { starters, subs: players.filter((player) => !chosen.has(player)) };
 }
 
 export function splitStaff(staff: readonly RosterEntry[]): {

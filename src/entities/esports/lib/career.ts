@@ -68,6 +68,18 @@ export function buildCareerTimeline(career: PersonCareer): CareerItem[] {
   return items.sort((a, b) => newestFirst(anchorDate(a), anchorDate(b)));
 }
 
+/**
+ * 소속 기간을 화면에 보일 끝. 서버의 lastDay 는 마지막 계약의 만료일이라 진행 중이면 미래 날짜다 —
+ * 진행 중(끝이 없거나 오늘 이후)이면 "현재"로 쓰고 기간 길이는 오늘까지 센다.
+ */
+export function tenurePeriod(
+  tenure: Pick<Tenure, "lastDay">,
+  today: LocalDate
+): { ongoing: boolean; end: LocalDate } {
+  const ongoing = tenure.lastDay === null || tenure.lastDay >= today;
+  return { ongoing, end: ongoing ? today : (tenure.lastDay as LocalDate) };
+}
+
 function within(date: LocalDate, tenure: Tenure): boolean {
   return date >= tenure.startDate && (tenure.lastDay === null || date <= tenure.lastDay);
 }

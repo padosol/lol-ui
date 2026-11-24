@@ -1,9 +1,11 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { Footer, Header, Navigation } from "@/widgets/layout";
 import { BenchBar, StartingFive, TeamHero, type OrganizationTeamLink } from "@/widgets/esports-team";
 import {
   currentTenureStarts,
+  isDisbanded,
   leagueLabel,
   splitStaff,
   startingLineup,
@@ -31,6 +33,7 @@ export default function EsportsTeamPageClient({
   leagues,
   seasonYear,
 }: EsportsTeamPageClientProps) {
+  const t = useTranslations("esports.team");
   const { team, organizationTeams } = detail;
   const today = todayInSeoul();
   const labelOf = (leagueId: string | null) => {
@@ -41,8 +44,10 @@ export default function EsportsTeamPageClient({
     team: other,
     leagueLabel: labelOf(other.homeLeagueId),
   }));
-  const lineup = startingLineup(roster.players);
+  const joinDates = currentTenureStarts(members, today);
+  const lineup = startingLineup(roster.players, joinDates);
   const { headCoaches, coaches } = splitStaff(roster.staff);
+  const disbanded = isDisbanded(team, today);
 
   return (
     <div className="flex min-h-screen flex-col bg-surface">
@@ -54,8 +59,15 @@ export default function EsportsTeamPageClient({
           leagueLabel={labelOf(team.homeLeagueId)}
           seasonYear={seasonYear}
           organizationTeams={orgLinks}
+          disbanded={disbanded}
         />
-        <StartingFive lineup={lineup} joinDates={currentTenureStarts(members, today)} today={today} />
+        {disbanded ? (
+          <p className="rounded-xl border border-divider bg-surface-1 px-4 py-12 text-center text-sm text-on-surface-medium">
+            {t("disbandedNotice")}
+          </p>
+        ) : (
+          <StartingFive lineup={lineup} joinDates={joinDates} today={today} />
+        )}
         <BenchBar headCoaches={headCoaches} coaches={coaches} subs={lineup.subs} organizationTeams={orgLinks} />
       </main>
       <Footer />

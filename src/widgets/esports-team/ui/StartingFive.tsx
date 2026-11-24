@@ -101,7 +101,7 @@ function PlayerCard({
         <div className="mt-2.5 border-t border-on-surface/25 pt-2.5 text-xs text-on-surface-medium">
           {player.lastDay
             ? t("joinedUntil", { joined: joinedLabel, until: formatDotYearMonth(player.lastDay) })
-            : t("joined", { joined: joinedLabel })}
+            : t("joinedUndisclosed", { joined: joinedLabel })}
         </div>
       </div>
     </Link>

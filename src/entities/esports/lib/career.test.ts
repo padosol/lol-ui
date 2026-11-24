@@ -9,7 +9,7 @@ import type {
   PersonCareer,
   Tenure,
 } from "../types";
-import { buildCareerTimeline } from "./career";
+import { buildCareerTimeline, tenurePeriod } from "./career";
 
 function tenure(teamId: string, startDate: string, lastDay: string | null, asPlayer = true): Tenure {
   return {
@@ -135,5 +135,28 @@ describe("buildCareerTimeline", () => {
 
   it("이력이 없으면 빈 배열이다", () => {
     expect(buildCareerTimeline(career({ tenures: [], contracts: [], events: [] }))).toEqual([]);
+  });
+});
+
+describe("tenurePeriod", () => {
+  const today = "2026-11-25";
+
+  it("마지막 계약이 아직 유효하면 진행 중이고, 기간은 오늘까지다", () => {
+    // 서버의 소속 기간 last_day 는 마지막 계약의 만료일이라 진행 중이면 미래 날짜다.
+    expect(tenurePeriod(tenure("alpha", "2023-11-21", "2028-11-20"), today)).toEqual({
+      ongoing: true,
+      end: today,
+    });
+  });
+
+  it("끝 날짜가 없어도 진행 중이다", () => {
+    expect(tenurePeriod(tenure("alpha", "2023-11-21", null), today)).toEqual({ ongoing: true, end: today });
+  });
+
+  it("이미 끝난 기간은 그 끝 날짜까지다", () => {
+    expect(tenurePeriod(tenure("bravo", "2022-11-22", "2024-11-18"), today)).toEqual({
+      ongoing: false,
+      end: "2024-11-18",
+    });
   });
 });
