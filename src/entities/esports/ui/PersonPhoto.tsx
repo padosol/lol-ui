@@ -18,10 +18,13 @@ export default function PersonPhoto({ imageUrl, name, variant = "tile", classNam
   const t = useTranslations("esports.common");
 
   if (variant === "portrait") {
+    // 부모가 준 상자(className)를 사진이 채운다. 절대 위치의 img 는 위·아래를 정해도 늘어나지 않아 감싼다.
     return imageUrl ? (
-      // 인물 사진은 관리자가 넣는 외부 주소라 next/image 허용 호스트에 미리 등록할 수 없다.
-      // eslint-disable-next-line @next/next/no-img-element
-      <img src={imageUrl} alt={t("photo", { name })} className={`object-cover object-top ${className}`} />
+      <div className={className}>
+        {/* 인물 사진은 관리자가 넣는 외부 주소라 next/image 허용 호스트에 미리 등록할 수 없다. */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={imageUrl} alt={t("photo", { name })} className="size-full object-cover object-top" />
+      </div>
     ) : (
       <div aria-hidden="true" className={`flex items-end justify-center text-on-surface/15 ${className}`}>
         <svg viewBox="0 0 24 28" fill="currentColor" className="h-full max-h-60 w-auto">
