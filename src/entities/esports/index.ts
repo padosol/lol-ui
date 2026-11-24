@@ -87,6 +87,11 @@ export {
   nextGlobalContractEndDate,
 } from "./lib/date";
 export { organizationIdOf, indexTeams } from "./lib/teams";
+export { formatDotDate, formatDotYearMonth, fullYearsBetween, durationParts } from "./lib/format";
+export { startingLineup, splitStaff, currentTenureStarts } from "./lib/lineup";
+export type { StartingLineup } from "./lib/lineup";
+export { buildCareerTimeline } from "./lib/career";
+export type { CareerItem, CareerRow } from "./lib/career";
 
 // 타입·코드값
 export {
